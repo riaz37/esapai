@@ -19,12 +19,19 @@
     --color-white-opacity-10: rgba(255, 255, 255, 0.1);
     --color-white-opacity-15: rgba(255, 255, 255, 0.15);
     --color-white-opacity-20: rgba(255, 255, 255, 0.2);
+    --color-white-opacity-25: rgba(255, 255, 255, 0.25);
+    --color-white-opacity-70: rgba(255, 255, 255, 0.7);
     
     /* Gradients */
     --gradient-primary: linear-gradient(
       180deg,
       var(--color-white) 54.17%,
       var(--color-primary-opacity-48) 100%
+    );
+    --gradient-radial-white: radial-gradient(
+      59.65% 59.65% at 50% 50%,
+      #FFFFFF 0%,
+      rgba(255, 255, 255, 0.1) 98.92%
     );
   }
 
@@ -67,6 +74,15 @@
     color: transparent;
   }
 
+  /* Radial Gradient Text Utility */
+  .text-gradient-radial-white {
+    background: var(--gradient-radial-white);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
   /* Color Utility Classes */
   .text-primary {
     color: var(--color-primary);
@@ -78,6 +94,10 @@
 
   .text-light-gray-90 {
     color: var(--color-light-gray-90);
+  }
+
+  .text-white-opacity-70 {
+    color: var(--color-white-opacity-70);
   }
 
   .bg-primary {
@@ -98,6 +118,14 @@
 
   .border-white-opacity-20 {
     border-color: var(--color-white-opacity-20);
+  }
+
+  .border-top-white-opacity-20 {
+    border-top: 0.75px solid var(--color-white-opacity-20);
+  }
+
+  .border-white-opacity-25 {
+    border: 0.75px solid var(--color-white-opacity-25);
   }
 
   .shadow-primary-30 {
@@ -163,5 +191,23 @@
 
   .btn-signup:hover {
     background-color: var(--color-white-opacity-15);
+  }
+
+  /* Mission Card */
+  .mission-card {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)),
+      linear-gradient(246.02deg, rgba(19, 245, 132, 0) 91.9%, rgba(19, 245, 132, 0.2) 114.38%),
+      linear-gradient(59.16deg, rgba(19, 245, 132, 0) 71.78%, rgba(19, 245, 132, 0.2) 124.92%);
+    border: 1.5px solid;
+    border-image-source: linear-gradient(
+      158.39deg,
+      rgba(255, 255, 255, 0.06) 14.19%,
+      rgba(255, 255, 255, 1.5e-05) 50.59%,
+      rgba(255, 255, 255, 1.5e-05) 68.79%,
+      rgba(255, 255, 255, 0.015) 105.18%
+    );
+    border-image-slice: 1;
+    border-radius: 32px;
+    backdrop-filter: blur(20px);
   }
 }
