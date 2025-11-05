@@ -66,10 +66,7 @@ export function DropdownMenu({
                 className={`${itemClass} group relative p-4 md:p-6 cursor-pointer`}
               >
                 {/* Icon Placeholder */}
-                <div className="w-12 h-12 md:w-16 md:h-16 mb-4 flex items-center justify-center rounded-full bg-primary-opacity-20 group-hover:bg-primary-opacity-30 transition-colors"
-                  style={{
-                    filter: 'drop-shadow(0 0 10px rgba(19, 245, 132, 0.6))'
-                  }}
+                <div className="w-12 h-12 md:w-16 md:h-16 mb-4 flex items-center justify-center rounded-full bg-primary-opacity-20 group-hover:bg-primary-opacity-30 transition-colors filter-glow-primary-small"
                 >
                   <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-primary rounded-full" />
                 </div>

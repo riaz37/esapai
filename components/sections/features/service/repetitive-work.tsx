@@ -1,14 +1,14 @@
 "use client";
 
 import { useId } from "react";
+import { Section } from "@/components/ui/section";
 
 export function RepetitiveWork() {
   const uniqueId = useId();
 
   return (
-    <section className="relative w-full py-20 px-4 overflow-hidden bg-dark">
-      <div className="relative container mx-auto max-w-7xl z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <Section>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Side - Text Content */}
           <div className="space-y-6">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
@@ -161,8 +161,7 @@ export function RepetitiveWork() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }
 

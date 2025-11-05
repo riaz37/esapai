@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import type { AutomationFeature } from "@/lib/products";
+import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface AutomationHubProps {
   title?: string;
@@ -41,37 +43,30 @@ export function AutomationHub({
   features = defaultFeatures,
 }: AutomationHubProps = {}) {
   return (
-    <section className="relative w-full py-20 px-4 overflow-hidden bg-dark">
+    <Section className="relative">
       {/* Subtle background gradient */}
       <div className="absolute inset-0 z-0 opacity-30">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
-      <div className="relative container mx-auto max-w-7xl z-10">
-        <div className="max-w-7xl mx-auto">
-          {/* Main Title */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-center text-gradient-radial-white leading-tight">
-            {title}
-          </h2>
+      <SectionHeader
+        title={title}
+        titleClassName="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+        subtitle={subtitle}
+        subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4 mb-16"
+      />
 
-          {/* Subtitle */}
-          <p className="text-base md:text-lg lg:text-xl text-center text-light-gray-90 max-w-5xl mx-auto mb-16 px-4">
-            {subtitle}
-          </p>
-
-          {/* Feature Cards Grid - 4 columns side by side */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-            {features.map((feature, index) => (
-              <FeatureCard
-                key={index}
-                title={feature.title}
-                description={feature.description}
-              />
-            ))}
-          </div>
-        </div>
+      {/* Feature Cards Grid - 4 columns side by side */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        {features.map((feature, index) => (
+          <FeatureCard
+            key={index}
+            title={feature.title}
+            description={feature.description}
+          />
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }
 
@@ -92,11 +87,7 @@ function FeatureCard({ title, description }: FeatureCardProps) {
             alt={title}
             width={300}
             height={300}
-            className="w-full h-full max-w-[220px] max-h-[220px] object-contain"
-            style={{
-              filter:
-                "drop-shadow(0 0 20px rgba(19, 245, 132, 0.6)) drop-shadow(0 0 40px rgba(19, 245, 132, 0.3))",
-            }}
+            className="w-full h-full max-w-[220px] max-h-[220px] object-contain filter-glow-primary"
           />
         </div>
 

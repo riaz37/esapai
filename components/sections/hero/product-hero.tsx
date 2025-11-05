@@ -161,10 +161,7 @@ export function ProductHero({
                 alt={centerIconAlt}
                 width={300}
                 height={300}
-                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80"
-                style={{
-                  filter: 'drop-shadow(0 0 20px rgba(19, 245, 132, 0.6)) drop-shadow(0 0 40px rgba(19, 245, 132, 0.3))'
-                }}
+                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 filter-glow-primary"
               />
             </div>
           </div>

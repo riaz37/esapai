@@ -1,23 +1,21 @@
 "use client";
 
 import Image from "next/image";
+import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export function Vision() {
   return (
-    <section
-      className="relative w-full py-20 px-4 overflow-hidden bg-dark"
-    >
-      <div className="relative container mx-auto max-w-7xl z-10">
-        {/* Main Title */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-center text-gradient-radial-white leading-tight">
-          <span className="block">Rebuilding today,</span>
-          <span className="block">empowering tomorrow</span>
-        </h2>
-
-        {/* Subtitle */}
-        <p className="text-lg md:text-xl text-center text-white-opacity-70 max-w-4xl mx-auto mb-16">
-          We envision a future where AI seamlessly integrates into every aspect of business operations. Our mission is to make advanced AI technology accessible, practical, and transformative for enterprises of all sizes.
-        </p>
+    <Section>
+      <SectionHeader
+        title={
+          <>
+            <span className="block">Rebuilding today,</span>
+            <span className="block">empowering tomorrow</span>
+          </>
+        }
+        subtitle="We envision a future where AI seamlessly integrates into every aspect of business operations. Our mission is to make advanced AI technology accessible, practical, and transformative for enterprises of all sizes."
+      />
 
         {/* Robot Icon with Bot Light behind and Dot Circle below */}
         <div className="relative w-full flex flex-col items-center justify-center">
@@ -56,8 +54,7 @@ export function Vision() {
             />
           </div>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }
 

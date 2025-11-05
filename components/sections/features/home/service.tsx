@@ -1,111 +1,22 @@
 "use client";
 
 import Image from "next/image";
-
-interface ServiceItemProps {
-  title: string | React.ReactNode;
-  description: string;
-  iconPosition: "left" | "right";
-  positionStyle: {
-    left: string;
-    top: string;
-    transform?: string;
-  };
-  descriptionClassName?: string;
-}
-
-function ServiceItem({
-  title,
-  description,
-  iconPosition,
-  positionStyle,
-  descriptionClassName = "",
-}: ServiceItemProps) {
-  const textAlignment = iconPosition === "left" ? "text-left" : "text-right";
-  const iconOrder = iconPosition === "left";
-
-  return (
-    <div className="absolute" style={positionStyle}>
-      <div className="product-card p-4 md:p-6 lg:p-8 min-w-[320px] sm:min-w-[360px] md:min-w-[400px] max-w-[420px]">
-        <div className="flex flex-row items-center gap-5 md:gap-6 lg:gap-8">
-          {iconOrder ? (
-            <>
-              {/* Glowing Green Cylindrical Icon on Left */}
-              <div className="shrink-0">
-                <div className="relative">
-                  <Image
-                    src="/landing/service/serviceicon.svg"
-                    alt="Service icon"
-                    width={60}
-                    height={60}
-                    className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain"
-                    style={{
-                      filter: 'drop-shadow(0 0 20px rgba(19, 245, 132, 0.8)) drop-shadow(0 0 40px rgba(19, 245, 132, 0.4))'
-                    }}
-                  />
-                </div>
-              </div>
-              {/* Text Content */}
-              <div className="flex flex-col gap-2 md:gap-3 flex-1 min-w-0">
-                <h3 className={`text-base md:text-lg lg:text-xl font-semibold text-gradient-radial-white leading-relaxed ${textAlignment}`}>
-                  {title}
-                </h3>
-                <p className={`text-sm md:text-base text-white-opacity-70 leading-relaxed ${textAlignment} ${descriptionClassName}`}>
-                  {description}
-                </p>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Text Content */}
-              <div className="flex flex-col gap-2 md:gap-3 flex-1 min-w-0">
-                <h3 className={`text-base md:text-lg lg:text-xl font-semibold text-gradient-radial-white leading-relaxed ${textAlignment}`}>
-                  {title}
-                </h3>
-                <p className={`text-sm md:text-base text-white-opacity-70 leading-relaxed ${textAlignment} ${descriptionClassName}`}>
-                  {description}
-                </p>
-              </div>
-              {/* Glowing Green Cylindrical Icon on Right */}
-              <div className="shrink-0">
-                <div className="relative">
-                  <Image
-                    src="/landing/service/serviceicon.svg"
-                    alt="Service icon"
-                    width={60}
-                    height={60}
-                    className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain"
-                    style={{
-                      filter: 'drop-shadow(0 0 20px rgba(19, 245, 132, 0.8)) drop-shadow(0 0 40px rgba(19, 245, 132, 0.4))'
-                    }}
-                  />
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+import { SectionHeader } from "@/components/ui/section-header";
+import { ServiceItem } from "@/components/ui/service-item";
 
 export function Service() {
   return (
-    <section
-      className="relative w-full py-20 px-4 overflow-hidden bg-dark"
-    >
-
+    <section className="relative w-full py-20 px-4 overflow-hidden bg-dark">
       <div className="relative container mx-auto max-w-7xl z-10">
-        {/* Main Title */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-center text-gradient-radial-white leading-tight">
-          <span className="block">Comprehensive AI</span>
-          <span className="block">Services & Solutions</span>
-        </h2>
-
-        {/* Subtitle */}
-        <p className="text-lg md:text-xl text-center text-white-opacity-70 max-w-4xl mx-auto mb-16">
-          From strategic consulting to complete integration, we offer end-to-end AI services that transform your business operations and drive innovation.
-        </p>
+        <SectionHeader
+          title={
+            <>
+              <span className="block">Comprehensive AI</span>
+              <span className="block">Services & Solutions</span>
+            </>
+          }
+          subtitle="From strategic consulting to complete integration, we offer end-to-end AI services that transform your business operations and drive innovation."
+        />
 
         {/* Central Brain with Services */}
         <div className="relative w-full min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex items-center justify-center py-8 md:py-12 -mt-12 md:-mt-16">

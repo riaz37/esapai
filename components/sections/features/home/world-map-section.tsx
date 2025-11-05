@@ -1,6 +1,8 @@
 "use client";
 
 import WorldMap from "@/components/ui/world-map";
+import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 
 export function WorldMapSection() {
   // Define connections between major cities/regions
@@ -36,28 +38,25 @@ export function WorldMapSection() {
   ];
 
   return (
-    <section className="relative w-full py-20 px-4 overflow-hidden bg-dark">
-      <div className="relative container mx-auto max-w-7xl z-10">
-        {/* Section Title */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-center text-gradient-radial-white leading-tight">
-          <span className="block">Global Reach,</span>
-          <span className="block text-primary">Local Impact</span>
-        </h2>
+    <Section>
+      <SectionHeader
+        title={
+          <>
+            <span className="block">Global Reach,</span>
+            <span className="block text-primary">Local Impact</span>
+          </>
+        }
+        subtitle="Our AI solutions are deployed across the globe, connecting businesses and enabling innovation worldwide."
+      />
 
-        {/* Subtitle */}
-        <p className="text-lg md:text-xl text-center text-white-opacity-70 max-w-4xl mx-auto mb-16">
-          Our AI solutions are deployed across the globe, connecting businesses and enabling innovation worldwide.
-        </p>
-
-        {/* World Map */}
-        <div className="relative w-full max-w-6xl mx-auto">
-          <WorldMap
-            dots={connections}
-            lineColor="rgba(19, 245, 132, 1)"
-          />
-        </div>
+      {/* World Map */}
+      <div className="relative w-full max-w-6xl mx-auto">
+        <WorldMap
+          dots={connections}
+          lineColor="rgba(19, 245, 132, 1)"
+        />
       </div>
-    </section>
+    </Section>
   );
 }
 

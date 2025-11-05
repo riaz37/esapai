@@ -1,6 +1,8 @@
 "use client";
 
 import { useId } from "react";
+import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 
 interface FeatureBlockProps {
   title: string;
@@ -24,44 +26,38 @@ export function ServiceFeatures({
   const bottomRowFeatures = displayFeatures.slice(2, 5);
 
   return (
-    <section className="relative w-full py-20 px-4 overflow-hidden bg-dark">
-      <div className="relative container mx-auto max-w-7xl z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-gradient-radial-white">
-            {title}
-          </h2>
-          <p className="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4">
-            {subtitle}
-          </p>
+    <Section>
+      <SectionHeader
+        title={title}
+        subtitle={subtitle}
+        subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4 mb-16"
+      />
+
+      {/* Features Layout */}
+      <div className="relative max-w-6xl mx-auto">
+        {/* Top Row - 2 blocks */}
+        <div className="relative flex flex-col md:flex-row justify-center gap-8 mb-8 md:mb-16">
+          {topRowFeatures.map((feature, index) => (
+            <FeatureBlock
+              key={index}
+              title={feature.title}
+              description={feature.description}
+            />
+          ))}
         </div>
 
-        {/* Features Layout */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Top Row - 2 blocks */}
-          <div className="relative flex flex-col md:flex-row justify-center gap-8 mb-8 md:mb-16">
-            {topRowFeatures.map((feature, index) => (
-              <FeatureBlock
-                key={index}
-                title={feature.title}
-                description={feature.description}
-              />
-            ))}
-          </div>
-
-          {/* Bottom Row - 3 blocks */}
-          <div className="relative flex flex-col md:flex-row justify-center gap-8">
-            {bottomRowFeatures.map((feature, index) => (
-              <FeatureBlock
-                key={index + 2}
-                title={feature.title}
-                description={feature.description}
-              />
-            ))}
-          </div>
+        {/* Bottom Row - 3 blocks */}
+        <div className="relative flex flex-col md:flex-row justify-center gap-8">
+          {bottomRowFeatures.map((feature, index) => (
+            <FeatureBlock
+              key={index + 2}
+              title={feature.title}
+              description={feature.description}
+            />
+          ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }
 
@@ -85,12 +81,7 @@ function FeatureBlock({ title, description }: FeatureBlockProps) {
 
       {/* Green glow effect on hover */}
       <div className="absolute inset-0 rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <div
-          className="absolute inset-0 rounded-[32px]"
-          style={{
-            boxShadow: "0 0 20px rgba(19, 245, 132, 0.3), inset 0 0 20px rgba(19, 245, 132, 0.1)",
-          }}
-        />
+        <div className="absolute inset-0 rounded-[32px] shadow-glow-primary-feature" />
       </div>
     </div>
   );
