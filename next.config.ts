@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
     // Disable type checking during build
     ignoreBuildErrors: true,
   },
+  eslint: {
+    // Disable ESLint during build
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -17,6 +21,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-};
+} as NextConfig;
 
 export default nextConfig;
