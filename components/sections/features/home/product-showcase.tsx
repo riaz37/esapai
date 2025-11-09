@@ -9,9 +9,7 @@ import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Button } from "@/components/ui/button";
 
 export function ProductShowcase() {
-  // Show first 3 products as featured
-  const featuredProducts = products.slice(0, 3);
-
+  // Show all products in the suite
   return (
     <Section background="dark" padding="md">
       <SectionHeader
@@ -21,7 +19,7 @@ export function ProductShowcase() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto px-4">
-        {featuredProducts.map((product) => (
+        {products.map((product) => (
           <Link key={product.id} href={`/product/${product.slug}`} className="block h-full">
             <SpotlightCard className="h-full">
               <div className="p-6 md:p-8 h-full flex flex-col">
