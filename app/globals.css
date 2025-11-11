@@ -26,7 +26,8 @@
     /* Gradients */
     --gradient-primary: linear-gradient(
       180deg,
-      var(--color-white) 54.17%,
+      var(--color-white) 0%,
+      var(--color-white) 30%,
       var(--color-primary-opacity-48) 100%
     );
     --gradient-radial-white: radial-gradient(
@@ -222,32 +223,32 @@
 @layer components {
   /* Hero Badge Container */
   .hero-badge {
-    @apply mb-8 inline-flex items-center gap-3 pt-1 pr-1 pb-1 pl-3 rounded-[48px] overflow-hidden;
+    @apply mb-8 inline-flex h-10 items-stretch rounded-[48px] overflow-hidden pl-1.5 py-1;
     background-color: var(--color-black);
     border: 1.2px solid var(--color-white-opacity-15);
   }
 
   /* Hero Badge Exclusive Section */
   .hero-badge-exclusive {
-    @apply rounded-[48px] px-4 shrink-0;
+    @apply rounded-[48px] shrink-0 px-5 flex items-center justify-center h-full;
     background-color: var(--color-primary);
   }
 
   /* Hero Badge Exclusive Text */
   .hero-badge-exclusive-text {
-    @apply text-xs font-semibold;
+    @apply text-xs font-semibold leading-none;
     color: var(--color-primary-dark);
   }
 
   /* Hero Badge Text Section */
   .hero-badge-text {
-    @apply pl-2 pr-4 py-2 rounded-r-[48px];
+    @apply flex items-center px-6 gap-3 h-full;
     background-color: var(--color-black);
   }
 
   /* Hero Badge Text Content */
   .hero-badge-text-content {
-    @apply text-sm font-medium;
+    @apply text-sm font-medium leading-none;
     color: var(--color-primary);
   }
 
