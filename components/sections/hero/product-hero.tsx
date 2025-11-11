@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import { motion, useScroll, useTransform } from "motion/react";
 
 interface ProductHeroProps {
@@ -37,10 +36,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: Prod
         />
       </motion.div>
 
-      {/* Background ripple effect */}
-      <BackgroundRippleEffect />
-
-      <div className="relative z-[2] container mx-auto px-4 pt-32 pb-20">
+      <div className="relative z-2 container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-6xl mx-auto text-center">
           {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight text-gradient-primary">
@@ -72,13 +68,13 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: Prod
           </div>
 
           {/* Product Images - Watermakr and VoiceERP */}
-          <div className="relative w-full mt-16 flex justify-center">
-            <div className="relative w-full max-w-[960px]">
+          <div className="relative w-full mt-10 flex justify-center">
+            <div className="relative w-full max-w-[1400px]">
               <Image
                 src="/products/Watermakr.svg"
                 alt="Watermark"
-                width={1200}
-                height={900}
+                width={1600}
+                height={1000}
                 className="w-full h-auto mx-auto"
                 priority
               />

@@ -55,31 +55,31 @@ export default function ProductsPage() {
           subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4 mb-16"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 max-w-6xl mx-auto px-4">
           {products.map((product) => (
             <Link key={product.id} href={`/product/${product.slug}`} className="block h-full">
               <SpotlightCard className="h-full">
-                <div className="p-6 md:p-8 h-full flex flex-col">
+                <div className="p-5 md:p-6 h-full flex flex-col">
                   {/* Product Icon */}
                   {product.content?.hero?.centerIcon && (
-                    <div className="relative w-16 h-16 md:w-20 md:h-20 mb-6 flex items-center justify-center">
+                    <div className="relative w-12 h-12 md:w-16 md:h-16 mb-5 flex items-center justify-center">
                       <Image
                         src={product.content.hero.centerIcon}
                         alt={`${product.name} icon`}
-                        width={80}
-                        height={80}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-contain filter-glow-primary"
                       />
                     </div>
                   )}
 
                   {/* Product Name */}
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gradient-radial-white">
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-gradient-radial-white">
                     {product.name}
                   </h3>
 
                   {/* Product Description */}
-                  <p className="text-base md:text-lg text-light-gray-90 leading-relaxed mb-6 flex-1">
+                  <p className="text-sm md:text-base text-light-gray-90 leading-relaxed mb-5 flex-1">
                     {product.description}
                   </p>
 

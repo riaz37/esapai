@@ -65,21 +65,26 @@ export function DropdownMenu({
                 onClick={onClose}
                 className={`${itemClass} group relative p-4 md:p-6 cursor-pointer`}
               >
-                {/* Icon Placeholder */}
-                <div className="w-12 h-12 md:w-16 md:h-16 mb-4 flex items-center justify-center rounded-full bg-primary-opacity-20 group-hover:bg-primary-opacity-30 transition-colors filter-glow-primary-small"
-                >
-                  <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-primary rounded-full" />
+                <div className="flex items-center md:items-start gap-4 md:gap-5">
+                  {/* Icon Placeholder */}
+                  <div
+                    className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-primary-opacity-20 group-hover:bg-primary-opacity-30 transition-colors filter-glow-primary-small shrink-0"
+                  >
+                    <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-primary rounded-full" />
+                  </div>
+
+                  <div className="flex-1">
+                    {/* Item Name */}
+                    <h3 className="text-base md:text-lg font-semibold text-light-gray mb-2 group-hover:text-primary transition-colors">
+                      {item.name}
+                    </h3>
+
+                    {/* Item Description */}
+                    <p className="text-sm text-white-opacity-70 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
-                
-                {/* Item Name */}
-                <h3 className="text-base md:text-lg font-semibold text-light-gray mb-2 group-hover:text-primary transition-colors">
-                  {item.name}
-                </h3>
-                
-                {/* Item Description */}
-                <p className="text-sm text-white-opacity-70 leading-relaxed">
-                  {item.description}
-                </p>
               </Link>
             ))}
           </div>

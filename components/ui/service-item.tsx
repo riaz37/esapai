@@ -29,7 +29,7 @@ export function ServiceItem({
 
   return (
     <div className="absolute" style={positionStyle}>
-      <div className="product-card p-4 md:p-6 lg:p-8 min-w-[320px] sm:min-w-[360px] md:min-w-[400px] max-w-[420px] h-[240px] flex flex-col justify-center">
+      <div className="relative p-4 md:p-6 lg:p-8 min-w-[320px] sm:min-w-[360px] md:min-w-[400px] max-w-[420px] h-[240px] flex flex-col justify-center">
         <div className="flex flex-row items-center gap-5 md:gap-6 lg:gap-8">
           {iconOrder ? (
             <>

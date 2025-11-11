@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { VideoText } from "@/components/ui/video-text";
 import { motion, useScroll, useTransform } from "motion/react";
 
 export function Hero() {
@@ -31,7 +30,7 @@ export function Hero() {
 
       {/* Circle behind content - animated glow and breathing effect */}
       <motion.div
-        className="absolute top-[40%] left-1/2 -translate-x-1/2 z-0 pointer-events-none"
+        className="absolute top-[48%] left-1/2 -translate-x-1/2 z-0 pointer-events-none"
         style={{ rotate: 15 }}
         animate={{
           scale: [1, 1.08, 1.05, 1.08, 1],
@@ -87,8 +86,8 @@ export function Hero() {
         <Image
           src="/landing/box.svg"
           alt="Hexagonal icons decoration"
-          width={100}
-          height={100}
+          width={50}
+          height={50}
           className="w-full h-auto opacity-90 filter drop-shadow-[0_0_20px_rgba(19,245,132,0.3)]"
           priority
         />
@@ -108,22 +107,10 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Main Title with Video Text Effect - Full Width Container */}
+        {/* Main Title - Full Width Container */}
         <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 overflow-hidden">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight w-full">
-            <div className="relative h-[100px] md:h-[120px] lg:h-[140px] xl:h-[160px] w-full mb-4 flex items-center justify-center overflow-hidden">
-              <VideoText 
-                src="https://cdn.magicui.design/ocean-small.webm"
-                fontSize={4.5}
-                fontWeight="bold"
-                className="w-full h-full overflow-hidden"
-                autoPlay
-                muted
-                loop
-              >
-                AI-Powered Solutions
-              </VideoText>
-            </div>
+            <span className="block text-white">AI-Powered Solutions</span>
             <span className="block text-gradient-primary mt-2">For Modern Enterprises</span>
           </h1>
         </div>
