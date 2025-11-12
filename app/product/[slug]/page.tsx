@@ -43,8 +43,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <main className="relative">
-      <ProductHero 
-        title={product.name} 
+      <ProductHero
+        title={product.name}
         subtitle={heroSubtitle}
         centerIcon={heroCenterIcon}
         centerIconAlt={heroCenterIconAlt}
@@ -59,14 +59,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         subtitle={automationHubContent?.subtitle}
         features={automationHubContent?.features}
       />
-      {aceternityFeaturesContent?.features && (
-        <ProductFeatures 
-          title={aceternityFeaturesContent.title}
-          subtitle={aceternityFeaturesContent.subtitle}
-          features={aceternityFeaturesContent.features}
-          className={aceternityFeaturesContent.className}
-        />
-      )}
+
       <YouTubeVideo
         videoId={youtubeVideoContent?.videoId || "ED2H_y6dmC8"}
         title={youtubeVideoContent?.title}
@@ -75,4 +68,3 @@ export default async function ProductPage({ params }: ProductPageProps) {
     </main>
   );
 }
-
