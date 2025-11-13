@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { TeamCard, type TeamMember } from "@/components/ui/team-card";
@@ -69,7 +70,21 @@ export function Team({ members = defaultTeamMembers }: TeamProps) {
   const bottomMembers = members.slice(4, 7);
 
   return (
-    <Section>
+    <Section className="relative">
+      {/* Background grid */}
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-0 h-full w-screen">
+        <div className="relative h-full w-full">
+          <Image
+            src="/aboutgrid.svg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover opacity-80"
+            priority
+          />
+        </div>
+      </div>
+
       <SectionHeader
         title="Our Team"
         subtitle="Meet the visionaries driving innovation and transforming the future of AI-powered automation."
