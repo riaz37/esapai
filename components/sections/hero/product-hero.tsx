@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 
 interface ProductHeroProps {
   title: string;
@@ -13,18 +13,11 @@ interface ProductHeroProps {
 }
 
 export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: ProductHeroProps) {
-  const { scrollY } = useScroll();
-  
-  // Top light animation - fade out on scroll
-  const topLightOpacity = useTransform(scrollY, [0, 100], [1, 0]);
-  const topLightScale = useTransform(scrollY, [0, 100], [1, 0.8]);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
-      {/* Top light effect - animated fade out on scroll */}
+      {/* Top light effect */}
       <motion.div
         className="absolute top-0 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
-        style={{ opacity: topLightOpacity, scale: topLightScale }}
       >
         <Image
           src="/products/Top Light.svg"

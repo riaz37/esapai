@@ -152,7 +152,7 @@ export const products: Product[] = [
               "Track and manage your business operations with ease using our intuitive ERP interface.",
             skeleton: "image",
             skeletonProps: {
-              imageUrl: "/products/voiceerp.svg",
+              imageUrl: "/products/erp.svg",
             },
             className:
               "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
@@ -164,11 +164,11 @@ export const products: Product[] = [
             skeleton: "gallery",
             skeletonProps: {
               galleryImages: [
-                "/products/voiceerp.svg",
-                "/products/voiceerp.svg",
-                "/products/voiceerp.svg",
-                "/products/voiceerp.svg",
-                "/products/voiceerp.svg",
+                "/products/erp.svg",
+                "/products/erp.svg",
+                "/products/erp.svg",
+                "/products/erp.svg",
+                "/products/erp.svg",
               ],
             },
             className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
