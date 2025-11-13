@@ -99,6 +99,9 @@ export function Navbar() {
     };
   }, [lastScrollY, scrollThreshold]);
 
+  const productActive = isProductOpen || isActive("/product");
+  const serviceActive = isServiceOpen || isActive("/service");
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
@@ -125,78 +128,50 @@ export function Navbar() {
             <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
               <Link
                 href="/"
-                className={`relative group whitespace-nowrap cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
+                className={`nav-link-group relative group whitespace-nowrap cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
                   isActive("/")
-                    ? "text-primary"
+                    ? "is-active text-primary"
                     : "text-light-gray hover:text-primary"
                 }`}
               >
+                <span className="nav-glow" aria-hidden="true" />
                 <span className="relative z-10">Home</span>
-                {/* Hover background effect */}
-                <span
-                  className={`absolute inset-0 rounded-lg bg-white-opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center ${
-                    isActive("/") ? "scale-x-100 bg-primary-opacity-30" : ""
-                  }`}
-                />
                 {/* Active underline */}
                 <span
-                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 z-10 ${
                     isActive("/")
                       ? "scale-x-100 opacity-100"
                       : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100"
                   }`}
                 />
                 {/* Glow effect on hover */}
-                <span
-                  className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    isActive("/") ? "opacity-100" : ""
-                  }`}
-                  style={{
-                    boxShadow: "0 0 20px rgba(19, 245, 132, 0.3)",
-                  }}
-                />
               </Link>
               {/* Product Dropdown */}
               <div className="relative" ref={productDropdownRef}>
                 <button
                   onClick={() => setIsProductOpen(!isProductOpen)}
-                  className={`relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
-                    isProductOpen || isActive("/product")
-                      ? "text-primary"
+                  className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
+                    productActive
+                      ? "is-active text-primary"
                       : "text-light-gray hover:text-primary"
                   }`}
                 >
+                  <span className="nav-glow" aria-hidden="true" />
                   <span className="relative z-10">Product</span>
                   <ChevronDown
                     className={`size-4 transition-transform duration-200 relative z-10 ${
                       isProductOpen ? "rotate-180" : ""
                     }`}
                   />
-                  {/* Hover background effect */}
-                  <span
-                    className={`absolute inset-0 rounded-lg bg-white-opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center ${
-                      isProductOpen || isActive("/product")
-                        ? "scale-x-100 bg-primary-opacity-30"
-                        : ""
-                    }`}
-                  />
                   {/* Active underline */}
                   <span
-                    className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 ${
-                      isProductOpen || isActive("/product")
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 z-10 ${
+                      productActive
                         ? "scale-x-100 opacity-100"
                         : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100"
                     }`}
                   />
                   {/* Glow effect on hover */}
-                  <span
-                    className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                      isProductOpen || isActive("/product") ? "opacity-100" : ""
-                    }`}
-                    style={{
-                      boxShadow: "0 0 20px rgba(19, 245, 132, 0.3)",
-                    }}
-                  />
                 </button>
                 <ProductDropdownMenu />
               </div>
@@ -204,113 +179,70 @@ export function Navbar() {
               <div className="relative" ref={serviceDropdownRef}>
                 <button
                   onClick={() => setIsServiceOpen(!isServiceOpen)}
-                  className={`relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
-                    isServiceOpen || isActive("/service")
-                      ? "text-primary"
+                  className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
+                    serviceActive
+                      ? "is-active text-primary"
                       : "text-light-gray hover:text-primary"
                   }`}
                 >
+                  <span className="nav-glow" aria-hidden="true" />
                   <span className="relative z-10">Service</span>
                   <ChevronDown
                     className={`size-4 transition-transform duration-200 relative z-10 ${
                       isServiceOpen ? "rotate-180" : ""
                     }`}
                   />
-                  {/* Hover background effect */}
-                  <span
-                    className={`absolute inset-0 rounded-lg bg-white-opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center ${
-                      isServiceOpen || isActive("/service")
-                        ? "scale-x-100 bg-primary-opacity-30"
-                        : ""
-                    }`}
-                  />
                   {/* Active underline */}
                   <span
-                    className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 ${
-                      isServiceOpen || isActive("/service")
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 z-10 ${
+                      serviceActive
                         ? "scale-x-100 opacity-100"
                         : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100"
                     }`}
                   />
                   {/* Glow effect on hover */}
-                  <span
-                    className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                      isServiceOpen || isActive("/service") ? "opacity-100" : ""
-                    }`}
-                    style={{
-                      boxShadow: "0 0 20px rgba(19, 245, 132, 0.3)",
-                    }}
-                  />
                 </button>
                 <ServiceDropdownMenu />
               </div>
               <Link
                 href="/about"
-                className={`relative group whitespace-nowrap cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
+                className={`nav-link-group relative group whitespace-nowrap cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
                   isActive("/about")
-                    ? "text-primary"
+                    ? "is-active text-primary"
                     : "text-light-gray hover:text-primary"
                 }`}
               >
+                <span className="nav-glow" aria-hidden="true" />
                 <span className="relative z-10">About Us</span>
-                {/* Hover background effect */}
-                <span
-                  className={`absolute inset-0 rounded-lg bg-white-opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center ${
-                    isActive("/about") ? "scale-x-100 bg-primary-opacity-30" : ""
-                  }`}
-                />
                 {/* Active underline */}
                 <span
-                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 z-10 ${
                     isActive("/about")
                       ? "scale-x-100 opacity-100"
                       : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100"
                   }`}
                 />
                 {/* Glow effect on hover */}
-                <span
-                  className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    isActive("/about") ? "opacity-100" : ""
-                  }`}
-                  style={{
-                    boxShadow: "0 0 20px rgba(19, 245, 132, 0.3)",
-                  }}
-                />
               </Link>
               <Link
                 href="/contact"
-                className={`relative group whitespace-nowrap cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
+                className={`nav-link-group relative group whitespace-nowrap cursor-pointer px-3 py-2 rounded-lg transition-all duration-300 ${
                   isActive("/contact")
-                    ? "text-primary"
+                    ? "is-active text-primary"
                     : "text-light-gray hover:text-primary"
                 }`}
               >
+                <span className="nav-glow" aria-hidden="true" />
                 <span className="relative z-10">Contact Us</span>
-                {/* Hover background effect */}
-                <span
-                  className={`absolute inset-0 rounded-lg bg-white-opacity-10 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center ${
-                    isActive("/contact")
-                      ? "scale-x-100 bg-primary-opacity-30"
-                      : ""
-                  }`}
-                />
                 {/* Active underline */}
                 <span
-                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full transition-all duration-300 z-10 ${
                     isActive("/contact")
                       ? "scale-x-100 opacity-100"
                       : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100"
                   }`}
                 />
                 {/* Glow effect on hover */}
-                <span
-                  className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    isActive("/contact") ? "opacity-100" : ""
-                  }`}
-                  style={{
-                    boxShadow: "0 0 20px rgba(19, 245, 132, 0.3)",
-                  }}
-                />
               </Link>
             </div>
           </div>

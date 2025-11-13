@@ -1,12 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface MenuItem {
   id: string;
   name: string;
   description: string;
   slug: string;
+  icon?: string;
+  content?: {
+    hero?: {
+      centerIcon?: string;
+      centerIconAlt?: string;
+    };
+  };
 }
 
 interface DropdownMenuProps {
@@ -58,36 +66,46 @@ export function DropdownMenu({
 
           {/* Right Section - Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-3">
-            {items.map((item) => (
-              <Link
-                key={item.id}
-                href={`${basePath}/${item.slug}`}
-                onClick={onClose}
-                className={`${itemClass} group relative p-2.5 md:p-3 cursor-pointer`}
-              >
-                <div className="flex items-center md:items-start gap-2.5 md:gap-3">
-                  {/* Icon Placeholder */}
-                  <div className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-primary-opacity-20 group-hover:bg-primary-opacity-30 transition-colors filter-glow-primary-small shrink-0">
-                    <div
-                      className="border-2 border-primary rounded-full"
-                      style={{ width: "1.125rem", height: "1.125rem" }}
-                    />
-                  </div>
+            {items.map((item) => {
+              const iconSrc = item.icon ?? item.content?.hero?.centerIcon;
+              const iconAlt =
+                item.content?.hero?.centerIconAlt ?? `${item.name} icon`;
 
-                  <div className="flex-1">
-                    {/* Item Name */}
-                    <h3 className="text-xs md:text-sm font-semibold text-light-gray mb-0.5 group-hover:text-primary transition-colors">
-                      {item.name}
-                    </h3>
+              return (
+                <Link
+                  key={item.id}
+                  href={`${basePath}/${item.slug}`}
+                  onClick={onClose}
+                  className={`${itemClass} group relative p-2.5 md:p-3 cursor-pointer`}
+                >
+                  <div className="flex items-center md:items-start gap-2.5 md:gap-3">
+                    {iconSrc && (
+                      <div className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-primary-opacity-20 group-hover:bg-primary-opacity-30 transition-colors filter-glow-primary-small shrink-0 overflow-hidden">
+                        <Image
+                          src={iconSrc}
+                          alt={iconAlt}
+                          width={40}
+                          height={40}
+                          className="h-7 w-7 md:h-8 md:w-8 object-contain"
+                        />
+                      </div>
+                    )}
 
-                    {/* Item Description */}
-                    <p className="text-[0.7rem] md:text-xs text-white-opacity-70 leading-relaxed">
-                      {item.description}
-                    </p>
+                    <div className="flex-1">
+                      {/* Item Name */}
+                      <h3 className="text-xs md:text-sm font-semibold text-light-gray mb-0.5 group-hover:text-primary transition-colors">
+                        {item.name}
+                      </h3>
+
+                      {/* Item Description */}
+                      <p className="text-[0.7rem] md:text-xs text-white-opacity-70 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

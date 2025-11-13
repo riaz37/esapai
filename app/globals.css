@@ -221,6 +221,40 @@
 }
 
 @layer components {
+  .nav-link-group {
+    position: relative;
+    isolation: isolate;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link-group .nav-glow {
+    position: absolute;
+    inset: -4px;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(19, 245, 132, 0.45) 0%,
+      rgba(19, 245, 132, 0.15) 55%,
+      rgba(19, 245, 132, 0.05) 75%,
+      transparent 100%
+    );
+    opacity: 0;
+    transform: scale(0.85);
+    filter: blur(18px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .nav-link-group:hover .nav-glow,
+  .nav-link-group:focus-visible .nav-glow,
+  .nav-link-group.is-active .nav-glow {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@layer components {
   /* Hero Badge Container */
   .hero-badge {
     @apply mb-8 inline-flex h-10 items-stretch rounded-[48px] overflow-hidden pl-1.5 py-1;
