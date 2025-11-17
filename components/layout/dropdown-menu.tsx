@@ -41,20 +41,12 @@ export function DropdownMenu({
   if (!isOpen) return null;
 
   return (
-    <div className={`${dropdownClass} fixed top-14 left-1/2 -translate-x-1/2 mt-1 w-[78vw] max-w-3xl shadow-lg z-50`}>
+    <div className={`${dropdownClass} fixed top-14 left-1/2 -translate-x-1/2 mt-3 w-[78vw] max-w-3xl shadow-lg z-50`}>
       <div className="p-4 md:p-6 relative z-10">
         <div className="grid gap-4 md:grid-cols-[0.9fr,1.4fr] md:gap-6">
           {/* Left Section */}
           <div className="flex flex-col">
-            <div className="flex items-start gap-2.5 mb-3">
-              <div className="shrink-0 w-9 h-9 flex items-center justify-center">
-                <div className="w-full h-full rounded-full flex items-center justify-center">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgb(19, 245, 132)" strokeWidth="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-                  </svg>
-                </div>
-              </div>
+            <div className="flex items-start mb-3">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-primary">
                 {title}
               </h2>

@@ -17,7 +17,7 @@ export function AboutHero() {
         />
       </div>
 
-      <div className="relative z-[2] container mx-auto px-4">
+      <div className="relative z-2 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight text-gradient-primary">

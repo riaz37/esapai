@@ -18,7 +18,7 @@ const navigationLinks = [
 
 export function Footer() {
   return (
-    <footer className="w-full mt-auto border-top-white-opacity-20">
+    <footer className="w-full mt-auto border-top-white-opacity-20 footer-background">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="max-w-7xl mx-auto">
           {/* Main Footer Content */}

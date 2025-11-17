@@ -1,23 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Twitter,
-  Youtube,
-  Music,
-} from "lucide-react";
 
 const socialMediaLinks = [
-  { name: "Facebook", icon: Facebook, href: "#" },
-  { name: "TikTok", icon: Music, href: "#" },
-  { name: "Instagram", icon: Instagram, href: "#" },
-  { name: "LinkedIn", icon: Linkedin, href: "#" },
-  { name: "X", icon: Twitter, href: "#" },
-  { name: "YouTube", icon: Youtube, href: "#" },
+  { name: "Facebook", iconPath: "/contact/cfacebook.svg", href: "#" },
+  { name: "Instagram", iconPath: "/contact/cinstagram.svg", href: "#" },
+  { name: "LinkedIn", iconPath: "/contact/clinkedin.svg", href: "#" },
+  { name: "X", iconPath: "/contact/xc.svg", href: "#" },
+  { name: "YouTube", iconPath: "/contact/xyoutube.svg", href: "#" },
 ];
 
 interface FormData {
@@ -66,6 +58,18 @@ export function ContactSection() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[1200px] bg-gradient-to-b from-primary via-primary/20 to-transparent opacity-30 blur-3xl" />
       </div>
 
+      {/* Frame SVG centered */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
+        <Image
+          src="/services/frame.svg"
+          alt="Frame decoration"
+          width={300}
+          height={300}
+          className="w-auto h-auto opacity-90"
+          priority
+        />
+      </div>
+
       <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
@@ -73,47 +77,50 @@ export function ContactSection() {
             <div className="lg:col-span-3 space-y-8">
               {/* Main Heading */}
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                  <span className="text-light-gray block">Contact us today.</span>
-                  <span className="text-primary block">We&apos;re ready</span>
-                  <span className="text-primary block">to assist you.</span>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-gradient-primary">
+                  <span className="block">Contact us today.</span>
+                  <span className="block">We&apos;re ready</span>
+                  <span className="block">to assist you.</span>
                 </h1>
               </div>
 
               {/* Description */}
               <p className="text-light-gray-90 text-lg md:text-xl max-w-2xl">
-                Whether you have a question, a comment, or just want to say hello,
-                please don&apos;t hesitate to get in touch.
+                Whether you have a question, a comment, or just want to say
+                hello, please don&apos;t hesitate to get in touch.
               </p>
 
               {/* Social Media Section */}
               <div className="space-y-6 pt-8">
-                <h2 className="text-primary text-xl md:text-2xl font-semibold">
+                <h2 className="text-gradient-primary text-xl md:text-2xl font-semibold">
                   Get in touch On social media
                 </h2>
-                <div className="flex flex-wrap items-center gap-4">
-                  {socialMediaLinks.map((social) => {
-                    const IconComponent = social.icon;
-                    return (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-white border-2 border-white transition-all duration-300 hover:bg-primary hover:border-primary hover:scale-110 shadow-md"
-                        aria-label={social.name}
-                      >
-                        <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-black group-hover:text-primary-dark transition-colors" />
-                      </a>
-                    );
-                  })}
+                <div className="flex flex-wrap items-center gap-6">
+                  {socialMediaLinks.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transition-transform duration-300 hover:scale-110"
+                      aria-label={social.name}
+                    >
+                      <Image
+                        src={social.iconPath}
+                        alt={`${social.name} icon`}
+                        width={24}
+                        height={24}
+                        className="w-6 h-6 md:w-8 md:h-8 object-contain"
+                      />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Right Column - Contact Form */}
             <div className="lg:col-span-2">
-              <div className="relative product-card p-6 md:p-8 lg:p-10">
+              <div className="contact-form-card p-6 md:p-8 lg:p-10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Full Name Field */}
                   <div className="space-y-2">
@@ -129,9 +136,9 @@ export function ContactSection() {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleInputChange}
-                      placeholder="ex:"
+                      placeholder="John Doe"
                       required
-                      className="w-full px-4 py-3 rounded-lg bg-white-opacity-10 border border-white-opacity-20 text-light-gray placeholder:text-white-opacity-25 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="contact-input w-full px-4 py-3 text-light-gray placeholder:text-white-opacity-25 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
 
@@ -149,9 +156,9 @@ export function ContactSection() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="ex:"
+                      placeholder="name@company.com"
                       required
-                      className="w-full px-4 py-3 rounded-lg bg-white-opacity-10 border border-white-opacity-20 text-light-gray placeholder:text-white-opacity-25 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      className="contact-input w-full px-4 py-3 text-light-gray placeholder:text-white-opacity-25 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                   </div>
 
@@ -168,10 +175,10 @@ export function ContactSection() {
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
-                      placeholder="ex:"
+                      placeholder="How can we help you?"
                       required
                       rows={5}
-                      className="w-full px-4 py-3 rounded-lg bg-white-opacity-10 border border-white-opacity-20 text-light-gray placeholder:text-white-opacity-25 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                      className="contact-input w-full px-4 py-3 text-light-gray placeholder:text-white-opacity-25 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                     />
                   </div>
 
@@ -180,7 +187,7 @@ export function ContactSection() {
                     type="submit"
                     variant="primary"
                     disabled={!agreedToTerms || isSubmitting}
-                    className="w-full py-6 rounded-lg text-base md:text-lg font-semibold shadow-lg shadow-primary-30 hover:shadow-primary-50 transition-all"
+                    className="w-full py-6 rounded-[40px] text-base md:text-lg font-semibold shadow-lg shadow-primary-30 hover:shadow-primary-50 transition-all"
                   >
                     {isSubmitting ? "Submitting..." : "Submit"}
                   </Button>
@@ -219,4 +226,3 @@ export function ContactSection() {
     </section>
   );
 }
-

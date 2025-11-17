@@ -29,7 +29,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: Prod
         />
       </motion.div>
 
-      <div className="relative z-2 container mx-auto px-4 pt-24 pb-8">
+      <div className="relative z-2 container mx-auto px-4 pt-32 md:pt-40 pb-8">
         <div className="max-w-6xl mx-auto text-center">
           {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 leading-tight text-gradient-primary">
@@ -154,6 +154,33 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: Prod
                 priority
               />
             </motion.div>
+            <motion.div
+              className="absolute left-[12%] top-[72%] pointer-events-none z-10"
+              animate={{
+                y: [0, 20, 0],
+                opacity: [0.55, 0.95, 0.55],
+                filter: [
+                  "drop-shadow(0 0 10px rgba(19, 245, 132, 0.35))",
+                  "drop-shadow(0 0 28px rgba(19, 245, 132, 0.65))",
+                  "drop-shadow(0 0 10px rgba(19, 245, 132, 0.35))",
+                ],
+              }}
+              transition={{
+                duration: 4.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1.2,
+              }}
+            >
+              <Image
+                src="/products/elemnet4.svg"
+                alt="Decorative element"
+                width={90}
+                height={90}
+                className="w-14 h-14 md:w-[4.5rem] md:h-[4.5rem] lg:w-24 lg:h-24"
+                priority
+              />
+            </motion.div>
 
             {/* Right side decorative elements */}
             <motion.div
@@ -236,9 +263,61 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: Prod
                 priority
               />
             </motion.div>
+            <motion.div
+              className="absolute right-[12%] top-[72%] pointer-events-none z-10"
+              animate={{
+                y: [0, -18, 0],
+                opacity: [0.55, 0.9, 0.55],
+                filter: [
+                  "drop-shadow(0 0 10px rgba(19, 245, 132, 0.35))",
+                  "drop-shadow(0 0 28px rgba(19, 245, 132, 0.65))",
+                  "drop-shadow(0 0 10px rgba(19, 245, 132, 0.35))",
+                ],
+              }}
+              transition={{
+                duration: 4.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1.4,
+              }}
+            >
+              <Image
+                src="/products/element8.svg"
+                alt="Decorative element"
+                width={75}
+                height={75}
+                className="w-12 h-12 md:w-16 md:h-16 lg:w-[5.5rem] lg:h-[5.5rem]"
+                priority
+              />
+            </motion.div>
 
             {centerIcon && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-20">
+                <motion.div
+                  className="absolute w-[55%] max-w-[520px] aspect-square rounded-full bg-gradient-to-b from-emerald-400/50 via-emerald-400/20 to-transparent blur-3xl"
+                  animate={{
+                    scale: [0.95, 1.1, 0.95],
+                    opacity: [0.5, 0.35, 0.5],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+                <motion.div
+                  className="absolute w-[32%] max-w-[320px] aspect-square rounded-full bg-emerald-400/40 blur-[120px]"
+                  animate={{
+                    scale: [0.9, 1.05, 0.9],
+                    opacity: [0.6, 0.4, 0.6],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5,
+                  }}
+                />
                 <Image
                   src={centerIcon}
                   alt={centerIconAlt || "Product Icon"}

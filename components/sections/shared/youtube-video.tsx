@@ -13,7 +13,7 @@ export function YouTubeVideo({
   title = "Products That Work for You",
 }: YouTubeVideoProps) {
   return (
-    <Section containerClassName="max-w-6xl mx-auto">
+    <Section padding="sm" className="pb-20 md:pb-24" containerClassName="max-w-6xl mx-auto">
       <SectionHeader
         title={title}
         titleClassName="text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-12"

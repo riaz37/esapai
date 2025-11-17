@@ -7,7 +7,6 @@ import ReactFlow, {
   ConnectionMode,
   Handle,
   Position,
-  Controls,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { Section } from "@/components/ui/section";
@@ -353,7 +352,7 @@ export function ServiceFeatures({
   }, [displayFeatures]);
 
   return (
-    <Section>
+    <Section padding="sm">
       <SectionHeader
         title={title}
         subtitle={subtitle}
@@ -411,7 +410,8 @@ export function ServiceFeatures({
             color: rgba(19, 245, 132, 1);
           }
           .service-features-flow .react-flow__minimap,
-          .service-features-flow .react-flow__attribution {
+          .service-features-flow .react-flow__attribution,
+          .service-features-flow .react-flow__controls {
             display: none !important;
           }
         `}} />
@@ -422,9 +422,9 @@ export function ServiceFeatures({
           connectionMode={ConnectionMode.Loose}
           fitView
           fitViewOptions={{
-            padding: 0.3,
-            maxZoom: 1.5,
-            minZoom: 0.3,
+            padding: 0.2,
+            maxZoom: 0.7,
+            minZoom: 0.7,
           }}
           nodesDraggable={false}
           nodesConnectable={false}
@@ -432,12 +432,11 @@ export function ServiceFeatures({
           panOnDrag={[1, 2]}
           panOnScroll={false}
           zoomOnScroll={false}
-          zoomOnPinch={true}
+          zoomOnPinch={false}
+          zoomOnDoubleClick={false}
           preventScrolling={false}
           className="bg-transparent"
-        >
-          <Controls showInteractive={false} />
-        </ReactFlow>
+        />
       </div>
     </Section>
   );

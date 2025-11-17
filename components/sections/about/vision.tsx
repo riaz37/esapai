@@ -21,7 +21,14 @@ export function Vision() {
         {/* Robot Icon with Bot Light behind and Dot Circle below */}
         <div className="relative w-full flex flex-col items-center justify-center">
           {/* Bot Light (glow effect behind robot) */}
-          <div className="absolute -top-40 left-1/2 -translate-x-1/2 z-0">
+          <div 
+            className="absolute -top-40 left-1/2 -translate-x-1/2 z-0 overflow-hidden"
+            style={{ 
+              mixBlendMode: 'screen',
+              maskImage: 'radial-gradient(ellipse 80% 100% at 50% 50%, black 40%, transparent 100%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 80% 100% at 50% 50%, black 40%, transparent 100%)',
+            }}
+          >
             <Image
               src="/landing/vision/Bot light.svg"
               alt="Bot light glow"
@@ -29,6 +36,9 @@ export function Vision() {
               height={795}
               className="w-auto h-auto object-contain"
               priority
+              style={{ 
+                filter: 'blur(0.5px)',
+              }}
             />
           </div>
 
@@ -66,13 +76,23 @@ export function Vision() {
           </motion.div>
 
           {/* Dot Circle (at bottom of robot) */}
-          <div className="relative z-10 -mt-[280px] w-full flex items-center justify-center">
+          <div 
+            className="relative z-10 -mt-[280px] w-full flex items-center justify-center overflow-hidden"
+            style={{ 
+              mixBlendMode: 'screen',
+              maskImage: 'radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%)',
+            }}
+          >
             <Image
               src="/landing/vision/Dot circle.svg"
               alt="Radiating dots pattern"
               width={1200}
               height={800}
               className="w-full max-w-[1400px] object-contain"
+              style={{ 
+                filter: 'blur(0.5px)',
+              }}
             />
           </div>
         </div>
