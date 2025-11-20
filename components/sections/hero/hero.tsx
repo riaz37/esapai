@@ -2,32 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 
 export function Hero() {
-  const { scrollY } = useScroll();
-  
-  // Frame animation - fade out on scroll
-  const frameOpacity = useTransform(scrollY, [0, 100], [1, 0]);
-  const frameScale = useTransform(scrollY, [0, 100], [1, 0.8]);
-
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-visible pb-32 mt-0">
-      {/* Frame in top left - animated fade out on scroll */}
-      <motion.div
-        className="fixed top-0 left-0 z-20 pointer-events-none"
-        style={{ opacity: frameOpacity, scale: frameScale }}
-      >
-        <Image
-          src="/landing/frame.svg"
-          alt="Frame decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto"
-          priority
-        />
-      </motion.div>
-
       {/* Circle behind content - animated glow and breathing effect */}
       <motion.div
         className="absolute top-[48%] left-1/2 -translate-x-1/2 z-0 pointer-events-none"

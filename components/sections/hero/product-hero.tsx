@@ -15,20 +15,6 @@ interface ProductHeroProps {
 export function ProductHero({ title, subtitle, centerIcon, centerIconAlt }: ProductHeroProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
-      {/* Top light effect */}
-      <motion.div
-        className="absolute top-0 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
-      >
-        <Image
-          src="/products/Top Light.svg"
-          alt="Top light decoration"
-          width={1312}
-          height={954}
-          className="w-full max-w-[1312px] h-auto"
-          priority
-        />
-      </motion.div>
-
       <div className="relative z-2 container mx-auto px-4 pt-32 md:pt-40 pb-8">
         <div className="max-w-6xl mx-auto text-center">
           {/* Headline */}
