@@ -315,6 +315,50 @@ export function useGSAPAnimations(scope: RefObject<HTMLElement | SVGSVGElement |
   };
 
   /**
+   * Batch set initial states for multiple elements
+   * Prevents flash of unstyled content before animations
+   */
+  const setInitialStates = (
+    elements: Array<{ ref: RefObject<HTMLElement | SVGSVGElement | null>; props: gsap.TweenVars }>
+  ) => {
+    elements.forEach(({ ref, props }) => {
+      if (ref.current) {
+        gsap.set(ref.current, props);
+      }
+    });
+  };
+
+  /**
+   * Continuous rotation animation
+   */
+  const rotate = (
+    target: gsap.TweenTarget,
+    options: {
+      duration?: number;
+      ease?: string;
+      repeat?: number;
+      delay?: number;
+      rotation?: number;
+    } = {}
+  ) => {
+    const {
+      duration = 20,
+      ease = "none",
+      repeat = -1,
+      delay = 0,
+      rotation = 360,
+    } = options;
+
+    gsap.to(target, {
+      rotation,
+      duration,
+      ease,
+      repeat,
+      delay,
+    });
+  };
+
+  /**
    * Animate gradient paths with subtle variations
    */
   const animateGradientPaths = (
@@ -357,6 +401,8 @@ export function useGSAPAnimations(scope: RefObject<HTMLElement | SVGSVGElement |
     animateSVGRect,
     createTimeline,
     animateGradientPaths,
+    setInitialStates,
+    rotate,
   };
 }
 

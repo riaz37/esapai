@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import FramerBackdrop from "./framer";
+import Circle from "./circle";
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -21,97 +22,83 @@ export function Hero() {
   const anim = useGSAPAnimations(sectionRef);
 
   useGSAP(() => {
+    const tl = anim.createTimeline();
 
-    // Backdrop fade in
-    if (backdropRef.current) {
-      anim.fadeIn(backdropRef.current, {
-        duration: 0.8,
-        delay: 0,
-      });
-    }
+    // Entrance animations - GSAP reads initial states from CSS classes
+    // Using 'to' animations - GSAP automatically reads current computed styles
+    tl.to(backdropRef.current, {
+      opacity: 1,
+      duration: 0.8,
+      ease: "power2.out",
+    })
+      .to(
+        iconsRef.current,
+        {
+          opacity: 0.6,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.5"
+      )
+      .to(
+        badgeRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.4"
+      )
+      .to(
+        titleRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+        },
+        "-=0.4"
+      )
+      .to(
+        subtitleRef.current,
+        {
+          opacity: 1,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.4"
+      )
+      .to(
+        buttonRef.current,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
 
-    // Circle fade in + scale
+    // Continuous animations (start after entrance sequence completes)
     if (circleContainerRef.current) {
-      anim.fadeIn(circleContainerRef.current, {
-        duration: 0.6,
-        delay: 0.2,
-        from: { opacity: 0, scale: 0.9 },
-        to: { opacity: 0.4, scale: 1 },
-      });
+      anim.breathing(circleContainerRef.current, { delay: 0.8 });
     }
-
-    // Hexagonal icons fade in
-    if (iconsRef.current) {
-      anim.fadeIn(iconsRef.current, {
-        duration: 0.6,
-        delay: 0.3,
-        from: { opacity: 0 },
-        to: { opacity: 0.6 },
-      });
-    }
-
-    // Badge fade + slide up
-    if (badgeRef.current) {
-      anim.fadeIn(badgeRef.current, {
-        duration: 0.6,
-        delay: 0.4,
-        from: { opacity: 0, y: 20 },
-        to: { opacity: 1, y: 0 },
-      });
-    }
-
-    // Title fade + slide up
-    if (titleRef.current) {
-      anim.fadeIn(titleRef.current, {
-        duration: 0.7,
-        delay: 0.6,
-        from: { opacity: 0, y: 30 },
-        to: { opacity: 1, y: 0 },
-      });
-    }
-
-    // Subtitle fade in
-    if (subtitleRef.current) {
-      anim.fadeIn(subtitleRef.current, {
-        duration: 0.6,
-        delay: 0.8,
-      });
-    }
-
-    // Button fade + scale
-    if (buttonRef.current) {
-      anim.fadeIn(buttonRef.current, {
-        duration: 0.5,
-        delay: 1.0,
-        from: { opacity: 0, scale: 0.9 },
-        to: { opacity: 1, scale: 1 },
-      });
-    }
-
-    // Continuous animations (start after entrance)
-    if (circleContainerRef.current) {
-      anim.breathing(circleContainerRef.current, {
-        delay: 0.8,
-      });
-    }
-
     if (circleGlowRef.current) {
-      anim.glow(circleGlowRef.current, {
-        delay: 0.8,
-      });
+      anim.glow(circleGlowRef.current, { delay: 0.8 });
     }
-
     if (iconsRef.current) {
-      anim.float(iconsRef.current, {
-        delay: 0.8,
-      });
+      anim.float(iconsRef.current, { delay: 0.8 });
     }
   }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pb-32 mt-0">
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        <div ref={backdropRef} className="absolute inset-0">
+        <div
+          ref={backdropRef}
+          className="absolute inset-0 gsap-fade-in"
+        >
           <FramerBackdrop className="w-[120%] max-w-none min-h-full translate-x-[-10%] translate-y-[-5%]" />
         </div>
         <div className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background/80" />
@@ -123,13 +110,9 @@ export function Hero() {
         className="absolute top-[48%] left-1/2 -translate-x-1/2 z-0 pointer-events-none"
       >
         <div ref={circleGlowRef} className="relative">
-          <Image
-            src="/landing/circle.svg"
-            alt="Circle decoration"
-            width={450}
-            height={456}
-            className="max-w-[450px] w-auto h-auto opacity-80"
-            priority
+          <Circle
+            className="max-w-[450px] w-auto h-auto"
+            style={{ width: "450px", height: "auto" }}
           />
         </div>
       </div>
@@ -137,7 +120,7 @@ export function Hero() {
       {/* Hexagonal Icons (box.svg) - floating with glow */}
       <div
         ref={iconsRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-5 pointer-events-none hidden lg:block"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-5 pointer-events-none hidden lg:block gsap-fade-in"
       >
         <Image
           src="/landing/box.svg"
@@ -152,7 +135,10 @@ export function Hero() {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-16 flex flex-col items-center text-center">
         {/* Tagline Badge */}
-        <div ref={badgeRef} className="hero-badge max-w-5xl">
+        <div
+          ref={badgeRef}
+          className="hero-badge max-w-5xl gsap-slide-up"
+        >
           <div className="hero-badge-exclusive">
             <span className="hero-badge-exclusive-text">Exclusive</span>
           </div>
@@ -167,7 +153,7 @@ export function Hero() {
         <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 overflow-hidden">
           <h1
             ref={titleRef}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight w-full"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight w-full gsap-slide-up-lg"
           >
             <span className="block text-white">AI-Powered Solutions</span>
             <span className="block text-gradient-primary mt-2">
@@ -179,7 +165,7 @@ export function Hero() {
         {/* Subtitle/Description */}
         <div
           ref={subtitleRef}
-          className="mb-10 space-y-2 text-lg md:text-xl text-light-gray-90 max-w-3xl mx-auto"
+          className="mb-10 space-y-2 text-lg md:text-xl text-light-gray-90 max-w-3xl mx-auto gsap-fade-in"
         >
           <p>
             Transform your business with intelligent automation, voice-activated
@@ -189,7 +175,10 @@ export function Hero() {
         </div>
 
         {/* CTA Button */}
-        <div ref={buttonRef}>
+        <div
+          ref={buttonRef}
+          className="gsap-fade-scale-in"
+        >
           <Button
             variant="primary"
             className="text-base md:text-lg px-8 py-6 rounded-[40px] font-semibold shadow-lg shadow-primary-30 hover:shadow-primary-50 transition-all"

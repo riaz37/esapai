@@ -16,27 +16,29 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
   useGSAP(() => {
     if (!svgRef.current) return;
 
-    // Animate main group opacity
-    if (mainGroupRef.current) {
-      anim.fadeIn(mainGroupRef.current, {
-        duration: 1.5,
-        from: { opacity: 0 },
-        to: { opacity: 0.8 },
-      });
-    }
+    const tl = anim.createTimeline();
 
-    // Animate paths with staggered fade-in
+    // Entrance animations - main group fades in
+    // Initial state set via CSS class on the SVG element
+    tl.to(mainGroupRef.current, {
+      opacity: 0.8,
+      duration: 1.5,
+      ease: "power2.out",
+    });
+
+    // Staggered paths fade-in (runs in parallel with main group)
     if (pathsGroupRef.current) {
       const paths = pathsGroupRef.current.querySelectorAll("path");
       anim.staggerFadeIn(paths, {
         duration: 1.2,
         stagger: 0.03,
+        delay: 0.3,
         from: { opacity: 0, scale: 0.95 },
         to: { opacity: 1, scale: 1 },
       });
     }
 
-    // Animate circle 1
+    // Continuous animations (start after entrance)
     if (circle1Ref.current) {
       anim.animateSVGCircle(circle1Ref.current, {
         r: { from: 300, to: 350 },
@@ -48,7 +50,6 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
       });
     }
 
-    // Animate circle 2
     if (circle2Ref.current) {
       anim.animateSVGCircle(circle2Ref.current, {
         r: { from: 200, to: 250 },
@@ -60,7 +61,6 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
       });
     }
 
-    // Animate sweep rect
     if (sweepRectRef.current) {
       anim.animateSVGRect(sweepRectRef.current, {
         x: { from: -320, to: 120 },
@@ -69,7 +69,6 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
       });
     }
 
-    // Add subtle continuous animations to gradient paths
     if (pathsGroupRef.current) {
       const gradientPaths = pathsGroupRef.current.querySelectorAll("path");
       anim.animateGradientPaths(gradientPaths, {
@@ -91,7 +90,7 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-    <g ref={mainGroupRef} opacity={0.8} clipPath="url(#clip0_34_55175)">
+    <g ref={mainGroupRef} className="gsap-fade-in" clipPath="url(#clip0_34_55175)">
       <g filter="url(#filter0_f_34_55175)">
         <mask
           id="mask0_34_55175"
