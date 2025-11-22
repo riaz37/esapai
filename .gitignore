@@ -25,7 +25,7 @@
 *.pem
 
 # IDE/editor
-.cursor
+/.cursor/
 .vscode
 
 # debug

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 
 const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
@@ -14,19 +15,17 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
   const anim = useGSAPAnimations(svgRef);
 
   useGSAP(() => {
-    if (!svgRef.current) return;
-
     const tl = anim.createTimeline();
 
     // Entrance animations - main group fades in
-    // Initial state set via CSS class on the SVG element
+    // GSAP handles null refs gracefully, so no need for checks
     tl.to(mainGroupRef.current, {
       opacity: 0.8,
       duration: 1.5,
       ease: "power2.out",
     });
 
-    // Staggered paths fade-in (runs in parallel with main group)
+    // Staggered paths fade-in
     if (pathsGroupRef.current) {
       const paths = pathsGroupRef.current.querySelectorAll("path");
       anim.staggerFadeIn(paths, {
@@ -38,44 +37,84 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => {
       });
     }
 
-    // Continuous animations (start after entrance)
+    // Continuous floating animation - smooth, organic floating effect
+    const floatDelay = 1.5;
+    
+    gsap.to(mainGroupRef.current, {
+      y: -8,
+      x: 10,
+      duration: 5,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      delay: floatDelay,
+    });
+    
+    gsap.to(mainGroupRef.current, {
+      rotation: 1,
+      duration: 6,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      delay: floatDelay,
+    });
+    
+    gsap.to(mainGroupRef.current, {
+      scale: 1.01,
+      duration: 4.5,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      delay: floatDelay,
+    });
+
+    // Continuous looping animations - always active and lively
     if (circle1Ref.current) {
       anim.animateSVGCircle(circle1Ref.current, {
-        r: { from: 300, to: 350 },
-        cx: { from: 340, to: 400 },
-        cy: { from: 120, to: 70 },
-        opacity: { from: 0.45, to: 0.7 },
-        rotation: { from: -6, to: 4, origin: "360px 110px" },
-        duration: 4.5,
+        r: { from: 300, to: 380 },
+        cx: { from: 320, to: 420 },
+        cy: { from: 100, to: 80 },
+        opacity: { from: 0.4, to: 0.75 },
+        rotation: { from: -8, to: 6, origin: "360px 110px" },
+        duration: 3.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
       });
     }
 
     if (circle2Ref.current) {
       anim.animateSVGCircle(circle2Ref.current, {
-        r: { from: 200, to: 250 },
-        cx: { from: 500, to: 550 },
-        cy: { from: 240, to: 180 },
-        opacity: { from: 0.35, to: 0.55 },
-        rotation: { from: 3, to: -5, origin: "520px 220px" },
-        duration: 3.25,
+        r: { from: 200, to: 270 },
+        cx: { from: 480, to: 570 },
+        cy: { from: 220, to: 160 },
+        opacity: { from: 0.3, to: 0.6 },
+        rotation: { from: 5, to: -7, origin: "520px 220px" },
+        duration: 2.8,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
       });
     }
 
     if (sweepRectRef.current) {
       anim.animateSVGRect(sweepRectRef.current, {
-        x: { from: -320, to: 120 },
-        opacity: { from: 0.15, to: 0.35 },
-        duration: 8,
+        x: { from: -400, to: 200 },
+        opacity: { from: 0.1, to: 0.4 },
+        duration: 6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
       });
     }
 
     if (pathsGroupRef.current) {
       const gradientPaths = pathsGroupRef.current.querySelectorAll("path");
       anim.animateGradientPaths(gradientPaths, {
-        count: 15,
-        opacityRange: [0.8, 1.0],
-        durationRange: [2, 4],
-        stagger: 0.15,
+        count: 20,
+        opacityRange: [0.7, 1.0],
+        durationRange: [1.5, 3.5],
+        stagger: 0.1,
       });
     }
   }, { scope: svgRef });
