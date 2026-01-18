@@ -1,0 +1,121 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Product } from "@/types/product";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+import { ProductSyncedWireframe } from "@/components/features/home/sections/product-synced-wireframe";
+
+interface ProductCardProps {
+    product: Product;
+    index: number;
+    videoRef?: (el: HTMLVideoElement | null) => void;
+    className?: string;
+}
+
+export function ProductCard({ product, index, videoRef, className }: ProductCardProps) {
+    const iconSrc = product.icon ?? product.content?.hero?.centerIcon;
+    const iconAlt = product.content?.hero?.centerIconAlt ?? `${product.name} icon`;
+
+    return (
+        <Card className={cn(
+            "h-full overflow-hidden transition-all duration-500 hover:scale-[1.01] group relative",
+            className
+        )}>
+            {/* Wireframe Background Decoration */}
+            <ProductSyncedWireframe className="z-0 opacity-60" />
+
+            {/* Cinematic Sheen Effect */}
+            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine pointer-events-none" />
+
+            <div className="relative h-full flex flex-col md:flex-row items-center p-8 md:p-12 gap-12 z-10">
+
+                {/* Left Side: Content */}
+                <div className="flex-1 text-left space-y-8 z-10">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-6">
+                            {iconSrc && (
+                                <div className="relative w-16 h-16 flex items-center justify-center">
+                                    <Image
+                                        src={iconSrc}
+                                        alt={iconAlt}
+                                        width={64}
+                                        height={64}
+                                        className="object-contain"
+                                    />
+                                </div>
+                            )}
+                            <span className="text-base text-muted-foreground/40 tracking-[0.2em] uppercase pt-2">
+                                / Product_{index.toString().padStart(3, "0")}
+                            </span>
+                        </div>
+                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+                            {product.name}
+                        </h3>
+                    </div>
+
+                    <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed max-w-lg">
+                        {product.description}
+                    </p>
+
+                    <Link href={`/product/${product.slug}`} className="inline-block mt-8">
+                        <Button variant="primary" size="lg" className="rounded-full px-8 text-base font-bold">
+                            Explore
+                        </Button>
+                    </Link>
+                </div>
+
+                {/* Right Side: Media (Video or Placeholder) */}
+                <div className="flex-1 relative w-full h-full flex items-center justify-center">
+                    <div className="relative w-[90%] aspect-video bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
+                        {product.content?.hero?.demoVideo ? (
+                            <div className="relative w-full h-full">
+                                <video
+                                    ref={videoRef}
+                                    src={product.content.hero.demoVideo}
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                />
+                                {/* Overlay for cinematic feel */}
+                                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent pointer-events-none" />
+                            </div>
+                        ) : (
+                            // Fallback UI
+                            <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                                <div className="flex justify-between items-start opacity-40">
+                                    <div className="flex gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                                        <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                    </div>
+                                    <div className="h-4 w-24 bg-white/10 rounded-full"></div>
+                                </div>
+
+                                <div className="flex-1 flex items-center justify-center">
+                                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-xl border border-white/20">
+                                        <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent translate-x-1"></div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 opacity-30">
+                                    <div className="h-2 w-full bg-white/10 rounded-full"></div>
+                                    <div className="h-2 w-2/3 bg-white/10 rounded-full"></div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+            </div>
+        </Card>
+    );
+}

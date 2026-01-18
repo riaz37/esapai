@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 import {
   motion,
   AnimatePresence,
@@ -102,7 +104,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         damping: 50,
       }}
       style={{
-        minWidth: "800px",
+        minWidth: "950px",
       }}
       className={cn(
         "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
@@ -258,42 +260,41 @@ export const NavbarLogo = () => {
   );
 };
 
+
+
 export const NavbarButton = ({
   href,
-  as: Tag = "a",
   children,
   className,
   variant = "primary",
+  onClick,
   ...props
 }: {
   href?: string;
-  as?: any;
   children: React.ReactNode;
   className?: string;
-  variant?: "primary" | "secondary" | "dark" | "gradient";
-} & (
-    | React.ComponentPropsWithoutRef<"a">
-    | React.ComponentPropsWithoutRef<"button">
-  )) => {
-  const baseStyles =
-    "px-4 py-2 text-base font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
-
-  const variantStyles = {
-    primary:
-      "bg-gradient-to-b from-[#13F584] to-[#0eb561] text-[var(--color-primary-dark)] rounded-[40px] border-t border-white/30 shadow-[0_0_25px_rgba(19,245,132,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(19,245,132,0.6),0_0_15px_rgba(19,245,132,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300",
-    secondary: "bg-transparent shadow-none dark:text-white",
-    dark: "bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-    gradient:
-      "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
-  };
+  variant?: "primary";
+  onClick?: () => void;
+  [key: string]: any;
+}) => {
+  if (href) {
+    return (
+      <Button variant={variant} className={className} asChild {...props}>
+        <Link href={href} onClick={onClick}>
+          <span>{children}</span>
+          {variant === "primary" && (
+            <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover:scale-110 group-hover:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ml-2">
+              <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
+            </div>
+          )}
+        </Link>
+      </Button>
+    );
+  }
 
   return (
-    <Tag
-      href={href || undefined}
-      className={cn(baseStyles, variantStyles[variant], className)}
-      {...props}
-    >
+    <Button variant={variant} className={className} onClick={onClick} {...props}>
       {children}
-    </Tag>
+    </Button>
   );
 };

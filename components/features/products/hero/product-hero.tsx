@@ -110,9 +110,8 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                 size="lg"
                 asChild
               >
-                <Link href="#explore" className="flex items-center gap-2">
+                <Link href="#explore">
                   Explore Solution
-                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
               <Button

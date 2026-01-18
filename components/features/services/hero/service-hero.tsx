@@ -146,9 +146,8 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
                 size="lg"
                 asChild
               >
-                <Link href="#solutions" className="flex items-center gap-2">
+                <Link href="#solutions">
                   Get Started
-                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
               <Button

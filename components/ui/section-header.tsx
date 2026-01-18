@@ -150,7 +150,7 @@ export function SectionHeader({
         <p
           ref={subtitleRef}
           className={cn(
-            "mt-5 sm:mt-7 text-base sm:text-lg md:text-xl lg:text-xl text-premium-body leading-relaxed max-w-3xl tracking-tight",
+            "mt-5 sm:mt-7 text-base sm:text-lg md:text-xl lg:text-xl text-gray-400 leading-relaxed max-w-3xl tracking-tight",
             mxClass,
             subtitleClassName
           )}

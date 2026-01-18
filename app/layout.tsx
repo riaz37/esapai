@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google"; // Changed font
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/features/navigation/navbar";
 import { Footer } from "@/components/features/navigation/footer";
@@ -14,12 +14,12 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { generateHomeMetadata } from "@/lib/seo/metadata";
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
-import { BackgroundLayout } from "@/components/ui/background/background-layout";
 
-const jakarta = Plus_Jakarta_Sans({
-  weight: ["300", "400", "500", "600", "700", "800"],
+// Inter font - similar to SF Pro, from Google Fonts
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -48,9 +48,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${jakarta.variable} font-jakarta antialiased flex flex-col min-h-screen`}
+        className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
-        <BackgroundLayout />
         <StructuredDataComponent data={structuredData} />
         <ToastProvider>
           <CookieConsentProvider>

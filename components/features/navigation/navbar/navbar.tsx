@@ -42,7 +42,7 @@ function NavLinkItem({
   return (
     <Link
       href={href}
-      className={`nav-link-group relative group whitespace-nowrap cursor-pointer px-4 py-2 text-base font-medium transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
+      className={`nav-link-group relative group whitespace-nowrap cursor-pointer px-4 py-2 text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
         } ${className}`}
       onClick={onClick}
     >
@@ -66,7 +66,7 @@ function NavDropdownTrigger({
   return (
     <button
       onClick={onClick}
-      className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-4 py-2 text-base font-medium transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
+      className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-4 py-2 text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
         }`}
       aria-expanded={isOpen}
     >
@@ -244,7 +244,7 @@ export function Navbar() {
               className={`nav-link-group relative group px-4 py-3 rounded-lg transition-all duration-300 ${isActive("/") ? "bg-zinc-100 dark:bg-zinc-800 text-[var(--color-primary)]" : "text-zinc-600 dark:text-zinc-400"
                 }`}
             >
-              <span className="relative z-10 text-base font-medium">Home</span>
+              <span className="relative z-10 text-base font-semibold">Home</span>
             </Link>
 
             <MobileAccordion
@@ -281,7 +281,7 @@ export function Navbar() {
               className={`nav-link-group relative group px-4 py-3 rounded-lg transition-all duration-300 ${isActive("/about") ? "bg-zinc-100 dark:bg-zinc-800 text-[var(--color-primary)]" : "text-zinc-600 dark:text-zinc-400"
                 }`}
             >
-              <span className="relative z-10 text-base font-medium">About Us</span>
+              <span className="relative z-10 text-base font-semibold">About Us</span>
             </Link>
 
             <Link
@@ -290,7 +290,7 @@ export function Navbar() {
               className={`nav-link-group relative group px-4 py-3 rounded-lg transition-all duration-300 ${isActive("/case-study") ? "bg-zinc-100 dark:bg-zinc-800 text-[var(--color-primary)]" : "text-zinc-600 dark:text-zinc-400"
                 }`}
             >
-              <span className="relative z-10 text-base font-medium">Case Study</span>
+              <span className="relative z-10 text-base font-semibold">Case Study</span>
             </Link>
 
             <NavbarButton
