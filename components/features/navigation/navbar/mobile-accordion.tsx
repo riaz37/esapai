@@ -30,26 +30,23 @@ export function MobileAccordion({
       <button
         type="button"
         onClick={onToggle}
-        className={`nav-link-group relative group w-full px-4 py-3 rounded-lg transition-all duration-300 flex items-center justify-between ${
-          isSectionActive ? "is-active text-primary" : "text-light-gray hover:text-primary"
-        }`}
+        className={`nav-link-group relative group w-full px-4 py-3 rounded-lg transition-all duration-300 flex items-center justify-between ${isSectionActive ? "is-active text-primary" : "text-light-gray hover:text-primary"
+          }`}
         aria-expanded={isOpen}
         aria-controls={id}
       >
         <span className="nav-glow" aria-hidden="true" />
-        <span className="relative z-10 text-lg font-medium">{title}</span>
+        <span className="relative z-10 text-lg font-semibold">{title}</span>
         <ChevronDown
-          className={`relative z-10 size-5 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`relative z-10 size-5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 
       <div
         id={id}
-        className={`grid transition-[grid-template-rows,opacity] duration-300 ${
-          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
+        className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          }`}
       >
         <div className="overflow-hidden">
           <div className="mt-2 ml-5 border-l border-white-opacity-20 pl-3">

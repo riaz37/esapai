@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LazySection } from "@/components/ui/lazy-section";
+import { SectionMask } from "@/components/ui/section-mask";
 import { Hero } from "@/components/features/home/hero";
 import { generateHomeMetadata } from "@/lib/seo/metadata";
 import dynamic from "next/dynamic";
@@ -19,6 +20,7 @@ const VisionSection = dynamic(
 const ServiceSection = dynamic(
   () => import("@/components/features/home/sections/service").then((mod) => ({ default: mod.Service })),
 );
+
 
 const ProductShowcaseSection = dynamic(
   () => import("@/components/features/home/sections/product-showcase").then((mod) => ({ default: mod.ProductShowcase })),
@@ -40,24 +42,17 @@ export default function Home() {
   return (
     <main className="relative">
 
-
-
-
-
-      <Hero />
+      <SectionMask fadeTop={false}>
+        <Hero />
+      </SectionMask>
 
       {/* Trusted Partners Ticker */}
       <TrustedPartnersSection />
-
-      {/* Process Visualization */}
-
-
 
       {/* Below-the-fold sections load progressively as user scrolls */}
       <LazySection minHeight="600px">
         <MissionSection />
       </LazySection>
-
 
       <LazySection minHeight="600px">
         <VisionSection />
@@ -76,7 +71,9 @@ export default function Home() {
       </LazySection>
 
       <LazySection minHeight="600px">
-        <CTASection />
+        <SectionMask>
+          <CTASection />
+        </SectionMask>
       </LazySection>
     </main>
   );

@@ -5,16 +5,16 @@ import type { MissionCard as MissionCardType } from "@/types/product";
 import type { MissionProps } from "@/types/props";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import { MissionCard } from "@/components/ui/mission-card";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RotatingEarth from "@/components/globe/wireframe-globe";
-import { NeuralBackground as NeuralCanvas } from "@/components/ui/background/neural-canvas";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
 import { Mic2, Rocket, Layers, Activity } from "lucide-react";
+import { MissionCard } from "@/components/ui/mission-card";
 
 const defaultTitle = "Our Core Mission";
 const defaultSubtitle =
@@ -24,25 +24,19 @@ const defaultCards: MissionCardType[] = [
     title: "Democratizing Intelligence",
     description: "Making advanced AI intuitive and accessible through voice-first innovation.",
     icon: Mic2,
-    image: "/bentogird/agenticai.svg",
+    image: "/landing/m1.svg",
   },
   {
     title: "Accelerating Innovation",
     description: "Deploying autonomous agents to eliminate friction and accelerate business growth.",
     icon: Rocket,
-    image: "/bentogird/aisolution.svg",
+    image: "/landing/m2.svg",
   },
   {
     title: "Unified Ecosystems",
     description: "Connecting legacy systems with future AI for seamless organizational evolution.",
     icon: Layers,
-    image: "/bentogird/enterprise.svg",
-  },
-  {
-    title: "Enterprise Security",
-    description: "Bank-grade security protocols ensuring your data remains protected and compliant.",
-    icon: Activity,
-    image: "/bentogird/industry.svg",
+    image: "/landing/m3.svg",
   },
 ];
 
@@ -58,51 +52,81 @@ export function Mission({
     () => {
       if (!sectionRef.current || !trackRef.current) return;
 
-      const viewportWidth = window.innerWidth;
+      const cardsElements = trackRef.current.children;
 
-      // Glide in from right and settle in the natural position (centered by CSS)
-      gsap.fromTo(trackRef.current,
+      // Clear any previous props to ensure clean state on refresh
+      gsap.set(cardsElements, { clearProps: "all" });
+
+      gsap.set(trackRef.current, { perspective: 2000 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=300%",
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Cinematic 3D Fly-In
+      tl.fromTo(
+        cardsElements,
         {
-          x: viewportWidth, // Start from off-screen right
+          x: "130%", // Distinct off-screen start
+          rotationY: -45, // Angled away
+          rotationX: 10,  // Slight tilt
+          scale: 0.6,     // Depth effect
+          z: -500,
+          autoAlpha: 0,
+          filter: "blur(10px)",
+          transformOrigin: "50% 50%",
         },
         {
-          x: 0, // Settle at natural position
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "+=250%", // Good balance of duration
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
+          x: 0,
+          rotationY: 0,
+          rotationX: 0,
+          scale: 1,
+          z: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          stagger: 1,
+          ease: "back.out(1.2)", // "Sit" physics
         }
       );
 
-      // Smooth Header Reveal
-      const header = sectionRef.current.querySelector('[data-testid="section-header"]');
-      if (header) {
-        gsap.fromTo(header,
-          {
-            opacity: 0,
-            y: 30,
-            filter: "blur(8px)"
+      // Smooth Header Reveal (Independent of the pinned timeline or parallel? 
+      // Plan didn't specify, but keeping it ensures the header is visible. 
+      // Let's attach it to the main scroll trigger or keep it separate.
+      // Keeping it separate but coordinating start points is usually safer for complex layouts,
+      // but here we are pinning the section. If we pin, the header needs to be visible.
+      // Let's assume the header should be visible or animate in *before* the pin logic aggressively takes over?
+      // Actually, if we pin "top top", the header is at top.
+      // Let's animate the header immediately as the section hits the view, or part of the timeline.
+
+      gsap.fromTo(
+        '[data-testid="section-header"]',
+        {
+          opacity: 0,
+          y: 30,
+          filter: "blur(8px)",
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%", // Start animating header before locking
+            toggleActions: "play none none reverse",
           },
-          {
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 85%",
-              end: "top 60%",
-              scrub: 1,
-            },
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            ease: "power3.out",
-          }
-        );
-      }
+        }
+      );
     },
     { scope: sectionRef, dependencies: [cards] }
   );
@@ -110,7 +134,7 @@ export function Mission({
   return (
     <Section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col pt-24 overflow-hidden z-20 bg-[#020305]"
+      className="relative min-h-screen flex flex-col pt-24 overflow-hidden z-20 bg-transparent"
       style={{
         maskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
         WebkitMaskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)"
@@ -131,7 +155,7 @@ export function Mission({
           {cards.map((card, index) => (
             <div
               key={index}
-              className="w-[260px] sm:w-[300px] md:w-[340px] h-[320px] sm:h-[380px] md:h-[420px] flex-shrink-0"
+              className="w-[280px] sm:w-[320px] md:w-[360px] h-[380px] sm:h-[420px] md:h-[460px] flex-shrink-0"
             >
               <MissionCard
                 title={card.title}
@@ -145,12 +169,7 @@ export function Mission({
         </div>
       </div>
 
-      {/* Background Ambience */}
-      <NeuralCanvas className="absolute inset-0 z-0" />
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2" />
-        <div className="absolute top-1/2 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2" />
-      </div>
+
     </Section>
   );
 }

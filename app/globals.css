@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -18,11 +19,10 @@
     --color-white: rgba(255, 255, 255, 1);
     --color-black: rgba(0, 0, 0, 1);
 
-    --color-dark: #020305;
-    /* Deep Cyber Black */
-    --color-bg-deep: #020305;
-    --color-cyber-grid: rgba(19, 245, 132, 0.03);
-    /* Updated background color */
+    /* Background - Deep Green Gradient Theme */
+    --color-dark: #030d08;
+    --color-bg-deep: #020805;
+    --color-cyber-grid: rgba(19, 245, 132, 0.05);
     --color-light-gray: rgba(245, 245, 245, 1);
     --color-light-gray-90: rgba(245, 245, 245, 0.9);
     --color-white-opacity-10: rgba(255, 255, 255, 0.1);
@@ -49,11 +49,36 @@
   }
 
   body {
-    background-color: var(--color-bg-deep);
-    /* Fallback */
+    background: radial-gradient(ellipse 120% 80% at 50% 0%, #0a2818 0%, #051a0f 30%, #020a06 60%, #010503 100%);
+    background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
-    /* Ensure context for absolute children */
+    font-family: var(--font-sans);
+    font-size: 18.24px;
+    line-height: 1.6;
+    color: var(--color-white);
+  }
+
+  /* Typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 96px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 18.24px;
+    font-weight: 600;
   }
 
   ::selection {
@@ -85,7 +110,6 @@
   html {
     color-scheme: dark;
     scroll-behavior: smooth;
-    font-family: var(--font-jakarta), sans-serif;
   }
 }
 
@@ -234,6 +258,10 @@
     100% {
       background-position: 200% center;
     }
+  }
+
+  .animate-shine {
+    animation: sheen 2s infinite linear;
   }
 
   .text-shimmer {
@@ -523,40 +551,6 @@
       inset 0 0 24px rgba(19, 245, 132, 0.12);
   }
 
-  /* Product Card */
-  .product-card {
-    position: relative;
-    background: linear-gradient(0deg,
-        rgba(255, 255, 255, 0.03),
-        rgba(255, 255, 255, 0.03)),
-      linear-gradient(246.02deg,
-        rgba(19, 245, 132, 0) 91.9%,
-        rgba(19, 245, 132, 0.2) 114.38%),
-      linear-gradient(59.16deg,
-        rgba(19, 245, 132, 0) 71.78%,
-        rgba(19, 245, 132, 0.2) 124.92%);
-    border-radius: 32px;
-
-  }
-
-  .product-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 32px;
-    padding: 1.5px;
-    background: linear-gradient(158.39deg,
-        rgba(255, 255, 255, 0.06) 14.19%,
-        rgba(255, 255, 255, 1.5e-5) 50.59%,
-        rgba(255, 255, 255, 1.5e-5) 68.79%,
-        rgba(255, 255, 255, 0.015) 105.18%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-  }
 
   /* Product Dropdown Menu */
   .product-dropdown {
@@ -1173,34 +1167,4 @@
   .duration-400 {
     transition-duration: 400ms;
   }
-
-
-  /* Green Grid Pattern (User Requested) */
-  .bg-grid-green {
-    background-size: 40px 40px;
-    background-image: linear-gradient(to right, rgba(19, 245, 132, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(19, 245, 132, 0.05) 1px, transparent 1px);
-  }
-
-  .bg-grid-green-strong {
-    background-size: 40px 40px;
-    background-image: linear-gradient(to right, rgba(19, 245, 132, 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(19, 245, 132, 0.08) 1px, transparent 1px);
-  }
-
-  /* Animated Grid Movement */
-  @keyframes grid-move {
-    0% {
-      background-position: 0 0;
-    }
-
-    100% {
-      background-position: 40px 40px;
-    }
-  }
-
-  .animate-grid-slow {
-    animation: grid-move 20s linear infinite;
-  }
-
 }

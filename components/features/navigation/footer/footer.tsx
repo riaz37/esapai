@@ -2,11 +2,20 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useInView } from "motion/react";
-import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { SyncedWireframe } from "./synced-wireframe";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const socialIcons = [
   {
@@ -34,272 +43,280 @@ const socialIcons = [
 
 const navigationLinks = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Case Study", href: "/case-study" },
-  { label: "Contact", href: "/contact" },
+  { label: "Products", href: "/products" },
+  { label: "Service", href: "/services" },
+  { label: "About us", href: "/about" },
+  { label: "Contact us", href: "/contact" },
 ];
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLAnchorElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const navSectionRef = useRef<HTMLDivElement>(null);
-  const navLinksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const socialSectionRef = useRef<HTMLDivElement>(null);
-  const socialIconsRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const bottomBarRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+  const horizonGlowRef = useRef<HTMLDivElement>(null);
+  const pulseRippleRef = useRef<HTMLDivElement>(null);
 
-  const isInView = useInView(footerRef, { once: true, margin: "-100px" });
+  // Individual card refs for synchronization
+  const card1Ref = useRef<HTMLDivElement>(null);
+  const card2Ref = useRef<HTMLDivElement>(null);
+  const card3Ref = useRef<HTMLDivElement>(null);
 
-  // GSAP Entrance Animations
+  const [animationComplete, setAnimationComplete] = useState(false);
+  const isInView = useInView(footerRef, { once: true, margin: "-50px" });
+
   useGSAP(() => {
-    if (!isInView || prefersReducedMotion()) {
-      // Set initial state for reduced motion
-      if (logoRef.current) gsap.set(logoRef.current, { opacity: 1 });
-      if (descriptionRef.current) gsap.set(descriptionRef.current, { opacity: 1 });
-      navLinksRefs.current.forEach((link) => {
-        if (link) gsap.set(link, { opacity: 1 });
+    if (!isInView || !footerRef.current) return;
+
+    const cards = [card1Ref.current, card2Ref.current, card3Ref.current].filter(Boolean);
+    const horizonGlow = horizonGlowRef.current;
+    const pulseRipple = pulseRippleRef.current;
+
+    // Set initial states
+    gsap.set(cards, {
+      y: 120,
+      opacity: 0,
+      scale: 0.92,
+      filter: "blur(8px)",
+      rotationX: 8,
+    });
+
+    gsap.set(horizonGlow, {
+      scaleY: 0,
+      opacity: 0,
+    });
+
+    gsap.set(pulseRipple, {
+      scale: 0,
+      opacity: 0,
+    });
+
+    // Main cinematic timeline
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      onComplete: () => setAnimationComplete(true),
+    });
+
+    // Phase 1: Horizon Glow Bloom
+    tl.to(horizonGlow, {
+      scaleY: 1,
+      opacity: 1,
+      duration: 0.8,
+      ease: "power2.out",
+    });
+
+    // Phase 2: Left column cards rise with parallax stagger
+    tl.to(card1Ref.current, {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      rotationX: 0,
+      duration: 1,
+      ease: "power3.out",
+    }, "-=0.4");
+
+    tl.to(card2Ref.current, {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      rotationX: 0,
+      duration: 1,
+      ease: "power3.out",
+    }, "-=0.7");
+
+    // Phase 3: Right column card rises with slight delay
+    tl.to(card3Ref.current, {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      rotationX: 0,
+      duration: 1.1,
+      ease: "power3.out",
+    }, "-=0.6");
+
+    // Phase 4: Holographic flicker effect on cards
+    tl.add(() => {
+      cards.forEach((card, index) => {
+        if (!card) return;
+
+        // Create brief holographic flicker
+        gsap.timeline()
+          .to(card, {
+            filter: "brightness(1.3) hue-rotate(15deg)",
+            duration: 0.08,
+            delay: index * 0.1,
+          })
+          .to(card, {
+            filter: "brightness(0.9) hue-rotate(-10deg)",
+            duration: 0.06,
+          })
+          .to(card, {
+            filter: "brightness(1.1) hue-rotate(5deg)",
+            duration: 0.05,
+          })
+          .to(card, {
+            filter: "brightness(1) hue-rotate(0deg)",
+            duration: 0.1,
+          });
       });
-      socialIconsRefs.current.forEach((icon) => {
-        if (icon) gsap.set(icon, { opacity: 1 });
-      });
-      if (bottomBarRef.current) gsap.set(bottomBarRef.current, { opacity: 1 });
-      return;
-    }
+    }, "-=0.3");
 
-    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    // Phase 5: Energy pulse ripple on completion
+    tl.to(pulseRipple, {
+      scale: 3,
+      opacity: 0.6,
+      duration: 0.5,
+      ease: "power2.out",
+    }, "-=0.2");
 
-    // Logo section - fade + slide up
-    if (logoRef.current) {
-      gsap.set(logoRef.current, { opacity: 0, y: 20 });
-      tl.to(logoRef.current, { opacity: 1, y: 0, duration: 0.6 }, 0);
-    }
+    tl.to(pulseRipple, {
+      scale: 5,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.out",
+    });
 
-    // Description - fade in
-    if (descriptionRef.current) {
-      gsap.set(descriptionRef.current, { opacity: 0 });
-      tl.to(descriptionRef.current, { opacity: 1, duration: 0.6 }, 0.1);
-    }
+    // Phase 6: Dim horizon glow to subtle state
+    tl.to(horizonGlow, {
+      opacity: 0.4,
+      duration: 1,
+      ease: "sine.out",
+    }, "-=1");
 
-    // Navigation section - staggered links
-    if (navSectionRef.current) {
-      const links = navLinksRefs.current.filter(Boolean);
-      links.forEach((link) => {
-        if (link) gsap.set(link, { opacity: 0, x: -10 });
-      });
-      tl.to(links, {
-        opacity: 1,
-        x: 0,
-        duration: 0.5,
-        stagger: 0.05,
-      }, 0.2);
-    }
-
-    // Social section - staggered icons
-    if (socialSectionRef.current) {
-      const icons = socialIconsRefs.current.filter(Boolean);
-      icons.forEach((icon) => {
-        if (icon) gsap.set(icon, { opacity: 0, scale: 0.8 });
-      });
-      tl.to(icons, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        stagger: 0.08,
-      }, 0.4);
-    }
-
-    // Bottom bar - fade in last
-    if (bottomBarRef.current) {
-      gsap.set(bottomBarRef.current, { opacity: 0 });
-      tl.to(bottomBarRef.current, { opacity: 1, duration: 0.6 }, 0.6);
-    }
   }, { scope: footerRef, dependencies: [isInView] });
 
-  // Hover effect for navigation links - animated underline
-  const handleLinkHover = (index: number, isEntering: boolean) => {
-    if (prefersReducedMotion()) return;
-
-    const link = navLinksRefs.current[index];
-    if (!link) return;
-
-    if (isEntering) {
-      gsap.to(link, {
-        color: "#13F584",
-        duration: 0.2,
-        ease: "power2.out",
-      });
-    } else {
-      gsap.to(link, {
-        color: "rgba(255, 255, 255, 0.9)",
-        duration: 0.2,
-        ease: "power2.out",
-      });
-    }
-  };
-
-  // Hover effect for social icons - scale, glow, rotation
-  const handleSocialHover = (index: number, isEntering: boolean) => {
-    if (prefersReducedMotion()) return;
-
-    const icon = socialIconsRefs.current[index];
-    if (!icon) return;
-
-    if (isEntering) {
-      gsap.to(icon, {
-        scale: 1.1,
-        rotation: 5,
-        backgroundColor: "#13F584",
-        duration: 0.3,
-        ease: "power2.out",
-        force3D: true,
-      });
-    } else {
-      gsap.to(icon, {
-        scale: 1,
-        rotation: 0,
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
-        duration: 0.3,
-        ease: "power2.out",
-        force3D: true,
-      });
-    }
-  };
-
-  // Logo hover effect
-  const handleLogoHover = (isEntering: boolean) => {
-    if (prefersReducedMotion() || !logoRef.current) return;
-
-    if (isEntering) {
-      gsap.to(logoRef.current, {
-        scale: 1.05,
-        filter: "drop-shadow(0 0 10px rgba(19, 245, 132, 0.3))",
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    } else {
-      gsap.to(logoRef.current, {
-        scale: 1,
-        filter: "drop-shadow(0 0 0px rgba(19, 245, 132, 0))",
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  };
+  // Shared Card Styles
+  const cardClasses = "relative overflow-hidden flex flex-col p-8 sm:p-10 h-full gap-0";
 
   return (
     <footer
       ref={footerRef}
-      className="w-full mt-auto bg-transparent relative"
-      style={{
-        maskImage: "linear-gradient(to bottom, transparent, black 10%, black 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent, black 10%, black 100%)"
-      }}
+      className="w-full py-12 md:py-20 relative px-4 overflow-hidden"
+      style={{ perspective: "1200px" }}
     >
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          {/* Main Footer Content */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 mb-8 sm:mb-10 md:mb-12">
-            {/* Logo and Description */}
-            <div className="space-y-3 sm:space-y-4">
-              <Link
-                ref={logoRef}
-                href="/"
-                className="inline-block"
-                onMouseEnter={() => handleLogoHover(true)}
-                onMouseLeave={() => handleLogoHover(false)}
-              >
-                <Image
-                  src="/logo/esaplogo.svg"
-                  alt="ESAP Logo"
-                  width={100}
-                  height={32}
-                  className="h-auto w-auto max-w-[80px] sm:max-w-[100px]"
-                />
-              </Link>
-              <p ref={descriptionRef} className="text-light-gray-90 text-xs sm:text-sm md:text-base max-w-xs">
-                Smartly Built for What&apos;s Next. Where Innovation Meets
-                Productivity.
+      {/* Horizon Glow Effect - Bottom edge bloom */}
+      <div
+        ref={horizonGlowRef}
+        className="absolute bottom-0 left-0 right-0 h-[300px] pointer-events-none z-0"
+        style={{
+          background: "linear-gradient(to top, rgba(19, 245, 132, 0.25) 0%, rgba(19, 245, 132, 0.08) 40%, transparent 100%)",
+          transformOrigin: "bottom center",
+          filter: "blur(40px)",
+        }}
+      />
+
+      {/* Energy Pulse Ripple */}
+      <div
+        ref={pulseRippleRef}
+        className="absolute bottom-1/2 left-1/2 -translate-x-1/2 w-[200px] h-[200px] rounded-full pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(19, 245, 132, 0.5) 0%, rgba(19, 245, 132, 0.2) 40%, transparent 70%)",
+        }}
+      />
+
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 h-full relative z-10">
+
+        {/* LEFT COLUMN */}
+        <div ref={leftColRef} className="flex flex-col gap-4 h-full" style={{ transformStyle: "preserve-3d" }}>
+
+          {/* Top Card: Connect / CTA */}
+          <Card
+            ref={card1Ref}
+            className={cn(cardClasses, "flex-1 justify-center min-h-[300px]")}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <SyncedWireframe containerRef={footerRef} cardRef={card1Ref} animationTriggered={animationComplete} />
+            <div className="relative z-10">
+              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">Connect With Us</h3>
+              <p className="text-gray-400 text-lg mb-8 max-w-sm">
+                Have a question or want to partner us? Reach out
               </p>
+              <Button variant="primary" asChild>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 group w-fit"
+                >
+                  <span>Get Start</span>
+                  <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover:scale-110 group-hover:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]">
+                    <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
+                  </div>
+                </Link>
+              </Button>
             </div>
+          </Card>
 
-            {/* Navigation Links */}
-            <div ref={navSectionRef} className="space-y-3 sm:space-y-4">
-              <h3 className="text-premium-gradient font-semibold text-sm sm:text-base md:text-lg mb-3 sm:mb-4">
-                Quick Links
-              </h3>
-              <nav className="flex flex-col gap-2 sm:gap-3">
-                {navigationLinks.map((link, index) => (
-                  <Link
-                    key={link.href}
-                    ref={(el) => { navLinksRefs.current[index] = el; }}
-                    href={link.href}
-                    className="text-premium-body hover:text-primary text-xs sm:text-sm md:text-base w-fit relative"
-                    onMouseEnter={() => handleLinkHover(index, true)}
-                    onMouseLeave={() => handleLinkHover(index, false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-
-            {/* Social Media */}
-            <div ref={socialSectionRef} className="space-y-3 sm:space-y-4">
-              <h3 className="text-premium-gradient font-semibold text-sm sm:text-base md:text-lg mb-3 sm:mb-4">
-                Connect With Us
-              </h3>
-              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-                {socialIcons.map((icon, index) => (
-                  <a
-                    key={icon.name}
-                    ref={(el) => { socialIconsRefs.current[index] = el; }}
-                    href={icon.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white-opacity-10 border border-white-opacity-25 transition-shadow duration-300"
-                    style={{ willChange: "transform, background-color" }}
-                    aria-label={icon.name}
-                    onMouseEnter={() => handleSocialHover(index, true)}
-                    onMouseLeave={() => handleSocialHover(index, false)}
-                  >
-                    <Image
-                      src={icon.iconPath}
-                      alt={icon.name}
-                      width={20}
-                      height={20}
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                    />
-                  </a>
-                ))}
+          {/* Bottom Card: Socials */}
+          <Card
+            ref={card2Ref}
+            className={cn(cardClasses, "flex-1 justify-center min-h-[300px]")}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <SyncedWireframe containerRef={footerRef} cardRef={card2Ref} animationTriggered={animationComplete} />
+            <div className="relative z-10">
+              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-6">Connect With Us</h3>
+              <p className="text-gray-400 text-lg mb-12 max-w-sm">
+                Follow us on social media to stay update on our lates news and development
+              </p>
+              <div className="space-y-4">
+                <p className="text-gray-500 uppercase text-sm tracking-wider">Follow Us</p>
+                <div className="flex items-center gap-4">
+                  {socialIcons.map((icon) => (
+                    <Link
+                      key={icon.name}
+                      href={icon.href}
+                      target="_blank"
+                      className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#13F584] hover:text-black transition-all duration-300 text-white border border-white/10"
+                    >
+                      <Image
+                        src={icon.iconPath}
+                        alt={icon.name}
+                        width={18}
+                        height={18}
+                        className="opacity-80 group-hover:opacity-100"
+                      />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          </Card>
 
-          {/* Bottom Bar */}
-          <div ref={bottomBarRef} className="pt-6 sm:pt-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-              <p className="text-light-gray-90 text-xs sm:text-sm text-center sm:text-left">
-                © {new Date().getFullYear()} ESAP. All rights reserved.
-              </p>
-              <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm">
-                <Link
-                  href="/privacy"
-                  className="text-light-gray-90 hover:text-primary transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-                <span className="text-white-opacity-20">|</span>
-                <Link
-                  href="/terms"
-                  className="text-light-gray-90 hover:text-primary transition-colors"
-                >
-                  Terms of Service
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
+
+        {/* RIGHT COLUMN: MENU & LINKS */}
+        <Card
+          ref={card3Ref}
+          className={cn(cardClasses, "h-auto min-h-[624px] items-center text-center relative")}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <SyncedWireframe containerRef={footerRef} cardRef={card3Ref} animationTriggered={animationComplete} />
+          <div className="relative z-10 flex flex-col h-full w-full">
+            <h2 className="text-4xl md:text-5xl font-semibold text-white mb-12">Menu</h2>
+
+            <nav className="flex flex-col gap-6 items-center flex-1">
+              {navigationLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-xl md:text-2xl text-gray-400 hover:text-[#13F584] transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-auto pt-10 w-full flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm gap-4">
+              <p>© {new Date().getFullYear()} Esap. All rights reserved.</p>
+              <div className="flex gap-6">
+                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>
+              </div>
+            </div>
+          </div>
+        </Card>
+
       </div>
     </footer>
   );

@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { HeroBadge } from "@/components/ui/hero-badge";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
@@ -31,7 +31,7 @@ export function Hero() {
     const iconsRef = useRef<HTMLDivElement>(null);
     const badgeRef = useRef<HTMLDivElement>(null);
     const subtitleRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
     const continuousAnimationsRef = useRef<gsap.core.Tween[]>([]);
     const lightEffectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -252,6 +252,9 @@ export function Hero() {
                 setIntersectionRef(el);
             }}
             className="relative w-full z-30 min-h-0 sm:min-h-screen flex items-start sm:items-center justify-center overflow-hidden pb-6 sm:pb-16 md:pb-24 lg:pb-32 xl:pb-40 pt-20 sm:pt-24 md:pt-0"
+            style={{
+                background: "radial-gradient(circle at 50% -20%, #0d3823 0%, #001a0f 50%, #010101 100%)"
+            }}
         >
 
 
@@ -265,10 +268,10 @@ export function Hero() {
             {/* Circle behind content - animated glow and breathing effect */}
             <div
                 ref={circleContainerRef}
-                className="absolute top-[50%] sm:top-[55%] md:top-[60%] lg:top-[60%] left-1/2 -translate-x-1/2 z-0 pointer-events-none animate-optimized"
+                className="absolute top-[45%] sm:top-[50%] md:top-[55%] lg:top-[55%] left-1/2 -translate-x-1/2 z-0 pointer-events-none animate-optimized"
             >
                 <div ref={circleGlowRef} className="relative">
-                    <Circle className="w-[200px] sm:w-[280px] md:w-[350px] lg:w-[450px] xl:w-[450px] max-w-[450px] h-auto brightness-[1.8] drop-shadow-[0_0_40px_rgba(0,165,81,0.8)] drop-shadow-[0_0_80px_rgba(0,165,81,0.6)] drop-shadow-[0_0_120px_rgba(0,165,81,0.4)]" />
+                    <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[1.8] drop-shadow-[0_0_40px_rgba(0,165,81,0.8)] drop-shadow-[0_0_80px_rgba(0,165,81,0.6)] drop-shadow-[0_0_120px_rgba(0,165,81,0.4)]" />
                 </div>
             </div>
 
@@ -284,24 +287,28 @@ export function Hero() {
                 {/* Tagline Badge */}
                 <div
                     ref={badgeRef}
-                    className="hero-badge relative max-w-5xl gsap-slide-up-optimized scale-90 sm:scale-95 md:scale-100 mb-4 sm:mb-6 md:mb-8 overflow-hidden"
+                    className="relative inline-flex items-center p-1 rounded-full bg-[#020305]/80 backdrop-blur-md border border-[#13F584]/20 shadow-[0_0_20px_rgba(19,245,132,0.1)] mb-4 sm:mb-6 md:mb-8 overflow-hidden scale-90 sm:scale-95 md:scale-100 gsap-slide-up-optimized"
                 >
                     {/* Animated beam effect */}
                     <motion.div
-                        className="absolute inset-0 w-[200%] z-10 pointer-events-none"
+                        className="absolute inset-0 w-[200%] z-0 pointer-events-none"
                         style={{
-                            background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(255, 255, 255, 0.15) 50%, transparent 55%, transparent 100%)',
+                            background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(19, 245, 132, 0.1) 50%, transparent 55%, transparent 100%)',
                         }}
                         animate={{ x: ['-100%', '100%'] }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
                     />
-                    <div className="hero-badge-exclusive">
-                        <span className="hero-badge-exclusive-text text-[9px] sm:text-[10px] md:text-xs tracking-wide">
+
+                    {/* Left: Exclusive Pill */}
+                    <div className="relative z-10 flex items-center justify-center px-4 py-1.5 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
+                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-black leading-none">
                             Exclusive
                         </span>
                     </div>
-                    <div className="hero-badge-text">
-                        <span className="hero-badge-text-content text-[10px] sm:text-[11px] md:text-sm tracking-wide">
+
+                    {/* Right: Text */}
+                    <div className="relative z-10 flex items-center px-4 py-1.5 ml-1">
+                        <span className="text-[11px] sm:text-sm font-medium tracking-wide text-[#13F584] leading-none">
                             Tomorrow&apos;s Edge, Built Today
                         </span>
                     </div>
@@ -322,7 +329,7 @@ export function Hero() {
                 {/* Subtitle/Description */}
                 <div
                     ref={subtitleRef}
-                    className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized tracking-tight"
+                    className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized tracking-tight"
                 >
                     <p>
                         Transform your business with intelligent automation, voice-activated
@@ -332,14 +339,15 @@ export function Hero() {
                 </div>
 
                 {/* CTA Button */}
-                <div ref={buttonRef} className="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto gsap-scale-in-optimized">
-                    <Button
-                        variant="primary"
-                        size="lg"
-                    >
-                        Get Started
-                    </Button>
-                </div>
+                <button
+                    ref={buttonRef}
+                    className="group relative inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-[#13F584]/30 hover:shadow-[0_0_30px_rgba(19,245,132,0.3)] gsap-scale-in-optimized cursor-pointer"
+                >
+                    <span className="text-base font-medium text-[#13F584] tracking-wide">Get Started</span>
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#13F584] text-black transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] group-hover:rotate-[360deg] group-hover:scale-110">
+                        <ArrowUpRight className="w-5 h-5" strokeWidth={2.5} />
+                    </div>
+                </button>
             </div>
         </section>
     );
