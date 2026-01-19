@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cpu } from "lucide-react";
 import { SectionHeader } from "@/components/ui/section-header";
 import { cn } from "@/lib/utils";
+import { Spotlight } from "@/components/ui/spotlight";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -71,7 +72,7 @@ export function Achievement() {
 
                 <div
                     ref={gridRef}
-                    className="relative w-full max-w-4xl mx-auto"
+                    className="relative w-full max-w-6xl mx-auto"
                 >
                     {/* Horizontal Framing Lines - Contained within content width */}
                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-0 pointer-events-none" />
@@ -79,11 +80,10 @@ export function Achievement() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
                         {ACHIEVEMENTS.map((item, index) => (
-                            <div
-                                key={index}
-                                className={cn(
-                                    "stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center"
-                                )}
+                            <Spotlight
+                                className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
+                                intensity={0.2}
+                                radius={300}
                             >
                                 {/* Vertical Framing Lines (Internal Dividers Only) - Constrained to avoid overlap */}
                                 {index < ACHIEVEMENTS.length - 1 && (
@@ -105,7 +105,7 @@ export function Achievement() {
                                         {item.label}
                                     </span>
                                 </div>
-                            </div>
+                            </Spotlight>
                         ))}
                     </div>
                 </div>
