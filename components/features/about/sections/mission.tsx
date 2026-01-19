@@ -8,13 +8,10 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import RotatingEarth from "@/components/globe/wireframe-globe";
-
+import { Mic2, Rocket, Layers, Target } from "lucide-react";
+import { MissionCard } from "@/components/ui/mission-card";
 
 gsap.registerPlugin(ScrollTrigger);
-
-import { Mic2, Rocket, Layers, Activity, Target } from "lucide-react";
-import { MissionCard } from "@/components/ui/mission-card";
 
 const defaultTitle = "Our Core Mission";
 const defaultSubtitle =
@@ -98,15 +95,6 @@ export function Mission({
         }
       );
 
-      // Smooth Header Reveal (Independent of the pinned timeline or parallel? 
-      // Plan didn't specify, but keeping it ensures the header is visible. 
-      // Let's attach it to the main scroll trigger or keep it separate.
-      // Keeping it separate but coordinating start points is usually safer for complex layouts,
-      // but here we are pinning the section. If we pin, the header needs to be visible.
-      // Let's assume the header should be visible or animate in *before* the pin logic aggressively takes over?
-      // Actually, if we pin "top top", the header is at top.
-      // Let's animate the header immediately as the section hits the view, or part of the timeline.
-
       gsap.fromTo(
         '[data-testid="section-header"]',
         {
@@ -164,14 +152,13 @@ export function Mission({
                 description={card.description}
                 icon={card.icon}
                 image={card.image}
+                showGlow={true}
                 className="h-full w-full"
               />
             </div>
           ))}
         </div>
       </div>
-
-
     </Section>
   );
 }

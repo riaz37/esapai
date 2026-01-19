@@ -27,10 +27,10 @@ export function ServiceCard({
 
 
             {/* Visual/Illustration Area - Empty for now */}
-            <div className="relative flex-1 min-h-[200px] z-10" />
+            <div className="relative flex-1 min-h-[200px] z-0 pointer-events-none" />
 
             {/* Content Area */}
-            <div className="p-6 pt-4 relative z-10">
+            <div className="p-6 pt-4 relative z-40 pointer-events-none">
                 <h3 className="text-xl md:text-2xl font-semibold text-white mb-2">
                     {title}
                 </h3>

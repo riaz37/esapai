@@ -247,7 +247,7 @@ export function Hero() {
                     {/* Subtitle/Description */}
                     <div
                         ref={subtitleRef}
-                        className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized tracking-tight"
+                        className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized tracking-tight"
                     >
                         <p>
                             Transform your business with intelligent automation, voice-activated
