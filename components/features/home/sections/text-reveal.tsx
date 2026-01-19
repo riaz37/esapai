@@ -25,6 +25,7 @@ export function TextRevealSection() {
                     end: "+=200%", // Extended scrolling distance for the extra phase
                     scrub: 1,
                     pin: true,
+                    invalidateOnRefresh: true,
                 },
             });
 
@@ -50,8 +51,13 @@ export function TextRevealSection() {
             );
 
             // Phase 2: "Jump" / Zoom Past
-            tl.to(
+            tl.fromTo(
                 textRef.current,
+                {
+                    scale: 1,
+                    opacity: 1,
+                    filter: "blur(0px)",
+                },
                 {
                     scale: 3, // Zoom in massively
                     opacity: 0, // Fade out as we pass through

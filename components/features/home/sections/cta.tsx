@@ -135,6 +135,7 @@ export function CTASection() {
                         start: "top 85%",
                         end: "top 50%",
                         scrub: 1.5,
+                        invalidateOnRefresh: true,
                     },
                     opacity: 1,
                     y: 0,
@@ -166,6 +167,7 @@ export function CTASection() {
             {/* Content */}
             <div className="relative z-20 container mx-auto px-4 sm:px-6 text-center">
                 <div className="max-w-4xl mx-auto">
+
                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
                         <span className="text-white">Ready to Transform </span>
                         <span className="text-primary">Your Business?</span>
