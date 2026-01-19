@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useScroll, useMotionValueEvent } from "motion/react";
 
 import { products } from "@/lib/products";
 import { services } from "@/lib/services";
@@ -86,19 +85,6 @@ export function Navbar() {
   const { isServiceOpen, setIsServiceOpen } = useServiceMenu();
   const productDropdownRef = useRef<HTMLDivElement>(null);
   const serviceDropdownRef = useRef<HTMLDivElement>(null);
-
-  // Resizable navbar state
-  const { scrollY } = useScroll();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  });
 
   // Mobile menu state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

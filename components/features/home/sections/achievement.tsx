@@ -81,23 +81,17 @@ export function Achievement() {
                     <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
                         {ACHIEVEMENTS.map((item, index) => (
                             <Spotlight
+                                key={index}
                                 className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
                                 intensity={0.2}
                                 radius={300}
                             >
-                                {/* Vertical Framing Lines (Internal Dividers Only) - Constrained to avoid overlap */}
+                                {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow */}
                                 {index < ACHIEVEMENTS.length - 1 && (
                                     <div className="absolute top-[-80px] bottom-[-150px] right-0 w-px bg-gradient-to-b from-transparent via-[#13F584]/10 to-transparent hidden md:block z-0 pointer-events-none" />
                                 )}
 
-                                {/* Central Glow for the middle item */}
-                                {item.isHighlighted && (
-                                    <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#13F584]/08 blur-[80px] rounded-full" />
-                                    </div>
-                                )}
-
-                                <div className="relative z-20 pointer-events-none">
+                                <div className="relative z-40 pointer-events-none">
                                     <span className="block text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tighter mb-3">
                                         {item.number}
                                     </span>
