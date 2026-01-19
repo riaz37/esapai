@@ -10,6 +10,7 @@ import type { MissionCard, AutomationFeature } from "./product";
 import type { TeamMember } from "./ui";
 import type { PerformanceMetric } from "./product";
 import type * as THREE from "three";
+import type { LucideIcon } from "lucide-react";
 
 // Hero Components
 export interface ProductHeroProps {
@@ -257,6 +258,7 @@ export interface SectionHeaderProps {
   title: string | ReactNode;
   subtitle?: string;
   badge?: string;
+  badgeIcon?: LucideIcon;
   align?: "center" | "left" | "right";
   className?: string;
   titleClassName?: string;

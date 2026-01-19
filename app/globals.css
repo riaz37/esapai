@@ -49,7 +49,7 @@
   }
 
   body {
-    background: radial-gradient(ellipse 120% 80% at 50% 0%, #0a2818 0%, #051a0f 30%, #020a06 60%, #010503 100%);
+    background: rgba(9, 9, 11, 1);
     background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
@@ -432,6 +432,15 @@
     backdrop-filter: blur(20px);
     border: 1px solid rgba(19, 245, 132, 0.25);
     box-shadow: 0 0 15px rgba(19, 245, 132, 0.1);
+  }
+
+  .hero-mesh-gradient {
+    background-color: #030d08;
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(19, 245, 132, 0.15) 0%, transparent 60%),
+      radial-gradient(circle at 0% 50%, rgba(6, 78, 59, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 100% 50%, rgba(6, 78, 59, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 120%, rgba(19, 245, 132, 0.2) 0%, transparent 70%);
   }
 }
 

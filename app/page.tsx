@@ -38,13 +38,15 @@ const TextRevealSection = dynamic(
   () => import("@/components/features/home/sections/text-reveal").then((mod) => ({ default: mod.TextRevealSection })),
 );
 
+const AchievementSection = dynamic(
+  () => import("@/components/features/home/sections/achievement").then((mod) => ({ default: mod.Achievement })),
+);
+
 export default function Home() {
   return (
     <main className="relative">
 
-      <SectionMask fadeTop={false}>
-        <Hero />
-      </SectionMask>
+      <Hero />
 
       {/* Trusted Partners Ticker */}
       <TrustedPartnersSection />
@@ -54,9 +56,9 @@ export default function Home() {
         <MissionSection />
       </LazySection>
 
-      <LazySection minHeight="600px">
+      {/* <LazySection minHeight="600px">
         <VisionSection />
-      </LazySection>
+      </LazySection> */}
 
       <LazySection minHeight="800px">
         <ServiceSection />
@@ -68,6 +70,12 @@ export default function Home() {
 
       <LazySection minHeight="200vh">
         <TextRevealSection />
+      </LazySection>
+
+
+
+      <LazySection minHeight="400px">
+        <AchievementSection />
       </LazySection>
 
       <LazySection minHeight="600px">

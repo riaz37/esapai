@@ -13,7 +13,7 @@ import RotatingEarth from "@/components/globe/wireframe-globe";
 
 gsap.registerPlugin(ScrollTrigger);
 
-import { Mic2, Rocket, Layers, Activity } from "lucide-react";
+import { Mic2, Rocket, Layers, Activity, Target } from "lucide-react";
 import { MissionCard } from "@/components/ui/mission-card";
 
 const defaultTitle = "Our Core Mission";
@@ -134,16 +134,18 @@ export function Mission({
   return (
     <Section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col pt-24 overflow-hidden z-20 bg-transparent"
+      className="relative min-h-screen flex flex-col pt-4 sm:pt-10 overflow-hidden z-20 bg-transparent"
       style={{
         maskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
         WebkitMaskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)"
       }}
     >
-      <div className="container mx-auto px-4 relative z-20 mb-12">
+      <div className="container mx-auto px-4 relative z-20">
         <SectionHeader
           title={title}
           subtitle={subtitle}
+          badge="Our Mission"
+          badgeIcon={Target}
         />
       </div>
 

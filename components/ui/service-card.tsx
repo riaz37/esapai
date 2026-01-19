@@ -8,14 +8,14 @@ export interface ServiceCardProps {
     title: string;
     description: string;
     className?: string;
-    wireframe?: React.ReactNode;
+
 }
 
 export function ServiceCard({
     title,
     description,
     className,
-    wireframe,
+
 }: ServiceCardProps) {
     return (
         <Card
@@ -24,8 +24,7 @@ export function ServiceCard({
                 className
             )}
         >
-            {/* Synced Wireframe Background */}
-            {wireframe}
+
 
             {/* Visual/Illustration Area - Empty for now */}
             <div className="relative flex-1 min-h-[200px] z-10" />

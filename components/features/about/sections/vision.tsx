@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Eye } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,31 +42,27 @@ export function Vision() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: content,
-          start: "top 60%", // Trigger when top of section hits 60% of viewport height
+          start: "top 80%", // Trigger slightly earlier
           end: "bottom top",
           toggleActions: "play reverse play reverse",
+          invalidateOnRefresh: true,
         }
       });
 
       const titleElement = content.querySelector("h2");
       const subtitleElement = content.querySelector("p");
 
-      if (titleElement) gsap.set(titleElement, { opacity: 0, y: -20 });
-      if (subtitleElement) gsap.set(subtitleElement, { opacity: 0, y: 10 });
-      if (robotRef.current) gsap.set(robotRef.current, { opacity: 0, y: 50, scale: 0.8 });
-      if (dotCircleContainerRef.current) gsap.set(dotCircleContainerRef.current, { opacity: 0, y: 30 });
-
       if (titleElement) {
-        tl.to(titleElement, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.1);
+        tl.fromTo(titleElement, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.1);
       }
       if (subtitleElement) {
-        tl.to(subtitleElement, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.3);
+        tl.fromTo(subtitleElement, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.3);
       }
       if (robotRef.current) {
-        tl.to(robotRef.current, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" }, 0.2);
+        tl.fromTo(robotRef.current, { opacity: 0, y: 50, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" }, 0.2);
       }
       if (dotCircleContainerRef.current) {
-        tl.to(dotCircleContainerRef.current, { opacity: 1, y: 0, duration: 1.5, ease: "sine.out" }, 0.1);
+        tl.fromTo(dotCircleContainerRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.5, ease: "sine.out" }, 0.1);
       }
     },
     { scope: sectionRef, dependencies: [] }
@@ -166,7 +163,7 @@ export function Vision() {
     <Section
       ref={sectionRef}
       background="transparent"
-      className="relative w-full py-24 sm:py-32 md:py-40 flex flex-col z-10 overflow-hidden"
+      className="relative w-full py-6 sm:py-12 flex flex-col z-10 overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
@@ -176,6 +173,8 @@ export function Vision() {
       <SectionHeader
         title="Our Vision"
         subtitle="Seamlessly integrating advanced AI to transform enterprises of all sizes."
+        badge="Our Vision"
+        badgeIcon={Eye}
       />
 
       <div className="relative w-full flex items-center justify-center py-4 sm:py-6 md:py-8 lg:py-10 z-0 flex-grow">

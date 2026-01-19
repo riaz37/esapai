@@ -14,7 +14,7 @@ const buttonVariants = cva(
         default:
           "bg-white text-black shadow-[0_4px_15px_rgba(255,255,255,0.1)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-[800ms]",
         primary:
-          "bg-[#13F584]/10 backdrop-blur-lg border border-[#13F584]/20 text-[#13F584] shadow-[0_0_20px_rgba(19,245,132,0.15)] hover:shadow-[0_0_40px_rgba(19,245,132,0.4)] hover:bg-[#13F584]/20 hover:border-[#13F584]/40 hover:scale-105 active:scale-95",
+          "bg-transparent border border-white/10 text-[#13F584] shadow-[0px_4px_54px_11px_rgba(226,226,226,0.15)_inset] hover:shadow-[0px_4px_54px_11px_rgba(226,226,226,0.25)_inset] hover:bg-white/5 hover:border-white/20 hover:scale-105 active:scale-95",
         outline:
           "bg-transparent border border-white/20 text-white hover:border-[#13F584] hover:text-[#13F584] hover:bg-[#13F584]/10 hover:shadow-[0_0_20px_rgba(19,245,132,0.15)] hover:-translate-y-0.5 active:scale-[0.98] relative overflow-hidden",
         ghost:

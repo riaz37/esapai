@@ -39,6 +39,7 @@ export function TrustedPartners() {
                     start: "top 90%",
                     end: "top 70%",
                     scrub: 1.5,
+                    invalidateOnRefresh: true,
                 },
                 opacity: 1,
                 y: 0,
@@ -50,7 +51,7 @@ export function TrustedPartners() {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full pt-20 pb-12 sm:pt-32 sm:pb-20 md:pt-40 md:pb-24 overflow-hidden">
+        <section ref={sectionRef} className="w-full pt-8 pb-8 sm:pt-12 sm:pb-12 overflow-hidden">
             <div className="relative flex overflow-hidden">
                 {/* Marquee Row */}
                 <div className="flex animate-marquee whitespace-nowrap py-4">

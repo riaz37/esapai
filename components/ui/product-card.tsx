@@ -10,7 +10,7 @@ import { Product } from "@/types/product";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { ProductSyncedWireframe } from "@/components/features/home/sections/product-synced-wireframe";
+
 
 interface ProductCardProps {
     product: Product;
@@ -28,8 +28,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
             "h-full overflow-hidden transition-all duration-500 hover:scale-[1.01] group relative",
             className
         )}>
-            {/* Wireframe Background Decoration */}
-            <ProductSyncedWireframe className="z-0 opacity-60" />
+
 
             {/* Cinematic Sheen Effect */}
             <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine pointer-events-none" />

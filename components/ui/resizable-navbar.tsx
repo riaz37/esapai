@@ -280,10 +280,10 @@ export const NavbarButton = ({
   if (href) {
     return (
       <Button variant={variant} className={className} asChild {...props}>
-        <Link href={href} onClick={onClick}>
+        <Link href={href} onClick={onClick} className="inline-flex items-center gap-2 group">
           <span>{children}</span>
           {variant === "primary" && (
-            <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover:scale-110 group-hover:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ml-2">
+            <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover:scale-110 group-hover:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]">
               <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
             </div>
           )}

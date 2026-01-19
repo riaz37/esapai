@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import type { SectionHeaderProps } from "@/types/props";
+import { BadgeChip } from "./badge-chip";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +16,7 @@ export function SectionHeader({
   title,
   subtitle,
   badge,
+  badgeIcon,
   align = "center",
   className = "",
   titleClassName = "",
@@ -104,22 +106,14 @@ export function SectionHeader({
   return (
     <div
       ref={containerRef}
-      className={cn("relative z-10 flex flex-col mb-12 sm:mb-16", alignClass, className)}
+      className={cn("relative z-10 flex flex-col mb-4 sm:mb-6", alignClass, className)}
     >
 
 
-      {/* Kinetic Gradient Badge */}
+      {/* Premium BadgeChip Indicator */}
       {badge && (
-        <div ref={badgeRef} className="relative mb-5 sm:mb-8 group">
-          <div className="absolute inset-0 rounded-full bg-primary/20 blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
-          <div className="relative inline-flex overflow-hidden rounded-full p-[1px]">
-            <div className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#13F584_50%,#000000_100%)] opacity-70" />
-            <div className="relative inline-flex items-center justify-center rounded-full bg-black/80 backdrop-blur-3xl px-4 py-1.5">
-              <span className="text-[10px] sm:text-xs font-medium text-primary tracking-[0.2em] uppercase">
-                // {badge}
-              </span>
-            </div>
-          </div>
+        <div ref={badgeRef} className="mb-2">
+          <BadgeChip label={badge} icon={badgeIcon} />
         </div>
       )}
 
@@ -139,7 +133,7 @@ export function SectionHeader({
         <div
           ref={accentLineRef}
           className={cn(
-            "mt-4 sm:mt-5 h-[2px] w-24 sm:w-32 md:w-40 origin-center bg-primary/80",
+            "mt-2 h-[2px] w-24 sm:w-32 md:w-40 origin-center bg-primary/80",
             align === "center" ? "mx-auto" : align === "left" ? "mr-auto" : "ml-auto"
           )}
         />
@@ -150,7 +144,7 @@ export function SectionHeader({
         <p
           ref={subtitleRef}
           className={cn(
-            "mt-5 sm:mt-7 text-base sm:text-lg md:text-xl lg:text-xl text-gray-400 leading-relaxed max-w-3xl tracking-tight",
+            "mt-3 text-base sm:text-lg md:text-xl lg:text-xl text-gray-400 leading-relaxed max-w-3xl tracking-tight",
             mxClass,
             subtitleClassName
           )}
