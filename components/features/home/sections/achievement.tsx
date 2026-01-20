@@ -75,8 +75,8 @@ export function Achievement() {
                     className="relative w-full max-w-6xl mx-auto"
                 >
                     {/* Horizontal Framing Lines - Contained within content width */}
-                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-0 pointer-events-none" />
-                    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-0 pointer-events-none" />
+                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-20 pointer-events-none" />
 
                     <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
                         {ACHIEVEMENTS.map((item, index) => (
@@ -86,9 +86,9 @@ export function Achievement() {
                                 intensity={0.2}
                                 radius={300}
                             >
-                                {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow */}
+                                {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
                                 {index < ACHIEVEMENTS.length - 1 && (
-                                    <div className="absolute top-[-80px] bottom-[-150px] right-0 w-px bg-gradient-to-b from-transparent via-[#13F584]/10 to-transparent hidden md:block z-0 pointer-events-none" />
+                                    <div className="absolute top-[-120px] bottom-[-200px] right-0 w-px bg-gradient-to-b from-transparent via-[#13F584]/10 to-transparent hidden md:block z-50 pointer-events-none" />
                                 )}
 
                                 <div className="relative z-40 pointer-events-none">

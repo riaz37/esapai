@@ -34,7 +34,7 @@ export function Hero() {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bgRef = useRef<HTMLDivElement>(null);
     const continuousAnimationsRef = useRef<gsap.core.Tween[]>([]);
-    const lightEffectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const proxyCircleRef = useRef<HTMLDivElement>(null);
 
     const anim = useGSAPAnimations(sectionRef);
 
@@ -46,10 +46,10 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=150%", // Determines scroll distance for the effect
+                    end: "+=100%", // Determines scroll distance for the effect
                     scrub: 1, // Smooth scrubbing
                     pin: true, // Pin the hero section during the effect
-                    pinSpacing: false, // Allow next section to scroll underneath for portal effect
+                    pinSpacing: false, // Allow next section to scroll underneath
                     anticipatePin: 1,
                     invalidateOnRefresh: true,
                     refreshPriority: 1,
@@ -60,6 +60,11 @@ export function Hero() {
             if (circleContainerRef.current) {
                 gsap.set(circleContainerRef.current, { xPercent: -50, yPercent: -50 });
             }
+            // Proxy Circle Setup
+            if (proxyCircleRef.current) {
+                gsap.set(proxyCircleRef.current, { xPercent: -50, yPercent: -50, scale: 0.8, autoAlpha: 0 });
+            }
+
             // Center the Wrapper for Scroll
             if (iconsScrollRef.current) {
                 gsap.set(iconsScrollRef.current, { xPercent: -50, yPercent: -50 });
@@ -100,45 +105,60 @@ export function Hero() {
 
 
             // SCROLL-LINKED PARALLAX ANIMATION ("The Eye of AI")
-            // 1. Massive Zoom and Fade of the Circle
-            if (circleContainerRef.current) {
-                mainTl.fromTo(circleContainerRef.current,
+
+            // 1. Swap Real Circle with Proxy & Zoom Proxy
+            if (circleContainerRef.current && proxyCircleRef.current) {
+                // Fade OUT Scale Real Circle
+                mainTl.to(circleContainerRef.current, {
+                    autoAlpha: 0,
+                    scale: 1.5,
+                    duration: 0.5,
+                    ease: "power1.in"
+                }, 0);
+
+                // Fade IN & Zoom Proxy Circle (The "Portal")
+                mainTl.fromTo(proxyCircleRef.current,
                     {
-                        scale: 1,
-                        opacity: 1,
+                        autoAlpha: 0,
+                        scale: 0.8,
                     },
                     {
-                        scale: 60, // Increased scale for cleaner fly-through
-                        opacity: 0,
+                        autoAlpha: 1,
+                        scale: 1.2, // Drastically reduced scale to prevent GPU texture crash
                         duration: 2,
                         ease: "power2.inOut",
                         transformOrigin: "center center",
                     }, 0);
+
+                // Fade Proxy out at the very end
+                mainTl.to(proxyCircleRef.current, {
+                    autoAlpha: 0,
+                    duration: 0.5,
+                    ease: "power1.in"
+                }, 1.5);
             }
 
             // 2. Fade out Hero Content Wrapper (Parent)
             mainTl.fromTo([contentScrollRef.current, iconsScrollRef.current],
                 {
-                    opacity: 1,
+                    autoAlpha: 1,
                     scale: 1,
                 },
                 {
-                    opacity: 0,
+                    autoAlpha: 0,
                     scale: 0.8,
                     duration: 0.5,
                     ease: "power2.in",
                 }, 0);
 
-            // Fade out background separately
-            if (bgRef.current) {
-                mainTl.fromTo(bgRef.current,
-                    { opacity: 1 },
-                    {
-                        opacity: 0,
-                        duration: 0.5,
-                        ease: "power2.in"
-                    }, 0);
-            }
+
+
+            // 3. FINAL REVEAL: Fade out the entire Hero Section to reveal content underneath
+            mainTl.to(sectionRef.current, {
+                autoAlpha: 0,
+                duration: 0.5,
+                ease: "power2.inOut"
+            }, 1.2); // Overlap slightly with the explosion
 
 
 
@@ -146,10 +166,7 @@ export function Hero() {
             return () => {
                 // Kill specific scroll trigger timeline
                 mainTl.kill();
-                if (lightEffectTimeoutRef.current) {
-                    clearTimeout(lightEffectTimeoutRef.current);
-                    lightEffectTimeoutRef.current = null;
-                }
+
             };
         },
         { scope: sectionRef }
@@ -168,6 +185,7 @@ export function Hero() {
         >
             <SectionMask
                 fadeTop={false}
+                fadeBottom={false}
                 className="w-full h-full min-h-0 sm:min-h-screen flex items-start sm:items-center justify-center pb-6 sm:pb-16 md:pb-24 lg:pb-32 xl:pb-40 pt-20 sm:pt-24 md:pt-0"
             >
 
@@ -182,9 +200,20 @@ export function Hero() {
                     className="absolute top-[82%] left-1/2 z-0 pointer-events-none animate-optimized"
                 >
                     <div ref={circleGlowRef} className="relative">
-                        <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[1.8] drop-shadow-[0_0_40px_rgba(0,165,81,0.8)] drop-shadow-[0_0_80px_rgba(0,165,81,0.6)] drop-shadow-[0_0_120px_rgba(0,165,81,0.4)]" />
+                        {/* Removed heavy CSS drop-shadows that cause crashes during scale */}
+                        <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[1.8]" />
                     </div>
                 </div>
+
+                {/* PROXY CIRCLE for Parallax Zoom (Lightweight div for performance) */}
+                <div
+                    ref={proxyCircleRef}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] rounded-full z-1 pointer-events-none opacity-0 blur-[100px] mix-blend-screen"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(200,255,220,1) 0%, rgba(19,245,132,0.6) 30%, rgba(19,245,132,0) 70%)',
+                        willChange: "opacity, transform"
+                    }}
+                />
 
                 {/* Hexagonal Icons Wrapper - Targets Scroll Fade Out */}
                 <div

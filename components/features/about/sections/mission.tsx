@@ -124,8 +124,8 @@ export function Mission({
       ref={sectionRef}
       className="relative min-h-screen flex flex-col pt-4 sm:pt-10 overflow-hidden z-20 bg-transparent"
       style={{
-        maskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)"
+        maskImage: "linear-gradient(to bottom, transparent, black 15%, black 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 100%)"
       }}
     >
       <div className="container mx-auto px-4 relative z-20">
