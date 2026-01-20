@@ -69,6 +69,7 @@ export function Mission({
       });
 
       // Cinematic 3D Fly-In
+      // Split movement and appearance to prevent filter artifacts with back.out easing
       tl.fromTo(
         cardsElements,
         {
@@ -77,8 +78,6 @@ export function Mission({
           rotationX: 10,  // Slight tilt
           scale: 0.6,     // Depth effect
           z: -500,
-          autoAlpha: 0,
-          filter: "blur(10px)",
           transformOrigin: "50% 50%",
         },
         {
@@ -87,12 +86,27 @@ export function Mission({
           rotationX: 0,
           scale: 1,
           z: 0,
+          duration: 1,
+          stagger: 1,
+          ease: "back.out(1.2)", // "Sit" physics
+        },
+        0
+      );
+
+      tl.fromTo(
+        cardsElements,
+        {
+          autoAlpha: 0,
+          filter: "blur(10px)",
+        },
+        {
           autoAlpha: 1,
           filter: "blur(0px)",
           duration: 1,
           stagger: 1,
-          ease: "back.out(1.2)", // "Sit" physics
-        }
+          ease: "power2.out", // Smooth focus without overshoot
+        },
+        0
       );
 
       gsap.fromTo(
