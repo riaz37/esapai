@@ -14,11 +14,11 @@ interface MissionCardProps {
     showGlow?: boolean;
 }
 
-const imgFrame1000006146 = "https://www.figma.com/api/mcp/asset/040b8ff5-2adb-4b1b-a3c9-9fda812f28b2";
-const imgFrame1000006147 = "https://www.figma.com/api/mcp/asset/f80acb39-a9b4-45bd-9bf8-578553d79afa";
-const imgFrame1000006148 = "https://www.figma.com/api/mcp/asset/37988a00-7f48-4ade-9d74-a87b1c247df1";
-const imgGroup326 = "https://www.figma.com/api/mcp/asset/d9c97cdf-df78-4bce-aec0-ebf6f1422c1b";
-const imgShine = "https://www.figma.com/api/mcp/asset/564d2152-71a3-43ce-acac-365b22c922c9";
+const cardMask = "/card-mask.svg";
+const cardPattern1 = "/card-pattern-1.svg";
+const cardPattern2 = "/card-pattern-2.svg";
+const cardGlow = "/card-glow.svg";
+const cardShine = "/card-shine.svg";
 
 export function MissionCard({
     title,
@@ -76,8 +76,8 @@ export function MissionCard({
                         <div
                             className="absolute h-[281px] left-0 top-[38px] w-[405px]"
                             style={{
-                                WebkitMaskImage: `url('${imgFrame1000006146}')`,
-                                maskImage: `url('${imgFrame1000006146}')`,
+                                WebkitMaskImage: `url('${cardMask}')`,
+                                maskImage: `url('${cardMask}')`,
                                 WebkitMaskSize: '441px 362px',
                                 maskSize: '441px 362px',
                                 WebkitMaskPosition: '-16px -41px',
@@ -87,7 +87,7 @@ export function MissionCard({
                             }}
                         >
                             <div className="absolute" style={{ inset: '-0.18% 0' }}>
-                                <Image alt="" className="block max-w-none w-full h-full" src={imgFrame1000006147} width={405} height={281} unoptimized />
+                                <Image alt="" className="block max-w-none w-full h-full" src={cardPattern1} width={405} height={281} unoptimized />
                             </div>
                         </div>
                         <div className="absolute flex h-[357px] items-center justify-center left-[62px] top-0 w-[281px]">
@@ -95,8 +95,8 @@ export function MissionCard({
                                 <div
                                     className="h-[281px] relative w-[357px]"
                                     style={{
-                                        WebkitMaskImage: `url('${imgFrame1000006146}')`,
-                                        maskImage: `url('${imgFrame1000006146}')`,
+                                        WebkitMaskImage: `url('${cardMask}')`,
+                                        maskImage: `url('${cardMask}')`,
                                         WebkitMaskSize: '441px 362px',
                                         maskSize: '441px 362px',
                                         WebkitMaskPosition: '-78px -3px',
@@ -106,7 +106,7 @@ export function MissionCard({
                                     }}
                                 >
                                     <div className="absolute" style={{ inset: '-0.18% 0' }}>
-                                        <Image alt="" className="block max-w-none w-full h-full" src={imgFrame1000006148} width={357} height={281} unoptimized />
+                                        <Image alt="" className="block max-w-none w-full h-full" src={cardPattern2} width={357} height={281} unoptimized />
                                     </div>
                                 </div>
                             </div>
@@ -120,12 +120,12 @@ export function MissionCard({
                 <>
                     <div className="absolute h-[145px] left-[1.67px] top-[-80.17px] w-[403px] pointer-events-none z-10">
                         <div className="absolute" style={{ inset: '-107.59% -38.71%' }}>
-                            <Image alt="" className="block max-w-none w-full h-full" src={imgGroup326} width={403} height={145} unoptimized />
+                            <Image alt="" className="block max-w-none w-full h-full" src={cardGlow} width={403} height={145} unoptimized />
                         </div>
                     </div>
                     <div className="absolute h-[2px] left-[27.67px] right-[25.67px] top-[-0.17px] pointer-events-none z-20">
                         <div className="absolute" style={{ inset: '-1px 0' }}>
-                            <Image alt="" className="block max-w-none w-full h-full" src={imgShine} width={100} height={2} unoptimized />
+                            <Image alt="" className="block max-w-none w-full h-full" src={cardShine} width={100} height={2} unoptimized />
                         </div>
                     </div>
                 </>
