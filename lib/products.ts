@@ -20,7 +20,7 @@ export const products: Product[] = [
   {
     id: "erp",
     name: "ERP",
-    description: "Voice Activated AI ERP for SMEs",
+    description: "Voice Activated AI ERP for SMEs. Manage your entire business operation through natural voice commands while ensuring enterprise-grade security and efficiency.",
     slug: "erp",
     icon: "/products/erp.svg",
     content: {
@@ -131,7 +131,7 @@ export const products: Product[] = [
   {
     id: "ai-framework",
     name: "AI Framework",
-    description: "AI Agent & Automation Framework",
+    description: "A comprehensive AI Agent & Automation Framework designed to build, deploy, and scale intelligent enterprise solutions with unprecedented speed.",
     slug: "ai-framework",
     content: {
       hero: {
@@ -241,7 +241,7 @@ export const products: Product[] = [
   {
     id: "zakra",
     name: "Zakra",
-    description: "Smart Knowledge Agent",
+    description: "Smart Knowledge Agent that delivers instant, context-aware answers from your entire knowledge base. Unlock the power of your organizational data.",
     slug: "zakra",
     content: {
       hero: {
@@ -351,7 +351,7 @@ export const products: Product[] = [
   {
     id: "jawib",
     name: "Jawib",
-    description: "Customer Service Agent",
+    description: "Intelligent Customer Service Agent providing 24/7 personalized support. Transform your customer experience with seamless, human-like interactions.",
     slug: "jawib",
     content: {
       hero: {
@@ -461,7 +461,7 @@ export const products: Product[] = [
   {
     id: "fasih",
     name: "Fasih",
-    description: "The native Arabic LLM",
+    description: "The native Arabic LLM bridging the gap with deep understanding of dialects and cultural nuances for accurate, regionally-aware processing.",
     slug: "fasih",
     content: {
       hero: {
@@ -571,7 +571,7 @@ export const products: Product[] = [
   {
     id: "domain-expansion",
     name: "Domain Expansion",
-    description: "Seamlessly connect legacy",
+    description: "Seamlessly connect legacy systems with modern AI capabilities. Bridge the gap between your existing infrastructure and the future of automation.",
     slug: "domain-expansion",
     content: {
       hero: {

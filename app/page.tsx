@@ -42,16 +42,27 @@ const AchievementSection = dynamic(
   () => import("@/components/features/home/sections/achievement").then((mod) => ({ default: mod.Achievement })),
 );
 
+const TechnologyExcellenceSection = dynamic(
+  () => import("@/components/features/home/sections/technology-excellence").then((mod) => ({ default: mod.TechnologyExcellence })),
+);
+
 export default function Home() {
   return (
     <main className="relative">
 
       <Hero />
 
+
+
+      {/* Portal Reveal Target: Technology Excellence */}
+      <LazySection minHeight="800px">
+        <TechnologyExcellenceSection />
+      </LazySection>
+
       {/* Trusted Partners Ticker */}
       <TrustedPartnersSection />
 
-      {/* Below-the-fold sections load progressively as user scrolls */}
+      {/* Mission Section - Now with proper scroll room */}
       <LazySection minHeight="600px">
         <MissionSection />
       </LazySection>

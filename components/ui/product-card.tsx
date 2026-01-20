@@ -38,28 +38,12 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                 {/* Left Side: Content */}
                 <div className="flex-1 text-left space-y-8 z-10">
                     <div className="space-y-4">
-                        <div className="flex items-center gap-6">
-                            {iconSrc && (
-                                <div className="relative w-16 h-16 flex items-center justify-center">
-                                    <Image
-                                        src={iconSrc}
-                                        alt={iconAlt}
-                                        width={64}
-                                        height={64}
-                                        className="object-contain"
-                                    />
-                                </div>
-                            )}
-                            <span className="text-base text-muted-foreground/40 tracking-[0.2em] uppercase pt-2">
-                                / Product_{index.toString().padStart(3, "0")}
-                            </span>
-                        </div>
-                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+                        <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
                             {product.name}
                         </h3>
                     </div>
 
-                    <p className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed max-w-lg">
+                    <p className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed max-w-lg">
                         {product.description}
                     </p>
 
