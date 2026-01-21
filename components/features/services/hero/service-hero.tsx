@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { HeroBadge } from "@/components/ui/hero-badge";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import type { GlobeConfig } from "@/components/ui/globe";
 import type { ServiceHeroProps } from "@/types/props";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
 import Frame from "@/components/shared/frame";
 
 const World = dynamic(
@@ -146,8 +146,9 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
                 size="lg"
                 asChild
               >
-                <Link href="#solutions">
-                  Get Started
+                <Link href="#solutions" className="inline-flex items-center gap-2 group">
+                  <span>Get Started</span>
+                  <ButtonArrow />
                 </Link>
               </Button>
               <Button

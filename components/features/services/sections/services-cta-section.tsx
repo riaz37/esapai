@@ -6,7 +6,7 @@ import gsap from "gsap";
 import Link from "next/link";
 
 import { Section } from "@/components/ui/section";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import { useIntersectionAnimation } from "@/lib/hooks/use-intersection-animation";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
@@ -81,10 +81,13 @@ export function ServicesCTASection({
         <Button
           variant="primary"
           size="lg"
-          className="rounded-[32px] sm:rounded-[40px] px-10 sm:px-12 md:px-16 lg:px-20 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-h-[44px] sm:min-h-[48px]"
+          className="rounded-[32px] sm:rounded-[40px] px-10 sm:px-12 md:px-16 lg:px-20 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-h-[44px] sm:min-h-[48px] group"
           asChild
         >
-          <Link href={buttonHref}>{buttonText}</Link>
+          <Link href={buttonHref} className="inline-flex items-center gap-2">
+            <span>{buttonText}</span>
+            <ButtonArrow className="ml-0" />
+          </Link>
         </Button>
       </div>
     </Section>

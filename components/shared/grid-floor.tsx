@@ -9,9 +9,9 @@ const GridFloorComponent = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div 
+      <div
         className="relative w-full h-full z-0 pointer-events-auto"
-        style={{ 
+        style={{
           backgroundColor: 'transparent',
           minHeight: '400px', // Prevent layout shift
         }}
@@ -20,15 +20,15 @@ const GridFloorComponent = dynamic(
   }
 );
 
-import type { GridFloorWrapperProps } from "@/types/props";
+import type { GridFloorProps } from "@/types/props";
 
-export default function GridFloor({ className, perspective }: GridFloorWrapperProps) {
+export default function GridFloor({ className, perspective }: GridFloorProps) {
   return (
     <Suspense
       fallback={
-        <div 
+        <div
           className={`relative w-full h-full z-0 pointer-events-auto ${className || ''}`}
-          style={{ 
+          style={{
             backgroundColor: 'transparent',
             minHeight: '400px', // Prevent layout shift
           }}

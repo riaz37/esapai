@@ -151,11 +151,6 @@ export interface InstancedGridProps {
   gridSize: number;
 }
 
-export interface GridFloorWrapperProps {
-  className?: string;
-  perspective?: "normal" | "dramatic";
-}
-
 export interface ConcaveFloorProps {
   className?: string;
   intensity?: number;
@@ -170,11 +165,6 @@ export type RingParticle = {
   ringIndex: number;
   phase: number;
 };
-
-export interface SpaceBackgroundProps {
-  className?: string;
-  hideSparkles?: boolean;
-}
 
 export interface YouTubeVideoProps {
   videoId: string;
@@ -196,13 +186,6 @@ export interface LazySectionProps {
   threshold?: number;
   rootMargin?: string;
   minHeight?: string;
-}
-
-export interface HoverEffectItem {
-  title: string;
-  description: string;
-  link: string;
-  icon?: string;
 }
 
 export interface ServiceItemProps {
@@ -263,20 +246,6 @@ export interface SectionHeaderProps {
   className?: string;
   titleClassName?: string;
   subtitleClassName?: string;
-}
-
-export interface Icon {
-  x: number;
-  y: number;
-  z: number;
-  scale: number;
-  opacity: number;
-  id: number;
-}
-
-export interface IconCloudProps {
-  icons?: ReactNode[];
-  images?: string[];
 }
 
 export interface UITimelineEntry {

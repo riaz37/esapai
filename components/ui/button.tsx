@@ -25,12 +25,24 @@ const buttonVariants = cva(
           "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 hover:border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:-translate-y-0.5 active:scale-[0.98]",
       },
       size: {
-        default: "h-12 pl-6 pr-2", // Increased height and adjusted padding for the icon
+        default: "h-12 px-6",
         sm: "h-9 px-4 text-xs",
         lg: "h-14 px-8 text-base",
         icon: "size-11",
       },
     },
+    compoundVariants: [
+      {
+        variant: "primary",
+        size: "default",
+        className: "pr-2",
+      },
+      {
+        variant: "primary",
+        size: "lg",
+        className: "pr-2",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",
@@ -43,6 +55,18 @@ interface ButtonProps
   VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
+
+export const ButtonArrow = ({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      "w-8 h-8 rounded-full flex items-center justify-center text-black group-hover/btn:scale-110 group-hover/btn:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ml-2 shrink-0",
+      className
+    )}
+    style={{ background: "linear-gradient(180deg, #13F584 0%, #80FFBF 100%)" }}
+  >
+    <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
+  </div>
+);
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
@@ -59,11 +83,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             <span className="relative z-10">{children}</span>
-            {variant === "primary" && (
-              <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover/btn:scale-110 group-hover/btn:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ml-2">
-                <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
-              </div>
-            )}
+            {variant === "primary" && <ButtonArrow />}
           </>
         )}
       </Comp>

@@ -109,25 +109,21 @@ export function Mission({
         0
       );
 
-      gsap.fromTo(
+      tl.fromTo(
         '[data-testid="section-header"]',
         {
           opacity: 0,
-          y: 30,
-          filter: "blur(8px)",
+          y: -20,
+          filter: "blur(10px)",
         },
         {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%", // Start animating header before locking
-            toggleActions: "play none none reverse",
-          },
-        }
+          duration: 0.4,
+          ease: "power2.out",
+        },
+        0
       );
     },
     { scope: sectionRef, dependencies: [cards] }
@@ -136,22 +132,18 @@ export function Mission({
   return (
     <Section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col pt-4 sm:pt-10 overflow-hidden z-20 bg-transparent"
-      style={{
-        maskImage: "linear-gradient(to bottom, transparent, black 15%, black 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 100%)"
-      }}
+      padding="none"
+      containerClassName="min-h-screen flex flex-col pt-16 sm:pt-24"
+      className="relative overflow-hidden z-20 bg-transparent"
     >
-      <div className="container mx-auto px-4 relative z-20">
-        <SectionHeader
-          title={title}
-          subtitle={subtitle}
-          badge="Our Mission"
-          badgeIcon={Target}
-        />
-      </div>
+      <SectionHeader
+        title={title}
+        subtitle={subtitle}
+        badge="Our Mission"
+        badgeIcon={Target}
+      />
 
-      <div className="flex-grow flex items-center justify-center w-full relative z-10">
+      <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
         <div
           ref={trackRef}
           className="flex gap-6 sm:gap-8 md:gap-10 px-4 sm:px-12 md:px-24 w-max"

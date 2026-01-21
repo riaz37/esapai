@@ -19,7 +19,29 @@ export function TechnologyExcellence() {
     useGSAP(
         () => {
             const cards = [card1Ref.current, card2Ref.current];
+            const header = sectionRef.current?.querySelector('[data-testid="section-header"]');
 
+            // Staggered Entrance for Header
+            if (header) {
+                gsap.fromTo(
+                    header.children,
+                    { y: 30, opacity: 0, filter: "blur(10px)" },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        stagger: 0.1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: header,
+                            start: "top 85%",
+                        }
+                    }
+                );
+            }
+
+            // Cards Entrance
             gsap.fromTo(
                 cards,
                 {
@@ -72,7 +94,7 @@ export function TechnologyExcellence() {
                         ref={card2Ref}
                         title="Neural Processing"
                         description="Transform raw data into actionable foresight with our advanced neural models."
-                        videoSrc="/productvidero2.mp4"
+                        videoSrc="/productvideo2.mp4"
                         delay={0.2}
                     />
                 </div>
@@ -93,11 +115,38 @@ interface TechCardProps {
 import React from "react";
 
 const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, description, videoSrc, className }, ref) => {
+    const glowRef = useRef<HTMLDivElement>(null);
+
+    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!glowRef.current) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        gsap.to(glowRef.current, {
+            left: x,
+            top: y,
+            duration: 0.3,
+            ease: "power2.out",
+            opacity: 1
+        });
+    };
+
+    const onMouseLeave = () => {
+        if (!glowRef.current) return;
+        gsap.to(glowRef.current, {
+            opacity: 0,
+            duration: 0.5
+        });
+    };
+
     return (
         <div
             ref={ref}
+            onMouseMove={onMouseMove}
+            onMouseLeave={onMouseLeave}
             className={cn(
-                "group relative w-full h-[340px] sm:h-[420px] lg:h-[500px] overflow-hidden rounded-3xl bg-neutral-900 border border-transparent",
+                "group relative w-full h-[340px] sm:h-[420px] lg:h-[500px] overflow-hidden rounded-3xl bg-neutral-900 border border-white/5",
                 className
             )}
         >
@@ -107,16 +156,22 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 muted
                 loop
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out"
             >
                 <source src={videoSrc} type="video/mp4" />
             </video>
 
+            {/* Interactive Glow */}
+            <div
+                ref={glowRef}
+                className="absolute w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2 bg-primary/20 blur-[100px] rounded-full pointer-events-none opacity-0 z-20 transition-opacity duration-300"
+            />
+
             {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10" />
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+            <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out z-30">
                 <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-2 sm:mb-3 tracking-tight">
                     {title}
                 </h3>
@@ -125,9 +180,8 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 </p>
             </div>
 
-            {/* Hover Glow Effect */}
-            {/* Hover Glow Effect */}
-            <div className="absolute inset-0 rounded-3xl group-hover:ring-1 group-hover:ring-white/20 transition-all duration-500 pointer-events-none" />
+            {/* Hover Frame Glow */}
+            <div className="absolute inset-0 rounded-3xl group-hover:ring-1 group-hover:ring-primary/30 transition-all duration-500 pointer-events-none z-40" />
         </div>
     );
 });

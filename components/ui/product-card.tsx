@@ -3,12 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import gsap from "gsap";
 
 import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 
 
 
@@ -20,85 +21,145 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index, videoRef, className }: ProductCardProps) {
+    const cardRef = React.useRef<HTMLDivElement>(null);
+    const buttonRef = React.useRef<HTMLDivElement>(null);
+
     const iconSrc = product.icon ?? product.content?.hero?.centerIcon;
     const iconAlt = product.content?.hero?.centerIconAlt ?? `${product.name} icon`;
 
+    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / 30;
+        const rotateY = (centerX - x) / 30;
+
+        gsap.to(cardRef.current, {
+            rotateX: rotateX,
+            rotateY: rotateY,
+            duration: 0.5,
+            ease: "power2.out"
+        });
+
+        if (buttonRef.current) {
+            const btnRect = buttonRef.current.getBoundingClientRect();
+            const btnX = e.clientX - btnRect.left - btnRect.width / 2;
+            const btnY = e.clientY - btnRect.top - btnRect.height / 2;
+
+            // Only apply magnetic if close enough
+            const dist = Math.sqrt(btnX * btnX + btnY * btnY);
+            if (dist < 100) {
+                gsap.to(buttonRef.current, {
+                    x: btnX * 0.4,
+                    y: btnY * 0.4,
+                    duration: 0.3,
+                });
+            } else {
+                gsap.to(buttonRef.current, { x: 0, y: 0, duration: 0.6 });
+            }
+        }
+    };
+
+    const onMouseLeave = () => {
+        gsap.to(cardRef.current, {
+            rotateX: 0,
+            rotateY: 0,
+            duration: 0.8,
+            ease: "elastic.out(1, 0.3)"
+        });
+        gsap.to(buttonRef.current, { x: 0, y: 0, duration: 0.6 });
+    };
+
     return (
-        <Card className={cn(
-            "h-full overflow-hidden transition-all duration-500 hover:scale-[1.01] group relative",
-            className
-        )}>
+        <div
+            className="perspective-[2000px] h-full w-full"
+            onMouseMove={onMouseMove}
+            onMouseLeave={onMouseLeave}
+        >
+            <Card
+                ref={cardRef}
+                className={cn(
+                    "h-full overflow-hidden transition-all duration-500 group relative transform-style-3d will-change-transform",
+                    className
+                )}
+            >
+                {/* Cinematic Sheen Effect */}
+                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine pointer-events-none" />
 
+                <div className="relative h-full flex flex-col md:flex-row items-center p-8 md:p-12 gap-12 z-10">
 
-            {/* Cinematic Sheen Effect */}
-            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine pointer-events-none" />
+                    {/* Left Side: Content */}
+                    <div className="flex-1 text-left space-y-8 z-10">
+                        <div className="space-y-4">
+                            <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
+                                {product.name}
+                            </h3>
+                        </div>
 
-            <div className="relative h-full flex flex-col md:flex-row items-center p-8 md:p-12 gap-12 z-10">
+                        <p className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed max-w-lg">
+                            {product.description}
+                        </p>
 
-                {/* Left Side: Content */}
-                <div className="flex-1 text-left space-y-8 z-10">
-                    <div className="space-y-4">
-                        <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
-                            {product.name}
-                        </h3>
+                        <div ref={buttonRef} className="inline-block mt-8">
+                            <Button variant="primary" size="lg" asChild>
+                                <Link href={`/product/${product.slug}`} className="inline-flex items-center gap-2 group/link">
+                                    <span>Explore</span>
+                                    <ButtonArrow className="ml-0" />
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
 
-                    <p className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed max-w-lg">
-                        {product.description}
-                    </p>
-
-                    <Link href={`/product/${product.slug}`} className="inline-block mt-8">
-                        <Button variant="primary" size="lg" className="rounded-full px-8 text-base font-bold">
-                            Explore
-                        </Button>
-                    </Link>
-                </div>
-
-                {/* Right Side: Media (Video or Placeholder) */}
-                <div className="flex-1 relative w-full h-full flex items-center justify-center">
-                    <div className="relative w-[90%] aspect-video bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
-                        {product.content?.hero?.demoVideo ? (
-                            <div className="relative w-full h-full">
-                                <video
-                                    ref={videoRef}
-                                    src={product.content.hero.demoVideo}
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                    className="w-full h-full object-cover"
-                                />
-                                {/* Overlay for cinematic feel */}
-                                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent pointer-events-none" />
-                            </div>
-                        ) : (
-                            // Fallback UI
-                            <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                                <div className="flex justify-between items-start opacity-40">
-                                    <div className="flex gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                                        <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                    </div>
-                                    <div className="h-4 w-24 bg-white/10 rounded-full"></div>
+                    {/* Right Side: Media (Video or Placeholder) */}
+                    <div className="flex-1 relative w-full h-full flex items-center justify-center">
+                        <div className="relative w-[90%] aspect-video bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
+                            {product.content?.hero?.demoVideo ? (
+                                <div className="relative w-full h-full">
+                                    <video
+                                        ref={videoRef}
+                                        src={product.content.hero.demoVideo}
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {/* Overlay for cinematic feel */}
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent pointer-events-none" />
                                 </div>
+                            ) : (
+                                // Fallback UI
+                                <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                                    <div className="flex justify-between items-start opacity-40">
+                                        <div className="flex gap-2">
+                                            <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                        </div>
+                                        <div className="h-4 w-24 bg-white/10 rounded-full"></div>
+                                    </div>
 
-                                <div className="flex-1 flex items-center justify-center">
-                                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-xl border border-white/20">
-                                        <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent translate-x-1"></div>
+                                    <div className="flex-1 flex items-center justify-center">
+                                        <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-xl border border-white/20">
+                                            <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent translate-x-1"></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3 opacity-30">
+                                        <div className="h-2 w-full bg-white/10 rounded-full"></div>
+                                        <div className="h-2 w-2/3 bg-white/10 rounded-full"></div>
                                     </div>
                                 </div>
-
-                                <div className="space-y-3 opacity-30">
-                                    <div className="h-2 w-full bg-white/10 rounded-full"></div>
-                                    <div className="h-2 w-2/3 bg-white/10 rounded-full"></div>
-                                </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        </Card>
+                </div>
+            </Card>
+        </div>
     );
 }
