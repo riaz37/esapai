@@ -133,14 +133,14 @@ export function MissionCard({
 
             {/* Image Area */}
             {image && (
-                <div className="absolute inset-0 z-0 flex items-start justify-center pt-12 pointer-events-none">
-                    <div className="w-full relative aspect-square flex items-center justify-center opacity-80">
+                <div className="absolute inset-x-0 top-0 z-0 flex items-start justify-start pt-8 pl-6 sm:pl-8 pointer-events-none">
+                    <div className="w-1/2 relative aspect-square flex items-center justify-center opacity-80">
                         <Image
                             src={image}
                             alt={title}
                             width={200}
                             height={200}
-                            className="object-contain w-3/4 h-3/4 drop-shadow-2xl translate-y-[-10px] group-hover:translate-y-[-20px] transition-transform duration-500"
+                            className="object-contain w-full h-full drop-shadow-2xl translate-y-[-10px] group-hover:translate-y-[-20px] transition-transform duration-500"
                         />
                     </div>
                 </div>

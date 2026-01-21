@@ -68,7 +68,7 @@ export function TechnologyExcellence() {
     );
 
     return (
-        <Section ref={sectionRef} className="py-24 sm:py-32 relative z-10">
+        <Section ref={sectionRef} className="py-12 sm:py-20 relative z-10">
             <div className="container mx-auto px-4">
                 <SectionHeader
                     title="Our Technology Excellence"
@@ -76,7 +76,7 @@ export function TechnologyExcellence() {
                     badge="Core Tech"
                     badgeIcon={Cpu}
                     align="left"
-                    className="mb-12 sm:mb-16"
+                    className="mb-8 sm:mb-10"
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
@@ -85,7 +85,7 @@ export function TechnologyExcellence() {
                         ref={card1Ref}
                         title="Autonomous Agents"
                         description="Deploy intelligent workers that handle complex workflows 24/7 without supervision."
-                        videoSrc="/productvideo1.mp4"
+                        videoSrc="/technology1.mp4"
                         delay={0}
                     />
 
@@ -94,7 +94,7 @@ export function TechnologyExcellence() {
                         ref={card2Ref}
                         title="Neural Processing"
                         description="Transform raw data into actionable foresight with our advanced neural models."
-                        videoSrc="/productvideo2.mp4"
+                        videoSrc="/technology2.mp4"
                         delay={0.2}
                     />
                 </div>
@@ -115,73 +115,146 @@ interface TechCardProps {
 import React from "react";
 
 const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, description, videoSrc, className }, ref) => {
+    const cardRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
+    const beamRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!glowRef.current) return;
-        const rect = e.currentTarget.getBoundingClientRect();
+        const card = cardRef.current;
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        gsap.to(glowRef.current, {
-            left: x,
-            top: y,
-            duration: 0.3,
+        // Interactive Glow Position
+        if (glowRef.current) {
+            gsap.to(glowRef.current, {
+                left: x,
+                top: y,
+                duration: 0.4,
+                ease: "power2.out",
+                opacity: 0.6,
+            });
+        }
+
+        // 3D Tilt Calculation (Subtle max 6 degrees)
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+
+        gsap.to(card, {
+            rotateX,
+            rotateY,
+            scale: 1.02,
+            duration: 0.5,
             ease: "power2.out",
-            opacity: 1
+            transformPerspective: 1000,
         });
+
+        // Border Beam Position (Tracking Mouse)
+        if (beamRef.current) {
+            gsap.to(beamRef.current, {
+                left: x,
+                top: y,
+                opacity: 1,
+                duration: 0.5,
+                ease: "power2.out",
+            });
+        }
     };
 
     const onMouseLeave = () => {
-        if (!glowRef.current) return;
-        gsap.to(glowRef.current, {
-            opacity: 0,
-            duration: 0.5
+        const card = cardRef.current;
+        if (!card) return;
+
+        // Reset Card Transform
+        gsap.to(card, {
+            rotateX: 0,
+            rotateY: 0,
+            scale: 1,
+            duration: 0.7,
+            ease: "power3.out",
         });
+
+        // Hide Glow and Beam
+        if (glowRef.current) {
+            gsap.to(glowRef.current, {
+                opacity: 0,
+                duration: 0.5,
+            });
+        }
+
+        if (beamRef.current) {
+            gsap.to(beamRef.current, {
+                opacity: 0,
+                duration: 0.5,
+            });
+        }
     };
 
     return (
-        <div
-            ref={ref}
-            onMouseMove={onMouseMove}
-            onMouseLeave={onMouseLeave}
-            className={cn(
-                "group relative w-full h-[340px] sm:h-[420px] lg:h-[500px] overflow-hidden rounded-3xl bg-neutral-900 border border-white/5",
-                className
-            )}
-        >
-            {/* Video Background */}
-            <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out"
-            >
-                <source src={videoSrc} type="video/mp4" />
-            </video>
-
-            {/* Interactive Glow */}
+        <div className="relative group p-px h-[280px] sm:h-[340px] lg:h-[400px] perspective-1000">
+            {/* The actual card that tilts */}
             <div
-                ref={glowRef}
-                className="absolute w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2 bg-primary/20 blur-[100px] rounded-full pointer-events-none opacity-0 z-20 transition-opacity duration-300"
-            />
+                ref={(el) => {
+                    cardRef.current = el;
+                    if (typeof ref === "function") ref(el);
+                    else if (ref) (ref as any).current = el;
+                }}
+                onMouseMove={onMouseMove}
+                onMouseLeave={onMouseLeave}
+                className={cn(
+                    "relative w-full h-full overflow-hidden rounded-lg bg-neutral-900 border border-white/5 transition-all duration-300 transform-gpu preserve-3d will-change-transform",
+                    className
+                )}
+            >
+                {/* Video Background */}
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700 ease-out"
+                >
+                    <source src={videoSrc} type="video/mp4" />
+                </video>
 
-            {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10" />
+                {/* Interactive Spotlight Glow */}
+                <div
+                    ref={glowRef}
+                    className="absolute w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 bg-primary/25 blur-[120px] rounded-full pointer-events-none opacity-0 z-10 mix-blend-screen"
+                />
 
-            {/* Content */}
-            <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out z-30">
-                <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-2 sm:mb-3 tracking-tight">
-                    {title}
-                </h3>
-                <p className="text-sm sm:text-base text-neutral-300 max-w-md leading-relaxed opacity-90 group-hover:text-white group-hover:opacity-100 transition-colors duration-300">
-                    {description}
-                </p>
+                {/* Gradient Overlay for Text Readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10" />
+
+                {/* Border Beam Animation Container */}
+                <div className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden">
+                    <div
+                        ref={beamRef}
+                        className="absolute w-40 h-40 -translate-x-1/2 -translate-y-1/2 bg-primary/60 blur-xl rounded-full"
+                    />
+                </div>
+
+                {/* Content */}
+                <div
+                    ref={contentRef}
+                    className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-10 transform z-30 group-hover:-translate-y-2 transition-all duration-500 ease-out"
+                >
+                    <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-primary transition-colors duration-500">
+                        {title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-neutral-300 max-w-md leading-relaxed opacity-90 group-hover:text-white group-hover:opacity-100 transition-all duration-500">
+                        {description}
+                    </p>
+                </div>
+
+                {/* Final Subtle Frame */}
+                <div className="absolute inset-0 rounded-lg border border-white/10 group-hover:border-primary/20 transition-all duration-500 pointer-events-none z-40" />
             </div>
-
-            {/* Hover Frame Glow */}
-            <div className="absolute inset-0 rounded-3xl group-hover:ring-1 group-hover:ring-primary/30 transition-all duration-500 pointer-events-none z-40" />
         </div>
     );
 });
