@@ -45,7 +45,7 @@ export function MissionCard({
         <div
             ref={containerRef}
             className={cn(
-                "relative flex flex-col gap-6 h-full items-start overflow-hidden p-6 rounded-[32px] transition-all duration-300",
+                "relative flex flex-col gap-6 h-full items-start overflow-hidden p-6 rounded-[32px] transition-all duration-300 transform-style-3d",
                 className
             )}
             onMouseMove={handleMouseMove}
@@ -133,14 +133,17 @@ export function MissionCard({
 
             {/* Image Area */}
             {image && (
-                <div className="absolute inset-x-0 top-0 z-0 flex items-start justify-start pt-8 pl-6 sm:pl-8 pointer-events-none">
-                    <div className="w-1/2 relative aspect-square flex items-center justify-center opacity-80">
+                <div className="absolute inset-x-0 top-0 z-0 flex items-start justify-start pt-6 pl-4 sm:pl-6 pointer-events-none transform-style-3d">
+                    <div className="w-[65%] relative aspect-square flex items-center justify-center opacity-85 transition-transform duration-500"
+                        style={{
+                            transform: isHovered ? "translateZ(30px) translateY(-10px)" : "translateZ(0) translateY(0)"
+                        }}>
                         <Image
                             src={image}
                             alt={title}
-                            width={200}
-                            height={200}
-                            className="object-contain w-full h-full drop-shadow-2xl translate-y-[-10px] group-hover:translate-y-[-20px] transition-transform duration-500"
+                            width={280}
+                            height={280}
+                            className="object-contain w-full h-full drop-shadow-2xl"
                         />
                     </div>
                 </div>
@@ -148,7 +151,7 @@ export function MissionCard({
 
             {/* Card Content */}
             <div className="flex flex-col gap-2 items-start h-full relative w-full z-40 pointer-events-none">
-                <div className="flex-1 min-h-[180px]" />
+                <div className="flex-1 min-h-[140px]" />
                 <div className="w-full mt-auto">
                     <h3 className="text-[#fafafa] text-xl font-semibold mb-2">{title}</h3>
                     <p className="text-[#a1a1aa] text-sm font-normal leading-relaxed">

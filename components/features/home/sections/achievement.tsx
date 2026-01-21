@@ -81,7 +81,7 @@ export function Achievement() {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full py-12 sm:py-16 bg-transparent overflow-hidden">
+        <section ref={sectionRef} className="w-full py-20 sm:py-32 bg-transparent overflow-hidden">
             <div className="container mx-auto px-4">
                 <SectionHeader
                     badge="Our Achievement"
@@ -97,20 +97,20 @@ export function Achievement() {
                     className="relative w-full max-w-6xl mx-auto"
                 >
                     {/* Horizontal Framing Lines - Contained within content width */}
-                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-20 pointer-events-none" />
-                    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
 
                     <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
                         {ACHIEVEMENTS.map((item, index) => (
                             <Spotlight
                                 key={index}
                                 className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
-                                intensity={0.2}
-                                radius={300}
+                                intensity={0.45}
+                                radius={400}
                             >
                                 {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
                                 {index < ACHIEVEMENTS.length - 1 && (
-                                    <div className="absolute top-[-120px] bottom-[-200px] right-0 w-px bg-gradient-to-b from-transparent via-[#13F584]/10 to-transparent hidden md:block z-50 pointer-events-none" />
+                                    <div className="absolute top-[-120px] bottom-[-200px] right-0 w-[2px] bg-gradient-to-b from-transparent via-[#13F584]/30 to-transparent hidden md:block z-50 pointer-events-none" />
                                 )}
 
                                 <div className="relative z-40 pointer-events-none">

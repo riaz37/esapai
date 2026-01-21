@@ -29,21 +29,6 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 30;
-        const rotateY = (centerX - x) / 30;
-
-        gsap.to(cardRef.current, {
-            rotateX: rotateX,
-            rotateY: rotateY,
-            duration: 0.5,
-            ease: "power2.out"
-        });
 
         if (buttonRef.current) {
             const btnRect = buttonRef.current.getBoundingClientRect();
@@ -65,25 +50,19 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
     };
 
     const onMouseLeave = () => {
-        gsap.to(cardRef.current, {
-            rotateX: 0,
-            rotateY: 0,
-            duration: 0.8,
-            ease: "elastic.out(1, 0.3)"
-        });
         gsap.to(buttonRef.current, { x: 0, y: 0, duration: 0.6 });
     };
 
     return (
         <div
-            className="perspective-[2000px] h-full w-full"
+            className="h-full w-full"
             onMouseMove={onMouseMove}
             onMouseLeave={onMouseLeave}
         >
             <Card
                 ref={cardRef}
                 className={cn(
-                    "h-full overflow-hidden transition-all duration-500 group relative transform-style-3d will-change-transform",
+                    "h-full overflow-hidden transition-all duration-500 group relative will-change-transform",
                     className
                 )}
             >
@@ -100,7 +79,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                             </h3>
                         </div>
 
-                        <p className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed max-w-lg">
+                        <p className="text-base md:text-lg text-gray-400 font-normal leading-relaxed max-w-lg">
                             {product.description}
                         </p>
 

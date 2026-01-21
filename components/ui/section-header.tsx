@@ -21,6 +21,7 @@ export function SectionHeader({
   className = "",
   titleClassName = "",
   subtitleClassName = "",
+  animate = true,
 }: SectionHeaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
@@ -30,6 +31,7 @@ export function SectionHeader({
 
   useGSAP(
     () => {
+      if (!animate) return;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,

@@ -246,6 +246,7 @@ export interface SectionHeaderProps {
   className?: string;
   titleClassName?: string;
   subtitleClassName?: string;
+  animate?: boolean;
 }
 
 export interface UITimelineEntry {

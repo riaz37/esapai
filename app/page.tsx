@@ -82,9 +82,7 @@ export default function Home() {
       </LazySection>
 
       <LazySection minHeight="600px">
-        <SectionMask>
-          <CTASection />
-        </SectionMask>
+        <CTASection />
       </LazySection>
     </main>
   );

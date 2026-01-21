@@ -14,8 +14,8 @@ interface SpotlightProps {
 export function Spotlight({
     children,
     className,
-    intensity = 0.15,
-    radius = 400,
+    intensity = 0.3,
+    radius = 500,
     color = "19, 245, 132", // Default to ESAP green
 }: SpotlightProps) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ export function Spotlight({
                 className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-30"
                 style={{
                     opacity,
-                    background: `radial-gradient(${radius}px circle at ${position.x}px ${position.y}px, rgba(${color}, ${intensity}), transparent 80%)`,
+                    background: `radial-gradient(${radius}px circle at ${position.x}px ${position.y}px, rgba(${color}, ${intensity}), rgba(${color}, ${intensity * 0.4}) 40%, transparent 80%)`,
                 }}
             />
             {children}
