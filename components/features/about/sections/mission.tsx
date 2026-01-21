@@ -90,7 +90,7 @@ export function Mission({
           stagger: 1,
           ease: "back.out(1.2)", // "Sit" physics
         },
-        0
+        0.5 // Add initial delay
       );
 
       tl.fromTo(
@@ -106,24 +106,7 @@ export function Mission({
           stagger: 1,
           ease: "power2.out", // Smooth focus without overshoot
         },
-        0
-      );
-
-      tl.fromTo(
-        '[data-testid="section-header"]',
-        {
-          opacity: 0,
-          y: -20,
-          filter: "blur(10px)",
-        },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.4,
-          ease: "power2.out",
-        },
-        0
+        0.5 // Add initial delay
       );
     },
     { scope: sectionRef, dependencies: [cards] }
@@ -146,12 +129,12 @@ export function Mission({
       <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
         <div
           ref={trackRef}
-          className="flex gap-6 sm:gap-8 md:gap-10 px-4 sm:px-12 md:px-24 w-max"
+          className="flex gap-4 sm:gap-5 md:gap-6 px-4 sm:px-12 md:px-24 w-max"
         >
           {cards.map((card, index) => (
             <div
               key={index}
-              className="w-[280px] sm:w-[320px] md:w-[360px] h-[380px] sm:h-[420px] md:h-[460px] flex-shrink-0"
+              className="w-[320px] sm:w-[380px] md:w-[440px] h-[380px] sm:h-[420px] md:h-[460px] flex-shrink-0"
             >
               <MissionCard
                 title={card.title}
