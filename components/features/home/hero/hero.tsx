@@ -201,7 +201,7 @@ export function Hero() {
                 >
                     <div ref={circleGlowRef} className="relative">
                         {/* Removed heavy CSS drop-shadows that cause crashes during scale */}
-                        <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[1.8]" />
+                        <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[0.6]" />
                     </div>
                 </div>
 
