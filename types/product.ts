@@ -61,6 +61,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
+  menuDescription?: string; // Shorter description for navbar menu
   slug: string;
   icon?: string;
   content?: ProductContent;

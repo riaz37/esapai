@@ -37,7 +37,9 @@ export function Achievement() {
         if (!gridRef.current) return;
 
         const items = gridRef.current.querySelectorAll(".stat-item");
+        const numbers = gridRef.current.querySelectorAll(".stat-number");
 
+        // Entrance animation for items
         gsap.fromTo(items,
             {
                 opacity: 0,
@@ -56,6 +58,26 @@ export function Achievement() {
                 ease: "power3.out",
             }
         );
+
+        // Number counting animation
+        numbers.forEach((num) => {
+            const target = parseInt(num.getAttribute("data-target") || "0");
+            const suffix = num.getAttribute("data-suffix") || "";
+            const obj = { value: 0 };
+
+            gsap.to(obj, {
+                value: target,
+                duration: 2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: num,
+                    start: "top 90%",
+                },
+                onUpdate: () => {
+                    num.textContent = Math.floor(obj.value) + suffix;
+                }
+            });
+        });
     }, { scope: sectionRef });
 
     return (
@@ -92,7 +114,11 @@ export function Achievement() {
                                 )}
 
                                 <div className="relative z-40 pointer-events-none">
-                                    <span className="block text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tighter mb-3">
+                                    <span
+                                        className="stat-number block text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tighter mb-3"
+                                        data-target={item.number.replace(/[^0-9]/g, "")}
+                                        data-suffix={item.number.replace(/[0-9]/g, "")}
+                                    >
                                         {item.number}
                                     </span>
                                     <span className="text-xs sm:text-sm text-zinc-500 font-bold uppercase tracking-[0.2em] opacity-80">

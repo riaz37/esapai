@@ -33,20 +33,22 @@ export function TextRevealSection() {
             tl.fromTo(
                 words,
                 {
-                    opacity: 0.2,
-                    filter: "blur(8px)",
-                    y: 30,
-                    color: "rgba(255, 255, 255, 0.2)",
+                    opacity: 0,
+                    filter: "blur(12px)",
+                    y: 20,
+                    scale: 0.8,
+                    color: "rgba(255, 255, 255, 0.1)",
                 },
                 {
                     opacity: 1,
                     filter: "blur(0px)",
                     y: 0,
-                    stagger: 0.05,
-                    duration: 1.5,
-                    ease: "power3.out",
+                    scale: 1,
+                    stagger: 0.08,
+                    duration: 1.2,
+                    ease: "power4.out",
                     color: "#ffffff",
-                    textShadow: "0 0 20px rgba(19, 245, 132, 0.3)",
+                    textShadow: "0 0 30px rgba(19, 245, 132, 0.4)",
                 }
             );
 

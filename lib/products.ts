@@ -21,6 +21,7 @@ export const products: Product[] = [
     id: "erp",
     name: "ERP",
     description: "Voice Activated AI ERP for SMEs. Manage your entire business operation through natural voice commands while ensuring enterprise-grade security and efficiency.",
+    menuDescription: "Voice-activated ERP for SMEs with AI-powered automation.",
     slug: "erp",
     icon: "/products/erp.svg",
     content: {
@@ -132,6 +133,7 @@ export const products: Product[] = [
     id: "ai-framework",
     name: "AI Framework",
     description: "A comprehensive AI Agent & Automation Framework designed to build, deploy, and scale intelligent enterprise solutions with unprecedented speed.",
+    menuDescription: "Build and deploy AI agents at enterprise scale.",
     slug: "ai-framework",
     content: {
       hero: {
@@ -141,7 +143,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/ai-framework.svg",
         centerIconAlt: "AI Framework Icon",
-        demoVideo: "/productvidero2.mp4",
+        demoVideo: "/productvideo2.mp4",
       },
       mission: {
         title: "Empower Your Team",
@@ -242,6 +244,7 @@ export const products: Product[] = [
     id: "zakra",
     name: "Zakra",
     description: "Smart Knowledge Agent that delivers instant, context-aware answers from your entire knowledge base. Unlock the power of your organizational data.",
+    menuDescription: "Smart knowledge agent for instant answers.",
     slug: "zakra",
     content: {
       hero: {
@@ -251,7 +254,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/zakra.svg",
         centerIconAlt: "Zakra Knowledge Agent Icon",
-        demoVideo: "/productvidero3.mp4",
+        demoVideo: "/productvideo3.mp4",
       },
       mission: {
         title: "Unlock Your Knowledge",
@@ -352,6 +355,7 @@ export const products: Product[] = [
     id: "jawib",
     name: "Jawib",
     description: "Intelligent Customer Service Agent providing 24/7 personalized support. Transform your customer experience with seamless, human-like interactions.",
+    menuDescription: "24/7 AI customer service agent.",
     slug: "jawib",
     content: {
       hero: {
@@ -462,6 +466,7 @@ export const products: Product[] = [
     id: "fasih",
     name: "Fasih",
     description: "The native Arabic LLM bridging the gap with deep understanding of dialects and cultural nuances for accurate, regionally-aware processing.",
+    menuDescription: "Native Arabic LLM with dialect support.",
     slug: "fasih",
     content: {
       hero: {
@@ -471,7 +476,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/fasih.svg",
         centerIconAlt: "Fasih Arabic LLM Icon",
-        demoVideo: "/WKB 1.mp4",
+        demoVideo: "/fasih-demo.mp4",
       },
       mission: {
         title: "Bridging the AI Gap",
@@ -572,6 +577,7 @@ export const products: Product[] = [
     id: "domain-expansion",
     name: "Domain Expansion",
     description: "Seamlessly connect legacy systems with modern AI capabilities. Bridge the gap between your existing infrastructure and the future of automation.",
+    menuDescription: "Connect legacy systems with modern AI.",
     slug: "domain-expansion",
     content: {
       hero: {

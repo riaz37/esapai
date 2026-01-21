@@ -71,7 +71,7 @@ export function DropdownMenu({
 
                       {/* Item Description */}
                       <p className="text-[0.7rem] md:text-xs text-white-opacity-70 leading-relaxed">
-                        {item.description}
+                        {item.menuDescription || item.description}
                       </p>
                     </div>
                   </div>

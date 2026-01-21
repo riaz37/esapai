@@ -14,7 +14,7 @@ import { sanitizeText } from "@/lib/utils/sanitize";
 import Frame from "@/components/shared/frame";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import { LazySection } from "@/components/ui/lazy-section";
 import type { CaseStudyWithUrls } from "@/types/case-study";
 
@@ -261,7 +261,7 @@ const CaseStudyCard = memo(
             <Button
               variant="primary"
               size="lg"
-              className="case-study-button relative z-10"
+              className="case-study-button relative z-10 group"
               asChild
             >
               <Link
@@ -270,7 +270,7 @@ const CaseStudyCard = memo(
                 className="flex items-center gap-2"
               >
                 View
-                <ArrowRight className="w-4 h-4" />
+                <ButtonArrow className="ml-0" />
               </Link>
             </Button>
           </div>

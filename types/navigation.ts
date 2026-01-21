@@ -13,6 +13,7 @@ export interface MenuItem {
   id: string;
   name: string;
   description: string;
+  menuDescription?: string;
   slug: string;
   icon?: string;
   content?: {

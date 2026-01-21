@@ -6,13 +6,13 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import { ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import Box from "@/components/shared/box";
 import { SectionMask } from "@/components/ui/section-mask";
-import { motion } from "motion/react";
 import Link from "next/link";
+import { HeroBadge } from "@/components/ui/hero-badge";
 
 
 
@@ -103,7 +103,6 @@ export function Hero() {
                 .fromTo(subtitleRef.current, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.4")
                 .fromTo(buttonRef.current, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, "-=0.3");
 
-
             // SCROLL-LINKED PARALLAX ANIMATION ("The Eye of AI")
 
             // 1. Swap Real Circle with Proxy & Zoom Proxy
@@ -116,26 +115,27 @@ export function Hero() {
                     ease: "power1.in"
                 }, 0);
 
-                // Fade IN & Zoom Proxy Circle (The "Portal")
+                // Fade IN & Zoom Proxy Circle (The "Portal") - Quick burst effect
                 mainTl.fromTo(proxyCircleRef.current,
                     {
                         autoAlpha: 0,
-                        scale: 0.8,
+                        scale: 0.6,
                     },
                     {
-                        autoAlpha: 1,
-                        scale: 1.2, // Drastically reduced scale to prevent GPU texture crash
-                        duration: 2,
-                        ease: "power2.inOut",
+                        autoAlpha: 0.8,
+                        scale: 1,
+                        duration: 0.5,
+                        ease: "power2.out",
                         transformOrigin: "center center",
                     }, 0);
 
-                // Fade Proxy out at the very end
+                // Fade Proxy out early so next section appears clean
                 mainTl.to(proxyCircleRef.current, {
                     autoAlpha: 0,
-                    duration: 0.5,
-                    ease: "power1.in"
-                }, 1.5);
+                    scale: 1.1,
+                    duration: 0.4,
+                    ease: "power2.in"
+                }, 0.5);
             }
 
             // 2. Fade out Hero Content Wrapper (Parent)
@@ -232,34 +232,7 @@ export function Hero() {
                 {/* Main Content Wrapper - Targets Scroll Fade Out */}
                 <div ref={contentScrollRef} className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-8 md:py-12 lg:py-16 flex flex-col items-center text-center">
                     {/* Tagline Badge */}
-                    <div
-                        ref={badgeRef}
-                        className="relative inline-flex items-center p-1 rounded-full bg-[#020305]/80 backdrop-blur-md border border-[#13F584]/20 shadow-[0_0_20px_rgba(19,245,132,0.1)] mb-2 sm:mb-3 overflow-hidden scale-90 sm:scale-95 md:scale-100 gsap-slide-up-optimized"
-                    >
-                        {/* Animated beam effect */}
-                        <motion.div
-                            className="absolute inset-0 w-[200%] z-0 pointer-events-none"
-                            style={{
-                                background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(19, 245, 132, 0.1) 50%, transparent 55%, transparent 100%)',
-                            }}
-                            animate={{ x: ['-100%', '100%'] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
-                        />
-
-                        {/* Left: Exclusive Pill */}
-                        <div className="relative z-10 flex items-center justify-center px-4 py-1.5 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
-                            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-black leading-none">
-                                Exclusive
-                            </span>
-                        </div>
-
-                        {/* Right: Text */}
-                        <div className="relative z-10 flex items-center px-4 py-1.5 ml-1">
-                            <span className="text-[11px] sm:text-sm font-medium tracking-wide text-[#13F584] leading-none">
-                                Tomorrow&apos;s Edge, Built Today
-                            </span>
-                        </div>
-                    </div>
+                    <HeroBadge ref={badgeRef} />
 
                     {/* Main Title - Kinetic Typography */}
                     <div className="hero-main-title w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 overflow-hidden">
@@ -295,9 +268,7 @@ export function Hero() {
                     >
                         <Link href="/contact" className="inline-flex items-center gap-2 group">
                             <span>Get Started</span>
-                            <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover:scale-110 group-hover:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]">
-                                <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
-                            </div>
+                            <ButtonArrow />
                         </Link>
                     </Button>
                 </div>

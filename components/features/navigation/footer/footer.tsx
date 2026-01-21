@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 
@@ -71,9 +71,7 @@ export function Footer() {
                   className="inline-flex items-center gap-2 group w-fit"
                 >
                   <span>Get Start</span>
-                  <div className="w-8 h-8 rounded-full bg-[#13F584] flex items-center justify-center text-black group-hover:scale-110 group-hover:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]">
-                    <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
-                  </div>
+                  <ButtonArrow />
                 </Link>
               </Button>
             </div>

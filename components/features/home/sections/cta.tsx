@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,7 +11,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-import { Button } from "@/components/ui/button";
+import { Button, ButtonArrow } from "@/components/ui/button";
 
 export function CTASection() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -120,28 +120,29 @@ export function CTASection() {
     useGSAP(() => {
         if (!sectionRef.current) return;
 
-        const content = sectionRef.current.querySelector(".container");
-        if (content) {
-            gsap.fromTo(content,
+        const container = sectionRef.current.querySelector(".container");
+        const children = container?.querySelectorAll("h2, p, .flex > *");
+
+        if (children) {
+            gsap.fromTo(children,
                 {
                     opacity: 0,
-                    y: 60,
+                    y: 40,
                     scale: 0.9,
                     filter: "blur(10px)"
                 },
                 {
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: "top 85%",
-                        end: "top 50%",
-                        scrub: 1.5,
-                        invalidateOnRefresh: true,
+                        start: "top 80%",
                     },
                     opacity: 1,
                     y: 0,
                     scale: 1,
                     filter: "blur(0px)",
-                    ease: "expo.out",
+                    stagger: 0.1,
+                    duration: 1,
+                    ease: "power3.out",
                 }
             );
         }
@@ -181,9 +182,9 @@ export function CTASection() {
                             size="lg"
                             asChild
                         >
-                            <Link href="/contact" className="flex items-center gap-2">
-                                Start Building Now
-                                <ArrowRight className="w-4 h-4" />
+                            <Link href="/contact" className="inline-flex items-center gap-2 group">
+                                <span>Start Building Now</span>
+                                <ButtonArrow />
                             </Link>
                         </Button>
                         <Button

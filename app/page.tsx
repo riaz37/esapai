@@ -13,10 +13,6 @@ const MissionSection = dynamic(
   () => import("@/components/features/about/sections/mission").then((mod) => ({ default: mod.Mission })),
 );
 
-const VisionSection = dynamic(
-  () => import("@/components/features/about/sections/vision").then((mod) => ({ default: mod.Vision })),
-);
-
 const ServiceSection = dynamic(
   () => import("@/components/features/home/sections/service").then((mod) => ({ default: mod.Service })),
 );
@@ -66,10 +62,6 @@ export default function Home() {
       <LazySection minHeight="600px">
         <MissionSection />
       </LazySection>
-
-      {/* <LazySection minHeight="600px">
-        <VisionSection />
-      </LazySection> */}
 
       <LazySection minHeight="800px">
         <ServiceSection />

@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 
-import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { Button, ButtonArrow } from "@/components/ui/button";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { HeroBadge } from "@/components/ui/hero-badge";
 import Frame from "@/components/shared/frame";
@@ -110,8 +110,9 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                 size="lg"
                 asChild
               >
-                <Link href="#explore">
-                  Explore Solution
+                <Link href="#explore" className="inline-flex items-center gap-2 group">
+                  <span>Explore Solution</span>
+                  <ButtonArrow />
                 </Link>
               </Button>
               <Button
