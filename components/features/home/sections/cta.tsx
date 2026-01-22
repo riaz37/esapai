@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,13 +15,6 @@ import { Button, ButtonArrow } from "@/components/ui/button";
 export function CTASection() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
-    const isHoveredRef = useRef(false);
-
-    // Sync ref with state
-    useEffect(() => {
-        isHoveredRef.current = isHovered;
-    }, [isHovered]);
 
     // Star Warp Animation
     useEffect(() => {
@@ -72,12 +64,8 @@ export function CTASection() {
             const cx = width / 2;
             const cy = height / 2;
 
-            // Speed factor based on hover
-            const targetSpeed = isHoveredRef.current ? 15 : 2;
-            const currentSpeed = (stars as any).speed || 2;
-            // Smooth speed transition
-            (stars as any).speed = currentSpeed + (targetSpeed - currentSpeed) * 0.1;
-            const speed = (stars as any).speed;
+            // Constant slow warp speed for smooth, consistent animation
+            const speed = 2.5;
 
             stars.forEach((star) => {
                 // Move star closer
@@ -169,8 +157,6 @@ export function CTASection() {
                 maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
                 WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)"
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
             {/* Canvas Background - z-0 */}
             <canvas

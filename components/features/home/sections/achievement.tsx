@@ -15,17 +15,17 @@ if (typeof window !== "undefined") {
 
 const ACHIEVEMENTS = [
     {
-        number: "200+",
-        label: "Customer",
+        number: "99.9%",
+        label: "System Reliability",
     },
     {
-        number: "200+",
-        label: "Customer",
+        number: "50k+",
+        label: "Active AI Agents",
         isHighlighted: true,
     },
     {
-        number: "200+",
-        label: "Customer",
+        number: "10x",
+        label: "Efficiency Gain",
     },
 ];
 
@@ -61,7 +61,8 @@ export function Achievement() {
 
         // Number counting animation
         numbers.forEach((num) => {
-            const target = parseInt(num.getAttribute("data-target") || "0");
+            const targetStr = num.getAttribute("data-target") || "0";
+            const target = targetStr.includes(".") ? parseFloat(targetStr) : parseInt(targetStr);
             const suffix = num.getAttribute("data-suffix") || "";
             const obj = { value: 0 };
 
@@ -74,7 +75,24 @@ export function Achievement() {
                     start: "top 90%",
                 },
                 onUpdate: () => {
-                    num.textContent = Math.floor(obj.value) + suffix;
+                    const val = targetStr.includes(".") ? obj.value.toFixed(1) : Math.floor(obj.value);
+                    num.textContent = val + suffix;
+                },
+                onComplete: () => {
+                    // Success pulse animation
+                    gsap.timeline()
+                        .to(num, {
+                            scale: 1.15,
+                            color: "#13F584",
+                            duration: 0.4,
+                            ease: "power2.out",
+                        })
+                        .to(num, {
+                            scale: 1,
+                            color: "white",
+                            duration: 0.6,
+                            ease: "power2.inOut",
+                        });
                 }
             });
         });
@@ -87,7 +105,7 @@ export function Achievement() {
                     badge="Our Achievement"
                     badgeIcon={Cpu}
                     title="Innovation & Future Focus"
-                    subtitle="Get lifetime access to all the components. No recurring fees. Just simple, transparent pricing."
+                    subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
                     align="center"
                     className="mb-16 sm:mb-24"
                 />
@@ -121,7 +139,7 @@ export function Achievement() {
                                     >
                                         {item.number}
                                     </span>
-                                    <span className="text-xs sm:text-sm text-zinc-500 font-bold uppercase tracking-[0.2em] opacity-80">
+                                    <span className="text-sm sm:text-base text-white/90 font-bold uppercase tracking-[0.2em]">
                                         {item.label}
                                     </span>
                                 </div>

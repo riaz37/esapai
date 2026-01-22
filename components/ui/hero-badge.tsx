@@ -31,7 +31,7 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
                 />
 
                 {/* Left: Exclusive Pill */}
-                <div className="relative z-10 flex items-center justify-center px-4 py-2 sm:px-5 sm:py-2 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
+                <div className="relative z-10 flex items-center justify-center px-3 py-1 sm:px-3 sm:py-2 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
                     <span className="text-[10px] sm:text-[13px] font-bold uppercase tracking-wider text-black leading-none">
                         {pillText}
                     </span>

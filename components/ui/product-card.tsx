@@ -30,6 +30,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;
 
+        // Magnetic Button
         if (buttonRef.current) {
             const btnRect = buttonRef.current.getBoundingClientRect();
             const btnX = e.clientX - btnRect.left - btnRect.width / 2;
@@ -37,10 +38,10 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
 
             // Only apply magnetic if close enough
             const dist = Math.sqrt(btnX * btnX + btnY * btnY);
-            if (dist < 100) {
+            if (dist < 120) {
                 gsap.to(buttonRef.current, {
-                    x: btnX * 0.4,
-                    y: btnY * 0.4,
+                    x: btnX * 0.45,
+                    y: btnY * 0.45,
                     duration: 0.3,
                 });
             } else {

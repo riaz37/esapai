@@ -20,12 +20,39 @@ export function ServiceCard({
     const cardRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
 
-    const onMouseMove = () => {
-        // 3D tilt removed for consistency with site-wide design
+    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const card = cardRef.current;
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -5; // Subtle 5 deg max
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        gsap.to(card, {
+            rotateX,
+            rotateY,
+            scale: 1.02,
+            duration: 0.5,
+            ease: "power2.out",
+            transformPerspective: 1000,
+        });
     };
 
     const onMouseLeave = () => {
-        // 3D tilt removed
+        if (!cardRef.current) return;
+        gsap.to(cardRef.current, {
+            rotateX: 0,
+            rotateY: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+        });
     };
 
     return (

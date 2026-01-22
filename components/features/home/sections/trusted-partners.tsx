@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,18 +11,17 @@ if (typeof window !== "undefined") {
 }
 
 const PARTNERS = [
-    { name: "NVIDIA", logo: "/placeholder.svg" },
-    { name: "GOOGLE", logo: "/placeholder.svg" },
-    { name: "OPENAI", logo: "/placeholder.svg" },
-    { name: "ANTHROPIC", logo: "/placeholder.svg" },
-    { name: "MICROSOFT", logo: "/placeholder.svg" },
-    { name: "META", logo: "/placeholder.svg" },
-    { name: "AWS", logo: "/placeholder.svg" },
-    { name: "TESLA", logo: "/placeholder.svg" },
+    { logo: "/partners/EMp.svg", alt: "Partner 1" },
+    { logo: "/partners/EMp-1.svg", alt: "Partner 2" },
+    { logo: "/partners/EMp-2-1.svg", alt: "Partner 3" },
+    { logo: "/partners/EMp-3.svg", alt: "Partner 4" },
+    { logo: "/partners/EMp-4.svg", alt: "Partner 5" },
+    { logo: "/partners/EMp-5.svg", alt: "Partner 6" },
 ];
 
 export function TrustedPartners() {
     const sectionRef = useRef<HTMLElement>(null);
+    const marqueeRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -63,24 +63,47 @@ export function TrustedPartners() {
                 }
             }
         );
+
+        // Infinite seamless marquee animation
+        if (marqueeRef.current) {
+            const marquee = marqueeRef.current;
+            const marqueeWidth = marquee.offsetWidth / 2; // Half width since we duplicate
+
+            // Set initial position
+            gsap.set(marquee, { x: 0 });
+
+            // Create infinite loop
+            gsap.to(marquee, {
+                x: -marqueeWidth,
+                duration: 30,
+                ease: "none",
+                repeat: -1,
+                modifiers: {
+                    x: gsap.utils.unitize((x) => parseFloat(x) % marqueeWidth)
+                }
+            });
+        }
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full pt-8 pb-8 sm:pt-12 sm:pb-12 overflow-hidden">
+        <section ref={sectionRef} className="w-full pt-8 pb-8 sm:pt-12 sm:pb-12">
             <div className="relative flex overflow-hidden">
                 {/* Marquee Row */}
-                <div className="flex animate-marquee whitespace-nowrap py-4">
+                <div ref={marqueeRef} className="flex whitespace-nowrap py-8">
                     {[...PARTNERS, ...PARTNERS].map((partner, index) => (
                         <div
                             key={index}
-                            className="partner-item flex items-center justify-center px-12 sm:px-16 gap-3 group/partner transition-all duration-300"
+                            className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 group/partner transition-all duration-300"
                         >
-                            <div className="w-8 h-8 rounded bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold text-white/40 group-hover/partner:bg-primary/20 group-hover/partner:border-primary/40 group-hover/partner:text-primary transition-all duration-300">
-                                {partner.name.substring(0, 2)}
+                            <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center">
+                                <Image
+                                    src={partner.logo}
+                                    alt={partner.alt}
+                                    fill
+                                    className="object-contain opacity-60 brightness-110 group-hover/partner:opacity-100 group-hover/partner:brightness-125 group-hover/partner:scale-110 transition-all duration-500 ease-out"
+                                    sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
+                                />
                             </div>
-                            <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white/20 group-hover/partner:text-white/60 group-hover/partner:scale-105 transition-all duration-300 cursor-default select-none uppercase tracking-tighter">
-                                {partner.name}
-                            </span>
                         </div>
                     ))}
                 </div>
