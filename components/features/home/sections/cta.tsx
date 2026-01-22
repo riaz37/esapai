@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,13 +15,6 @@ import { Button, ButtonArrow } from "@/components/ui/button";
 export function CTASection() {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
-    const isHoveredRef = useRef(false);
-
-    // Sync ref with state
-    useEffect(() => {
-        isHoveredRef.current = isHovered;
-    }, [isHovered]);
 
     // Star Warp Animation
     useEffect(() => {
@@ -65,19 +57,15 @@ export function CTASection() {
         resize();
 
         const draw = () => {
-            // Clear with trail effect
+            // Clear with trail effect - matching site background exactly (#09090b)
             ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
             ctx.fillRect(0, 0, width, height);
 
             const cx = width / 2;
             const cy = height / 2;
 
-            // Speed factor based on hover
-            const targetSpeed = isHoveredRef.current ? 15 : 2;
-            const currentSpeed = (stars as any).speed || 2;
-            // Smooth speed transition
-            (stars as any).speed = currentSpeed + (targetSpeed - currentSpeed) * 0.1;
-            const speed = (stars as any).speed;
+            // Constant slow warp speed for smooth, consistent animation
+            const speed = 2.5;
 
             stars.forEach((star) => {
                 // Move star closer
@@ -99,8 +87,18 @@ export function CTASection() {
                 const opacity = (1 - star.z / width);
 
                 if (x >= 0 && x < width && y >= 0 && y < height) {
+                    // Calculate edge fade
+                    // Increased threshold to 45% for an even smoother blend
+                    const edgeThreshold = height * 0.45;
+                    let edgeOpacity = 1;
+                    if (y < edgeThreshold) {
+                        edgeOpacity = y / edgeThreshold;
+                    } else if (y > height - edgeThreshold) {
+                        edgeOpacity = (height - y) / edgeThreshold;
+                    }
+
                     ctx.beginPath();
-                    ctx.fillStyle = `rgba(19, 245, 132, ${opacity})`; // Primary green color
+                    ctx.fillStyle = `rgba(19, 245, 132, ${opacity * edgeOpacity})`; // Primary green color
                     ctx.arc(x, y, size, 0, Math.PI * 2);
                     ctx.fill();
                 }
@@ -153,16 +151,17 @@ export function CTASection() {
     return (
         <section
             ref={sectionRef}
-            // Seamless blend: Fully transparent to show global background + Warp on top
+            // Seamless blend: Using mask-image for the smoothest possible edge blending
             className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-transparent"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            style={{
+                maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)"
+            }}
         >
             {/* Canvas Background - z-0 */}
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 z-0 w-full h-full block opacity-80" // Slightly transparent to blend better
-                style={{ opacity: 0.8 }}
+                className="absolute inset-0 z-0 w-full h-full block"
             />
 
             {/* Content */}

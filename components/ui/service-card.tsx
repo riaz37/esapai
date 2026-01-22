@@ -21,31 +21,37 @@ export function ServiceCard({
     const contentRef = React.useRef<HTMLDivElement>(null);
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!cardRef.current || !contentRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
+        const card = cardRef.current;
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        const rotateX = (y - centerY) / 15;
-        const rotateY = (centerX - x) / 15;
+        const rotateX = ((y - centerY) / centerY) * -5; // Subtle 5 deg max
+        const rotateY = ((x - centerX) / centerX) * 5;
 
-        gsap.to(contentRef.current, {
-            rotateX: rotateX,
-            rotateY: rotateY,
+        gsap.to(card, {
+            rotateX,
+            rotateY,
+            scale: 1.02,
             duration: 0.5,
-            ease: "power2.out"
+            ease: "power2.out",
+            transformPerspective: 1000,
         });
     };
 
     const onMouseLeave = () => {
-        if (!contentRef.current) return;
-        gsap.to(contentRef.current, {
+        if (!cardRef.current) return;
+        gsap.to(cardRef.current, {
             rotateX: 0,
             rotateY: 0,
-            duration: 0.8,
-            ease: "elastic.out(1, 0.3)"
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
         });
     };
 
@@ -59,11 +65,18 @@ export function ServiceCard({
             <Card
                 ref={contentRef}
                 className={cn(
-                    "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transform-style-3d will-change-transform",
+                    "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transition-all duration-300",
                 )}
             >
-                {/* Visual/Illustration Area - Empty for now */}
-                <div className="relative flex-1 min-h-[200px] z-0 pointer-events-none" />
+                {/* Visual/Illustration Area */}
+                <div className="relative flex-1 min-h-[160px] z-0 flex items-center justify-center p-8 overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/2 blur-[80px] rounded-full opacity-50" />
+
+                    {/* Light Sweep/Shimmer Effect */}
+                    <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent -translate-x-[200%] group-hover:animate-light-sweep skew-x-[-20deg]" />
+                    </div>
+                </div>
 
                 {/* Content Area */}
                 <div className="p-6 pt-4 relative z-40 pointer-events-none">

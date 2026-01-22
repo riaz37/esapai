@@ -3,6 +3,18 @@
 @theme {
   --font-sans: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
+
+  --animate-light-sweep: light-sweep 1.5s ease-in-out forwards;
+
+  @keyframes light-sweep {
+    0% {
+      transform: translateX(-200%) skewX(-20deg);
+    }
+
+    100% {
+      transform: translateX(200%) skewX(-20deg);
+    }
+  }
 }
 
 @layer base {

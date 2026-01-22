@@ -80,7 +80,7 @@ export function TextRevealSection() {
     return (
         <section
             ref={containerRef}
-            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden py-20"
+            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden py-20 sm:py-32"
         >
             <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
                 <div className="max-w-5xl mx-auto flex-1 flex items-center justify-center min-h-[60vh]">

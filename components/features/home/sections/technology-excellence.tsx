@@ -196,7 +196,7 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
     };
 
     return (
-        <div className="relative group p-px h-[280px] sm:h-[340px] lg:h-[400px] perspective-1000">
+        <div className="relative group p-px h-[280px] sm:h-[340px] lg:h-[400px] perspective-1000 rounded-[32px]">
             {/* The actual card that tilts */}
             <div
                 ref={(el) => {
@@ -207,7 +207,7 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 onMouseMove={onMouseMove}
                 onMouseLeave={onMouseLeave}
                 className={cn(
-                    "relative w-full h-full overflow-hidden rounded-lg bg-neutral-900 border border-white/5 transition-all duration-300 transform-gpu preserve-3d will-change-transform",
+                    "relative w-full h-full overflow-hidden rounded-[32px] bg-neutral-900 border border-transparent transition-all duration-300 transform-gpu preserve-3d will-change-transform",
                     className
                 )}
             >
@@ -253,7 +253,7 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 </div>
 
                 {/* Final Subtle Frame */}
-                <div className="absolute inset-0 rounded-lg border border-white/10 group-hover:border-primary/20 transition-all duration-500 pointer-events-none z-40" />
+                <div className="absolute inset-0 rounded-[32px] border border-transparent group-hover:border-primary/20 transition-all duration-500 pointer-events-none z-40" />
             </div>
         </div>
     );

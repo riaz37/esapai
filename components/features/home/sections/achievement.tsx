@@ -15,17 +15,17 @@ if (typeof window !== "undefined") {
 
 const ACHIEVEMENTS = [
     {
-        number: "200+",
-        label: "Customer",
+        number: "99.9%",
+        label: "System Reliability",
     },
     {
-        number: "200+",
-        label: "Customer",
+        number: "50k+",
+        label: "Active AI Agents",
         isHighlighted: true,
     },
     {
-        number: "200+",
-        label: "Customer",
+        number: "10x",
+        label: "Efficiency Gain",
     },
 ];
 
@@ -61,7 +61,8 @@ export function Achievement() {
 
         // Number counting animation
         numbers.forEach((num) => {
-            const target = parseInt(num.getAttribute("data-target") || "0");
+            const targetStr = num.getAttribute("data-target") || "0";
+            const target = targetStr.includes(".") ? parseFloat(targetStr) : parseInt(targetStr);
             const suffix = num.getAttribute("data-suffix") || "";
             const obj = { value: 0 };
 
@@ -74,20 +75,37 @@ export function Achievement() {
                     start: "top 90%",
                 },
                 onUpdate: () => {
-                    num.textContent = Math.floor(obj.value) + suffix;
+                    const val = targetStr.includes(".") ? obj.value.toFixed(1) : Math.floor(obj.value);
+                    num.textContent = val + suffix;
+                },
+                onComplete: () => {
+                    // Success pulse animation
+                    gsap.timeline()
+                        .to(num, {
+                            scale: 1.15,
+                            color: "#13F584",
+                            duration: 0.4,
+                            ease: "power2.out",
+                        })
+                        .to(num, {
+                            scale: 1,
+                            color: "white",
+                            duration: 0.6,
+                            ease: "power2.inOut",
+                        });
                 }
             });
         });
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full py-12 sm:py-16 bg-transparent overflow-hidden">
+        <section ref={sectionRef} className="w-full py-20 sm:py-32 bg-transparent overflow-hidden">
             <div className="container mx-auto px-4">
                 <SectionHeader
                     badge="Our Achievement"
                     badgeIcon={Cpu}
                     title="Innovation & Future Focus"
-                    subtitle="Get lifetime access to all the components. No recurring fees. Just simple, transparent pricing."
+                    subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
                     align="center"
                     className="mb-16 sm:mb-24"
                 />
@@ -97,20 +115,20 @@ export function Achievement() {
                     className="relative w-full max-w-6xl mx-auto"
                 >
                     {/* Horizontal Framing Lines - Contained within content width */}
-                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-20 pointer-events-none" />
-                    <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#13F584]/15 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
 
                     <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
                         {ACHIEVEMENTS.map((item, index) => (
                             <Spotlight
                                 key={index}
                                 className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
-                                intensity={0.2}
-                                radius={300}
+                                intensity={0.45}
+                                radius={400}
                             >
                                 {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
                                 {index < ACHIEVEMENTS.length - 1 && (
-                                    <div className="absolute top-[-120px] bottom-[-200px] right-0 w-px bg-gradient-to-b from-transparent via-[#13F584]/10 to-transparent hidden md:block z-50 pointer-events-none" />
+                                    <div className="absolute top-[-120px] bottom-[-200px] right-0 w-[2px] bg-gradient-to-b from-transparent via-[#13F584]/30 to-transparent hidden md:block z-50 pointer-events-none" />
                                 )}
 
                                 <div className="relative z-40 pointer-events-none">
@@ -121,7 +139,7 @@ export function Achievement() {
                                     >
                                         {item.number}
                                     </span>
-                                    <span className="text-xs sm:text-sm text-zinc-500 font-bold uppercase tracking-[0.2em] opacity-80">
+                                    <span className="text-sm sm:text-base text-white/90 font-bold uppercase tracking-[0.2em]">
                                         {item.label}
                                     </span>
                                 </div>

@@ -24,31 +24,50 @@ export function ProductShowcase() {
       const cards = cardRefs.current.filter(Boolean);
 
       cards.forEach((card, i) => {
-        // Next card covers the current one
         const nextCard = cards[i + 1];
         if (!nextCard || !card) return;
 
-        // Downcast to HTMLElement to access style safely if needed, though gsap handles it.
-        const cardInner = card;
         const shadowOverlay = card.querySelector(".shadow-overlay");
+        const cardContent = card.querySelector(".relative.h-full.flex"); // Target inner content for parallax
 
-        gsap.fromTo(cardInner,
+        // Receding card animation
+        gsap.fromTo(card,
           {
             scale: 1,
+            rotateX: 0,
+            z: 0,
             filter: "blur(0px)",
           },
           {
             scrollTrigger: {
               trigger: nextCard,
-              start: "top 65%", // Start transitioning when next card enters upper viewport
-              end: "top top+=100",      // Fully transitioned when next card covers it 
-              scrub: true,
+              start: "top 85%", // Start earlier for smoother transition
+              end: "top 120",   // Lock at the uniform stacking point
+              scrub: 1.5,      // Luxury momentum
               invalidateOnRefresh: true,
             },
             scale: 0.85,
-            filter: "blur(8px)",
-            ease: "none",
+            rotateX: -10,      // Tilt back as it recedes
+            z: -100,           // Sink into depth
+            filter: "blur(10px)",
+            ease: "power2.inOut",
+            force3D: true,     // GPU acceleration
           });
+
+        // Inner content parallax
+        if (cardContent) {
+          gsap.to(cardContent, {
+            scrollTrigger: {
+              trigger: nextCard,
+              start: "top 85%",
+              end: "top 120",
+              scrub: 1.5,
+            },
+            y: -40,             // Move content slightly faster/differently
+            opacity: 0.8,
+            ease: "power2.inOut",
+          });
+        }
 
         if (shadowOverlay) {
           gsap.fromTo(shadowOverlay,
@@ -56,13 +75,12 @@ export function ProductShowcase() {
             {
               scrollTrigger: {
                 trigger: nextCard,
-                start: "top 65%",
-                end: "top top+=100",
-                scrub: true,
-                invalidateOnRefresh: true,
+                start: "top 85%",
+                end: "top 120",
+                scrub: 1.5,
               },
-              opacity: 0.6, // Darken the card as it recedes
-              ease: "none"
+              opacity: 0.7, // Slightly deeper shadow
+              ease: "power2.in", // Natural parabolic occlusion
             });
         }
       });
@@ -72,7 +90,7 @@ export function ProductShowcase() {
 
   return (
     <section
-      className="relative w-full py-10 sm:py-20 bg-transparent overflow-visible"
+      className="relative w-full py-20 sm:py-32 bg-transparent overflow-visible"
     >
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeader
@@ -83,10 +101,10 @@ export function ProductShowcase() {
         />
 
         {/* Sticky Stacking Container */}
-        <div ref={containerRef} className="flex flex-col items-center pb-[40vh] perspective-[1000px]">
+        <div ref={containerRef} className="flex flex-col items-center pb-10 perspective-[1000px]">
           {products.map((product, index) => {
-            // Sticky top offset
-            const topOffset = 80 + index * 10;
+            // Sticky top offset - uniform 120px to clear navbar (80px) with margin
+            const topOffset = 120;
 
             return (
               <div
@@ -94,12 +112,12 @@ export function ProductShowcase() {
                 ref={(el) => {
                   cardRefs.current[index] = el;
                 }}
-                className="sticky w-full max-w-[1400px]"
+                className="sticky w-full max-w-[1400px] preserve-3d"
                 style={{
                   top: `${topOffset}px`,
                   zIndex: index + 1,
                   // Margin to allow scrolling. Last card doesn't need margin.
-                  marginBottom: index === products.length - 1 ? "0px" : "30vh",
+                  marginBottom: index === products.length - 1 ? "0px" : "40vh",
                 }}
               >
                 {/* Shadow Overlay for darkening effect */}

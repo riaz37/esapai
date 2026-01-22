@@ -48,7 +48,7 @@ const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { sp
             className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-30"
             style={{
               opacity: isHovered ? 1 : 0,
-              background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(19, 245, 132, 0.15), transparent 80%)`,
+              background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(19, 245, 132, 0.3), rgba(19, 245, 132, 0.1) 40%, transparent 80%)`,
             }}
           />
         )}

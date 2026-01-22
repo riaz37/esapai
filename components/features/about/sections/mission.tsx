@@ -68,16 +68,44 @@ export function Mission({
         },
       });
 
-      // Cinematic 3D Fly-In
-      // Split movement and appearance to prevent filter artifacts with back.out easing
+      // Synchronized Header Animation (Non-scrubbed feel but tied to scroll)
+      const header = sectionRef.current.querySelector('[data-testid="section-header"]');
+      if (header) {
+        const badge = header.children[0]; // Badge wrapper
+        const title = header.querySelector("h2");
+        const accent = header.querySelector('div[class*="bg-primary"]');
+        const subtitle = header.querySelector("p");
+
+        tl.fromTo(
+          [badge, title, accent, subtitle],
+          {
+            y: 30,
+            opacity: 0,
+            filter: "blur(10px)",
+          },
+          {
+            y: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          0 // Start immediately at pin
+        );
+      }
+
+      // Luxury "Cylindrical Unrolling" Assembly
       tl.fromTo(
         cardsElements,
         {
-          x: "130%", // Distinct off-screen start
-          rotationY: -45, // Angled away
-          rotationX: 10,  // Slight tilt
-          scale: 0.6,     // Depth effect
-          z: -500,
+          x: "150%",           // Enter from much further right
+          rotationY: -60,     // Stronger cylindrical curve
+          rotationX: 15,      // Tilted for perspective
+          scale: 0.5,         // Distant perspective
+          z: -800,            // Deep space
+          autoAlpha: 0,
+          filter: "blur(15px)",
           transformOrigin: "50% 50%",
         },
         {
@@ -86,28 +114,27 @@ export function Mission({
           rotationX: 0,
           scale: 1,
           z: 0,
-          duration: 1,
-          stagger: 1,
-          ease: "back.out(1.2)", // "Sit" physics
-        },
-        0.5 // Add initial delay
-      );
-
-      tl.fromTo(
-        cardsElements,
-        {
-          autoAlpha: 0,
-          filter: "blur(10px)",
-        },
-        {
           autoAlpha: 1,
           filter: "blur(0px)",
-          duration: 1,
-          stagger: 1,
-          ease: "power2.out", // Smooth focus without overshoot
+          duration: 1.5,      // Longer, weighted duration
+          stagger: 0.8,       // Overlapping "unrolling" feel
+          ease: "expo.out",   // Smooth, buttery deceleration
+          force3D: true,      // GPU acceleration
         },
-        0.5 // Add initial delay
+        0.5 // Start soon after pin begins
       );
+
+      // Add a subtle "parallax" drift to cards as they are scrolled through
+      tl.to(cardsElements, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 2,
+        },
+        z: 20,              // Slight drift towards camera
+        ease: "none"
+      });
     },
     { scope: sectionRef, dependencies: [cards] }
   );
@@ -116,7 +143,7 @@ export function Mission({
     <Section
       ref={sectionRef}
       padding="none"
-      containerClassName="min-h-screen flex flex-col pt-16 sm:pt-24"
+      containerClassName="min-h-screen flex flex-col py-20 sm:py-32"
       className="relative overflow-hidden z-20 bg-transparent"
     >
       <SectionHeader
@@ -124,17 +151,19 @@ export function Mission({
         subtitle={subtitle}
         badge="Our Mission"
         badgeIcon={Target}
+        animate={false}
+        className="mission-header"
       />
 
       <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
         <div
           ref={trackRef}
-          className="flex gap-4 sm:gap-5 md:gap-6 px-4 sm:px-12 md:px-24 w-max"
+          className="flex gap-5 sm:gap-6 md:gap-8 px-4 sm:px-12 md:px-24 w-max"
         >
           {cards.map((card, index) => (
             <div
               key={index}
-              className="w-[320px] sm:w-[380px] md:w-[440px] h-[380px] sm:h-[420px] md:h-[460px] flex-shrink-0"
+              className="w-[300px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[380px] md:h-[420px] flex-shrink-0"
             >
               <MissionCard
                 title={card.title}

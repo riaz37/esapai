@@ -20,37 +20,37 @@ const SERVICES = [
   {
     id: "agentic",
     title: "Agentic AI Integration",
-    description: "For everyone starting out on a website for their big idea",
+    description: "Seamlessly integrate autonomous agents into your workflow to automate complex decision-making processes.",
     image: "/bentogird/agenticai.svg",
   },
   {
     id: "strategy",
     title: "Enterprise Strategy",
-    description: "For everyone starting out on a website for their big idea",
+    description: "Tailored AI roadmaps designed to align with your business goals and drive long-term digital transformation.",
     image: "/bentogird/enterprise.svg",
   },
   {
     id: "faas",
     title: "FaaS Infrastructure",
-    description: "For everyone starting out on a website for their big idea",
+    description: "Managed infrastructure for AI Agent Framework-as-a-Service, ensuring scalability and peak performance.",
     image: "/bentogird/faas.svg",
   },
   {
     id: "tailored",
     title: "Tailored Solutions",
-    description: "For everyone starting out on a website for their big idea",
+    description: "Bespoke AI systems built from the ground up to solve your unique operational challenges and industry needs.",
     image: "/bentogird/aisolution.svg",
   },
   {
     id: "industry",
     title: "Industry Excellence",
-    description: "For everyone starting out on a website for their big idea",
+    description: "Leveraging domain-specific expertise to deploy AI solutions that exceed industry standards for security and reliability.",
     image: "/bentogird/industry.svg",
   },
   {
     id: "lab",
     title: "Innovation Lab",
-    description: "For everyone starting out on a website for their big idea",
+    description: "Continuous research and rapid prototyping of cutting-edge AI technologies to keep your enterprise ahead of the curve.",
     image: "/bentogird/ailab.svg",
   },
 ];
@@ -62,37 +62,60 @@ export function Service() {
   useGSAP(() => {
     if (!gridRef.current) return;
 
-    // Target the direct Children of the grid container (the wrappers of ServiceCard)
     const cards = Array.from(gridRef.current.children[0].children);
 
-    gsap.fromTo(cards,
-      {
-        opacity: 0,
-        y: 60,
-        scale: 0.9,
-      },
-      {
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: "top 85%",
-          end: "top 40%",
-          scrub: 1, // Smoothly link to scroll
-          invalidateOnRefresh: true,
-        },
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        stagger: 0.1,
-        duration: 1,
-        ease: "power3.out",
+    cards.forEach((card, i) => {
+      let x = 0;
+      let y = 0;
+      let rotateY = 0;
+      let scale = 1;
+
+      // Determine animation based on grid position (rough approximation for Concept 1)
+      if (i === 0 || i === 4) { // Left column
+        x = -200;
+        rotateY = 25;
+      } else if (i === 2) { // Top Right
+        x = 200;
+        rotateY = -25;
+      } else if (i === 1) { // Top Center
+        y = 100;
+        scale = 0.95;
+      } else { // Spanning or middle cards
+        y = 150;
+        scale = 0.9;
       }
-    );
+
+      gsap.fromTo(card,
+        {
+          opacity: 0,
+          x,
+          y,
+          rotateY,
+          scale,
+        },
+        {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 92%",
+            end: "top 35%",
+            scrub: 2,
+            invalidateOnRefresh: true,
+          },
+          opacity: 1,
+          x: 0,
+          y: 0,
+          rotateY: 0,
+          scale: 1,
+          ease: "power2.out",
+        }
+      );
+    });
   }, { scope: sectionRef });
 
   return (
     <section
       ref={sectionRef}
-      className={cn("relative w-full py-8 sm:py-16 bg-transparent z-20 overflow-hidden")}
+      className={cn("relative w-full py-20 sm:py-32 bg-transparent z-20 overflow-hidden")}
     >
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <SectionHeader
@@ -105,7 +128,7 @@ export function Service() {
 
         {/* Bento Grid with synced wireframe */}
         <div ref={gridRef} className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(280px,auto)]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(400px,auto)]">
             {/* Row 1: Tall left + 2 shorter right */}
             <div className="md:row-span-2">
               <ServiceCard
