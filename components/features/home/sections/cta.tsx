@@ -12,7 +12,21 @@ if (typeof window !== "undefined") {
 
 import { Button, ButtonArrow } from "@/components/ui/button";
 
-export function CTASection() {
+
+interface CTASectionProps {
+    title?: React.ReactNode;
+    subtitle?: string;
+}
+
+export function CTASection({
+    title = (
+        <>
+            <span className="text-white">Ready to Transform </span>
+            <span className="text-primary">Your Business?</span>
+        </>
+    ),
+    subtitle = "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.",
+}: CTASectionProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -169,11 +183,10 @@ export function CTASection() {
                 <div className="max-w-4xl mx-auto">
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
-                        <span className="text-white">Ready to Transform </span>
-                        <span className="text-primary">Your Business?</span>
+                        {title}
                     </h2>
                     <p className="text-base sm:text-lg md:text-xl text-zinc-400 mb-8 md:mb-10 max-w-2xl mx-auto tracking-tight">
-                        Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.
+                        {subtitle}
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
                         <Button

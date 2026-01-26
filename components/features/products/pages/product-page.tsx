@@ -2,8 +2,13 @@
 
 import { useProductContent } from "@/lib/hooks/use-product-content";
 import type { ProductPageClientProps } from "@/types/page";
-
 import { ProductHero } from "@/components/features/products/hero/product-hero";
+import dynamic from "next/dynamic";
+import { LazySection } from "@/components/ui/lazy-section";
+
+const CTASection = dynamic(
+  () => import("@/components/features/home/sections/cta").then((mod) => mod.CTASection)
+);
 
 export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
   const { product } = useProductContent(slug, {
@@ -28,6 +33,16 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
         centerIconAlt={content.hero?.centerIconAlt}
         productSlug={hydratedProduct.slug}
       />
+
+
+
+      {/* CTA */}
+      <LazySection minHeight="400px">
+        <CTASection
+          title="Ready to Transform Your Workflow?"
+          subtitle="Join the future of productivity today."
+        />
+      </LazySection>
     </div>
   );
 }
