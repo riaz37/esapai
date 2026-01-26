@@ -142,16 +142,9 @@
     }
   }
 
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
+
 
   /* Performance Optimization Utilities */
-  .render-optimized {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 500px;
-    /* Approximate height to prevent scrollbar jumping */
-  }
 
   @keyframes cell-ripple {
     0% {
@@ -229,9 +222,7 @@
     }
   }
 
-  .animate-marquee {
-    animation: marquee 30s linear infinite;
-  }
+
 
   @keyframes spin-reverse {
     from {
@@ -257,9 +248,7 @@
     }
   }
 
-  .animate-text-glow {
-    animation: text-glow 3s ease-in-out infinite;
-  }
+
 
   /* Kinetic Sheen Effect */
   @keyframes sheen {
@@ -276,31 +265,9 @@
     animation: sheen 2s infinite linear;
   }
 
-  .text-shimmer {
-    background: linear-gradient(120deg,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(255, 255, 255, 0.5) 50%,
-        rgba(255, 255, 255, 1) 60%);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: sheen 6s infinite linear;
-    display: inline-block;
-  }
 
-  .text-shimmer-primary {
-    background: linear-gradient(120deg,
-        var(--color-primary) 40%,
-        rgba(255, 255, 255, 0.8) 50%,
-        var(--color-primary) 60%);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: sheen 6s infinite linear;
-    display: inline-block;
-  }
+
+
 
   /* Standardized Text Styles (Removing static gradients) */
 
@@ -425,9 +392,7 @@
     transform-style: preserve-3d;
   }
 
-  .backface-hidden {
-    backface-visibility: hidden;
-  }
+
 
 
 
@@ -756,30 +721,7 @@
     pointer-events: none;
   }
 
-  /* YouTube Video Glow Effect */
-  .video-glow {
-    position: relative;
-    box-shadow: 0 0 40px rgba(19, 245, 132, 0.4),
-      0 0 80px rgba(19, 245, 132, 0.3), 0 0 120px rgba(19, 245, 132, 0.2),
-      0 0 160px rgba(19, 245, 132, 0.1);
-    animation: glow-pulse 3s ease-in-out infinite;
-  }
 
-  @keyframes glow-pulse {
-
-    0%,
-    100% {
-      box-shadow: 0 0 40px rgba(19, 245, 132, 0.4),
-        0 0 80px rgba(19, 245, 132, 0.3), 0 0 120px rgba(19, 245, 132, 0.2),
-        0 0 160px rgba(19, 245, 132, 0.1);
-    }
-
-    50% {
-      box-shadow: 0 0 60px rgba(19, 245, 132, 0.6),
-        0 0 100px rgba(19, 245, 132, 0.4), 0 0 140px rgba(19, 245, 132, 0.3),
-        0 0 180px rgba(19, 245, 132, 0.15);
-    }
-  }
 
   /* Team Card */
   .team-card {
@@ -903,15 +845,9 @@
     transform: translateY(20px);
   }
 
-  .gsap-slide-up-lg {
-    opacity: 0;
-    transform: translateY(30px);
-  }
 
-  .gsap-scale-in {
-    opacity: 0;
-    transform: scale(0.9);
-  }
+
+
 
   .gsap-fade-scale-in {
     opacity: 0;

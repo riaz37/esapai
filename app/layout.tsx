@@ -14,6 +14,7 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { generateHomeMetadata } from "@/lib/seo/metadata";
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
+import { IntroLoader } from "@/components/ui/intro-loader";
 
 // Inter font - similar to SF Pro, from Google Fonts
 const inter = Inter({
@@ -57,10 +58,12 @@ export default function RootLayout({
               <SmoothScrollProvider>
                 <ProductMenuProvider>
                   <ServiceMenuProvider>
-                    <Navbar />
-                    <main className="flex-1">{children}</main>
-                    <Footer />
-                    <CookieConsentBanner />
+                    <IntroLoader>
+                      <Navbar />
+                      <main className="flex-1">{children}</main>
+                      <Footer />
+                      <CookieConsentBanner />
+                    </IntroLoader>
                   </ServiceMenuProvider>
                 </ProductMenuProvider>
               </SmoothScrollProvider>
