@@ -1,8 +1,10 @@
 export { AutomationHub } from "./automation-hub";
 export { PerformanceSection } from "./performance-section";
 export { ProductFeatures } from "./product-features";
-export { StruggleSection } from "./struggle-section";
+export { ProductCinematicReelSection } from "./product-cinematic-reel-section";
+export { UserJourney } from "./user-journey";
+export { ProblemExplorationSection } from "./problem-exploration-section";
+export { ProductSolutionVideo } from "./product-solution-video";
 export type { ProductFeatureItem } from "@/types/ui";
-
 
 

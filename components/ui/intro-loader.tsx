@@ -2,7 +2,9 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-
+import { Player } from "@remotion/player";
+import { usePathname } from "next/navigation";
+import { LogoBootSequence } from "@/components/features/products/hero/remotion/LogoBootSequence";
 interface IntroLoaderProps {
     children: React.ReactNode;
 }
@@ -45,9 +47,16 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 export function IntroLoader({ children }: IntroLoaderProps) {
-    const [isLoading, setIsLoading] = useState(true);
+    const pathname = usePathname();
+    const isHomePage = pathname === "/";
+    const [isLoading, setIsLoading] = useState(isHomePage);
 
     useEffect(() => {
+        if (!isHomePage) {
+            setIsLoading(false);
+            return;
+        }
+
         // Smooth transition time for cinematic reveal
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -56,7 +65,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
         return () => {
             clearTimeout(timer);
         };
-    }, []);
+    }, [isHomePage]);
 
     return (
         <>
@@ -67,11 +76,10 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                         initial={{ opacity: 1 }}
                         exit={{
                             opacity: 0,
-                            scale: 1.1,
-                            filter: "blur(10px)",
                             transition: {
-                                duration: 1.2,
-                                ease: [0.7, 0, 0.3, 1]
+                                duration: 1.5,
+                                ease: [0.7, 0, 0.3, 1],
+                                when: "afterChildren"
                             }
                         }}
                         className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-[#050505]"
@@ -106,26 +114,48 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 <motion.div
                                     initial={{ scale: 0.9, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
+                                    exit={{
+                                        scale: 12,
+                                        opacity: 0,
+                                        filter: "brightness(2) blur(5px)",
+                                        transition: {
+                                            duration: 1.2,
+                                            ease: [0.7, 0, 0.3, 1]
+                                        }
+                                    }}
                                     transition={{
                                         duration: 2,
                                         ease: [0.22, 1, 0.36, 1],
                                     }}
-                                    className="relative z-10 w-40 h-40 md:w-56 md:h-56 flex items-center justify-center"
+                                    className="relative z-10 w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"
                                 >
-                                    <motion.img
-                                        src="/landing/circle.svg"
-                                        alt="ESAP AI"
-                                        className="w-full h-full brightness-[1.2] drop-shadow-[0_0_50px_rgba(0,165,81,0.6)]"
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ duration: 1.5, ease: "easeOut" }}
+                                    <Player
+                                        component={LogoBootSequence}
+                                        durationInFrames={120} // 4 seconds
+                                        compositionWidth={400} // Higher res for crisp scaling
+                                        compositionHeight={400}
+                                        fps={30}
+                                        loop={false} // One-shot boot
+                                        autoPlay
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                        inputProps={{}}
                                     />
                                 </motion.div>
                             </div>
                         </div>
 
                         {/* Typography - Refined Spacing */}
-                        <div className="flex flex-col items-center gap-6">
+                        <motion.div
+                            exit={{
+                                opacity: 0,
+                                y: 10,
+                                transition: { duration: 0.5 }
+                            }}
+                            className="flex flex-col items-center gap-6"
+                        >
                             <motion.h1
                                 initial={{ opacity: 0, y: 20, letterSpacing: "0.2em" }}
                                 animate={{ opacity: 1, y: 0, letterSpacing: "1em" }}
@@ -165,7 +195,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                     ))}
                                 </div>
                             </motion.div>
-                        </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence >

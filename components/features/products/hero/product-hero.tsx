@@ -5,7 +5,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 
 import { Button, ButtonArrow } from "@/components/ui/button";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { HeroBadge } from "@/components/ui/hero-badge";
 import Frame from "@/components/shared/frame";

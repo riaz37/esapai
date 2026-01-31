@@ -3,13 +3,13 @@
 import React from "react";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
-import { HeroBadge } from "@/components/ui/hero-badge";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import type { GlobeConfig } from "@/components/ui/globe";
 import type { ServiceHeroProps } from "@/types/props";
-import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
 import Frame from "@/components/shared/frame";
 
 const World = dynamic(
@@ -105,8 +105,9 @@ const globeData = [
 export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
   return (
     <section className="relative w-full min-h-screen flex items-center overflow-hidden pt-24 md:pt-32 pb-20">
-      {/* Dark overlay to match main Hero style */}
-      <div className="absolute inset-0 bg-black/40 z-[-1] pointer-events-none" />
+
+
+
 
       {/* Frame Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none overflow-hidden select-none">
@@ -119,6 +120,11 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
 
           {/* Left Side: Content */}
           <div className="lg:col-span-6 xl:col-span-7 flex flex-col items-start text-left">
+            <BadgeChip
+              label="Service Suite"
+              icon={Sparkles}
+              className="mb-6"
+            />
             <TypewriterTitle
               title={title}
               splitMode="lastWord"
