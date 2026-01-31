@@ -67,6 +67,7 @@ export function CookieConsentBanner() {
                 <Button
                   onClick={acceptCookies}
                   variant="primary"
+                  showArrow={false}
                   className="rounded-full px-8 sm:px-10 md:px-12 py-2.5 sm:py-3 h-auto font-semibold min-h-[40px] sm:min-h-[44px] text-xs sm:text-sm whitespace-nowrap"
                 >
                   Accept All

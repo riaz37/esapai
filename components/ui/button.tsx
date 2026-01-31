@@ -54,6 +54,7 @@ interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
   VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  showArrow?: boolean;
 }
 
 export const ButtonArrow = ({ className }: { className?: string }) => (
@@ -69,7 +70,7 @@ export const ButtonArrow = ({ className }: { className?: string }) => (
 );
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, showArrow = true, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
 
     return (
@@ -83,7 +84,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             <span className="relative z-10">{children}</span>
-            {variant === "primary" && <ButtonArrow />}
+            {variant === "primary" && showArrow && <ButtonArrow />}
           </>
         )}
       </Comp>

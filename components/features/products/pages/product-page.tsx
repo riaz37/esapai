@@ -2,12 +2,14 @@
 
 import { useProductContent } from "@/lib/hooks/use-product-content";
 import type { ProductPageClientProps } from "@/types/page";
+import dynamic from "next/dynamic";
+import { LazySection } from "@/components/ui/lazy-section";
+import { ProductSolutionVideo, UserJourney, ProductCinematicReelSection } from "../sections";
+import { ProductCinematicFlow } from "../sections/product-cinematic-flow";
 
-import { ProductHero } from "@/components/features/products/hero/product-hero";
-import { Mission as MissionSection } from "@/components/features/about/sections/mission";
-import { AutomationHub as AutomationHubSection } from "@/components/features/products/sections/automation-hub";
-import YouTubeVideoSection from "@/components/shared/youtube-video";
-import { PerformanceSection } from "@/components/features/products/sections/performance-section";
+const CTASection = dynamic(
+  () => import("@/components/features/home/sections/cta").then((mod) => mod.CTASection)
+);
 
 export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
   const { product } = useProductContent(slug, {
@@ -15,51 +17,29 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
   });
 
   const hydratedProduct = product ?? initialProduct;
-  const content = hydratedProduct.content ?? {};
-  const heroSubtitle =
-    content.hero?.subtitle ?? [
-      "Where Innovation Meets Productivity Driven by agents Powered by automation",
-      "Built for what's next",
-    ];
 
   return (
-    <div className="relative">
-      {/* Hero loads immediately - critical for LCP */}
-      <ProductHero
-        title={hydratedProduct.name}
-        subtitle={heroSubtitle}
-        centerIcon={content.hero?.centerIcon}
-        centerIconAlt={content.hero?.centerIconAlt}
-        productSlug={hydratedProduct.slug}
-      />
+    <div className="relative bg-black">
 
-      {/* Below-the-fold sections */}
-      <div className="min-h-[600px]">
-        <MissionSection
-          title={content.mission?.title}
-          subtitle={content.mission?.subtitle}
-          cards={content.mission?.cards}
+      {/* 1. UNIFIED CINEMATIC FLOW (Hero -> Entropy -> Order) */}
+      <ProductCinematicFlow slug={slug} initialProduct={hydratedProduct} />
+
+      {/* 2. Product Solution Video (Demo) */}
+      <ProductSolutionVideo />
+
+      {/* 3. Cinematic Showcase (Infinite Zoom Reel) */}
+      <ProductCinematicReelSection />
+
+      {/* 4. User Journey Layer */}
+      <UserJourney productSlug={hydratedProduct.slug} />
+
+      {/* 5. CTA Section */}
+      <LazySection minHeight="400px">
+        <CTASection
+          title="Ready to Transform Your Workflow?"
+          subtitle="Join the future of productivity today."
         />
-      </div>
-
-      <div className="min-h-[800px]">
-        <AutomationHubSection
-          title={content.automationHub?.title}
-          subtitle={content.automationHub?.subtitle}
-          features={content.automationHub?.features}
-        />
-      </div>
-
-      <div className="min-h-[600px]">
-        <YouTubeVideoSection
-          videoId={content.youtubeVideo?.videoId ?? "oAuaVWvw0lM"}
-          title={content.youtubeVideo?.title}
-        />
-      </div>
-
-      <div className="min-h-[600px]">
-        <PerformanceSection metrics={content.performance?.metrics} />
-      </div>
+      </LazySection>
     </div>
   );
 }

@@ -154,6 +154,9 @@ esapai/
 - **React Three Fiber** - React renderer for Three.js
 - **React Three Drei** - Useful helpers for R3F
 - **Motion** - Animation library
+- **Remotion** - Programmatic video creation
+- **@remotion/player** - React video player
+
 
 ### Content Management
 - **Sanity 5.0.0** - Headless CMS
