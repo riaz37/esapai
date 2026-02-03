@@ -1,4 +1,5 @@
 export { AutomationHub } from "./automation-hub";
+export { BusinessImpact } from "./business-impact";
 export { PerformanceSection } from "./performance-section";
 export { ProductFeatures } from "./product-features";
 export { ProductCinematicReelSection } from "./product-cinematic-reel-section";

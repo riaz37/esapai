@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Sparkles, Terminal, Layers } from "lucide-react";
+import { Sparkles, Layers } from "lucide-react";
+import type { Product } from "@/types/product";
 
 // Custom CSS for micro-animations
 const DECK_STYLES = `
@@ -29,15 +30,30 @@ const REEL_IMAGES = [
     '/productimages/Slide-24.png',
 ];
 
-export function ProductCinematicReelSection() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const deckRef = useRef<HTMLDivElement>(null);
-    const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
-    const [isMounted, setIsMounted] = useState(false);
+/** Deterministic width for HUD bar (hydration-safe) */
+function barWidth(index: number): number {
+    return 10 + ((index * 7) % 30);
+}
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+/** Deterministic hex for HUD (hydration-safe) */
+function hudHex(index: number): string {
+    const v = ((index * 0x4d2) + 0x8080) % 0xFFFFFF;
+    return `0x${v.toString(16).toUpperCase().padStart(6, "0")}`;
+}
+
+interface ProductCinematicReelSectionProps {
+    product: Product | null;
+}
+
+export function ProductCinematicReelSection({ product }: ProductCinematicReelSectionProps) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
+
+    const productLabel = product?.name ?? "ESAP";
+    const architectureSubtitle = `Architecture — ${productLabel}. Detailed visualization of the ESAP engine components.`;
+
+    const hudBarWidths = useMemo(() => Array.from({ length: 12 }, (_, i) => barWidth(i)), []);
+    const hudHexValues = useMemo(() => Array.from({ length: 8 }, (_, i) => hudHex(i)), []);
 
     useGSAP(
         () => {
@@ -153,20 +169,20 @@ export function ProductCinematicReelSection() {
     return (
         <section
             ref={containerRef}
-            className="relative w-full h-screen bg-[#010202] overflow-hidden text-white font-sans"
+            className="relative w-full h-screen bg-[#09090b] overflow-hidden text-white font-sans"
         >
             <style>{DECK_STYLES}</style>
-            {/* 1. Deep Space Atmosphere */}
-            <div className="absolute inset-0 bg-black" />
+            {/* 1. Deep Space Atmosphere — matches site background */}
+            <div className="absolute inset-0 bg-[#09090b]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] opacity-50" />
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
 
-            {/* 2. Transition Header */}
+            {/* 2. Transition Header — product-specific label */}
             <div className="header-wrap absolute inset-0 z-50 flex flex-col items-center justify-start pt-32 pointer-events-none">
                 <div className="container mx-auto px-4">
                     <SectionHeader
                         title="Architecture Deck"
-                        subtitle="Detailed visualization of the ESAP engine components."
+                        subtitle={architectureSubtitle}
                         badge="Visual Index"
                         badgeIcon={Layers}
                         align="center"
@@ -225,17 +241,17 @@ export function ProductCinematicReelSection() {
                     </div>
                 </div>
 
-                {/* Vertical Data Bars */}
+                {/* Vertical Data Bars — deterministic (hydration-safe) */}
                 <div className="hud-panel absolute left-10 top-1/2 -translate-y-1/2 space-y-2 opacity-40">
-                    {isMounted && Array.from({ length: 12 }).map((_, i) => (
-                        <div key={i} className={`h-1 bg-primary/30 rounded-full transition-all duration-500`} style={{ width: 10 + Math.random() * 30 }} />
+                    {hudBarWidths.map((width, i) => (
+                        <div key={i} className="h-1 bg-primary/30 rounded-full transition-all duration-500" style={{ width }} />
                     ))}
                 </div>
 
                 <div className="hud-panel absolute right-10 top-1/2 -translate-y-1/2 space-y-2 opacity-40 text-right">
-                    {isMounted && Array.from({ length: 8 }).map((_, i) => (
+                    {hudHexValues.map((hex, i) => (
                         <div key={i} className="font-mono text-[8px] text-white/20 uppercase tracking-tighter">
-                            0x{Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase()}
+                            {hex}
                         </div>
                     ))}
                 </div>
@@ -260,9 +276,9 @@ export function ProductCinematicReelSection() {
             </div>
 
             {/* 5. Edge Masking */}
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.8)] z-40" />
-            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black to-transparent z-45" />
-            <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent z-45" />
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(9,9,11,0.6)] z-40" />
+            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#09090b] to-transparent z-45" />
+            <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#09090b] to-transparent z-45" />
         </section>
     );
 }

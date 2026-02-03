@@ -3,13 +3,10 @@ import React from 'react';
 import { Node, Edge } from 'reactflow';
 import {
     Bot,
-    Cpu,
     Layers,
-    ShoppingBasket,
     Workflow,
     RefreshCw,
     Database,
-    Shield,
     Globe,
     MessageSquare,
     Search,
@@ -20,23 +17,46 @@ import {
     Zap,
     Users,
     Code,
-    Brain
+    Brain,
+    Lightbulb,
+    Wrench,
+    Rocket,
+    Activity,
+    TrendingUp,
+    Link2,
+    FileStack,
+    Map,
+    Inbox,
+    ScanSearch,
+    CheckCircle,
+    ArrowRight,
+    BookOpen,
+    ClipboardList,
+    Cable,
+    Sparkles,
+    LayoutDashboard,
 } from 'lucide-react';
 
 export type JourneyStep = {
     targetId: string; // Node ID to focus on (or '' for overview)
-    position: { x: number; y: number }; // Camera target coordinates
+    position?: { x: number; y: number }; // Optional; computed in component for focused steps
     zoom: number;
     duration: number;
+    caption?: string; // Narrative line shown when this step is active
 };
 
 export type ProductJourneyData = {
     nodes: Node[];
     edges: Edge[];
     cinematicSequence: JourneyStep[];
+    /** Optional product-specific section title (e.g. "How ERP Works") */
+    journeyTitle?: string;
+    /** Optional product-specific section subtitle */
+    journeySubtitle?: string;
 };
 
-// --- Helper to create standard cinematic edges ---
+const STEP_SPACING = 300;
+
 const createEdge = (source: string, target: string, order: number) => ({
     id: `${source}-${target}`,
     source,
@@ -45,157 +65,180 @@ const createEdge = (source: string, target: string, order: number) => ({
     data: { order }
 });
 
-// --- AIVM / AI Framework (The Original Field) ---
-const aivmJourney: ProductJourneyData = {
-    nodes: [
-        { id: 'validators', type: 'journey', position: { x: 0, y: 150 }, data: { title: "AIVM VALIDATORS", icon: <RefreshCw size={28} /> } },
-        { id: 'hub', type: 'journey', position: { x: 500, y: 300 }, data: { title: "AIVM CORE", icon: <Layers size={40} />, size: 'lg', active: true } },
-        { id: 'marketplace', type: 'journey', position: { x: 1000, y: 100 }, data: { title: "AI DATA MARKETPLACE", icon: <ShoppingBasket size={32} />, items: ['AI COMPANIES', 'DATASET PROVIDERS'] } },
-        { id: 'gpu', type: 'journey', position: { x: 1050, y: 500 }, data: { title: "GPU MARKETPLACE", icon: <Cpu size={32} /> } },
-        { id: 'sdk', type: 'journey', position: { x: 600, y: 650 }, data: { title: "INFERENCE SDK", icon: <Workflow size={28} /> } },
-        { id: 'agents', type: 'journey', position: { x: 150, y: 600 }, data: { title: "AI AGENTS INFRA", icon: <Bot size={32} /> } },
-    ],
-    edges: [
-        createEdge('validators', 'hub', 1),
-        createEdge('hub', 'marketplace', 2),
-        createEdge('hub', 'sdk', 3),
-        createEdge('sdk', 'agents', 4),
-        createEdge('hub', 'gpu', 5),
-    ],
-    cinematicSequence: [
-        { targetId: '', position: { x: 300, y: 250 }, zoom: 0.6, duration: 0 }, // Start: Overview
-        { targetId: 'validators', position: { x: 450, y: 150 }, zoom: 1.2, duration: 2 },
-        { targetId: 'hub', position: { x: 100, y: 50 }, zoom: 1.1, duration: 2.5 },
-        { targetId: 'marketplace', position: { x: -350, y: 200 }, zoom: 1.1, duration: 2.5 },
-        { targetId: 'gpu', position: { x: -400, y: -200 }, zoom: 1.1, duration: 2.5 },
-        { targetId: 'sdk', position: { x: 0, y: -300 }, zoom: 1.1, duration: 2.5 },
-        { targetId: 'agents', position: { x: 350, y: -300 }, zoom: 1.1, duration: 2.5 },
-        { targetId: '', position: { x: 300, y: 250 }, zoom: 0.6, duration: 3 }, // End: Overview
-    ]
-};
+/** Build nodes in a straight line: step1..stepN, each with optional size 'lg' at heroIndex */
+function buildNodes(
+    count: number,
+    steps: { title: string; icon: React.ReactNode }[],
+    heroIndex: number
+): Node[] {
+    const nodes: Node[] = [];
+    for (let i = 0; i < count; i++) {
+        const id = `step${i + 1}`;
+        nodes.push({
+            id,
+            type: 'journey',
+            position: { x: i * STEP_SPACING, y: 200 },
+            data: {
+                title: steps[i].title,
+                icon: steps[i].icon,
+                ...(i === heroIndex ? { size: 'lg' as const } : {}),
+            },
+        });
+    }
+    return nodes;
+}
 
-// --- ERP (Voice Activated) ---
+/** Build edges between step1 → step2 → … → stepN */
+function buildEdges(count: number): Edge[] {
+    const edges: Edge[] = [];
+    for (let i = 0; i < count - 1; i++) {
+        edges.push(createEdge(`step${i + 1}`, `step${i + 2}`, i + 1));
+    }
+    return edges;
+}
+
+/** Build cinematic sequence: overview → step1..stepN → overview (positions computed in component) */
+function buildSequence(
+    count: number,
+    overviewCaption: string,
+    stepCaptions: string[],
+    outroCaption = 'Where it takes you.'
+): JourneyStep[] {
+    const steps: JourneyStep[] = [
+        { targetId: '', zoom: 0.6, duration: 0, caption: overviewCaption },
+        ...Array.from({ length: count }, (_, i) => ({
+            targetId: `step${i + 1}`,
+            zoom: 1.2 as const,
+            duration: 2 as const,
+            caption: stepCaptions[i] ?? '',
+        })),
+        { targetId: '', zoom: 0.6, duration: 2, caption: outroCaption },
+    ];
+    return steps;
+}
+
+// --- ERP (Voice Activated) — 4 steps ---
 const erpJourney: ProductJourneyData = {
-    nodes: [
-        { id: 'voice', type: 'journey', position: { x: 0, y: 200 }, data: { title: "Voice Command", icon: <Mic size={32} /> } },
-        { id: 'processor', type: 'journey', position: { x: 400, y: 200 }, data: { title: "AI Processing", icon: <Brain size={40} />, size: 'lg', active: true } },
-        { id: 'inventory', type: 'journey', position: { x: 800, y: 0 }, data: { title: "Inventory", icon: <Database size={28} /> } },
-        { id: 'finance', type: 'journey', position: { x: 800, y: 400 }, data: { title: "Finance/HR", icon: <BarChart3 size={28} /> } },
-        { id: 'analytics', type: 'journey', position: { x: 400, y: 500 }, data: { title: "Real-time Insights", icon: <Zap size={28} /> } },
-    ],
-    edges: [
-        createEdge('voice', 'processor', 1),
-        createEdge('processor', 'inventory', 2),
-        createEdge('processor', 'finance', 3),
-        createEdge('processor', 'analytics', 4),
-    ],
-    cinematicSequence: [
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.65, duration: 0 }, // Start: Overview
-        { targetId: 'voice', position: { x: 200, y: 200 }, zoom: 1.3, duration: 2 },
-        { targetId: 'processor', position: { x: 0, y: 0 }, zoom: 1.1, duration: 2 },
-        { targetId: 'inventory', position: { x: -400, y: 200 }, zoom: 1.2, duration: 2.5 },
-        { targetId: 'finance', position: { x: -400, y: -200 }, zoom: 1.2, duration: 2.5 },
-        { targetId: 'analytics', position: { x: 0, y: -300 }, zoom: 1.2, duration: 2.5 },
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.65, duration: 3 }, // End: Overview
-    ]
+    journeyTitle: 'How ERP Works',
+    journeySubtitle: 'From voice command to instant result. Zero training required.',
+    nodes: buildNodes(4, [
+        { title: 'Voice Command', icon: <Mic size={32} /> },
+        { title: 'AI Processor', icon: <Brain size={32} /> },
+        { title: 'Task Automation', icon: <Workflow size={32} /> },
+        { title: 'Instant Result', icon: <Zap size={32} /> },
+    ], 1),
+    edges: buildEdges(4),
+    cinematicSequence: buildSequence(4, 'From voice to action.', [
+        'Speak. The system listens.',
+        'AI processes intent in real time.',
+        'Tasks run automatically.',
+        'Results delivered instantly.',
+    ]),
 };
 
-// --- Zakra (Knowledge Agent) ---
+// --- AI Framework — 5 steps (idea → scale) ---
+const aivmJourney: ProductJourneyData = {
+    journeyTitle: 'From Idea to Scale',
+    journeySubtitle: 'Build, deploy, and scale AI agents with enterprise reliability.',
+    nodes: buildNodes(5, [
+        { title: 'Define Idea', icon: <Lightbulb size={32} /> },
+        { title: 'Build Agent', icon: <Wrench size={32} /> },
+        { title: 'Deploy Infra', icon: <Rocket size={32} /> },
+        { title: 'Monitor Performance', icon: <Activity size={32} /> },
+        { title: 'Scale & Optimize', icon: <TrendingUp size={32} /> },
+    ], 2),
+    edges: buildEdges(5),
+    cinematicSequence: buildSequence(5, 'The path from idea to scale.', [
+        'You define the use case. We provide the framework.',
+        'Build agents with modular, composable components.',
+        'Deploy to enterprise infrastructure in minutes.',
+        'Monitor performance and reliability in real time.',
+        'Scale without limits. Optimize continuously.',
+    ]),
+};
+
+// --- Zakra (Knowledge Agent) — 5 steps ---
 const zakraJourney: ProductJourneyData = {
-    nodes: [
-        { id: 'query', type: 'journey', position: { x: 100, y: 300 }, data: { title: "User Query", icon: <Search size={28} /> } },
-        { id: 'graph', type: 'journey', position: { x: 500, y: 300 }, data: { title: "Knowledge Graph", icon: <Globe size={40} />, size: 'lg', active: true } },
-        { id: 'docs', type: 'journey', position: { x: 900, y: 100 }, data: { title: "Documents", icon: <FileText size={28} /> } },
-        { id: 'db', type: 'journey', position: { x: 900, y: 500 }, data: { title: "Databases", icon: <Database size={28} /> } },
-        { id: 'answer', type: 'journey', position: { x: 500, y: 600 }, data: { title: "Contextual Answer", icon: <MessageSquare size={28} /> } },
-    ],
-    edges: [
-        createEdge('query', 'graph', 1),
-        createEdge('graph', 'docs', 2),
-        createEdge('graph', 'db', 3),
-        createEdge('docs', 'answer', 4),
-        createEdge('db', 'answer', 5),
-    ],
-    cinematicSequence: [
-        { targetId: '', position: { x: 250, y: 200 }, zoom: 0.65, duration: 0 }, // Start: Overview
-        { targetId: 'query', position: { x: 400, y: 0 }, zoom: 1.3, duration: 2 },
-        { targetId: 'graph', position: { x: 0, y: 0 }, zoom: 1, duration: 2 },
-        { targetId: 'docs', position: { x: -400, y: 200 }, zoom: 1.2, duration: 2.5 },
-        { targetId: 'db', position: { x: -400, y: -200 }, zoom: 1.2, duration: 2.5 },
-        { targetId: 'answer', position: { x: 0, y: -300 }, zoom: 1.3, duration: 2.5 },
-        { targetId: '', position: { x: 250, y: 200 }, zoom: 0.65, duration: 3 }, // End: Overview
-    ]
+    journeyTitle: 'From Data to Answers',
+    journeySubtitle: 'Connect your knowledge. Query in natural language. Get context-aware answers.',
+    nodes: buildNodes(5, [
+        { title: 'Connect Sources', icon: <Link2 size={32} /> },
+        { title: 'Ingest & Index', icon: <FileStack size={32} /> },
+        { title: 'Knowledge Map', icon: <Map size={32} /> },
+        { title: 'Natural Query', icon: <Search size={32} /> },
+        { title: 'Context Answer', icon: <MessageSquare size={32} /> },
+    ], 2),
+    edges: buildEdges(5),
+    cinematicSequence: buildSequence(5, 'From scattered data to one source of truth.', [
+        'Connect spreadsheets, docs, and databases.',
+        'Ingest and index without manual tagging.',
+        'Build a unified knowledge map automatically.',
+        'Query in natural language. No SQL required.',
+        'Get answers with full context and sources.',
+    ]),
 };
 
-// --- Jawib (Customer Service) ---
+// --- Jawib (Customer Service) — 5 steps ---
 const jawibJourney: ProductJourneyData = {
-    nodes: [
-        { id: 'customer', type: 'journey', position: { x: 50, y: 250 }, data: { title: "Customer", icon: <Users size={28} /> } },
-        { id: 'agent', type: 'journey', position: { x: 450, y: 250 }, data: { title: "AI Agent", icon: <Bot size={40} />, size: 'lg', active: true } },
-        { id: 'kb', type: 'journey', position: { x: 850, y: 50 }, data: { title: "Knowledge Base", icon: <Database size={28} /> } },
-        { id: 'human', type: 'journey', position: { x: 850, y: 450 }, data: { title: "Human Handoff", icon: <Users size={28} /> } },
-    ],
-    edges: [
-        createEdge('customer', 'agent', 1),
-        createEdge('agent', 'kb', 2),
-        createEdge('kb', 'agent', 3),
-        createEdge('agent', 'human', 4),
-    ],
-    cinematicSequence: [
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.7, duration: 0 }, // Start: Overview
-        { targetId: 'customer', position: { x: 400, y: 0 }, zoom: 1.3, duration: 2 },
-        { targetId: 'agent', position: { x: 0, y: 0 }, zoom: 1.1, duration: 2 },
-        { targetId: 'kb', position: { x: -400, y: 200 }, zoom: 1.2, duration: 2.5 },
-        { targetId: 'human', position: { x: -400, y: -200 }, zoom: 1.2, duration: 2.5 },
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.7, duration: 3 }, // End: Overview
-    ]
+    journeyTitle: 'From Inquiry to Resolution',
+    journeySubtitle: 'Inbound, analyze, resolve, escalate, learn. 24/7 support automation.',
+    nodes: buildNodes(5, [
+        { title: 'Inbound', icon: <Inbox size={32} /> },
+        { title: 'Analyze Intent', icon: <ScanSearch size={32} /> },
+        { title: 'Resolve or Escalate', icon: <CheckCircle size={32} /> },
+        { title: 'Human Handoff', icon: <ArrowRight size={32} /> },
+        { title: 'Learn & Improve', icon: <BookOpen size={32} /> },
+    ], 2),
+    edges: buildEdges(5),
+    cinematicSequence: buildSequence(5, 'From first touch to lasting resolution.', [
+        'Customers reach out. Any channel, any time.',
+        'Intent is analyzed instantly. No scripts.',
+        'Most cases resolve automatically. Rest get triaged.',
+        'Humans step in only when it matters.',
+        'Every interaction improves the model.',
+    ]),
 };
 
-// --- Fasih (Arabic LLM) ---
+// --- Fasih (Arabic LLM) — 4 steps ---
 const fasihJourney: ProductJourneyData = {
-    nodes: [
-        { id: 'input', type: 'journey', position: { x: 50, y: 300 }, data: { title: "Arabic Input", icon: <MessageSquare size={28} /> } },
-        { id: 'llm', type: 'journey', position: { x: 450, y: 300 }, data: { title: "Native LLM", icon: <Brain size={40} />, size: 'lg', active: true } },
-        { id: 'dialects', type: 'journey', position: { x: 450, y: 50 }, data: { title: "Dialect Engine", icon: <Globe size={28} /> } },
-        { id: 'output', type: 'journey', position: { x: 850, y: 300 }, data: { title: "Localized Output", icon: <FileText size={28} /> } },
-    ],
-    edges: [
-        createEdge('input', 'llm', 1),
-        createEdge('llm', 'dialects', 2),
-        createEdge('dialects', 'llm', 3),
-        createEdge('llm', 'output', 4),
-    ],
-    cinematicSequence: [
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.7, duration: 0 }, // Start: Overview
-        { targetId: 'input', position: { x: 400, y: 0 }, zoom: 1.3, duration: 2 },
-        { targetId: 'llm', position: { x: 0, y: 0 }, zoom: 1.1, duration: 2 },
-        { targetId: 'dialects', position: { x: 0, y: 250 }, zoom: 1.3, duration: 2.5 },
-        { targetId: 'output', position: { x: -400, y: 0 }, zoom: 1.3, duration: 2.5 },
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.7, duration: 3 }, // End: Overview
-    ]
+    journeyTitle: 'From Dialect to Nuance',
+    journeySubtitle: 'Native Arabic understanding. Dialect-aware. Culturally grounded.',
+    nodes: buildNodes(4, [
+        { title: 'Dialect Input', icon: <MessageSquare size={32} /> },
+        { title: 'Understand', icon: <Globe size={32} /> },
+        { title: 'Process', icon: <Brain size={32} /> },
+        { title: 'Nuanced Output', icon: <FileText size={32} /> },
+    ], 1),
+    edges: buildEdges(4),
+    cinematicSequence: buildSequence(4, 'From dialect to nuance.', [
+        'Input in any Arabic dialect. No normalization needed.',
+        'Native understanding. Not translation.',
+        'LLM processing with cultural context.',
+        'Nuanced, natural output. Human-quality.',
+    ]),
 };
 
-// --- Domain Expansion (Legacy) ---
+// --- Domain Expansion — 6 steps (legacy to modern) ---
 const domainJourney: ProductJourneyData = {
-    nodes: [
-        { id: 'legacy', type: 'journey', position: { x: 50, y: 300 }, data: { title: "Legacy System", icon: <Server size={28} /> } },
-        { id: 'bridge', type: 'journey', position: { x: 450, y: 300 }, data: { title: "AI Bridge", icon: <Workflow size={40} />, size: 'lg', active: true } },
-        { id: 'modern', type: 'journey', position: { x: 850, y: 150 }, data: { title: "Modern App", icon: <Code size={28} /> } },
-        { id: 'analytics', type: 'journey', position: { x: 850, y: 450 }, data: { title: "AI Analytics", icon: <BarChart3 size={28} /> } },
-    ],
-    edges: [
-        createEdge('legacy', 'bridge', 1),
-        createEdge('bridge', 'modern', 2),
-        createEdge('bridge', 'analytics', 3),
-    ],
-    cinematicSequence: [
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.7, duration: 0 }, // Start: Overview
-        { targetId: 'legacy', position: { x: 400, y: 0 }, zoom: 1.3, duration: 2 },
-        { targetId: 'bridge', position: { x: 0, y: 0 }, zoom: 1.1, duration: 2 },
-        { targetId: 'modern', position: { x: -400, y: 150 }, zoom: 1.2, duration: 2.5 },
-        { targetId: 'analytics', position: { x: -400, y: -150 }, zoom: 1.2, duration: 2.5 },
-        { targetId: '', position: { x: 250, y: 250 }, zoom: 0.7, duration: 3 }, // End: Overview
-    ]
+    journeyTitle: 'From Legacy to Modern',
+    journeySubtitle: 'Assess, connect, bridge, automate, surface, scale. No rip-and-replace.',
+    nodes: buildNodes(6, [
+        { title: 'Assess', icon: <ClipboardList size={32} /> },
+        { title: 'Connect', icon: <Link2 size={32} /> },
+        { title: 'Bridge', icon: <Cable size={32} /> },
+        { title: 'Automate', icon: <Sparkles size={32} /> },
+        { title: 'Surface', icon: <LayoutDashboard size={32} /> },
+        { title: 'Scale', icon: <TrendingUp size={32} /> },
+    ], 2),
+    edges: buildEdges(6),
+    cinematicSequence: buildSequence(6, 'From legacy systems to modern workflows.', [
+        'Assess existing systems and integration points.',
+        'Connect without disrupting current operations.',
+        'AI bridges legacy and modern APIs.',
+        'Automate workflows without rip-and-replace.',
+        'Surface data in modern dashboards.',
+        'Scale across departments and regions.',
+    ]),
 };
 
 // --- Export Map ---
