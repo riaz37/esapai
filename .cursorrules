@@ -1,0 +1,13 @@
+# ESAP AI – Cursor Rules
+
+This project is fully indexed. For detailed context, see `.cursor/rules/` (00–02 project/coding/constraints; 10–12 Vercel skills).
+
+## Quick reference
+- **Stack**: Next.js 16 (App Router), React 19, TypeScript 5 (strict), Tailwind 4, GSAP, R3F/Three, Sanity, Remotion. Package manager: **pnpm**.
+- **Structure**: `app/` (routes), `components/features/` (domain), `components/ui/` (primitives), `components/shared/`, `components/three/`, `lib/` (hooks, sanity, seo, utils), `types/`.
+- **Rules**: No `any`; use `@/` path alias; Tailwind v4 + `cn()`; lazy load 3D; use `next/image` and allowed domains only; respect CSP and server-only env vars; prefer `useGSAP` and existing hooks for animations and performance.
+
+## Vercel skills (in .cursor/rules/)
+- **10-vercel-react-best-practices**: React/Next.js performance (waterfalls, bundle, server/client, re-render, rendering, JS, advanced). Use when writing or refactoring React/Next.js code.
+- **11-vercel-composition-patterns**: Compound components, avoid boolean props, lift state, React 19 APIs. Use when designing or refactoring component APIs.
+- **12-vercel-web-design-guidelines**: UI/accessibility/UX review; fetch rules from [web-interface-guidelines](https://github.com/vercel-labs/web-interface-guidelines). Use when asked to review UI, accessibility, or design.

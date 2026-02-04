@@ -5,30 +5,48 @@ import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Button, ButtonArrow } from "@/components/ui/button";
+import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import type { Product } from "@/types/product";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-import { Button, ButtonArrow } from "@/components/ui/button";
-
-
 interface CTASectionProps {
     title?: React.ReactNode;
     subtitle?: string;
+    /** When provided (e.g. on product page), title/subtitle are derived from product. */
+    product?: Product | null;
 }
 
+const defaultTitle = (
+    <>
+        <span className="text-white">Ready to Transform </span>
+        <span className="text-primary">Your Business?</span>
+    </>
+);
+const defaultSubtitle = "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.";
+
 export function CTASection({
-    title = (
-        <>
-            <span className="text-white">Ready to Transform </span>
-            <span className="text-primary">Your Business?</span>
-        </>
-    ),
-    subtitle = "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.",
+    title: titleProp,
+    subtitle: subtitleProp,
+    product,
 }: CTASectionProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const primaryButtonRef = useRef<HTMLAnchorElement>(null);
+
+    const title = titleProp ?? (product
+        ? (
+            <>
+                <span className="text-white">Ready to try </span>
+                <span className="text-primary">{product.name}</span>
+                <span className="text-white">?</span>
+            </>
+        )
+        : defaultTitle);
+    const subtitle = subtitleProp ?? (product?.content?.mission?.subtitle ?? defaultSubtitle);
 
     // Star Warp Animation
     useEffect(() => {
@@ -158,6 +176,17 @@ export function CTASection({
                 }
             );
         }
+
+        // Subtle glow pulse on primary button (no continuous motion if reduced motion)
+        if (!prefersReducedMotion() && primaryButtonRef.current) {
+            gsap.to(primaryButtonRef.current, {
+                boxShadow: "0 0 25px rgba(19,245,132,0.4)",
+                duration: 2,
+                ease: "power2.inOut",
+                yoyo: true,
+                repeat: -1,
+            });
+        }
     }, { scope: sectionRef });
 
 
@@ -192,10 +221,11 @@ export function CTASection({
                         <Button
                             variant="primary"
                             size="lg"
+                            className="shadow-[0_0_20px_rgba(19,245,132,0.3)]"
                             asChild
                         >
-                            <Link href="/contact" className="inline-flex items-center gap-2 group">
-                                <span>Start Building Now</span>
+                            <Link ref={primaryButtonRef} href="/contact" className="inline-flex items-center gap-2 group">
+                                <span>{product ? "Get Started" : "Start Building Now"}</span>
                                 <ButtonArrow />
                             </Link>
                         </Button>

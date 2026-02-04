@@ -30,6 +30,7 @@ export interface ProductContent {
     subtitle?: string[];
     centerIcon?: string;
     centerIconAlt?: string;
+    /** Hero background video (e.g. /productvideo1.mp4). When set, used as cinematic hero background. Falls back to gradient when not set. */
     demoVideo?: string;
   };
   mission?: {

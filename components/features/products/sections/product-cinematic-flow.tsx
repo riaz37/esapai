@@ -4,302 +4,518 @@ import React, { useRef, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AlertCircle, XCircle, FileWarning, CheckCircle2, Zap, Sparkles, ArrowDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BadgeChip } from "@/components/ui/badge-chip";
-import { TypewriterTitle } from "@/components/ui/typewriter-title";
-import { Button } from "@/components/ui/button";
 import { useProductContent } from "@/lib/hooks/use-product-content";
+import { getProductCinematicProblems } from "@/config/product-cinematic-problems";
+import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import type { Product } from "@/types/product";
+import type { CinematicProblemItem } from "@/config/product-cinematic-problems";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+const MARCO_FRAMES = {
+    problem: [
+        "/logo/marco/Angry-01.svg",
+        "/logo/marco/Angry-02.svg"
+    ],
+    solution: [
+        "/logo/marco/Smill face-01.svg",
+        "/logo/marco/Smill face-02.svg",
+        "/logo/marco/Smill face03.svg"
+    ]
+};
+
+interface CinematicAssistantProps {
+    state: "problem" | "solution";
+    className?: string;
+    reducedMotion?: boolean;
+}
+
+function CinematicAssistant({ state, className, reducedMotion }: CinematicAssistantProps) {
+    const [currentFrame, setCurrentFrame] = React.useState(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const frames = MARCO_FRAMES[state];
+
+    // Frame cycling
+    React.useEffect(() => {
+        if (reducedMotion) return;
+        const interval = setInterval(() => {
+            setCurrentFrame((prev) => (prev + 1) % frames.length);
+        }, 150 + Math.random() * 100); // Varied jitter for "organic" AI feel
+        return () => clearInterval(interval);
+    }, [frames.length, reducedMotion]);
+
+    // Idle bobbing
+    useGSAP(() => {
+        if (reducedMotion) return;
+        gsap.to(containerRef.current, {
+            y: "-=15",
+            rotation: 1,
+            duration: 2.5,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1
+        });
+    }, { scope: containerRef, dependencies: [reducedMotion] });
+
+    return (
+        <div ref={containerRef} className={`relative select-none ${className}`}>
+            {/* Holographic Glow */}
+            <div
+                className={`absolute inset-0 scale-125 blur-3xl opacity-20 transition-colors duration-1000 ${state === "problem" ? "bg-red-500" : "bg-emerald-500"
+                    }`}
+            />
+
+            {/* Scanlines Overlay */}
+            <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-full opacity-30">
+                <div
+                    className="absolute inset-0 w-full h-[200%]"
+                    style={{
+                        background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 3px, transparent 4px)",
+                        animation: reducedMotion ? "none" : "scanline 10s linear infinite"
+                    }}
+                />
+            </div>
+
+            {/* Main Character Image */}
+            <div className="relative z-10 w-full h-full filter drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                <img
+                    src={frames[currentFrame % frames.length]}
+                    alt="Marco AI Assistant"
+                    className="w-full h-full object-contain transition-opacity duration-150"
+                    key={`${state}-${currentFrame}`}
+                />
+            </div>
+
+            {/* Sub-components for futuristic look */}
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-white/5 blur-xl rounded-full" />
+
+            <style jsx>{`
+                @keyframes scanline {
+                    from { transform: translateY(0); }
+                    to { transform: translateY(-50%); }
+                }
+            `}</style>
+        </div>
+    );
+}
+
 interface ProductCinematicFlowProps {
     slug: string;
-    initialProduct: any;
+    initialProduct: Product | null;
+}
+
+/** Single problem card for one-by-one scenes (with refs for title/description reveal). */
+function ProblemSceneCard({
+    problem,
+    titleRef,
+    descRef,
+    side,
+}: {
+    problem: CinematicProblemItem;
+    titleRef: React.RefCallback<HTMLDivElement> | React.RefObject<HTMLDivElement | null>;
+    descRef: React.RefCallback<HTMLDivElement> | React.RefObject<HTMLDivElement | null>;
+    side: "left" | "right";
+}) {
+    const Icon = problem.icon;
+    return (
+        <Card
+            spotlight={false}
+            className={`w-full max-w-md bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] ${side === "left" ? "mr-auto" : "ml-auto"
+                }`}
+        >
+            <CardHeader className="pb-2">
+                <div className="flex justify-between items-center mb-1">
+                    <Icon className="w-4 h-4 text-red-500 shrink-0" />
+                    <span className="text-[9px] uppercase tracking-widest text-red-500 font-mono">ERR_0{problem.id}</span>
+                </div>
+                <div ref={titleRef as React.RefObject<HTMLDivElement>} className="opacity-0">
+                    <CardTitle className="text-white text-sm md:text-base line-clamp-2">
+                        {problem.title}
+                    </CardTitle>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <div ref={descRef as React.RefObject<HTMLDivElement>} className="opacity-0">
+                    <CardDescription className="text-gray-400 text-xs md:text-sm line-clamp-3">
+                        {problem.description}
+                    </CardDescription>
+                </div>
+            </CardContent>
+        </Card>
+    );
 }
 
 export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicFlowProps) {
     const { product } = useProductContent(slug, { initialProduct });
-    const hydratedProduct = product ?? initialProduct;
-    const content = hydratedProduct.content ?? {};
+    const problems = useMemo(() => getProductCinematicProblems(slug), [slug]);
 
-    // CONTENT DATA
-    const heroSubtitle = content.hero?.subtitle ?? [
-        "Where Innovation Meets Productivity Driven by agents Powered by automation",
-        "Built for what's next",
-    ];
-
-    const problems = useMemo(() => [
-        {
-            id: 1,
-            title: "The Ghost Variable",
-            description: "One change in a spreadsheet ripples into 40 broken triggers.",
-            icon: AlertCircle,
-            spreadPos: { x: -300, y: -40, rotate: -6 },
-            solTitle: "Unified Data Mind",
-            solDesc: "All your data, connected and synchronized in real-time.",
-            solIcon: Zap,
-            solImpact: "+92% Velocity"
-        },
-        {
-            id: 2,
-            title: "The Integration Anchor",
-            description: "Your stack doesn't talk; it screams in translation errors.",
-            icon: FileWarning,
-            spreadPos: { x: 20, y: 30, rotate: 2 },
-            solTitle: "Autonomous Healing",
-            solDesc: "Workflows that detect and fix themselves before you notice.",
-            solIcon: Sparkles,
-            solImpact: "Zero Downtime"
-        },
-        {
-            id: 3,
-            title: "The Human Buffer",
-            description: "Valuable minds spent acting as copy-paste glue.",
-            icon: XCircle,
-            spreadPos: { x: 320, y: -20, rotate: 8 },
-            solTitle: "Cognitive Orchestration",
-            solDesc: "AI that understands intent, not just instructions.",
-            solIcon: CheckCircle2,
-            solImpact: "10x Scaling"
-        }
-    ], []);
-
-    // REFS
     const containerRef = useRef<HTMLDivElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const heroRef = useRef<HTMLDivElement>(null);
-    const sceneRef = useRef<HTMLDivElement>(null);
-    const whatIfRef = useRef<HTMLDivElement>(null);
+    const bgRef = useRef<HTMLDivElement>(null);
+    const problemSceneRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const problemTitleRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const problemDescRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const cardsStageRef = useRef<HTMLDivElement>(null);
+    const cardWrapperRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const flipperRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const solTitleRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const solDescRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+    const wipeRef = useRef<HTMLDivElement>(null);
+    const assistantRef = useRef<HTMLDivElement>(null);
+    const [assistantState, setAssistantState] = React.useState<"problem" | "solution">("problem");
 
-    // Separate refs for "2.5D Swap" logic
-    const wrappersRef = useRef<(HTMLDivElement | null)[]>([]);
-    const problemCardsRef = useRef<(HTMLDivElement | null)[]>([]);
-    const solutionCardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+    const reducedMotion = prefersReducedMotion();
 
     useGSAP(() => {
         if (!containerRef.current) return;
+        const reduced = prefersReducedMotion();
+        const flippers = flipperRefs.current.filter(Boolean);
 
-        const wrappers = wrappersRef.current.filter(Boolean);
-        const pCards = problemCardsRef.current.filter(Boolean);
-        const sCards = solutionCardsRef.current.filter(Boolean);
+        if (reduced) {
+            gsap.set(bgRef.current, { filter: "none" });
+            problemSceneRefs.current.forEach((s, i) => {
+                if (i === 0) {
+                    if (s) gsap.set(s, { opacity: 1, x: 0 });
+                    if (problemTitleRefs.current[i]) gsap.set(problemTitleRefs.current[i], { opacity: 1, y: 0 });
+                    if (problemDescRefs.current[i]) gsap.set(problemDescRefs.current[i], { opacity: 1, y: 0 });
+                } else if (s) gsap.set(s, { opacity: 0 });
+            });
+            gsap.set(cardsStageRef.current, { opacity: 1 });
+            cardWrapperRefs.current.forEach((w) => w && gsap.set(w, { opacity: 1 }));
+            flippers.forEach((f) => f && gsap.set(f, { rotationY: 180 }));
+            solTitleRefs.current.forEach((r) => r && gsap.set(r, { opacity: 1, y: 0 }));
+            solDescRefs.current.forEach((r) => r && gsap.set(r, { opacity: 1, y: 0 }));
+            if (wipeRef.current) gsap.set(wipeRef.current, { clipPath: "inset(0 0 100% 0)" });
+            if (assistantRef.current) gsap.set(assistantRef.current, { opacity: 0.6, left: "auto", right: "10%", yPercent: 0 });
+            setAssistantState("solution");
+            return;
+        }
 
-        // === MASTER TIMELINE ===
+        // Initial state
+        gsap.set(assistantRef.current, { opacity: 0, top: "45%", left: "50%", xPercent: -50, yPercent: -150, scale: 1 });
+        problemSceneRefs.current.forEach((s, i) => {
+            if (s) gsap.set(s, { opacity: 0, x: i === 1 ? 80 : -80 });
+            if (problemTitleRefs.current[i]) gsap.set(problemTitleRefs.current[i], { opacity: 0, y: 8 });
+            if (problemDescRefs.current[i]) gsap.set(problemDescRefs.current[i], { opacity: 0, y: 8 });
+        });
+        gsap.set(cardsStageRef.current, { opacity: 0 });
+        cardWrapperRefs.current.forEach((w) => w && gsap.set(w, { opacity: 0 }));
+        solTitleRefs.current.forEach((r) => r && gsap.set(r, { opacity: 0, y: 8 }));
+        solDescRefs.current.forEach((r) => r && gsap.set(r, { opacity: 0, y: 8 }));
+
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=2500%",  // Extended for pacing
+                end: "+=800%",
                 pin: true,
-                scrub: 1.2,
-                anticipatePin: 1
+                scrub: 1,
+                anticipatePin: 1,
+            },
+        });
+
+        // Direct Entry: Marco drops and first problem reveals
+        tl.addLabel("problem1");
+        tl.to(assistantRef.current, {
+            opacity: 0.7,
+            xPercent: -50,
+            x: "20vw",
+            yPercent: 0,
+            duration: 1.2,
+            ease: "back.out(1.2)",
+            force3D: true
+        }, "problem1");
+
+        if (problemSceneRefs.current[0]) {
+            tl.to(problemSceneRefs.current[0], {
+                opacity: 1,
+                x: 0,
+                duration: 0.8,
+                ease: "power4.out"
+            }, "problem1+=0.3");
+        }
+        if (problemTitleRefs.current[0]) {
+            tl.to(problemTitleRefs.current[0], {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power4.out"
+            }, "problem1+=0.5");
+        }
+        if (problemDescRefs.current[0]) {
+            tl.to(problemDescRefs.current[0], {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power4.out"
+            }, "problem1+=0.7");
+        }
+
+        tl.to({}, { duration: 0.8 }); // Hold
+
+        // Transition to Problem 2
+        tl.addLabel("problem2");
+        tl.to(assistantRef.current, { x: "-20vw", duration: 1.2, ease: "power3.inOut" }, "problem2");
+        if (problemSceneRefs.current[0]) {
+            tl.to(problemSceneRefs.current[0], { opacity: 0, x: -60, duration: 0.6, ease: "power3.in" }, "problem2");
+        }
+        if (problemSceneRefs.current[1]) {
+            tl.to(problemSceneRefs.current[1], { opacity: 1, x: 0, duration: 0.8, ease: "power4.out" }, "problem2+=0.4");
+        }
+        if (problemTitleRefs.current[1]) {
+            tl.to(problemTitleRefs.current[1], { opacity: 1, y: 0, duration: 0.6, ease: "power4.out" }, "problem2+=0.6");
+        }
+        if (problemDescRefs.current[1]) {
+            tl.to(problemDescRefs.current[1], { opacity: 1, y: 0, duration: 0.7, ease: "power4.out" }, "problem2+=0.8");
+        }
+
+        tl.to({}, { duration: 0.8 }); // Hold
+
+        // Transition to Problem 3
+        tl.addLabel("problem3");
+        tl.to(assistantRef.current, { x: "20vw", scale: 1.2, duration: 1.2, ease: "power3.inOut" }, "problem3");
+        if (problemSceneRefs.current[1]) {
+            tl.to(problemSceneRefs.current[1], { opacity: 0, x: 60, duration: 0.6, ease: "power3.in" }, "problem3");
+        }
+        if (problemSceneRefs.current[2]) {
+            tl.to(problemSceneRefs.current[2], { opacity: 1, x: 0, duration: 0.8, ease: "power4.out" }, "problem3+=0.4");
+        }
+        if (problemTitleRefs.current[2]) {
+            tl.to(problemTitleRefs.current[2], { opacity: 1, y: 0, duration: 0.6, ease: "power4.out" }, "problem3+=0.6");
+        }
+        if (problemDescRefs.current[2]) {
+            tl.to(problemDescRefs.current[2], { opacity: 1, y: 0, duration: 0.7, ease: "power4.out" }, "problem3+=0.8");
+        }
+
+        tl.to({}, { duration: 1 }); // Hold
+
+        // Direct transition to Solution
+        tl.addLabel("solution");
+        if (problemSceneRefs.current[2]) {
+            tl.to(problemSceneRefs.current[2], { opacity: 0, x: -60, duration: 0.7, ease: "power3.in" }, "solution");
+        }
+
+        // Marco transforms and moves to final position
+        tl.to(assistantRef.current, {
+            x: 0,
+            y: "15vh",
+            scale: 0.55,
+            duration: 1.2,
+            ease: "power3.inOut",
+            onStart: () => setAssistantState("solution"),
+            onReverseComplete: () => setAssistantState("problem"),
+            force3D: true
+        }, "solution");
+
+        // Reveal Solution Stage
+        tl.fromTo(cardsStageRef.current,
+            { y: "10vh", opacity: 0 },
+            { y: "-12vh", opacity: 1, duration: 1.2, ease: "power3.inOut" },
+            "solution"
+        );
+
+        cardWrapperRefs.current.forEach((el, i) => {
+            if (el) tl.to(el, { opacity: 1, duration: 0.4 }, `solution+=${0.5 + i * 0.1}`);
+        });
+
+        tl.to(flippers, {
+            rotationY: 180,
+            duration: 1.4,
+            ease: "power4.inOut",
+            stagger: 0.15,
+            force3D: true
+        }, "solution+=0.8");
+
+        // Staggered text reveal on solution side
+        solTitleRefs.current.forEach((r, i) => {
+            if (r) {
+                tl.to(r, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "power4.out"
+                }, `solution+=${1.4 + i * 0.15}`);
+            }
+        });
+        solDescRefs.current.forEach((r, i) => {
+            if (r) {
+                tl.to(r, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.7,
+                    ease: "power4.out"
+                }, `solution+=${1.6 + i * 0.15}`);
             }
         });
 
-        tl.addLabel("start");
-
-        // 1. DISSOLVE INTO ENTROPY (0% - 20%)
-        // Hero fades out, Video darkens smoothly
-        tl.to(heroRef.current, { opacity: 0, scale: 1.1, filter: "blur(10px)", duration: 2.5, ease: "power2.inOut" }, "start");
-        tl.fromTo(videoRef.current,
-            { filter: "grayscale(0%) brightness(1)" },
-            {
-                filter: "grayscale(100%) brightness(0.45)",
-                duration: 4,
-                ease: "power2.in"
-            },
-            "start+=2"
+        tl.addLabel("exit", "+=1.5");
+        tl.to(assistantRef.current, { opacity: 0, y: "20vh", duration: 0.8, ease: "power3.in" }, "exit");
+        tl.to(cardsStageRef.current, { opacity: 0, y: "-20vh", duration: 1, ease: "power3.in" }, "exit");
+        tl.to(bgRef.current, { opacity: 0, duration: 1.2 }, "exit");
+        tl.fromTo(
+            wipeRef.current,
+            { clipPath: "inset(0 0 0% 0)" },
+            { clipPath: "inset(0 0 100% 0)", duration: 1.5, ease: "power3.inOut" },
+            "exit+=0.5"
         );
+    }, { scope: containerRef, dependencies: [slug] });
 
-        // 2. CHAOS ENTRY (Overlap with Hero Exit)
-        tl.addLabel("chaos", 0.5); // Start card entry while hero is still fading
 
-        // Stage becomes visible
-        tl.to(sceneRef.current, { opacity: 1, duration: 1.5 }, "chaos");
-
-        // Wrappers (containing both cards) float in from deep space
-        wrappers.forEach((wrap, i) => {
-            tl.fromTo(wrap,
-                { z: -2500, opacity: 0, x: problems[i].spreadPos.x * 2.5, y: problems[i].spreadPos.y * 2.5, rotationZ: problems[i].spreadPos.rotate * 2 },
-                { z: 0, opacity: 1, x: problems[i].spreadPos.x, y: problems[i].spreadPos.y, rotationZ: problems[i].spreadPos.rotate, duration: 4, ease: "power3.out" },
-                `chaos+=${i * 0.3}`
-            );
-        });
-
-        // 3. IDLING / DRIFT
-        tl.addLabel("drift");
-        tl.to(wrappers, {
-            y: "+=40",
-            rotationZ: "+=3",
-            duration: 4,
-            yoyo: true,
-            repeat: 1,
-            ease: "sine.inOut"
-        }, "drift");
-
-        // 4. EPIPHANY
-        tl.addLabel("epiphany");
-        // Blur cards slightly
-        tl.to(wrappers, { filter: "blur(4px) brightness(0.7)", scale: 0.9, duration: 2 }, "epiphany");
-        tl.fromTo(whatIfRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 2 }, "epiphany");
-        tl.to(whatIfRef.current, { opacity: 0, scale: 1.2, filter: "blur(10px)", duration: 2 }, "epiphany+=2.5");
-
-        // 5. THE FLIP
-        tl.addLabel("flip");
-        // Align Wrappers to Grid first (Order)
-        tl.to(wrappers, {
-            filter: "blur(0px) brightness(1)",
-            scale: 1,
-            x: (i) => (i - 1) * 350,
-            y: 0,
-            rotationZ: 0,
-            duration: 3,
-            ease: "power2.inOut"
-        }, "flip");
-
-        // THE "FAKE 3D" SWAP
-        tl.to(pCards, {
-            rotationY: 90,
-            opacity: 0,
-            duration: 1.5,
-            ease: "power1.in",
-            stagger: 0.1
-        }, "flip+=1.5");
-
-        tl.fromTo(sCards,
-            { rotationY: -90, opacity: 0 },
-            {
-                rotationY: 0,
-                opacity: 1,
-                duration: 1.5,
-                ease: "power1.out",
-                stagger: 0.1
-            },
-            "flip+=3"
-        );
-
-        // Synchronize Video Bloom with Flip
-        // Glow effect - Applied to sCards for clipping
-        tl.to(sCards, {
-            boxShadow: "0 0 60px rgba(19,245,132,0.3)",
-            duration: 2
-        }, "flip+=4");
-
-        // 6. EXIT (The Smooth Handoff)
-        tl.addLabel("exit");
-        tl.to(wrappers, {
-            opacity: 0,
-            y: -100,
-            filter: "blur(10px)",
-            duration: 2,
-            ease: "power2.in"
-        }, "exit");
-        tl.to(videoRef.current, {
-            opacity: 0,
-            duration: 2
-        }, "exit");
-
-    }, { scope: containerRef });
 
     return (
-        <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white perspective-[2000px]">
-            {/* 0. FIXED VIDEO */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <video
-                    ref={videoRef}
-                    autoPlay loop muted playsInline
-                    className="w-full h-full object-cover opacity-100"
-                >
-                    <source src="/fasih-demo.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
-                <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/80" />
+        <div
+            ref={containerRef}
+            className="relative w-full h-screen overflow-hidden bg-[#09090b] text-white perspective-[2000px]"
+        >
+            <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-100" aria-hidden />
+
+            {/* Marco Assistant: Dynamic Holographic character */}
+            <div
+                ref={assistantRef}
+                className="absolute z-[1] w-[42%] max-w-md aspect-square max-h-[40vh] flex items-center justify-center pointer-events-none overflow-visible opacity-0"
+                style={{ top: "45%", left: "50%", transform: "translate(-50%, -50%)" }}
+                aria-hidden
+            >
+                <CinematicAssistant
+                    state={assistantState}
+                    className="w-full h-full"
+                    reducedMotion={reducedMotion}
+                />
             </div>
 
-            {/* 1. HERO CONTENT */}
-            <div ref={heroRef} className="absolute inset-0 z-10 flex items-center justify-center pt-20">
-                <div className="flex flex-col items-center text-center max-w-4xl px-4">
-                    <BadgeChip label="Product Suite" icon={Sparkles} className="mb-8" />
-                    <TypewriterTitle title={hydratedProduct.name} splitMode="lastWord" className="mb-8" align="center" />
-                    <div className="space-y-4 mb-10 max-w-2xl">
-                        {heroSubtitle.map((line: string, index: number) => (
-                            <p key={index} className="text-lg md:text-xl lg:text-2xl text-white/90 font-medium">
-                                {line}
-                            </p>
-                        ))}
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-                        <Button variant="primary" size="lg" className="w-full sm:w-auto px-10">
-                            <span className="inline-flex items-center gap-2 group">Get Started Now</span>
-                        </Button>
-                        <Button variant="outline" size="lg" className="w-full sm:w-auto px-10 bg-white/5 border-white/10 hover:bg-white/10">
-                            <span className="flex items-center gap-2">View Features</span>
-                        </Button>
-                    </div>
+
+
+            {/* Problem scenes: one card per scene, alternating left/right; only one visible at a time */}
+            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 md:px-8 pt-16 pb-20 pointer-events-none">
+                <div className="relative w-full max-w-5xl h-full flex items-center justify-center">
+                    {problems.map((p, i) => (
+                        <div
+                            key={p.id}
+                            ref={(el) => {
+                                problemSceneRefs.current[i] = el;
+                            }}
+                            className="absolute inset-0 flex items-center justify-center opacity-0"
+                            style={{
+                                justifyContent: i === 1 ? "flex-end" : "flex-start",
+                                paddingLeft: i === 1 ? 0 : "10%",
+                                paddingRight: i === 1 ? "10%" : 0,
+                            }}
+                        >
+                            <div className="w-full max-w-md">
+                                <ProblemSceneCard
+                                    problem={p}
+                                    titleRef={(el) => {
+                                        problemTitleRefs.current[i] = el as HTMLDivElement | null;
+                                    }}
+                                    descRef={(el) => {
+                                        problemDescRefs.current[i] = el as HTMLDivElement | null;
+                                    }}
+                                    side={i === 1 ? "right" : "left"}
+                                />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* 2. THE STAGE (Problems & Solutions) */}
-            <div ref={sceneRef} className="absolute inset-0 z-20 flex items-center justify-center opacity-0 pointer-events-none perspective-[1000px]">
-                {problems.map((p, i) => (
-                    <div
-                        key={p.id}
-                        ref={(el) => { wrappersRef.current[i] = el; }}
-                        className="absolute w-[280px] h-[180px] rounded-[32px] overflow-hidden"
-                    // No preserve-3d here. We want flat stacking context for children to avoid mixing.
-                    >
-                        {/* A. PROBLEM CARD */}
-                        <div
-                            ref={(el) => { problemCardsRef.current[i] = el; }}
-                            className="absolute inset-0 w-full h-full z-20 rounded-[32px] overflow-hidden" // Higher Z initially
-                        >
-                            <Card className="w-full h-full bg-zinc-900/90 border-red-500/20 backdrop-blur-xl">
-                                <CardHeader className="pb-2">
-                                    <div className="flex justify-between items-center mb-1">
-                                        <p.icon className="w-4 h-4 text-red-500" />
-                                        <span className="text-[9px] uppercase tracking-widest text-red-500 font-mono">ERR_0{p.id}</span>
-                                    </div>
-                                    <CardTitle className="text-white text-base">{p.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <CardDescription className="text-zinc-400 text-xs">{p.description}</CardDescription>
-                                </CardContent>
-                            </Card>
-                        </div>
 
-                        {/* B. SOLUTION CARD (Initial State: Invisible & Rotated -90) */}
-                        <div
-                            ref={(el) => { solutionCardsRef.current[i] = el; }}
-                            className="absolute inset-0 w-full h-full z-10 opacity-0 rounded-[32px] overflow-hidden"
-                            style={{ transform: "rotateY(-90deg)" }}
-                        >
-                            <Card className="w-full h-full bg-black/90 border-primary/50 backdrop-blur-xl shadow-[0_0_30px_rgba(19,245,132,0.1)]">
-                                <CardHeader className="pb-2">
-                                    <div className="flex justify-between items-center mb-1">
-                                        <p.solIcon className="w-4 h-4 text-primary" />
-                                        <span className="text-[9px] uppercase tracking-widest text-primary font-mono font-bold">{p.solImpact}</span>
+
+            {/* Solution stage: three cards that flip (same Card component, both faces) */}
+            <div
+                ref={cardsStageRef}
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 pt-20 pb-24"
+            >
+
+                <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto mt-6">
+                    {problems.map((p, i) => {
+                        const ProblemIcon = p.icon;
+                        const SolIcon = p.solIcon;
+                        return (
+                            <div
+                                key={p.id}
+                                ref={(el) => {
+                                    cardWrapperRefs.current[i] = el;
+                                }}
+                                className="w-[260px] md:w-[280px] h-[200px] shrink-0 opacity-0 overflow-visible"
+                                style={{ perspective: "1200px" }}
+                            >
+                                <div
+                                    ref={(el) => {
+                                        flipperRefs.current[i] = el;
+                                    }}
+                                    className="relative w-full h-full"
+                                    style={{ transformStyle: "preserve-3d" }}
+                                >
+                                    <div
+                                        className="absolute inset-0 rounded-2xl overflow-hidden"
+                                        style={{ transform: "rotateY(0deg)", backfaceVisibility: "hidden" }}
+                                    >
+                                        <Card
+                                            spotlight={false}
+                                            className="w-full h-full bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                        >
+                                            <CardHeader className="pb-2">
+                                                <div className="flex justify-between items-center mb-1">
+                                                    <ProblemIcon className="w-4 h-4 text-red-500 shrink-0" />
+                                                    <span className="text-[9px] uppercase tracking-widest text-red-500 font-mono">
+                                                        ERR_0{p.id}
+                                                    </span>
+                                                </div>
+                                                <CardTitle className="text-white text-sm md:text-base line-clamp-2">{p.title}</CardTitle>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <CardDescription className="text-gray-400 text-xs md:text-sm line-clamp-3">
+                                                    {p.description}
+                                                </CardDescription>
+                                            </CardContent>
+                                        </Card>
                                     </div>
-                                    <CardTitle className="text-white text-base">{p.solTitle}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <CardDescription className="text-zinc-300 text-xs">{p.solDesc}</CardDescription>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-                ))}
+                                    <div
+                                        className="absolute inset-0 rounded-2xl overflow-hidden"
+                                        style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
+                                    >
+                                        <Card className="w-full h-full bg-black/90 border-primary/50 backdrop-blur-xl">
+                                            <CardHeader className="pb-2">
+                                                <div className="flex justify-between items-center mb-1">
+                                                    <SolIcon className="w-4 h-4 text-primary shrink-0" />
+                                                    <span className="text-[9px] uppercase tracking-widest text-primary font-mono font-bold">
+                                                        {p.solImpact}
+                                                    </span>
+                                                </div>
+                                                <div ref={(el) => { solTitleRefs.current[i] = el; }} className="opacity-0">
+                                                    <CardTitle className="text-white text-sm md:text-base line-clamp-2">
+                                                        {p.solTitle}
+                                                    </CardTitle>
+                                                </div>
+                                                <p className="text-[10px] uppercase tracking-wider text-gray-500 mt-1 line-clamp-1" aria-hidden>
+                                                    In response to: {p.title}
+                                                </p>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <div ref={(el) => { solDescRefs.current[i] = el; }} className="opacity-0">
+                                                    <CardDescription className="text-gray-400 text-xs line-clamp-2">
+                                                        {p.solDesc}
+                                                    </CardDescription>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
 
-            {/* 3. EPIPHANY TEXT */}
-            <div ref={whatIfRef} className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center opacity-0 pointer-events-none px-4">
-                <BadgeChip label="System Reimaged" icon={Sparkles} className="mb-6" />
-                <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-500">
-                    Order from Chaos.
-                </h2>
-            </div>
-
+            <div
+                ref={wipeRef}
+                className="pointer-events-none fixed left-0 right-0 z-[100] h-screen bg-[#09090b]"
+                style={{ top: "100vh", clipPath: "inset(0 0 0% 0)" }}
+                aria-hidden
+            />
         </div>
     );
 }
