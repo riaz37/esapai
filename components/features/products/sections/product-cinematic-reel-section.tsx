@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Sparkles, Layers } from "lucide-react";
+import { Layers } from "lucide-react";
 import type { Product } from "@/types/product";
 
 // Custom CSS for micro-animations
@@ -30,16 +30,7 @@ const REEL_IMAGES = [
     '/productimages/Slide-24.png',
 ];
 
-/** Deterministic width for HUD bar (hydration-safe) */
-function barWidth(index: number): number {
-    return 10 + ((index * 7) % 30);
-}
 
-/** Deterministic hex for HUD (hydration-safe) */
-function hudHex(index: number): string {
-    const v = ((index * 0x4d2) + 0x8080) % 0xFFFFFF;
-    return `0x${v.toString(16).toUpperCase().padStart(6, "0")}`;
-}
 
 interface ProductCinematicReelSectionProps {
     product: Product | null;
@@ -52,8 +43,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
     const productLabel = product?.name ?? "ESAP";
     const architectureSubtitle = `Architecture — ${productLabel}. Detailed visualization of the ESAP engine components.`;
 
-    const hudBarWidths = useMemo(() => Array.from({ length: 12 }, (_, i) => barWidth(i)), []);
-    const hudHexValues = useMemo(() => Array.from({ length: 8 }, (_, i) => hudHex(i)), []);
+
 
     useGSAP(
         () => {
@@ -71,7 +61,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
 
             // 1. Initial State: Stack the "Blades"
             gsap.set(".deck-stage", { perspective: "2500px" });
-            gsap.set(".hud-panel", { opacity: 0, scale: 0.8 });
+
 
             REEL_IMAGES.forEach((_, index) => {
                 const el = imagesRef.current[index];
@@ -90,13 +80,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
 
             // 2. Introduction: System Warm-up
             tl.to(".header-wrap", { opacity: 0, y: -50, scale: 0.9, duration: 2, ease: "power4.inOut" }, 0);
-            tl.to(".hud-panel", {
-                opacity: 1,
-                scale: 1,
-                stagger: 0.2,
-                duration: 2,
-                ease: "expo.out"
-            }, 1);
+
 
             // 3. The Deck Orchestration
             REEL_IMAGES.forEach((_, index) => {
@@ -222,58 +206,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 </div>
             </div>
 
-            {/* 4. High-Tech Glass HUD */}
-            <div className="absolute inset-0 z-40 pointer-events-none">
-                {/* Top Left Panel - Stripped */}
-                <div className="hud-panel absolute top-12 left-12 group">
-                    <div className="relative space-y-3">
-                        <div className="flex items-center gap-3 text-primary font-mono text-[10px] tracking-widest uppercase">
-                            SYSTEM_CORE_ACTIVE
-                        </div>
-                    </div>
-                </div>
 
-                {/* Top Right Panel - Original, but simplified */}
-                <div className="hud-panel absolute top-10 right-10 text-right">
-                    <div className="flex items-center justify-end gap-3 font-mono text-[10px] text-white/40 tracking-widest uppercase">
-                        Sync_Stable
-                        <Sparkles size={14} className="text-primary" />
-                    </div>
-                </div>
-
-                {/* Vertical Data Bars — deterministic (hydration-safe) */}
-                <div className="hud-panel absolute left-10 top-1/2 -translate-y-1/2 space-y-2 opacity-40">
-                    {hudBarWidths.map((width, i) => (
-                        <div key={i} className="h-1 bg-primary/30 rounded-full transition-all duration-500" style={{ width }} />
-                    ))}
-                </div>
-
-                <div className="hud-panel absolute right-10 top-1/2 -translate-y-1/2 space-y-2 opacity-40 text-right">
-                    {hudHexValues.map((hex, i) => (
-                        <div key={i} className="font-mono text-[8px] text-white/20 uppercase tracking-tighter">
-                            {hex}
-                        </div>
-                    ))}
-                </div>
-
-                {/* Bottom Right Panel - Stripped */}
-                <div className="hud-panel absolute bottom-12 right-12 text-right">
-                    <div className="relative space-y-2">
-                        <div className="text-[24px] font-light tracking-tighter text-white">98.4<span className="text-primary text-sm">%</span></div>
-                        <div className="text-[10px] font-mono tracking-widest text-primary uppercase">Efficiency Delta</div>
-                    </div>
-                </div>
-
-                {/* Bottom Stats - Original, but simplified */}
-                <div className="hud-panel absolute bottom-10 inset-x-10 flex justify-between items-end pb-4 font-mono text-[9px] text-white/30 uppercase tracking-[0.4em]">
-                    <div>Sector_7G // Deck_V5</div>
-                    <div className="text-primary/60 font-bold items-center flex gap-2">
-                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-ping" />
-                        Real_Time_Stream
-                    </div>
-                    <div>Architect_ID: ESAP_AI</div>
-                </div>
-            </div>
 
             {/* 5. Edge Masking */}
             <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(9,9,11,0.6)] z-40" />

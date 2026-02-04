@@ -5,19 +5,18 @@ import ReactFlow, {
     Handle,
     Position,
     NodeProps,
-    ConnectionLineType,
-    ReactFlowProvider,
-    getStraightPath,
     EdgeProps,
+    ReactFlowProvider,
+    getSmoothStepPath,
+    Node,
+    Edge,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { Workflow } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SectionHeader } from "@/components/ui/section-header";
 import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
-import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { cn } from "@/lib/utils";
 
 if (typeof window !== "undefined") {
@@ -25,74 +24,110 @@ if (typeof window !== "undefined") {
 }
 
 const PRIMARY = "#13F584";
-const PRIMARY_RGB = "19, 245, 132";
 
-// --- Edge: soft gradient stroke + animated traveler ---
+// Define the animation style once globally to avoid duplication in DOM
+const globalEdgeStyles = `
+  @keyframes dash-draw {
+    from { stroke-dashoffset: 20; }
+    to { stroke-dashoffset: 0; }
+  }
+`;
+
+/**
+ * Rebuilt Connection Line "CinematicEdge"
+ * 
+ * Changes from previous version:
+ * 1. REMOVED GRADIENTS on paths. Gradients on horizontal/vertical SVG paths
+ *    often disappear because the bounding box has 0 width or height.
+ * 2. Used SOLID COLORS for robust visibility. 
+ *    - Core line: Solid primary color, dashed.
+ *    - Glow line: Thicker, lower opacity solid color, blurred.
+ * 3. Simplified filters to ensure efficient rendering.
+ */
 const CinematicEdge = ({
     id,
     sourceX,
     sourceY,
     targetX,
     targetY,
+    sourcePosition,
+    targetPosition,
     style = {},
+    markerEnd,
 }: EdgeProps) => {
-    const [edgePath] = getStraightPath({
+
+    const [edgePath] = getSmoothStepPath({
         sourceX,
         sourceY,
         targetX,
         targetY,
+        sourcePosition,
+        targetPosition,
+        borderRadius: 16, // Slightly increased radius for better aesthetics
     });
 
-    const duration = useMemo(() => {
-        let hash = 0;
-        for (let i = 0; i < id.length; i++) hash = id.charCodeAt(i) + ((hash << 5) - hash);
-        return 2.5 + (Math.abs(hash) % 300) / 100;
-    }, [id]);
+    // Unique IDs for this specific edge instance to prevent collisions
+    const markerId = `arrow-${id}`;
+    const filterId = `glow-${id}`;
 
     return (
         <>
-            <path
-                d={edgePath}
-                fill="none"
-                stroke={`url(#edge-glow-${id})`}
-                strokeWidth={12}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity={0.15}
-                className="react-flow__edge-path"
-            />
-            <path
-                d={edgePath}
-                fill="none"
-                stroke={`url(#edge-stroke-${id})`}
-                strokeWidth={2.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="react-flow__edge-path"
-                style={style}
-            />
-            <circle r="4" fill={PRIMARY} opacity={0.9}>
-                <animateMotion dur={`${duration}s`} repeatCount="indefinite" path={edgePath} />
-            </circle>
             <defs>
-                <linearGradient id={`edge-glow-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor={PRIMARY} stopOpacity={0} />
-                    <stop offset="50%" stopColor={PRIMARY} stopOpacity={0.4} />
-                    <stop offset="100%" stopColor={PRIMARY} stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id={`edge-stroke-${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor={PRIMARY} stopOpacity={0.5} />
-                    <stop offset="100%" stopColor={PRIMARY} stopOpacity={0.9} />
-                </linearGradient>
+                <marker
+                    id={markerId}
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="5"
+                    markerHeight="5"
+                    orient="auto-start-reverse"
+                >
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill={PRIMARY} />
+                </marker>
+
+                {/* Simple blur filter for the glow effect */}
+                <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                    <feMerge>
+                        <feMergeNode in="coloredBlur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
             </defs>
+
+            {/* 1. Underlying Glow Path (Thicker, blurred, low opacity) */}
+            <path
+                d={edgePath}
+                fill="none"
+                stroke={PRIMARY}
+                strokeWidth={4}
+                strokeOpacity={0.08}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter={`url(#${filterId})`}
+                className="react-flow__edge-path-glow"
+            />
+
+            {/* 2. Main Visible Line (Thin, distinct, animated) */}
+            <path
+                d={edgePath}
+                fill="none"
+                stroke={PRIMARY} // Solid color guarantees visibility
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="5, 7" // Distinct dash pattern
+                markerEnd={`url(#${markerId})`}
+                style={{
+                    ...style,
+                    animation: "dash-draw 1s linear infinite",
+                }}
+            />
         </>
     );
 };
 
-// --- Node: glass card with step badge, icon ring, and active glow ---
 const JourneyNode = ({ id, data }: NodeProps) => {
-    const stepNum = id.replace(/step/i, "").padStart(2, "0");
-
     return (
         <div className="flex flex-col items-center journey-node" data-id={id}>
             <div
@@ -111,18 +146,16 @@ const JourneyNode = ({ id, data }: NodeProps) => {
                         "0 8px 32px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset",
                 }}
             >
-                <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
-                <Handle type="source" position={Position.Right} style={{ opacity: 0 }} />
+                {/* Handles on all slides for flexible routing */}
+                <Handle type="target" position={Position.Left} id="l-in" style={{ opacity: 0 }} />
+                <Handle type="source" position={Position.Left} id="l-out" style={{ opacity: 0 }} />
+                <Handle type="target" position={Position.Right} id="r-in" style={{ opacity: 0 }} />
+                <Handle type="source" position={Position.Right} id="r-out" style={{ opacity: 0 }} />
+                <Handle type="target" position={Position.Top} id="t-in" style={{ opacity: 0 }} />
+                <Handle type="source" position={Position.Top} id="t-out" style={{ opacity: 0 }} />
+                <Handle type="target" position={Position.Bottom} id="b-in" style={{ opacity: 0 }} />
+                <Handle type="source" position={Position.Bottom} id="b-out" style={{ opacity: 0 }} />
 
-                {/* Step number badge */}
-                <span
-                    className="absolute top-3 left-3 font-mono text-[11px] font-semibold tracking-[0.2em] text-[#13F584]/80 node-step-badge"
-                    aria-hidden
-                >
-                    {stepNum}
-                </span>
-
-                {/* Icon */}
                 <div
                     className={cn(
                         "node-icon mb-5 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl",
@@ -143,16 +176,6 @@ const JourneyNode = ({ id, data }: NodeProps) => {
                 >
                     {data.title}
                 </h3>
-
-                {/* Active glow — toggled by GSAP from active step */}
-                <div
-                    className="node-glow pointer-events-none absolute inset-0 rounded-2xl border-2 border-[#13F584]/50 opacity-0 transition-opacity duration-500"
-                    style={{
-                        boxShadow:
-                            "inset 0 0 60px -12px rgba(19,245,132,0.35), 0 0 48px -16px rgba(19,245,132,0.25)",
-                    }}
-                    aria-hidden
-                />
             </div>
         </div>
     );
@@ -165,283 +188,128 @@ interface UserJourneyProps {
     productSlug?: string;
 }
 
-const STEP_DURATION = 2.4;
-const OVERVIEW_DURATION = 1.8;
-
-const UserJourneyFlow = ({ productSlug = "ai-framework" }: UserJourneyProps) => {
+const LayeredJourneyFlow = ({
+    layers,
+    title,
+    subtitle
+}: {
+    layers: any[],
+    title?: string,
+    subtitle?: string
+}) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
-    const headerStepTitleRef = useRef<HTMLSpanElement>(null);
-    const captionRef = useRef<HTMLDivElement>(null);
-    const captionTextRef = useRef<HTMLParagraphElement>(null);
-    const stepDotsRef = useRef<HTMLDivElement>(null);
-
-    const journeyData = useMemo(
-        () => PRODUCT_JOURNEYS[productSlug] ?? PRODUCT_JOURNEYS["ai-framework"],
-        [productSlug]
-    );
-
-    const { nodes: initialNodes, edges: initialEdges, cinematicSequence } = journeyData;
-
-    const graphCenter = useMemo(() => {
-        if (!initialNodes?.length) return { x: 400, y: 200 };
-        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        initialNodes.forEach((node) => {
-            minX = Math.min(minX, node.position.x);
-            maxX = Math.max(maxX, node.position.x);
-            minY = Math.min(minY, node.position.y);
-            maxY = Math.max(maxY, node.position.y);
-        });
-        return { x: (minX + maxX) / 2 + 60, y: (minY + maxY) / 2 + 40 };
-    }, [initialNodes]);
-
-    const stepNodes = useMemo(
-        () =>
-            initialNodes
-                .filter((n) => n.id && String(n.id).startsWith("step"))
-                .sort((a, b) => String(a.id).localeCompare(String(b.id))),
-        [initialNodes]
-    );
-
-    const processedSequence = useMemo(() => {
-        if (!cinematicSequence?.length) return [];
-        const w = typeof window !== "undefined" ? window.innerWidth : 0;
-        const h = typeof window !== "undefined" ? window.innerHeight : 0;
-        return cinematicSequence.map((step) => {
-            if (step.targetId === "") {
-                const x = w / 2 - graphCenter.x * step.zoom;
-                const y = h / 2 - graphCenter.y * step.zoom;
-                return { ...step, position: { x, y } };
-            }
-            const node = initialNodes.find((n) => n.id === step.targetId);
-            if (node && typeof node.position.x === "number" && typeof node.position.y === "number") {
-                const x = w / 2 - node.position.x * step.zoom;
-                const y = h / 2 - node.position.y * step.zoom;
-                return { ...step, position: { x, y } };
-            }
-            return { ...step, position: step.position ?? { x: 0, y: 0 } };
-        });
-    }, [cinematicSequence, initialNodes, graphCenter]);
+    const layersRef = useRef<(HTMLDivElement | null)[]>([]);
 
     useGSAP(() => {
-        if (!containerRef.current || !processedSequence.length) return;
-
-        const reducedMotion = prefersReducedMotion();
-        const stepDur = reducedMotion ? 0.4 : STEP_DURATION;
-        const overviewDur = reducedMotion ? 0.3 : OVERVIEW_DURATION;
-
-        const state = {
-            x: processedSequence[0].position.x,
-            y: processedSequence[0].position.y,
-            zoom: processedSequence[0].zoom,
-        };
-
-        // Step start times: step 0 = overview [0, overviewDur), step 1 = first focus [overviewDur, overviewDur+stepDur), ...
-        const stepStartTimes: number[] = [0];
-        for (let i = 1; i < processedSequence.length; i++) {
-            stepStartTimes.push(overviewDur + (i - 1) * stepDur);
-        }
-
-        const getCurrentStepIndex = (time: number): number => {
-            let idx = 0;
-            for (let i = 0; i < processedSequence.length; i++) {
-                if (time >= stepStartTimes[i]) idx = i;
-            }
-            return Math.min(idx, processedSequence.length - 1);
-        };
-
-        const updateVisuals = () => {
-            const viewport = containerRef.current?.querySelector(".react-flow__viewport") as HTMLElement;
-            if (viewport) {
-                gsap.set(viewport, {
-                    transform: `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`,
-                    transformOrigin: "0 0",
-                });
-            }
-
-            const tl = gsap.getById("journey-timeline") as gsap.core.Timeline | undefined;
-            const currentTime = tl ? tl.time() : 0;
-            const stepIndex = getCurrentStepIndex(currentTime);
-            const currentStep = processedSequence[stepIndex];
-            const activeNodeId = currentStep?.targetId ?? "";
-
-            // Node highlight from current step (stays in sync with scroll)
-            containerRef.current?.querySelectorAll(".journey-node").forEach((wrapper) => {
-                const id = (wrapper as HTMLElement).getAttribute("data-id");
-                const box = wrapper.querySelector(".node-content-box") as HTMLElement;
-                const glow = wrapper.querySelector(".node-glow") as HTMLElement;
-                const icon = wrapper.querySelector(".node-icon") as HTMLElement;
-                if (!box) return;
-
-                const isActive = id === activeNodeId;
-                if (isActive) {
-                    box.style.borderColor = `rgba(${PRIMARY_RGB}, 0.5)`;
-                    box.style.boxShadow = `0 12px 40px -12px rgba(${PRIMARY_RGB}, 0.35), 0 0 0 1px rgba(${PRIMARY_RGB}, 0.2) inset`;
-                    if (glow) glow.style.opacity = "1";
-                    if (icon) icon.style.transform = "scale(1.08)";
-                } else {
-                    box.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                    box.style.boxShadow =
-                        "0 8px 32px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset";
-                    if (glow) glow.style.opacity = "0";
-                    if (icon) icon.style.transform = "scale(1)";
-                }
-            });
-
-            const captionText = currentStep?.caption ?? "";
-            if (captionTextRef.current) captionTextRef.current.textContent = captionText;
-            if (captionRef.current) {
-                gsap.set(captionRef.current, { opacity: captionText ? 1 : 0 });
-            }
-
-            const currentNode = initialNodes.find((n) => n.id === activeNodeId);
-            const stepTitle = (currentNode?.data?.title as string) ?? "Overview";
-            if (headerStepTitleRef.current) headerStepTitleRef.current.textContent = stepTitle;
-
-            stepDotsRef.current?.querySelectorAll("[data-node-id]").forEach((el) => {
-                const nodeId = (el as HTMLElement).getAttribute("data-node-id");
-                const active = nodeId === activeNodeId;
-                (el as HTMLElement).style.opacity = active ? "1" : "0.45";
-                (el as HTMLElement).style.transform = active ? "scale(1.25)" : "scale(1)";
-                (el as HTMLElement).style.background = active ? PRIMARY : "rgba(255,255,255,0.18)";
-            });
-        };
+        if (!containerRef.current || layers.length === 0) return;
 
         const tl = gsap.timeline({
-            id: "journey-timeline",
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=600%",
+                end: `+=${layers.length * 100}%`,
                 pin: true,
-                scrub: reducedMotion ? 0.5 : 1.5,
-                invalidateOnRefresh: true,
+                scrub: 1,
+                anticipatePin: 1,
             },
-            onUpdate: updateVisuals,
         });
 
-        tl.set(state, {
-            x: processedSequence[0].position.x,
-            y: processedSequence[0].position.y,
-            zoom: processedSequence[0].zoom,
-        });
-        updateVisuals();
+        // Layer parallax effect
+        layersRef.current.forEach((layer, i) => {
+            if (i === 0) return;
+            if (!layer) return;
 
-        if (headerRef.current) {
-            tl.to(headerRef.current, { opacity: 0.6, duration: 0.8 }, 0);
-        }
+            gsap.set(layer, { yPercent: 100 });
 
-        // Smooth camera: sequential tweens, one per step, with consistent duration and smooth ease
-        processedSequence.slice(1).forEach((step, i) => {
-            const duration = i === 0 ? overviewDur : stepDur;
-            tl.to(state, {
-                x: step.position.x,
-                y: step.position.y,
-                zoom: step.zoom,
-                duration,
-                ease: "power3.inOut",
+            tl.to(layer, {
+                yPercent: 0,
+                duration: 1,
+                ease: "none",
             });
         });
 
-        // Slight exit scale for next section (at end of timeline)
-        const journeyStage = containerRef.current?.querySelector(".journey-stage") as HTMLElement;
-        if (!reducedMotion && journeyStage) {
-            tl.to(
-                journeyStage,
-                { scale: 0.98, opacity: 0.96, duration: 1.2, ease: "power3.inOut" },
-                "-=0.8"
-            );
-        }
-    }, { scope: containerRef, dependencies: [journeyData, processedSequence] });
+    }, { scope: containerRef, dependencies: [layers] });
 
     return (
-        <section
-            ref={containerRef}
-            className="relative w-full min-h-screen bg-[#050505] overflow-hidden"
-        >
+        <section ref={containerRef} className="relative w-full h-screen bg-[#050505] overflow-hidden">
+            {/* Inject Animation Styles */}
+            <style dangerouslySetInnerHTML={{ __html: globalEdgeStyles }} />
+
             {/* Header */}
-            <div
-                ref={headerRef}
-                className="absolute top-24 left-0 right-0 z-30 pointer-events-none px-4 transition-opacity duration-500"
-            >
-                <SectionHeader
-                    title={journeyData.journeyTitle ?? "User Journey"}
-                    subtitle={
-                        journeyData.journeySubtitle ??
-                        "Experience the seamless flow of intelligent automation"
-                    }
-                    badge="Live Flow"
-                    badgeIcon={Workflow}
-                    align="center"
-                />
-                <p className="mt-4 text-center text-sm font-medium uppercase tracking-[0.2em] text-[#13F584]/90">
-                    <span ref={headerStepTitleRef}>Overview</span>
-                </p>
+            <div className="absolute top-8 left-0 right-0 z-50 pointer-events-none px-4 flex flex-col items-center">
+                <div className="flex items-center gap-2 mb-2">
+                    <Workflow className="w-5 h-5 text-[#13F584]" />
+                    <span className="text-[#13F584] text-xs font-bold tracking-widest uppercase">
+                        Architecture
+                    </span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tighter text-center">
+                    {title || "System Architecture"}
+                </h2>
+                {subtitle && (
+                    <p className="mt-2 text-white/60 text-sm tracking-wide uppercase">{subtitle}</p>
+                )}
             </div>
 
-            {/* React Flow graph */}
-            <div className="journey-stage absolute inset-0">
-                <ReactFlow
-                    nodes={initialNodes}
-                    edges={initialEdges}
-                    nodeTypes={nodeTypes}
-                    edgeTypes={edgeTypes}
-                    connectionLineType={ConnectionLineType.SmoothStep}
-                    nodesDraggable={false}
-                    nodesConnectable={false}
-                    zoomOnScroll={false}
-                    panOnDrag={false}
-                    proOptions={{ hideAttribution: true }}
-                >
-                    <div className="absolute inset-0 bg-[#0a0a0a]/30" aria-hidden />
-                </ReactFlow>
-            </div>
-
-            {/* Caption */}
-            <div
-                ref={captionRef}
-                className="absolute bottom-32 left-1/2 z-20 w-full max-w-xl -translate-x-1/2 px-4 opacity-0 transition-opacity duration-300"
-            >
-                <p
-                    ref={captionTextRef}
-                    className="text-center text-sm font-medium uppercase tracking-[0.18em] text-[#13F584]/95 md:text-base"
-                />
-            </div>
-
-            {/* Step dots */}
-            <div
-                ref={stepDotsRef}
-                className="absolute bottom-14 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-white/10 bg-[#0a0a0a]/90 px-5 py-3 backdrop-blur-md"
-            >
-                {stepNodes.map((node) => (
-                    <span
-                        key={node.id}
-                        data-node-id={node.id}
-                        className="h-2.5 w-2.5 rounded-full bg-white/20 transition-all duration-300 ease-out"
-                        style={{ opacity: 0.45 }}
-                        aria-hidden
-                    />
-                ))}
-            </div>
-
-            {/* Overlays */}
-            <div className="pointer-events-none absolute inset-0 z-10">
-                <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050505] via-[#050505]/70 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent" />
+            {layers.map((layer, index) => (
                 <div
-                    className="absolute top-1/2 left-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[120px]"
+                    key={layer.id || index}
+                    ref={(el) => { layersRef.current[index] = el; }}
+                    className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
                     style={{
-                        background:
-                            "radial-gradient(circle, rgba(19,245,132,0.15) 0%, transparent 55%)",
+                        zIndex: index * 10,
+                        backgroundColor: '#050505',
+                        boxShadow: index > 0 ? '0 -20px 60px rgba(0,0,0,0.8)' : 'none',
                     }}
-                />
-            </div>
+                >
+                    {/* Atmospheric Background */}
+                    <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[40%] bg-[#13F584]/5 blur-[120px] rounded-full" />
+                    </div>
+
+                    <div className="relative w-full max-w-7xl h-full mx-auto flex flex-col justify-center pt-24 pb-12 px-6">
+                        {/* Layer Label */}
+                        <div className="absolute top-32 left-8 border-l-2 border-[#13F584] pl-4">
+                            <span className="block text-[#13F584] text-xs font-mono mb-1">LAYER 0{index + 1}</span>
+                            <h3 className="text-2xl font-bold text-white">{layer.title}</h3>
+                        </div>
+
+                        {/* React Flow Canvas */}
+                        <div className="w-full h-[60vh] mt-12 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden relative">
+                            <ReactFlow
+                                nodes={layer.nodes}
+                                edges={layer.edges}
+                                nodeTypes={nodeTypes}
+                                edgeTypes={edgeTypes}
+                                nodesDraggable={false}
+                                nodesConnectable={false}
+                                zoomOnScroll={false}
+                                panOnDrag={false}
+                                fitView
+                                fitViewOptions={{ padding: 0.2 }}
+                                minZoom={0.1}
+                                proOptions={{ hideAttribution: true }}
+                            >
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
+                            </ReactFlow>
+                        </div>
+                    </div>
+                </div>
+            ))}
         </section>
     );
 };
 
-export const UserJourney = ({ productSlug }: UserJourneyProps) => (
-    <ReactFlowProvider>
-        <UserJourneyFlow productSlug={productSlug} />
-    </ReactFlowProvider>
-);
+export const UserJourney = ({ productSlug = "ai-framework" }: UserJourneyProps) => {
+    const journeyData = PRODUCT_JOURNEYS[productSlug] ?? PRODUCT_JOURNEYS["ai-framework"];
+
+    return (
+        <ReactFlowProvider>
+            <LayeredJourneyFlow
+                layers={journeyData.layers || []}
+                title={journeyData.journeyTitle}
+                subtitle={journeyData.journeySubtitle}
+            />
+        </ReactFlowProvider>
+    );
+};

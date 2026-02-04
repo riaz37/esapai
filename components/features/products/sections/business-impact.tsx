@@ -99,9 +99,6 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
       className="relative py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 overflow-hidden bg-transparent"
       data-section="impact"
     >
-      {/* Depth overlay — matches landing section feel */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] pointer-events-none" />
-
       <div className="container relative z-10 max-w-6xl mx-auto">
         <SectionHeader
           title="Outcomes"

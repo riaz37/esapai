@@ -3,6 +3,7 @@ import React from 'react';
 import { Node, Edge } from 'reactflow';
 import {
     Bot,
+    Cpu,
     Layers,
     Workflow,
     RefreshCw,
@@ -13,16 +14,10 @@ import {
     FileText,
     Server,
     Mic,
-    BarChart3,
     Zap,
     Users,
     Code,
     Brain,
-    Lightbulb,
-    Wrench,
-    Rocket,
-    Activity,
-    TrendingUp,
     Link2,
     FileStack,
     Map,
@@ -35,215 +30,285 @@ import {
     Cable,
     Sparkles,
     LayoutDashboard,
+    TrendingUp,
 } from 'lucide-react';
 
-export type JourneyStep = {
-    targetId: string; // Node ID to focus on (or '' for overview)
-    position?: { x: number; y: number }; // Optional; computed in component for focused steps
-    zoom: number;
-    duration: number;
-    caption?: string; // Narrative line shown when this step is active
+export type JourneyLayer = {
+    id: string;
+    title: string;
+    nodes: Node[];
+    edges: Edge[];
 };
 
 export type ProductJourneyData = {
-    nodes: Node[];
-    edges: Edge[];
-    cinematicSequence: JourneyStep[];
-    /** Optional product-specific section title (e.g. "How ERP Works") */
+    layers: JourneyLayer[];
     journeyTitle?: string;
-    /** Optional product-specific section subtitle */
     journeySubtitle?: string;
 };
 
-const STEP_SPACING = 300;
-
-const createEdge = (source: string, target: string, order: number) => ({
+const createEdge = (source: string, target: string, sourceHandle?: string, targetHandle?: string) => ({
     id: `${source}-${target}`,
     source,
     target,
-    type: 'cinematic',
-    data: { order }
+    type: 'cinematic', // Uses our custom component
+    sourceHandle,
+    targetHandle
 });
 
-/** Build nodes in a straight line: step1..stepN, each with optional size 'lg' at heroIndex */
-function buildNodes(
-    count: number,
-    steps: { title: string; icon: React.ReactNode }[],
-    heroIndex: number
-): Node[] {
-    const nodes: Node[] = [];
-    for (let i = 0; i < count; i++) {
-        const id = `step${i + 1}`;
-        nodes.push({
-            id,
-            type: 'journey',
-            position: { x: i * STEP_SPACING, y: 200 },
-            data: {
-                title: steps[i].title,
-                icon: steps[i].icon,
-                ...(i === heroIndex ? { size: 'lg' as const } : {}),
-            },
-        });
-    }
-    return nodes;
-}
+// Helper to create a standard node
+const createNode = (id: string, x: number, y: number, title: string, icon: React.ReactNode) => ({
+    id,
+    type: 'journey',
+    position: { x, y },
+    data: { title, icon }
+});
 
-/** Build edges between step1 → step2 → … → stepN */
-function buildEdges(count: number): Edge[] {
-    const edges: Edge[] = [];
-    for (let i = 0; i < count - 1; i++) {
-        edges.push(createEdge(`step${i + 1}`, `step${i + 2}`, i + 1));
-    }
-    return edges;
-}
-
-/** Build cinematic sequence: overview → step1..stepN → overview (positions computed in component) */
-function buildSequence(
-    count: number,
-    overviewCaption: string,
-    stepCaptions: string[],
-    outroCaption = 'Where it takes you.'
-): JourneyStep[] {
-    const steps: JourneyStep[] = [
-        { targetId: '', zoom: 0.6, duration: 0, caption: overviewCaption },
-        ...Array.from({ length: count }, (_, i) => ({
-            targetId: `step${i + 1}`,
-            zoom: 1.2 as const,
-            duration: 2 as const,
-            caption: stepCaptions[i] ?? '',
-        })),
-        { targetId: '', zoom: 0.6, duration: 2, caption: outroCaption },
-    ];
-    return steps;
-}
-
-// --- ERP (Voice Activated) — 4 steps ---
-const erpJourney: ProductJourneyData = {
-    journeyTitle: 'How ERP Works',
-    journeySubtitle: 'From voice command to instant result. Zero training required.',
-    nodes: buildNodes(4, [
-        { title: 'Voice Command', icon: <Mic size={32} /> },
-        { title: 'AI Processor', icon: <Brain size={32} /> },
-        { title: 'Task Automation', icon: <Workflow size={32} /> },
-        { title: 'Instant Result', icon: <Zap size={32} /> },
-    ], 1),
-    edges: buildEdges(4),
-    cinematicSequence: buildSequence(4, 'From voice to action.', [
-        'Speak. The system listens.',
-        'AI processes intent in real time.',
-        'Tasks run automatically.',
-        'Results delivered instantly.',
-    ]),
-};
-
-// --- AI Framework — 5 steps (idea → scale) ---
+// --- AIVM Ecosystem (Reference Implementation) ---
 const aivmJourney: ProductJourneyData = {
-    journeyTitle: 'From Idea to Scale',
-    journeySubtitle: 'Build, deploy, and scale AI agents with enterprise reliability.',
-    nodes: buildNodes(5, [
-        { title: 'Define Idea', icon: <Lightbulb size={32} /> },
-        { title: 'Build Agent', icon: <Wrench size={32} /> },
-        { title: 'Deploy Infra', icon: <Rocket size={32} /> },
-        { title: 'Monitor Performance', icon: <Activity size={32} /> },
-        { title: 'Scale & Optimize', icon: <TrendingUp size={32} /> },
-    ], 2),
-    edges: buildEdges(5),
-    cinematicSequence: buildSequence(5, 'The path from idea to scale.', [
-        'You define the use case. We provide the framework.',
-        'Build agents with modular, composable components.',
-        'Deploy to enterprise infrastructure in minutes.',
-        'Monitor performance and reliability in real time.',
-        'Scale without limits. Optimize continuously.',
-    ]),
+    journeyTitle: 'AIVM Ecosystem',
+    journeySubtitle: 'A complete decentralized AI infrastructure.',
+    layers: [
+        {
+            id: 'layer-app',
+            title: 'AI Application Layer',
+            nodes: [
+                createNode('app-chat', 200, 200, 'Web3 Chatbot', <Bot size={32} />),
+                createNode('app-alert', 600, 200, 'Crypto Alerts', <Activity size={32} />),
+                createNode('app-agent', 1000, 200, 'AI Agents', <Cpu size={32} />),
+            ],
+            edges: [
+                createEdge('app-chat', 'app-alert', 'r-out', 'l-in'),
+                createEdge('app-alert', 'app-agent', 'r-out', 'l-in'),
+            ]
+        },
+        {
+            id: 'layer-token',
+            title: '$CGPT Token Layer',
+            nodes: [
+                createNode('tok-gov', 200, 200, 'Governance', <Users size={32} />),
+                createNode('tok-util', 600, 200, '$CGPT Utility', <Zap size={32} />),
+                createNode('tok-stake', 1000, 200, 'Staking', <Layers size={32} />),
+            ],
+            edges: [
+                createEdge('tok-gov', 'tok-util', 'r-out', 'l-in'),
+                createEdge('tok-util', 'tok-stake', 'r-out', 'l-in'),
+            ]
+        },
+        {
+            id: 'layer-chain',
+            title: 'AIVM Blockchain',
+            nodes: [
+                createNode('chn-val', 200, 300, 'Validators', <RefreshCw size={32} />),
+                createNode('chn-core', 600, 300, 'AIVM Core', <Brain size={32} />),
+                createNode('chn-mkt', 1000, 120, 'Data Market', <Database size={32} />),
+                createNode('chn-sdk', 1000, 300, 'SDK', <Code size={32} />),
+                createNode('chn-gpu', 1000, 480, 'GPU Market', <Cpu size={32} />),
+            ],
+            edges: [
+                createEdge('chn-val', 'chn-core', 'r-out', 'l-in'),
+                createEdge('chn-core', 'chn-mkt', 'r-out', 'l-in'),
+                createEdge('chn-core', 'chn-sdk', 'r-out', 'l-in'),
+                createEdge('chn-core', 'chn-gpu', 'r-out', 'l-in'),
+            ]
+        }
+    ]
 };
 
-// --- Zakra (Knowledge Agent) — 5 steps ---
+// --- ERP (Voice Activated) ---
+const erpJourney: ProductJourneyData = {
+    journeyTitle: 'Intelligent ERP',
+    journeySubtitle: 'Voice-first enterprise management.',
+    layers: [
+        {
+            id: 'erp-in',
+            title: 'Input Layer',
+            nodes: [
+                createNode('erp-mic', 300, 250, 'Voice Input', <Mic size={32} />),
+                createNode('erp-nlu', 700, 250, 'Intent NLU', <Brain size={32} />),
+            ],
+            edges: [createEdge('erp-mic', 'erp-nlu', 'r-out', 'l-in')]
+        },
+        {
+            id: 'erp-proc',
+            title: 'Processing Layer',
+            nodes: [
+                createNode('erp-task', 300, 250, 'Task Planner', <Workflow size={32} />),
+                createNode('erp-exec', 700, 250, 'Execution', <Zap size={32} />),
+            ],
+            edges: [createEdge('erp-task', 'erp-exec', 'r-out', 'l-in')]
+        },
+        {
+            id: 'erp-out',
+            title: 'Action Layer',
+            nodes: [
+                createNode('erp-db', 200, 250, 'Database', <Database size={32} />),
+                createNode('erp-sync', 600, 250, 'Sync Engine', <RefreshCw size={32} />),
+                createNode('erp-ui', 1000, 250, 'Dashboard', <LayoutDashboard size={32} />),
+            ],
+            edges: [
+                createEdge('erp-db', 'erp-sync', 'r-out', 'l-in'),
+                createEdge('erp-sync', 'erp-ui', 'r-out', 'l-in')
+            ]
+        }
+    ]
+};
+
+// --- Zakra (Knowledge Agent) ---
 const zakraJourney: ProductJourneyData = {
-    journeyTitle: 'From Data to Answers',
-    journeySubtitle: 'Connect your knowledge. Query in natural language. Get context-aware answers.',
-    nodes: buildNodes(5, [
-        { title: 'Connect Sources', icon: <Link2 size={32} /> },
-        { title: 'Ingest & Index', icon: <FileStack size={32} /> },
-        { title: 'Knowledge Map', icon: <Map size={32} /> },
-        { title: 'Natural Query', icon: <Search size={32} /> },
-        { title: 'Context Answer', icon: <MessageSquare size={32} /> },
-    ], 2),
-    edges: buildEdges(5),
-    cinematicSequence: buildSequence(5, 'From scattered data to one source of truth.', [
-        'Connect spreadsheets, docs, and databases.',
-        'Ingest and index without manual tagging.',
-        'Build a unified knowledge map automatically.',
-        'Query in natural language. No SQL required.',
-        'Get answers with full context and sources.',
-    ]),
+    journeyTitle: 'Zakra Knowledge',
+    journeySubtitle: 'Unified data intelligence.',
+    layers: [
+        {
+            id: 'zak-ingest',
+            title: 'Ingestion Layer',
+            nodes: [
+                createNode('zak-src', 300, 250, 'Data Sources', <Link2 size={32} />),
+                createNode('zak-idx', 700, 250, 'Indexing', <FileStack size={32} />),
+            ],
+            edges: [createEdge('zak-src', 'zak-idx', 'r-out', 'l-in')]
+        },
+        {
+            id: 'zak-know',
+            title: 'Knowledge Layer',
+            nodes: [
+                createNode('zak-map', 500, 250, 'Knowledge Graph', <Map size={32} />),
+            ],
+            edges: []
+        },
+        {
+            id: 'zak-query',
+            title: 'Query Layer',
+            nodes: [
+                createNode('zak-usr', 200, 250, 'User Query', <Search size={32} />),
+                createNode('zak-act', 600, 250, 'Context Engine', <Brain size={32} />),
+                createNode('zak-ans', 1000, 250, 'Answer', <MessageSquare size={32} />),
+            ],
+            edges: [
+                createEdge('zak-usr', 'zak-act', 'r-out', 'l-in'),
+                createEdge('zak-act', 'zak-ans', 'r-out', 'l-in'),
+            ]
+        }
+    ]
 };
 
-// --- Jawib (Customer Service) — 5 steps ---
+// --- Jawib (Customer Service) ---
 const jawibJourney: ProductJourneyData = {
-    journeyTitle: 'From Inquiry to Resolution',
-    journeySubtitle: 'Inbound, analyze, resolve, escalate, learn. 24/7 support automation.',
-    nodes: buildNodes(5, [
-        { title: 'Inbound', icon: <Inbox size={32} /> },
-        { title: 'Analyze Intent', icon: <ScanSearch size={32} /> },
-        { title: 'Resolve or Escalate', icon: <CheckCircle size={32} /> },
-        { title: 'Human Handoff', icon: <ArrowRight size={32} /> },
-        { title: 'Learn & Improve', icon: <BookOpen size={32} /> },
-    ], 2),
-    edges: buildEdges(5),
-    cinematicSequence: buildSequence(5, 'From first touch to lasting resolution.', [
-        'Customers reach out. Any channel, any time.',
-        'Intent is analyzed instantly. No scripts.',
-        'Most cases resolve automatically. Rest get triaged.',
-        'Humans step in only when it matters.',
-        'Every interaction improves the model.',
-    ]),
+    journeyTitle: 'Jawib Support',
+    journeySubtitle: 'Automated customer resolution.',
+    layers: [
+        {
+            id: 'jaw-in',
+            title: 'Inbound Layer',
+            nodes: [
+                createNode('jaw-msg', 300, 250, 'Message In', <Inbox size={32} />),
+                createNode('jaw-rte', 700, 250, 'Router', <Workflow size={32} />),
+            ],
+            edges: [createEdge('jaw-msg', 'jaw-rte', 'r-out', 'l-in')]
+        },
+        {
+            id: 'jaw-anl',
+            title: 'Analysis Layer',
+            nodes: [
+                createNode('jaw-int', 300, 250, 'Intent Scan', <ScanSearch size={32} />),
+                createNode('jaw-res', 700, 250, 'resolver', <CheckCircle size={32} />),
+            ],
+            edges: [createEdge('jaw-int', 'jaw-res', 'r-out', 'l-in')]
+        },
+        {
+            id: 'jaw-lrn',
+            title: 'Learning Layer',
+            nodes: [
+                createNode('jaw-esc', 200, 250, 'Escalation', <ArrowRight size={32} />),
+                createNode('jaw-mod', 600, 250, 'Model Update', <RefreshCw size={32} />),
+                createNode('jaw-kb', 1000, 250, 'Knowledge Base', <BookOpen size={32} />),
+            ],
+            edges: [
+                createEdge('jaw-esc', 'jaw-mod', 'r-out', 'l-in'),
+                createEdge('jaw-mod', 'jaw-kb', 'r-out', 'l-in')
+            ]
+        }
+    ]
 };
 
-// --- Fasih (Arabic LLM) — 4 steps ---
+// --- Fasih (Arabic LLM) ---
 const fasihJourney: ProductJourneyData = {
-    journeyTitle: 'From Dialect to Nuance',
-    journeySubtitle: 'Native Arabic understanding. Dialect-aware. Culturally grounded.',
-    nodes: buildNodes(4, [
-        { title: 'Dialect Input', icon: <MessageSquare size={32} /> },
-        { title: 'Understand', icon: <Globe size={32} /> },
-        { title: 'Process', icon: <Brain size={32} /> },
-        { title: 'Nuanced Output', icon: <FileText size={32} /> },
-    ], 1),
-    edges: buildEdges(4),
-    cinematicSequence: buildSequence(4, 'From dialect to nuance.', [
-        'Input in any Arabic dialect. No normalization needed.',
-        'Native understanding. Not translation.',
-        'LLM processing with cultural context.',
-        'Nuanced, natural output. Human-quality.',
-    ]),
+    journeyTitle: 'Fasih Arabic LLM',
+    journeySubtitle: 'Nuanced Arabic understanding.',
+    layers: [
+        {
+            id: 'fas-in',
+            title: 'Dialect Layer',
+            nodes: [
+                createNode('fas-txt', 300, 250, 'Text Input', <MessageSquare size={32} />),
+                createNode('fas-det', 700, 250, 'Dialect ID', <Globe size={32} />),
+            ],
+            edges: [createEdge('fas-txt', 'fas-det', 'r-out', 'l-in')]
+        },
+        {
+            id: 'fas-proc',
+            title: 'Processing Layer',
+            nodes: [
+                createNode('fas-tok', 300, 250, 'Tokenizer', <Code size={32} />),
+                createNode('fas-llm', 700, 250, 'Arabic LLM', <Brain size={32} />),
+            ],
+            edges: [createEdge('fas-tok', 'fas-llm', 'r-out', 'l-in')]
+        },
+        {
+            id: 'fas-out',
+            title: 'Output Layer',
+            nodes: [
+                createNode('fas-gen', 300, 250, 'Generation', <Sparkles size={32} />),
+                createNode('fas-fin', 700, 250, 'Final Output', <FileText size={32} />),
+            ],
+            edges: [createEdge('fas-gen', 'fas-fin', 'r-out', 'l-in')]
+        }
+    ]
 };
 
-// --- Domain Expansion — 6 steps (legacy to modern) ---
+// --- Domain Expansion ---
 const domainJourney: ProductJourneyData = {
-    journeyTitle: 'From Legacy to Modern',
-    journeySubtitle: 'Assess, connect, bridge, automate, surface, scale. No rip-and-replace.',
-    nodes: buildNodes(6, [
-        { title: 'Assess', icon: <ClipboardList size={32} /> },
-        { title: 'Connect', icon: <Link2 size={32} /> },
-        { title: 'Bridge', icon: <Cable size={32} /> },
-        { title: 'Automate', icon: <Sparkles size={32} /> },
-        { title: 'Surface', icon: <LayoutDashboard size={32} /> },
-        { title: 'Scale', icon: <TrendingUp size={32} /> },
-    ], 2),
-    edges: buildEdges(6),
-    cinematicSequence: buildSequence(6, 'From legacy systems to modern workflows.', [
-        'Assess existing systems and integration points.',
-        'Connect without disrupting current operations.',
-        'AI bridges legacy and modern APIs.',
-        'Automate workflows without rip-and-replace.',
-        'Surface data in modern dashboards.',
-        'Scale across departments and regions.',
-    ]),
+    journeyTitle: 'Domain Expansion',
+    journeySubtitle: 'Scale beyond limits.',
+    layers: [
+        {
+            id: 'dom-audit',
+            title: 'Audit Layer',
+            nodes: [
+                createNode('dom-ass', 300, 250, 'Assessment', <ClipboardList size={32} />),
+                createNode('dom-map', 700, 250, 'System Map', <Map size={32} />),
+            ],
+            edges: [createEdge('dom-ass', 'dom-map', 'r-out', 'l-in')]
+        },
+        {
+            id: 'dom-brdg',
+            title: 'Bridge Layer',
+            nodes: [
+                createNode('dom-con', 300, 250, 'Connectors', <Link2 size={32} />),
+                createNode('dom-auto', 700, 250, 'Automation', <Cable size={32} />),
+            ],
+            edges: [createEdge('dom-con', 'dom-auto', 'r-out', 'l-in')]
+        },
+        {
+            id: 'dom-scale',
+            title: 'Scale Layer',
+            nodes: [
+                createNode('dom-srf', 200, 250, 'Surface Data', <LayoutDashboard size={32} />),
+                createNode('dom-opt', 600, 250, 'Optimization', <Sparkles size={32} />),
+                createNode('dom-gro', 1000, 250, 'Growth', <TrendingUp size={32} />),
+            ],
+            edges: [
+                createEdge('dom-srf', 'dom-opt', 'r-out', 'l-in'),
+                createEdge('dom-opt', 'dom-gro', 'r-out', 'l-in')
+            ]
+        }
+    ]
 };
 
-// --- Export Map ---
+// --- Import Helper (Activity) ---
+import { Activity } from 'lucide-react';
+
 export const PRODUCT_JOURNEYS: Record<string, ProductJourneyData> = {
-    'ai-framework': aivmJourney, // Maps to AI Framework (AIVM)
+    'ai-framework': aivmJourney,
     'erp': erpJourney,
     'zakra': zakraJourney,
     'jawib': jawibJourney,
