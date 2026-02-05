@@ -21,7 +21,6 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
-    const captionRef = useRef<HTMLParagraphElement>(null);
 
     const headline = product?.content?.mission?.title ?? "Intelligence in Motion";
     const subtitle = "See it in action.";
@@ -40,7 +39,6 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                     opacity: 1,
                     clipPath: "inset(0% 0% 0% 0% round 2.5rem)",
                 });
-                if (captionRef.current) gsap.set(captionRef.current, { opacity: 1, y: 0 });
                 if (glowRef.current) gsap.set(glowRef.current, { opacity: 0.6, scale: 1.2 });
                 return;
             }
@@ -53,14 +51,6 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                     scrub: 1.2,
                 },
             });
-
-            // Caption: appear just before or with the video reveal
-            tl.fromTo(
-                captionRef.current,
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-                "-=1"
-            );
 
             // Immersive Scale & Mask Reveal
             tl.fromTo(
@@ -99,7 +89,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
     return (
         <section
             ref={containerRef}
-            className="relative py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 overflow-hidden flex flex-col items-center justify-center min-h-[70vh] border-t border-white/10 bg-transparent"
+            className="relative py-12 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8 overflow-hidden flex flex-col items-center justify-center min-h-[70vh] bg-transparent"
         >
             {/* Continuity gradient from wipe above */}
             <div className="absolute inset-x-0 top-0 h-[100px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none z-10" />
@@ -116,30 +106,14 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                 {/* Section header — same pattern as landing (Technology Excellence, Achievement) */}
                 <div className="w-full mb-10 sm:mb-12 md:mb-16">
                     <SectionHeader
-                        title={headline.includes(" ") ? (
-                            <>
-                                {headline.split(" ").slice(0, -1).join(" ")}{" "}
-                                <span className="text-primary">{headline.split(" ").slice(-1)[0]}</span>
-                            </>
-                        ) : (
-                            <span className="text-primary">{headline}</span>
-                        )}
-                        subtitle={undefined}
+                        title={headline}
+                        subtitle={subtitle}
                         badge="Demo"
                         badgeIcon={Play}
                         align="center"
                         className="mb-0"
                     />
                 </div>
-
-                {/* Caption — scroll-animated (ref for GSAP) */}
-                <p
-                    ref={captionRef}
-                    className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-400 font-mono max-w-2xl mx-auto opacity-0 mb-8"
-                    aria-hidden
-                >
-                    {subtitle}
-                </p>
 
                 {/* Video UI Container — product-specific src */}
                 <div

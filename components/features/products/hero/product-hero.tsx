@@ -39,7 +39,7 @@ const getProductIconPath = (slug?: string, centerIcon?: string): string | null =
     "zakra": "/product_icons/Zakra.svg",
     "jawib": "/product_icons/Jawib.svg",
     "fasih": "/product_icons/Fasih LLM.svg",
-    "domain-expansion": "/product_icons/Industry Automation.svg",
+
   };
 
   if (slug && iconMap[slug]) {

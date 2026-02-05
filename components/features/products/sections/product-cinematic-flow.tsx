@@ -123,23 +123,23 @@ function ProblemSceneCard({
     return (
         <Card
             spotlight={false}
-            className={`w-full max-w-md bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] ${side === "left" ? "mr-auto" : "ml-auto"
+            className={`w-full max-w-lg bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col justify-between ${side === "left" ? "mr-auto" : "ml-auto"
                 }`}
         >
-            <CardHeader className="pb-2">
-                <div className="flex justify-between items-center mb-1">
-                    <Icon className="w-4 h-4 text-red-500 shrink-0" />
-                    <span className="text-[9px] uppercase tracking-widest text-red-500 font-mono">ERR_0{problem.id}</span>
+            <CardHeader className="pb-4 px-6 pt-6">
+                <div className="flex justify-between items-center mb-2">
+                    <Icon className="w-5 h-5 text-red-500 shrink-0" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-red-500 font-mono font-medium">ERR_0{problem.id}</span>
                 </div>
                 <div ref={titleRef as React.RefObject<HTMLDivElement>} className="opacity-0">
-                    <CardTitle className="text-white text-sm md:text-base line-clamp-2">
+                    <CardTitle className="text-white text-xl md:text-2xl font-bold tracking-tight leading-tight">
                         {problem.title}
                     </CardTitle>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-6 pb-8">
                 <div ref={descRef as React.RefObject<HTMLDivElement>} className="opacity-0">
-                    <CardDescription className="text-gray-400 text-xs md:text-sm line-clamp-3">
+                    <CardDescription className="text-gray-400 text-sm md:text-base font-normal leading-relaxed">
                         {problem.description}
                     </CardDescription>
                 </div>
@@ -298,10 +298,10 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             tl.to(problemSceneRefs.current[2], { opacity: 0, x: -60, duration: 0.7, ease: "power3.in" }, "solution");
         }
 
-        // Marco transforms and moves to final position
+        // Marco transforms and moves to final position (shifted down)
         tl.to(assistantRef.current, {
             x: 0,
-            y: "15vh",
+            y: "20vh",
             scale: 0.55,
             duration: 1.2,
             ease: "power3.inOut",
@@ -310,10 +310,10 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             force3D: true
         }, "solution");
 
-        // Reveal Solution Stage
+        // Reveal Solution Stage (shifted up)
         tl.fromTo(cardsStageRef.current,
-            { y: "10vh", opacity: 0 },
-            { y: "-12vh", opacity: 1, duration: 1.2, ease: "power3.inOut" },
+            { y: "15vh", opacity: 0 },
+            { y: "-18vh", opacity: 1, duration: 1.2, ease: "power3.inOut" },
             "solution"
         );
 
@@ -426,10 +426,10 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             {/* Solution stage: three cards that flip (same Card component, both faces) */}
             <div
                 ref={cardsStageRef}
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 pt-20 pb-24"
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 pt-16 pb-20"
             >
 
-                <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl mx-auto mt-6">
                     {problems.map((p, i) => {
                         const ProblemIcon = p.icon;
                         const SolIcon = p.solIcon;
@@ -439,7 +439,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                                 ref={(el) => {
                                     cardWrapperRefs.current[i] = el;
                                 }}
-                                className="w-[260px] md:w-[280px] h-[200px] shrink-0 opacity-0 overflow-visible"
+                                className="w-[300px] md:w-[340px] h-[280px] shrink-0 opacity-0 overflow-visible"
                                 style={{ perspective: "1200px" }}
                             >
                                 <div
@@ -455,19 +455,19 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                                     >
                                         <Card
                                             spotlight={false}
-                                            className="w-full h-full bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+                                            className="w-full h-full bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] flex flex-col justify-between"
                                         >
-                                            <CardHeader className="pb-2">
-                                                <div className="flex justify-between items-center mb-1">
-                                                    <ProblemIcon className="w-4 h-4 text-red-500 shrink-0" />
-                                                    <span className="text-[9px] uppercase tracking-widest text-red-500 font-mono">
+                                            <CardHeader className="pb-4 px-6 pt-6">
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <ProblemIcon className="w-5 h-5 text-red-500 shrink-0" />
+                                                    <span className="text-[10px] uppercase tracking-[0.2em] text-red-500 font-mono font-medium">
                                                         ERR_0{p.id}
                                                     </span>
                                                 </div>
-                                                <CardTitle className="text-white text-sm md:text-base line-clamp-2">{p.title}</CardTitle>
+                                                <CardTitle className="text-white text-lg md:text-xl font-bold tracking-tight">{p.title}</CardTitle>
                                             </CardHeader>
-                                            <CardContent>
-                                                <CardDescription className="text-gray-400 text-xs md:text-sm line-clamp-3">
+                                            <CardContent className="px-6 pb-8">
+                                                <CardDescription className="text-gray-400 text-sm md:text-base font-normal leading-relaxed">
                                                     {p.description}
                                                 </CardDescription>
                                             </CardContent>
@@ -477,26 +477,23 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                                         className="absolute inset-0 rounded-2xl overflow-hidden"
                                         style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
                                     >
-                                        <Card className="w-full h-full bg-black/90 border-primary/50 backdrop-blur-xl">
-                                            <CardHeader className="pb-2">
-                                                <div className="flex justify-between items-center mb-1">
-                                                    <SolIcon className="w-4 h-4 text-primary shrink-0" />
-                                                    <span className="text-[9px] uppercase tracking-widest text-primary font-mono font-bold">
+                                        <Card className="w-full h-full bg-black/90 border-primary/50 backdrop-blur-xl flex flex-col justify-between">
+                                            <CardHeader className="pb-4 px-6 pt-6">
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <SolIcon className="w-5 h-5 text-primary shrink-0" />
+                                                    <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-mono font-bold glow-primary">
                                                         {p.solImpact}
                                                     </span>
                                                 </div>
                                                 <div ref={(el) => { solTitleRefs.current[i] = el; }} className="opacity-0">
-                                                    <CardTitle className="text-white text-sm md:text-base line-clamp-2">
+                                                    <CardTitle className="text-white text-xl md:text-2xl font-bold tracking-tight">
                                                         {p.solTitle}
                                                     </CardTitle>
                                                 </div>
-                                                <p className="text-[10px] uppercase tracking-wider text-gray-500 mt-1 line-clamp-1" aria-hidden>
-                                                    In response to: {p.title}
-                                                </p>
                                             </CardHeader>
-                                            <CardContent>
+                                            <CardContent className="px-6 pb-8">
                                                 <div ref={(el) => { solDescRefs.current[i] = el; }} className="opacity-0">
-                                                    <CardDescription className="text-gray-400 text-xs line-clamp-2">
+                                                    <CardDescription className="text-gray-400 text-sm md:text-base font-normal leading-relaxed">
                                                         {p.solDesc}
                                                     </CardDescription>
                                                 </div>

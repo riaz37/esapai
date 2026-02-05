@@ -1,23 +1,13 @@
 "use client";
 
 import React, { useRef, useMemo } from "react";
-import ReactFlow, {
-    Handle,
-    Position,
-    NodeProps,
-    EdgeProps,
-    ReactFlowProvider,
-    getSmoothStepPath,
-    Node,
-    Edge,
-} from "reactflow";
-import "reactflow/dist/style.css";
 import { Workflow } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
 import { cn } from "@/lib/utils";
+import { SectionHeader } from "@/components/ui/section-header";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -25,168 +15,133 @@ if (typeof window !== "undefined") {
 
 const PRIMARY = "#13F584";
 
-// Define the animation style once globally to avoid duplication in DOM
-const globalEdgeStyles = `
-  @keyframes dash-draw {
-    from { stroke-dashoffset: 20; }
-    to { stroke-dashoffset: 0; }
-  }
-`;
+// --- Components ---
 
 /**
- * Rebuilt Connection Line "CinematicEdge"
- * 
- * Changes from previous version:
- * 1. REMOVED GRADIENTS on paths. Gradients on horizontal/vertical SVG paths
- *    often disappear because the bounding box has 0 width or height.
- * 2. Used SOLID COLORS for robust visibility. 
- *    - Core line: Solid primary color, dashed.
- *    - Glow line: Thicker, lower opacity solid color, blurred.
- * 3. Simplified filters to ensure efficient rendering.
+ * Lightweight SVG Edge Renderer
+ * Replaces ReactFlow's edge system for maximum performance.
  */
 const CinematicEdge = ({
-    id,
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    style = {},
-    markerEnd,
-}: EdgeProps) => {
+    sourceX: sX,
+    sourceY: sY,
+    targetX: tX,
+    targetY: tY,
+}: {
+    sourceX: number;
+    sourceY: number;
+    targetX: number;
+    targetY: number;
+}) => {
+    // Calculate angle and apply offset to prevent overlapping with nodes
+    // Node width is ~180px, so we offset by ~95px to reach the edge
+    const dx = tX - sX;
+    const dy = tY - sY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const angle = Math.atan2(dy, dx);
 
-    const [edgePath] = getSmoothStepPath({
-        sourceX,
-        sourceY,
-        targetX,
-        targetY,
-        sourcePosition,
-        targetPosition,
-        borderRadius: 16, // Slightly increased radius for better aesthetics
-    });
+    // Only apply offset if nodes are far enough apart
+    const offset = distance > 200 ? 95 : 0;
 
-    // Unique IDs for this specific edge instance to prevent collisions
-    const markerId = `arrow-${id}`;
-    const filterId = `glow-${id}`;
+    const sourceX = sX + Math.cos(angle) * offset;
+    const sourceY = sY + Math.sin(angle) * offset;
+    const targetX = tX - Math.cos(angle) * (offset + 5); // Extra 5px for arrow breathing room
+    const targetY = tY - Math.sin(angle) * (offset + 5);
+
+    // Generate a simple smooth path (Bézier curve)
+    const deltaX = Math.abs(targetX - sourceX);
+    const controlPointX = deltaX * 0.4;
+    const path = `M ${sourceX},${sourceY} C ${sourceX + controlPointX},${sourceY} ${targetX - controlPointX},${targetY} ${targetX},${targetY}`;
 
     return (
-        <>
-            <defs>
-                <marker
-                    id={markerId}
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="5"
-                    markerHeight="5"
-                    orient="auto-start-reverse"
-                >
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill={PRIMARY} />
-                </marker>
-
-                {/* Simple blur filter for the glow effect */}
-                <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-                    <feMerge>
-                        <feMergeNode in="coloredBlur" />
-                        <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                </filter>
-            </defs>
-
-            {/* 1. Underlying Glow Path (Thicker, blurred, low opacity) */}
+        <g className="cinematic-edge">
+            {/* Background Trace */}
             <path
-                d={edgePath}
+                d={path}
                 fill="none"
                 stroke={PRIMARY}
-                strokeWidth={4}
-                strokeOpacity={0.08}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                filter={`url(#${filterId})`}
-                className="react-flow__edge-path-glow"
+                strokeWidth={1}
+                strokeOpacity={0.1}
             />
 
-            {/* 2. Main Visible Line (Thin, distinct, animated) */}
+            {/* Glowing Flow */}
             <path
-                d={edgePath}
+                d={path}
                 fill="none"
-                stroke={PRIMARY} // Solid color guarantees visibility
+                stroke={PRIMARY}
                 strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="5, 7" // Distinct dash pattern
-                markerEnd={`url(#${markerId})`}
-                style={{
-                    ...style,
-                    animation: "dash-draw 1s linear infinite",
-                }}
+                strokeOpacity={0.4}
+                strokeDasharray="10, 20"
+                className="animate-flow-pulse"
             />
-        </>
+
+            {/* Light Pellets for Kinetic Feedback */}
+            <circle r="3" fill="#fff" className="light-pellet">
+                <animateMotion
+                    path={path}
+                    dur="3s"
+                    repeatCount="indefinite"
+                    rotate="auto"
+                />
+            </circle>
+
+            {/* Target Indicator */}
+            <g transform={`translate(${targetX}, ${targetY})`}>
+                <circle r={4} fill={PRIMARY} className="animate-pulse shadow-glow" />
+                <circle r={8} fill={PRIMARY} opacity={0.3} className="animate-ping" />
+            </g>
+        </g>
     );
 };
 
-const JourneyNode = ({ id, data }: NodeProps) => {
+const JourneyNode = ({ node }: { node: any }) => {
     return (
-        <div className="flex flex-col items-center journey-node" data-id={id}>
+        <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 group/node"
+            style={{
+                left: node.position.x,
+                top: node.position.y,
+            }}
+        >
             <div
                 className={cn(
                     "relative flex flex-col items-center justify-center",
                     "rounded-2xl overflow-hidden",
-                    "border-2 border-white/10",
-                    "transition-all duration-500 ease-out",
-                    "node-content-box",
-                    "min-w-[200px] max-w-[220px] p-6 sm:p-7"
+                    "border border-white/20 hover:border-[#13F584]/50 transition-colors duration-500",
+                    "bg-white/[0.03] backdrop-blur-2xl",
+                    "min-w-[190px] p-7",
+                    "shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_40px_rgba(0,0,0,0.6)]"
                 )}
-                style={{
-                    background:
-                        "linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(0,0,0,0.1) 100%)",
-                    boxShadow:
-                        "0 8px 32px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset",
-                }}
             >
-                {/* Handles on all slides for flexible routing */}
-                <Handle type="target" position={Position.Left} id="l-in" style={{ opacity: 0 }} />
-                <Handle type="source" position={Position.Left} id="l-out" style={{ opacity: 0 }} />
-                <Handle type="target" position={Position.Right} id="r-in" style={{ opacity: 0 }} />
-                <Handle type="source" position={Position.Right} id="r-out" style={{ opacity: 0 }} />
-                <Handle type="target" position={Position.Top} id="t-in" style={{ opacity: 0 }} />
-                <Handle type="source" position={Position.Top} id="t-out" style={{ opacity: 0 }} />
-                <Handle type="target" position={Position.Bottom} id="b-in" style={{ opacity: 0 }} />
-                <Handle type="source" position={Position.Bottom} id="b-out" style={{ opacity: 0 }} />
+                {/* Node Glow Backdrop */}
+                <div className="absolute inset-0 bg-radial-at-t from-[#13F584]/10 to-transparent opacity-0 group-hover/node:opacity-100 transition-opacity duration-700" />
 
+                {/* Node Image/Icon Container */}
                 <div
-                    className={cn(
-                        "node-icon mb-5 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl",
-                        "border border-[#13F584]/25 bg-[#13F584]/[0.08]",
-                        "transition-all duration-500 ease-out"
-                    )}
+                    className="relative mb-5 w-24 h-24 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.3)] transition-all"
+                    style={{ color: PRIMARY }}
                 >
-                    <span className="text-[#13F584] [&>svg]:h-7 [&>svg]:w-7">
-                        {data.icon}
-                    </span>
+                    {node.data.image ? (
+                        <img
+                            src={node.data.image}
+                            alt={node.data.title}
+                            className="w-full h-full object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
+                        />
+                    ) : (
+                        React.cloneElement(node.data.icon as any, { size: 32 })
+                    )}
+
+                    {/* Corner accents */}
+                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#13F584]/40" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#13F584]/40" />
                 </div>
 
-                <h3
-                    className={cn(
-                        "node-title text-center font-bold uppercase tracking-wider text-white/95",
-                        "text-sm leading-tight"
-                    )}
-                >
-                    {data.title}
+                <h3 className="relative text-xs font-bold uppercase tracking-[0.15em] text-white/90 text-center">
+                    {node.data.title}
                 </h3>
             </div>
         </div>
     );
 };
-
-const nodeTypes = { journey: JourneyNode };
-const edgeTypes = { cinematic: CinematicEdge };
-
-interface UserJourneyProps {
-    productSlug?: string;
-}
 
 const LayeredJourneyFlow = ({
     layers,
@@ -198,6 +153,7 @@ const LayeredJourneyFlow = ({
     subtitle?: string
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
     const layersRef = useRef<(HTMLDivElement | null)[]>([]);
 
     useGSAP(() => {
@@ -207,48 +163,130 @@ const LayeredJourneyFlow = ({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: `+=${layers.length * 100}%`,
+                end: `+=${(layers.length + 0.5) * 100}%`,
                 pin: true,
-                scrub: 1,
+                scrub: 1, // Smoother scrub for header fade
                 anticipatePin: 1,
             },
         });
 
-        // Layer parallax effect
+        // Initial state for all layers
         layersRef.current.forEach((layer, i) => {
-            if (i === 0) return;
+            if (!layer) return;
+            // First layer starts transparent, others start below the fold
+            if (i === 0) {
+                gsap.set(layer, { opacity: 0 });
+            } else {
+                gsap.set(layer, { yPercent: 100 });
+            }
+        });
+
+        // 1. Header Intro: Fade out main title
+        if (headerRef.current) {
+            tl.to(headerRef.current, {
+                opacity: 0,
+                y: -50,
+                scale: 0.9,
+                duration: 1,
+                ease: "power2.inOut"
+            }, 0);
+        }
+
+        // 2. Layer Reveal Orchestration
+        layersRef.current.forEach((layer, i) => {
             if (!layer) return;
 
-            gsap.set(layer, { yPercent: 100 });
+            if (i === 0) {
+                // First layer fades in as header fades out
+                tl.to(layer, {
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power2.out"
+                }, 0.3);
+            } else {
+                // Subsequent layers curtain wipe with 3D tilt
+                tl.to(layer, {
+                    yPercent: 0,
+                    duration: 1,
+                    ease: "none"
+                });
+            }
 
-            tl.to(layer, {
-                yPercent: 0,
-                duration: 1,
-                ease: "none",
-            });
+            // --- Cinematic Reveal Sequence (Applied to ALL layers) ---
+
+            // 3D perspective "tilt-in" effect
+            const surface = layer.querySelector(".architecture-surface");
+            if (surface) {
+                tl.fromTo(surface,
+                    { rotateX: 10, translateZ: -100, opacity: 0 },
+                    { rotateX: 0, translateZ: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+                    "-=0.5"
+                );
+            }
+
+            // Sequential "Power-on" for nodes and edges
+            const nodes = layer.querySelectorAll(".group\\/node");
+            const edges = layer.querySelectorAll(".cinematic-edge");
+
+            if (nodes.length > 0) {
+                tl.fromTo(nodes,
+                    { scale: 0.5, opacity: 0, filter: "brightness(2)" },
+                    { scale: 1, opacity: 1, filter: "brightness(1)", duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" },
+                    "-=0.4"
+                );
+            }
+
+            if (edges.length > 0) {
+                tl.fromTo(edges,
+                    { opacity: 0, strokeDashoffset: 100 },
+                    { opacity: 1, strokeDashoffset: 0, duration: 0.8, stagger: 0.05, ease: "power2.out" },
+                    "-=0.6"
+                );
+            }
         });
 
     }, { scope: containerRef, dependencies: [layers] });
 
     return (
-        <section ref={containerRef} className="relative w-full h-screen bg-[#050505] overflow-hidden">
-            {/* Inject Animation Styles */}
-            <style dangerouslySetInnerHTML={{ __html: globalEdgeStyles }} />
+        <section ref={containerRef} className="relative w-full h-screen bg-[#09090b] overflow-hidden">
+            <style jsx global>{`
+                @keyframes dash-move {
+                    from { stroke-dashoffset: 100; }
+                    to { stroke-dashoffset: 0; }
+                }
+                .perspective-stage {
+                    perspective: 1500px;
+                    perspective-origin: center center;
+                }
+                .architecture-surface {
+                    transform-style: preserve-3d;
+                    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+                }
+                @keyframes flow-pulse {
+                    0% { stroke-dashoffset: 100; opacity: 0.2; }
+                    50% { opacity: 0.8; }
+                    100% { stroke-dashoffset: 0; opacity: 0.2; }
+                }
+                .animate-flow-pulse {
+                    animation: flow-pulse 3s linear infinite;
+                }
+                .shadow-glow {
+                    filter: drop-shadow(0 0 8px #13F584);
+                }
+            `}</style>
 
-            {/* Header */}
-            <div className="absolute top-8 left-0 right-0 z-50 pointer-events-none px-4 flex flex-col items-center">
-                <div className="flex items-center gap-2 mb-2">
-                    <Workflow className="w-5 h-5 text-[#13F584]" />
-                    <span className="text-[#13F584] text-xs font-bold tracking-widest uppercase">
-                        Architecture
-                    </span>
-                </div>
-                <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tighter text-center">
-                    {title || "System Architecture"}
-                </h2>
-                {subtitle && (
-                    <p className="mt-2 text-white/60 text-sm tracking-wide uppercase">{subtitle}</p>
-                )}
+            {/* Header Overlay */}
+            <div ref={headerRef} className="absolute top-24 left-0 right-0 z-50 pointer-events-none px-6">
+                <SectionHeader
+                    title={title || "System Architecture"}
+                    subtitle={subtitle}
+                    badge="Architecture"
+                    badgeIcon={Workflow}
+                    animate={false} // Section is already pinned/animated
+                    className="mb-0"
+                    titleClassName="text-4xl md:text-6xl max-w-2xl"
+                    subtitleClassName="text-white/40 text-xs tracking-[0.2em] uppercase font-medium mt-6"
+                />
             </div>
 
             {layers.map((layer, index) => (
@@ -258,40 +296,53 @@ const LayeredJourneyFlow = ({
                     className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
                     style={{
                         zIndex: index * 10,
-                        backgroundColor: '#050505',
-                        boxShadow: index > 0 ? '0 -20px 60px rgba(0,0,0,0.8)' : 'none',
+                        backgroundColor: '#09090b',
+                        boxShadow: index > 0 ? '0 -30px 100px rgba(0,0,0,0.9)' : 'none',
                     }}
                 >
-                    {/* Atmospheric Background */}
+
+                    {/* Background Gradients */}
                     <div className="absolute inset-0 pointer-events-none">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[40%] bg-[#13F584]/5 blur-[120px] rounded-full" />
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-radial-at-t from-[#13F584]/5 to-transparent opacity-50" />
                     </div>
 
-                    <div className="relative w-full max-w-7xl h-full mx-auto flex flex-col justify-center pt-24 pb-12 px-6">
+                    <div className="relative w-full max-w-7xl h-full mx-auto flex flex-col justify-center pt-32 pb-16 px-8 perspective-stage">
                         {/* Layer Label */}
-                        <div className="absolute top-32 left-8 border-l-2 border-[#13F584] pl-4">
-                            <span className="block text-[#13F584] text-xs font-mono mb-1">LAYER 0{index + 1}</span>
-                            <h3 className="text-2xl font-bold text-white">{layer.title}</h3>
+                        <div className="absolute top-32 left-12 border-l border-[#13F584]/50 pl-5 z-20">
+                            <span className="block text-[#13F584]/60 text-[10px] font-mono mb-2 tracking-[0.2em]">LAYER 0{index + 1}</span>
+                            <h3 className="text-3xl font-bold text-white tracking-tight">{layer.title}</h3>
                         </div>
 
-                        {/* React Flow Canvas */}
-                        <div className="w-full h-[60vh] mt-12 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden relative">
-                            <ReactFlow
-                                nodes={layer.nodes}
-                                edges={layer.edges}
-                                nodeTypes={nodeTypes}
-                                edgeTypes={edgeTypes}
-                                nodesDraggable={false}
-                                nodesConnectable={false}
-                                zoomOnScroll={false}
-                                panOnDrag={false}
-                                fitView
-                                fitViewOptions={{ padding: 0.2 }}
-                                minZoom={0.1}
-                                proOptions={{ hideAttribution: true }}
-                            >
-                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
-                            </ReactFlow>
+                        {/* Custom SVG Canvas */}
+                        <div
+                            className="relative w-full h-[60vh] mt-16 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                        >
+                            {/* SVG Edges Layer */}
+                            <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                                {layer.edges.map((edge: any) => {
+                                    const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
+                                    const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
+
+                                    if (!sourceNode || !targetNode) return null;
+
+                                    return (
+                                        <CinematicEdge
+                                            key={edge.id}
+                                            sourceX={sourceNode.position.x}
+                                            sourceY={sourceNode.position.y}
+                                            targetX={targetNode.position.x}
+                                            targetY={targetNode.position.y}
+                                        />
+                                    );
+                                })}
+                            </svg>
+
+                            {/* HTML Nodes Layer */}
+                            <div className="absolute inset-0">
+                                {layer.nodes.map((node: any) => (
+                                    <JourneyNode key={node.id} node={node} />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -300,16 +351,17 @@ const LayeredJourneyFlow = ({
     );
 };
 
-export const UserJourney = ({ productSlug = "ai-framework" }: UserJourneyProps) => {
-    const journeyData = PRODUCT_JOURNEYS[productSlug] ?? PRODUCT_JOURNEYS["ai-framework"];
+export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: string }) => {
+    const journeyData = useMemo(() =>
+        PRODUCT_JOURNEYS[productSlug] ?? PRODUCT_JOURNEYS["ai-framework"],
+        [productSlug]
+    );
 
     return (
-        <ReactFlowProvider>
-            <LayeredJourneyFlow
-                layers={journeyData.layers || []}
-                title={journeyData.journeyTitle}
-                subtitle={journeyData.journeySubtitle}
-            />
-        </ReactFlowProvider>
+        <LayeredJourneyFlow
+            layers={journeyData.layers || []}
+            title={journeyData.journeyTitle}
+            subtitle={journeyData.journeySubtitle}
+        />
     );
 };

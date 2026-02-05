@@ -73,13 +73,7 @@ const NARRATIVES_BY_SLUG: Record<string, Partial<ProductCinematicNarrative>> = {
     solutionIntroLine: "Here's how we fix it.",
     recapLine: "You've seen the problems and our solution. Now see it in action.",
   },
-  "domain-expansion": {
-    introLine: "Legacy systems hold you back. Modern APIs feel out of reach.",
-    problemsIntroLine: "Three barriers stand in the way.",
-    epiphanyPreLine: "Then everything changes.",
-    solutionIntroLine: "Here's how we fix it.",
-    recapLine: "You've seen the problems and our solution. Now see it in action.",
-  },
+
 };
 
 export function getProductCinematicNarrative(slug: string): ProductCinematicNarrative {
@@ -273,41 +267,7 @@ const FASIH_PROBLEMS: CinematicProblemItem[] = [
   },
 ];
 
-const DOMAIN_EXPANSION_PROBLEMS: CinematicProblemItem[] = [
-  {
-    id: 1,
-    title: "Legacy Lock-In",
-    description: "Critical data and logic trapped in systems that can't talk to modern APIs.",
-    icon: AlertCircle,
-    spreadPos: SPREAD_POSITIONS[0],
-    solTitle: "Legacy System Integration",
-    solDesc: "Connect to any legacy system, database, or API without requiring modifications to existing infrastructure.",
-    solIcon: Zap,
-    solImpact: "70% Cost Reduction",
-  },
-  {
-    id: 2,
-    title: "Rip-and-Replace Risk",
-    description: "Big bang migrations that cost millions and still fail.",
-    icon: FileWarning,
-    spreadPos: SPREAD_POSITIONS[1],
-    solTitle: "AI-Enhanced Functionality",
-    solDesc: "Add intelligent automation, natural language processing, and AI capabilities to systems built decades ago.",
-    solIcon: Sparkles,
-    solImpact: "100+ System Types",
-  },
-  {
-    id: 3,
-    title: "Downtime Fear",
-    description: "Any change to legacy systems means scheduled outages and business disruption.",
-    icon: XCircle,
-    spreadPos: SPREAD_POSITIONS[2],
-    solTitle: "Zero-Downtime Deployment",
-    solDesc: "Implement AI enhancements gradually without disrupting your current operations or requiring system downtime.",
-    solIcon: CheckCircle2,
-    solImpact: "99.9% Reliability",
-  },
-];
+
 
 const PROBLEMS_BY_SLUG: Record<string, CinematicProblemItem[]> = {
   erp: ERP_PROBLEMS,
@@ -315,7 +275,7 @@ const PROBLEMS_BY_SLUG: Record<string, CinematicProblemItem[]> = {
   zakra: ZAKRA_PROBLEMS,
   jawib: JAWIB_PROBLEMS,
   fasih: FASIH_PROBLEMS,
-  "domain-expansion": DOMAIN_EXPANSION_PROBLEMS,
+
 };
 
 const DEFAULT_PROBLEMS = ERP_PROBLEMS;
