@@ -6,13 +6,16 @@ import gsap from "gsap";
 import Link from "next/link";
 
 import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
 import { useIntersectionAnimation } from "@/lib/hooks/use-intersection-animation";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import type { ServicesCTASectionProps } from "@/types/props";
 
 export function ServicesCTASection({
+  title = "Ready to get started?",
   text,
   buttonText,
   buttonHref,
@@ -31,23 +34,10 @@ export function ServicesCTASection({
 
       const tl = anim.createTimeline();
 
-      const textElement = sectionRef.current.querySelector("p");
       const buttonElement = sectionRef.current.querySelector("a");
 
-      if (textElement) {
-        gsap.set(textElement, { opacity: 0, y: 10 });
-      }
       if (buttonElement) {
         gsap.set(buttonElement, { opacity: 0, y: 10, scale: 0.95 });
-      }
-
-      if (textElement) {
-        tl.to(textElement, {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power2.out",
-        });
       }
 
       if (buttonElement) {
@@ -74,10 +64,14 @@ export function ServicesCTASection({
         setIntersectionRef(el);
       }}
     >
+      <SectionHeader
+        badge="Get in touch"
+        badgeIcon={MessageCircle}
+        title={title}
+        subtitle={text}
+        subtitleClassName="text-base md:text-lg text-light-gray-90 max-w-2xl mx-auto mb-8"
+      />
       <div className="text-center">
-        <p className="text-lg md:text-xl text-light-gray-90 mb-6">
-          {text}
-        </p>
         <Button
           variant="primary"
           size="lg"
@@ -87,8 +81,8 @@ export function ServicesCTASection({
           <Link href={buttonHref} className="inline-flex items-center gap-2">
             <span>{buttonText}</span>
             <ButtonArrow className="ml-0" />
-          </Link>
-        </Button>
+        </Link>
+      </Button>
       </div>
     </Section>
   );

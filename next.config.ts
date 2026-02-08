@@ -53,6 +53,22 @@ const nextConfig: NextConfig = {
   // Compression
   compress: true,
 
+  // Redirects for merged service pages
+  async redirects() {
+    return [
+      {
+        source: "/service/end-to-end-integration",
+        destination: "/service/integration-and-automation",
+        permanent: true,
+      },
+      {
+        source: "/service/enterprise-automation",
+        destination: "/service/integration-and-automation",
+        permanent: true,
+      },
+    ];
+  },
+
   // Security and performance headers
   async headers() {
     // Build CSP header based on environment

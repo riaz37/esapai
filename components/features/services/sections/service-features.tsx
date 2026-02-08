@@ -11,13 +11,15 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Layers } from "lucide-react";
+import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 
 import type { ServiceFeaturesProps, FeatureBlockProps } from "@/types/props";
 
 // Custom Central Node Component
 function CentralNode({ data }: { data: { label: string } }) {
   return (
-    <div className="relative product-card p-6 md:p-8 lg:p-10 min-w-[180px] md:min-w-[200px] group">
+    <Card className="min-w-[180px] md:min-w-[200px] p-6 md:p-8 lg:p-10 flex flex-col items-center justify-center">
       <Handle
         type="source"
         position={Position.Top}
@@ -38,25 +40,23 @@ function CentralNode({ data }: { data: { label: string } }) {
         position={Position.Left}
         style={{ background: "rgba(19, 245, 132, 0.8)" }}
       />
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center pointer-events-none">
         <div className="w-20 h-20 mb-4 flex items-center justify-center">
           <CentralNodeIcon />
         </div>
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gradient-radial-white text-center">
+        <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-gradient-radial-white text-center">
           {data.label}
-        </h3>
+        </CardTitle>
       </div>
-      <div className="absolute inset-0 rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <div className="absolute inset-0 rounded-[32px] shadow-glow-primary-feature" />
-      </div>
-    </div>
+    </Card>
   );
 }
 
 // Custom Feature Node Component
+// Custom FeatureNode with slightly expanded dimensions
 function FeatureNode({ data }: { data: FeatureBlockProps }) {
   return (
-    <div className="relative product-card p-4 sm:p-5 md:p-6 lg:p-8 min-w-[220px] sm:min-w-[250px] max-w-[280px] sm:max-w-[300px] group">
+    <Card className="min-w-[240px] sm:min-w-[260px] max-w-[300px] sm:max-w-[320px] p-5 sm:p-6 md:p-7 lg:p-8">
       <Handle
         type="target"
         position={Position.Top}
@@ -77,18 +77,19 @@ function FeatureNode({ data }: { data: FeatureBlockProps }) {
         position={Position.Left}
         style={{ background: "rgba(19, 245, 132, 0.8)" }}
       />
-      <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4 text-gradient-radial-white">
-        {data.title}
-      </h3>
-      <p className="text-sm sm:text-base md:text-lg text-light-gray-90 leading-relaxed">
-        {data.description}
-      </p>
-      <div className="absolute inset-0 rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <div className="absolute inset-0 rounded-[32px] shadow-glow-primary-feature" />
+      <div className="pointer-events-none">
+        <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-gradient-radial-white">
+          {data.title}
+        </CardTitle>
+        <CardDescription className="text-base sm:text-lg text-light-gray-90 leading-relaxed">
+          {data.description}
+        </CardDescription>
       </div>
-    </div>
+    </Card>
   );
 }
+
+// ... (keep CentralNodeIcon and nodeTypes as is) ...
 
 function CentralNodeIcon() {
   const uniqueId = useId();
@@ -235,7 +236,7 @@ export function ServiceFeatures({
 
     // Central node at the center - responsive positioning
     const centerX = typeof window !== 'undefined' && window.innerWidth >= 1280 ? 600 : 500;
-    const centerY = typeof window !== 'undefined' && window.innerWidth >= 1280 ? 400 : 350;
+    const centerY = typeof window !== 'undefined' && window.innerWidth >= 1280 ? 450 : 400; // Moved down as container is taller
 
     nodesList.push({
       id: "central",
@@ -245,25 +246,24 @@ export function ServiceFeatures({
       draggable: false,
     });
 
-    // Create an organic, dynamic layout - not just a circle
-    // Mix of radial and offset positions for more visual interest
+    // Create an organic, dynamic layout - expanded for better breathing room
     const positions = [
       // Top-left area
-      { x: centerX - 450, y: centerY - 300, angle: -Math.PI / 4 },
+      { x: centerX - 420, y: centerY - 320, angle: -Math.PI / 4 },
       // Top-right area  
-      { x: centerX + 300, y: centerY - 350, angle: Math.PI / 4 },
+      { x: centerX + 280, y: centerY - 340, angle: Math.PI / 4 },
       // Right area
-      { x: centerX + 500, y: centerY + 50, angle: 0 },
+      { x: centerX + 450, y: centerY + 40, angle: 0 },
       // Bottom-right area
-      { x: centerX + 250, y: centerY + 400, angle: Math.PI / 3 },
+      { x: centerX + 220, y: centerY + 350, angle: Math.PI / 3 },
       // Bottom-left area
-      { x: centerX - 400, y: centerY + 350, angle: -Math.PI / 2 },
+      { x: centerX - 380, y: centerY + 300, angle: -Math.PI / 2 },
     ];
 
     displayFeatures.forEach((feature, index) => {
       const pos = positions[index] || {
-        x: centerX + 400 * Math.cos((index * 2 * Math.PI) / displayFeatures.length),
-        y: centerY + 400 * Math.sin((index * 2 * Math.PI) / displayFeatures.length),
+        x: centerX + 420 * Math.cos((index * 2 * Math.PI) / displayFeatures.length), // Increased radius
+        y: centerY + 420 * Math.sin((index * 2 * Math.PI) / displayFeatures.length),
         angle: (index * 2 * Math.PI) / displayFeatures.length,
       };
 
@@ -345,6 +345,8 @@ export function ServiceFeatures({
   return (
     <Section padding="sm">
       <SectionHeader
+        badge="What we deliver"
+        badgeIcon={Layers}
         title={title}
         subtitle={subtitle}
         subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4 mb-16"
@@ -354,23 +356,23 @@ export function ServiceFeatures({
       <div className="block lg:hidden max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pb-8 sm:pb-10 md:pb-12">
         <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
           {features.map((feature, index) => (
-            <div
+            <Card
               key={index}
-              className="product-card p-5 sm:p-6 md:p-7 lg:p-8 rounded-[32px] sm:rounded-[36px] md:rounded-[40px] group transition-all duration-300 hover:shadow-glow-primary-feature"
+              className="p-5 sm:p-6 md:p-7 lg:p-8"
             >
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 text-gradient-radial-white">
+              <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 text-gradient-radial-white">
                 {feature.title}
-              </h3>
-              <p className="text-sm sm:text-base md:text-lg text-light-gray-90 leading-relaxed">
+              </CardTitle>
+              <CardDescription className="text-sm sm:text-base md:text-lg text-light-gray-90 leading-relaxed">
                 {feature.description}
-              </p>
-            </div>
+              </CardDescription>
+            </Card>
           ))}
         </div>
       </div>
 
       {/* Desktop View - Interactive Graph */}
-      <div className="hidden lg:block relative w-full h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px] max-w-7xl mx-auto service-features-flow">
+      <div className="hidden lg:block relative w-full h-[800px] lg:h-[900px] xl:h-[1000px] 2xl:h-[1100px] max-w-7xl mx-auto service-features-flow">
         <ConnectionDotsMarkers />
         <style dangerouslySetInnerHTML={{
           __html: `

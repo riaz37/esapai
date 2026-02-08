@@ -18,6 +18,10 @@ interface CTASectionProps {
     subtitle?: string;
     /** When provided (e.g. on product page), title/subtitle are derived from product. */
     product?: Product | null;
+    primaryButtonText?: string;
+    primaryButtonHref?: string;
+    secondaryButtonText?: string;
+    secondaryButtonHref?: string;
 }
 
 const defaultTitle = (
@@ -32,6 +36,10 @@ export function CTASection({
     title: titleProp,
     subtitle: subtitleProp,
     product,
+    primaryButtonText,
+    primaryButtonHref = "/contact",
+    secondaryButtonText = "Explore Products",
+    secondaryButtonHref = "/products",
 }: CTASectionProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -224,8 +232,8 @@ export function CTASection({
                             className="shadow-[0_0_20px_rgba(19,245,132,0.3)]"
                             asChild
                         >
-                            <Link ref={primaryButtonRef} href="/contact" className="inline-flex items-center gap-2 group">
-                                <span>{product ? "Get Started" : "Start Building Now"}</span>
+                            <Link ref={primaryButtonRef} href={primaryButtonHref} className="inline-flex items-center gap-2 group">
+                                <span>{primaryButtonText ?? (product ? "Get Started" : "Start Building Now")}</span>
                                 <ButtonArrow />
                             </Link>
                         </Button>
@@ -234,8 +242,8 @@ export function CTASection({
                             size="lg"
                             asChild
                         >
-                            <Link href="/products">
-                                Explore Products
+                            <Link href={secondaryButtonHref}>
+                                {secondaryButtonText}
                             </Link>
                         </Button>
                     </div>

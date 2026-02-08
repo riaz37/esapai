@@ -7,6 +7,12 @@ export interface ServiceFeature {
   description: string;
 }
 
+export interface ServiceProcessStep {
+  duration?: string;
+  title: string;
+  description: string;
+}
+
 export interface ServiceContent {
   hero?: {
     subtitle?: string[];
@@ -22,6 +28,7 @@ export interface ServiceContent {
     videoId?: string;
     title?: string;
   };
+  processSteps?: ServiceProcessStep[];
 }
 
 export interface Service {

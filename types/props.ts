@@ -94,6 +94,7 @@ export interface ServicesHeaderSectionProps {
 }
 
 export interface ServicesCTASectionProps {
+  title?: string;
   text: string;
   buttonText: string;
   buttonHref: string;

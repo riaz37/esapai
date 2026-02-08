@@ -4,102 +4,78 @@ export type { ServiceFeature, ServiceContent, Service };
 
 export const services: Service[] = [
   {
-    id: "end-to-end-integration",
-    name: "End-to-End Agentic AI Integration",
-    description: "Complete AI agent integration solutions",
-    slug: "end-to-end-integration",
+    id: "integration-and-automation",
+    name: "Integration & Automation",
+    description:
+      "Complete AI integration and strategic automation—from assessment and roadmap to deployment and ongoing support.",
+    slug: "integration-and-automation",
     content: {
       hero: {
         subtitle: [
-          "Complete AI integration solutions",
           "From strategy to deployment",
+          "Integration and automation that drives ROI",
         ],
       },
       features: {
-        title: "Integration Services",
+        title: "Integration & Automation",
         subtitle:
-          "Transform operations with intelligent automation.",
+          "Strategy, implementation, and support to transform operations with intelligent automation.",
         items: [
           {
-            title: "Strategic Planning & Assessment",
+            title: "Strategic Planning",
             description:
-              "Comprehensive analysis of your current systems and workflows to design optimal AI agent integration strategies.",
+              "Analyze systems to design optimal AI strategies.",
           },
           {
-            title: "Custom Agent Development",
+            title: "Automation",
             description:
-              "Build tailored AI agents specifically designed for your business processes, industry, and operational requirements.",
+              "Identify high-impact automation.",
+          },
+          {
+            title: "ROI & Planning",
+            description:
+              "Quantify benefits and create roadmaps.",
+          },
+          {
+            title: "Custom Agents",
+            description:
+              "Build tailored AI agents for your specific needs.",
           },
           {
             title: "System Integration",
             description:
-              "Seamlessly integrate AI agents with your existing infrastructure, databases, APIs, and third-party services.",
+              "Connect AI agents with your existing infra.",
           },
           {
-            title: "Training & Optimization",
+            title: "Tech Selection",
             description:
-              "Fine-tune agents with your data and workflows, ensuring optimal performance and continuous improvement.",
+              "Recommend the best tools for your budget.",
           },
           {
-            title: "Ongoing Support & Maintenance",
+            title: "Change Mgmt",
             description:
-              "24/7 monitoring, updates, and support to ensure your AI agents operate at peak performance.",
+              "Plans to ensure smooth adoption.",
+          },
+          {
+            title: "Training",
+            description:
+              "Fine-tune agents for optimal performance.",
+          },
+          {
+            title: "Roadmap",
+            description:
+              "Detailed execution plans with milestones.",
+          },
+          {
+            title: "24/7 Support",
+            description:
+              "Monitoring and updates for peak performance.",
           },
         ],
       },
       youtubeVideo: {
         videoId: "hPkB_DBwnfU",
-        title: "End-to-End AI Integration Overview",
-      },
-    },
-  },
-  {
-    id: "enterprise-automation",
-    name: "Enterprise Automation Strategy Consulting",
-    description: "Strategic automation consulting services",
-    slug: "enterprise-automation",
-    content: {
-      hero: {
-        subtitle: [
-          "Strategic automation consulting",
-          "Guidance to implement automation",
-        ],
-      },
-      features: {
-        title: "Automation Expertise",
-        subtitle:
-          "Strategies to maximize ROI and efficiency.",
-        items: [
-          {
-            title: "Automation Opportunity Assessment",
-            description:
-              "Identify high-impact automation opportunities across your organization through comprehensive process analysis.",
-          },
-          {
-            title: "ROI Analysis & Planning",
-            description:
-              "Quantify potential benefits, estimate costs, and create detailed implementation roadmaps with clear milestones.",
-          },
-          {
-            title: "Change Management Strategy",
-            description:
-              "Develop comprehensive change management plans to ensure smooth adoption and minimize disruption.",
-          },
-          {
-            title: "Technology Selection",
-            description:
-              "Recommend the best automation tools and platforms based on your specific needs, budget, and technical requirements.",
-          },
-          {
-            title: "Implementation Roadmap",
-            description:
-              "Create detailed execution plans with phased rollouts, risk mitigation strategies, and success metrics.",
-          },
-        ],
-      },
-      youtubeVideo: {
-        videoId: "hPkB_DBwnfU",
-        title: "Enterprise Automation Strategy",
+        title: "Integration & Enterprise Automation Overview",
       },
     },
   },
