@@ -3,37 +3,9 @@
 import { motion } from "motion/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import { ClipboardList, CheckCircle2, ChevronRight } from "lucide-react";
-import { CommitmentCard } from "./commitment-card";
-import { cn } from "@/lib/utils";
-
-// Checklist data (mock for now, should come from props)
-const REQUIREMENTS = [
-  {
-    id: "strategy",
-    title: "Strategic Goals",
-    description: "Business objectives, KPIs, and success metrics.",
-    status: "pending",
-  },
-  {
-    id: "access",
-    title: "System Access",
-    description: "API keys, documentation, and environment credentials.",
-    status: "pending",
-  },
-  {
-    id: "assets",
-    title: "Brand Assets",
-    description: "Design guidelines, logos, and UI component libraries.",
-    status: "pending",
-  },
-  {
-    id: "data",
-    title: "Data Sources",
-    description: "Sample datasets, schema definitions, and validation rules.",
-    status: "pending",
-  },
-];
+import { ClipboardList } from "lucide-react";
+import DatabaseWithRestApi from "@/components/ui/database-with-rest-api";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 export function ServiceWhatWeNeedSection({
   title = "Initialize Protocol",
@@ -42,89 +14,88 @@ export function ServiceWhatWeNeedSection({
   title?: string;
   subtitle?: string;
 }) {
-
   return (
     <div className="relative bg-black border-t border-white/5">
-      <Section className="min-h-screen flex flex-col justify-center">
-        <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+      <Section className="min-h-screen flex flex-col justify-center py-24">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-          {/* Left: Header & Checklist */}
-          <div className="space-y-12">
-            <SectionHeader
-              badge="Input Requirements"
-              badgeIcon={ClipboardList}
-              title={title}
-              subtitle={subtitle}
-              align="left"
-              className="mb-8"
-            />
+            {/* Left Column: Visual Component */}
+            <div className="flex flex-col items-center justify-center order-2 lg:order-1">
+              <div className="w-full max-w-[500px] p-8 rounded-[2rem] bg-gradient-to-b from-white/[0.02] to-transparent backdrop-blur-md relative overflow-hidden group">
+                {/* Decorative background glows */}
+                <div className="absolute -top-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-[120px] pointer-events-none group-hover:bg-primary/20 transition-colors duration-1000" />
+                <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
 
-            <div className="space-y-4">
-              {REQUIREMENTS.map((req, index) => (
-                <ChecklistItem key={req.id} item={req} index={index} />
-              ))}
+                <DatabaseWithRestApi
+                  title="Secure Data Exchange Protocol"
+                  circleText="CORE"
+                  lightColor="var(--color-primary)"
+                  badgeTexts={{
+                    first: "AUTH",
+                    second: "SYNC",
+                    third: "PUSH",
+                    fourth: "EXEC",
+                  }}
+                  buttonTexts={{
+                    first: "ErosaCloud",
+                    second: "v3_stable"
+                  }}
+                />
+              </div>
             </div>
+
+            {/* Right Column: Content & Commitments */}
+            <div className="space-y-12 order-1 lg:order-2">
+              <div className="space-y-6">
+                <SectionHeader
+                  badge="Integration Core"
+                  badgeIcon={ClipboardList}
+                  title={title}
+                  subtitle={subtitle}
+                  align="left"
+                  className="mb-8"
+                />
+
+                <p className="text-white/60 text-lg leading-relaxed">
+                  Our integration engine facilitates seamless data flow between your existing infrastructure and our advanced AI modules, ensuring protocol integrity and high-speed execution.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    title: "Encrypted Channels",
+                    desc: "End-to-end encryption for every packet exchanged through our REST API."
+                  },
+                  {
+                    title: "Real-time Synchronization",
+                    desc: "Minimal latency with websocket-enhanced data streams."
+                  },
+                  {
+                    title: "Automated Validation",
+                    desc: "Continuous schema checks and security audits on every endpoint."
+                  }
+                ].map((item, i) => (
+                  <Card key={i} className="border-0 !py-4" style={{ boxShadow: 'none' }}>
+                    <CardHeader className="!px-6 !pb-1">
+                      <CardTitle className="text-xl font-semibold text-white group-hover:text-primary transition-colors">
+                        {item.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="!px-6 !pb-4">
+                      <p className="text-white/50 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
           </div>
-
-          {/* Right: Commitment Content */}
-          <div className="flex flex-col justify-center space-y-8">
-            <div className="mb-6">
-              <SectionHeader
-                badge="Our Commitment"
-                badgeIcon={CheckCircle2}
-                title="We Build. You Scale."
-                subtitle="While you focus on the vision, we handle the engine."
-                align="left"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 gap-6">
-              <CommitmentCard
-                title="Production Ready"
-                desc="Rigorous testing and enterprise-grade security from day one."
-              />
-              <CommitmentCard
-                title="Transparent Process"
-                desc="Real-time dashboards and weekly sprint demos."
-              />
-              <CommitmentCard
-                title="Botsmith Support"
-                desc="24/7 monitoring and optimization after launch."
-              />
-            </div>
-          </div>
-
         </div>
       </Section>
     </div>
-  );
-}
-
-function ChecklistItem({ item, index }: { item: typeof REQUIREMENTS[0]; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: false, margin: "-100px" }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="group relative overflow-hidden rounded-xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm transition-all hover:bg-white/10 hover:border-primary/50"
-    >
-      <div className="flex items-start gap-4">
-        <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-primary transition-colors group-hover:bg-primary group-hover:text-black">
-          <ChevronRight className="h-4 w-4" />
-        </div>
-        <div>
-          <h3 className="text-xl font-medium text-white group-hover:text-primary transition-colors">
-            {item.title}
-          </h3>
-          <p className="mt-2 text-sm text-white/60 group-hover:text-white/80">
-            {item.description}
-          </p>
-        </div>
-      </div>
-
-      {/* Active Indicator Line */}
-      <div className="absolute left-0 top-0 h-full w-1 bg-primary scale-y-0 transition-transform duration-300 group-hover:scale-y-100" />
-    </motion.div>
   );
 }
