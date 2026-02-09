@@ -16,12 +16,7 @@ export interface MenuItem {
   menuDescription?: string;
   slug: string;
   icon?: string;
-  content?: {
-    hero?: {
-      centerIcon?: string;
-      centerIconAlt?: string;
-    };
-  };
+  content?: any;
 }
 
 export interface DropdownMenuProps {

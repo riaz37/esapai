@@ -4,36 +4,22 @@ import { useServiceContent } from "@/lib/hooks/use-service-content";
 import type { ServicePageClientProps } from "@/types/page";
 
 import { ServiceHero } from "@/components/features/services/hero/service-hero";
-import { ServiceFeatures as ServiceFeaturesSection } from "@/components/features/services/sections/service-features";
-import { RepetitiveWork as RepetitiveWorkSection } from "@/components/features/services/sections/repetitive-work";
-import YouTubeVideoSection from "@/components/shared/youtube-video";
+import {
+  ServiceFeatures as ServiceFeaturesSection,
+  ServiceProblemSection,
+  ServiceBeforeAfterSection,
+  ServiceProcessSection,
+  ServiceWhatWeNeedSection,
+  ServicesCTASection,
+} from "@/components/features/services/sections";
+
+import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
+import { LazySection } from "@/components/ui/lazy-section";
 
 const defaultHeroSubtitle = [
   "Where Innovation Meets Productivity Driven by agents Powered by automation",
   "Built for what's next",
-];
-
-const defaultFeatures = [
-  {
-    title: "Developer-Friendly Architecture",
-    description: "Seamlessly integrate AI capabilities into existing tools.",
-  },
-  {
-    title: "Human-in-the-Loop Workflows",
-    description: "Blend human expertise with AI for reliable automation.",
-  },
-  {
-    title: "Real-Time Data Processing",
-    description: "Advanced AI automation for immediate insights.",
-  },
-  {
-    title: "Dual Interfaces",
-    description: "Optimized for both builders and operators.",
-  },
-  {
-    title: "Enterprise Security",
-    description: "Scalable architecture with compliance built-in.",
-  },
 ];
 
 export function ServicePage({ slug, initialService }: ServicePageClientProps) {
@@ -49,15 +35,22 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
     ...defaultHeroSubtitle,
   ];
   const featuresContent = content.features;
-  const features = featuresContent?.items ?? defaultFeatures;
+  const features = featuresContent?.items ?? [];
   const youtubeVideoContent = content.youtubeVideo;
 
   return (
     <div className="relative">
+      {/* 1. Hero */}
       <ServiceHero title={hydratedService.name} subtitle={heroSubtitle} />
 
-      {/* Below-the-fold sections */}
-      <div className="min-h-[800px]">
+      {/* 2. Problem: Why this service (placeholder) */}
+      <ServiceProblemSection />
+
+      {/* 2b. Before & after: comparison video */}
+      <ServiceBeforeAfterSection />
+
+      {/* 3. Solution: What we deliver */}
+      <div id="solutions">
         <ServiceFeaturesSection
           title={featuresContent?.title}
           subtitle={featuresContent?.subtitle}
@@ -65,16 +58,22 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
         />
       </div>
 
-      <div className="min-h-[600px]">
-        <RepetitiveWorkSection />
-      </div>
+      <ServiceProcessSection />
 
-      <div className="min-h-[600px]">
-        <YouTubeVideoSection
-          videoId={youtubeVideoContent?.videoId ?? "hPkB_DBwnfU"}
-          title={youtubeVideoContent?.title}
+      <ServiceWhatWeNeedSection />
+
+
+
+
+
+      {/* 7. CTA */}
+      <LazySection minHeight="400px">
+        <ServicesCTASection
+          text="Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."
+          buttonText="Initialize Project"
+          buttonHref="/contact"
         />
-      </div>
+      </LazySection>
     </div>
   );
 }
