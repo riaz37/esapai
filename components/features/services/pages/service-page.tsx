@@ -10,11 +10,11 @@ import {
   ServiceBeforeAfterSection,
   ServiceProcessSection,
   ServiceWhatWeNeedSection,
+  ServicesCTASection,
 } from "@/components/features/services/sections";
 
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import { CTASection } from "@/components/features/home/sections/cta";
 import { LazySection } from "@/components/ui/lazy-section";
 
 const defaultHeroSubtitle = [
@@ -68,18 +68,10 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
 
       {/* 7. CTA */}
       <LazySection minHeight="400px">
-        <CTASection
-          title={
-            <>
-              <span className="text-white">Ready to get started? </span>
-              <span className="text-primary">Tell us about your challenge.</span>
-            </>
-          }
-          subtitle="Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."
-          primaryButtonText="Contact Us"
-          primaryButtonHref="/contact"
-          secondaryButtonText="Explore Services"
-          secondaryButtonHref="/services"
+        <ServicesCTASection
+          text="Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."
+          buttonText="Initialize Project"
+          buttonHref="/contact"
         />
       </LazySection>
     </div>
