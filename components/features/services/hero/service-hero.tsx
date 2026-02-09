@@ -106,14 +106,10 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
   return (
     <section className="relative w-full min-h-screen flex items-center overflow-hidden pt-24 md:pt-32 pb-20">
 
-
-
-
       {/* Frame Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none overflow-hidden select-none">
         <Frame className="w-full h-full max-w-[1400px] object-contain scale-125" />
       </div>
-
 
       <div className="container relative z-10 mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -168,8 +164,6 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
                 </Link>
               </Button>
             </div>
-
-
           </div>
 
           {/* Right Side: Globe Visual */}
@@ -272,84 +266,6 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
                 </div>
               </div>
 
-              {/* Bottom-Left: Network Activity Monitor */}
-              <div className="absolute -bottom-4 -left-4 w-44 select-none">
-                {/* Animated corner frame */}
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 176 120" fill="none">
-                  <motion.path
-                    d="M0 112 L0 120 L36 120"
-                    stroke="rgba(19, 245, 132, 0.6)"
-                    strokeWidth="1"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                  />
-                  <motion.path
-                    d="M0 120 L0 20"
-                    stroke="rgba(19, 245, 132, 0.3)"
-                    strokeWidth="1"
-                    strokeDasharray="4 4"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, delay: 0.5 }}
-                  />
-                </svg>
-
-                <div className="relative p-4 text-[10px]">
-                  {/* Activity label */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <motion.div
-                      className="w-1 h-1 bg-primary rounded-full"
-                      animate={{ opacity: [1, 0, 1] }}
-                      transition={{ duration: 0.5, repeat: Infinity }}
-                    />
-                    <span className="text-white/50">NET_ACTIVITY</span>
-                  </div>
-
-                  {/* Animated waveform */}
-                  <div className="flex items-center gap-px h-6 mb-2">
-                    {Array.from({ length: 20 }).map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="w-1 bg-primary/60 rounded-sm"
-                        animate={{
-                          height: [
-                            `${Math.random() * 60 + 20}%`,
-                            `${Math.random() * 80 + 20}%`,
-                            `${Math.random() * 40 + 10}%`,
-                            `${Math.random() * 70 + 30}%`
-                          ]
-                        }}
-                        transition={{
-                          duration: 0.8 + Math.random() * 0.4,
-                          repeat: Infinity,
-                          delay: i * 0.05
-                        }}
-                        style={{ height: "40%" }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Scanning line */}
-                  <div className="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden">
-                    <motion.div
-                      className="absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-primary to-transparent"
-                      animate={{ x: ["-100%", "calc(100% + 176px)"] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                  </div>
-
-                  {/* Data throughput */}
-                  <motion.div
-                    className="text-white/60 mt-2 flex justify-between"
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <span>TX: 2.4Gb/s</span>
-                    <span>RX: 1.8Gb/s</span>
-                  </motion.div>
-                </div>
-              </div>
             </motion.div>
           </div>
 
@@ -358,6 +274,3 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
     </section>
   );
 }
-
-
-
