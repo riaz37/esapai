@@ -10,6 +10,10 @@ import { Card } from "@/components/ui/card";
 
 
 
+import FooterBg1 from "./components/footer-bg-1";
+import FooterBg2 from "./components/footer-bg-2";
+import FooterBg3 from "./components/footer-bg-3";
+
 const socialIcons = [
   {
     name: "Facebook",
@@ -59,7 +63,10 @@ export function Footer() {
         <div className="flex flex-col gap-4 h-full">
 
           {/* Top Card: Connect / CTA */}
-          <Card className={cn(cardClasses, "flex-1 justify-center min-h-[300px]")}>
+          <Card className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}>
+            <div className="absolute inset-0 z-0">
+              <FooterBg2 className="w-full h-full object-cover opacity-30" />
+            </div>
             <div className="relative z-10">
               <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">Connect With Us</h3>
               <p className="text-gray-400 text-lg mb-8 max-w-sm">
@@ -78,7 +85,10 @@ export function Footer() {
           </Card>
 
           {/* Bottom Card: Socials */}
-          <Card className={cn(cardClasses, "flex-1 justify-center min-h-[300px]")}>
+          <Card className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}>
+            <div className="absolute inset-0 z-0">
+              <FooterBg3 className="w-full h-full object-cover opacity-30" />
+            </div>
             <div className="relative z-10">
               <h3 className="text-3xl md:text-4xl font-semibold text-white mb-6">Connect With Us</h3>
               <p className="text-gray-400 text-lg mb-12 max-w-sm">
@@ -111,7 +121,11 @@ export function Footer() {
         </div>
 
         {/* RIGHT COLUMN: MENU & LINKS */}
-        <Card className={cn(cardClasses, "h-auto min-h-[624px] items-center text-center relative")}>
+        <Card className={cn(cardClasses, "h-auto min-h-[624px] items-center text-center relative border-white/10 bg-white/5 backdrop-blur-sm")}>
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <FooterBg1 className="w-full h-full object-cover opacity-20" />
+          </div>
           <div className="relative z-10 flex flex-col h-full w-full">
             <h2 className="text-4xl md:text-5xl font-semibold text-white mb-12">Menu</h2>
 
