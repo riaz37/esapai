@@ -1,0 +1,58 @@
+export const teamMembers = [
+    {
+        id: 1,
+        name: "Alex Rivera",
+        role: "Chief Architect",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+        bio: "Visionary behind the Agentic Core. obsesses over neural topology.",
+    },
+    {
+        id: 2,
+        name: "Sarah Chen",
+        role: "Head of AI",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+        bio: "Pioneering new frontiers in LLM reasoning and context awareness.",
+    },
+    {
+        id: 3,
+        name: "Marcus Thorne",
+        role: "Lead Engineer",
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+        bio: "Full-stack wizard ensuring the console runs at lightspeed.",
+    },
+    {
+        id: 4,
+        name: "Emily Zhao",
+        role: "Product Design",
+        image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&q=80",
+        bio: "Crafting the interface between human intent and machine execution.",
+    },
+    {
+        id: 5,
+        name: "David Kim",
+        role: "Security Ops",
+        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&q=80",
+        bio: "Guardian of the protocol. Zero trust, absolute verification.",
+    },
+    {
+        id: 6,
+        name: "Priya Patel",
+        role: "Research Scientist",
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+        bio: "Pushing the boundaries of what autonomous agents can achieve.",
+    },
+    {
+        id: 7,
+        name: "James Wilson",
+        role: "Systems Engineer",
+        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+        bio: "Optimizing the infrastructure that powers the future of work.",
+    },
+    {
+        id: 8,
+        name: "Lisa Wang",
+        role: "Frontend Dev",
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
+        bio: "Building widely accessible and beautiful interfaces.",
+    },
+];

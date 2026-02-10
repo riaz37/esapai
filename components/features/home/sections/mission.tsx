@@ -72,12 +72,12 @@ export function Mission({
       const header = sectionRef.current.querySelector('[data-testid="section-header"]');
       if (header) {
         const badge = header.children[0]; // Badge wrapper
-        const title = header.querySelector("h2");
+        const titleEl = header.querySelector("h2");
         const accent = header.querySelector('div[class*="bg-primary"]');
-        const subtitle = header.querySelector("p");
+        const subtitleEl = header.querySelector("p");
 
         tl.fromTo(
-          [badge, title, accent, subtitle],
+          [badge, titleEl, accent, subtitleEl],
           {
             y: 30,
             opacity: 0,
@@ -180,6 +180,3 @@ export function Mission({
     </Section>
   );
 }
-
-
-

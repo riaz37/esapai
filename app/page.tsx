@@ -10,7 +10,7 @@ export const metadata: Metadata = generateHomeMetadata();
 
 // Below-the-fold sections - lazy loaded with code splitting
 const MissionSection = dynamic(
-  () => import("@/components/features/about/sections/mission").then((mod) => ({ default: mod.Mission })),
+  () => import("@/components/features/home/sections/mission").then((mod) => ({ default: mod.Mission })),
 );
 
 const ServiceSection = dynamic(
