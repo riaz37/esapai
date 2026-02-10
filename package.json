@@ -27,6 +27,7 @@
     "@sanity/image-url": "^2.0.2",
     "@tabler/icons-react": "^3.35.0",
     "@types/d3": "^7.4.3",
+    "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cobe": "^0.6.5",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -13,6 +13,8 @@ export { MissionCard } from "./mission-card";
 export { TeamCard } from "./team-card";
 export type { TeamMember } from "@/types/ui";
 
+export { Confetti, triggerConfetti } from "./confetti";
+export type { ConfettiHandle, ConfettiOptions } from "./confetti";
 // Service Components
 export { ServiceItem } from "./service-item";
 

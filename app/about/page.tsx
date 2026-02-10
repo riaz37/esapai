@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Team } from "@/components/features/about/sections/team";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
+import { TeamCarousel } from "@/components/about/TeamCarousel";
 
 export const metadata: Metadata = generatePageMetadata({
   title: "About Us",
@@ -22,10 +22,9 @@ export default function AboutPage() {
   return (
     <>
       <StructuredDataComponent data={structuredData} />
-      <main className="relative">
-        <Team />
+      <main className="relative bg-black min-h-screen">
+        <TeamCarousel />
       </main>
     </>
   );
 }
-
