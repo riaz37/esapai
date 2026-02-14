@@ -96,7 +96,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
 
                     {/* Right Side: Media (Video or Placeholder) */}
                     <div className="flex-1 relative w-full h-full flex items-center justify-center">
-                        <div className="relative w-[90%] aspect-video bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
+                        <div className="relative w-full h-full bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
                             {product.content?.hero?.demoVideo ? (
                                 <div className="relative w-full h-full">
                                     <video

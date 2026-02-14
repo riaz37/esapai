@@ -10,7 +10,9 @@ const containerMaxWidthClasses = {
   lg: "max-w-lg",
   xl: "max-w-xl",
   "2xl": "max-w-2xl",
+  "5xl": "max-w-5xl",
   "7xl": "max-w-7xl",
+  wide: "max-w-[1400px]",
   full: "max-w-full",
 };
 
@@ -32,7 +34,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       children,
       className = "",
       containerClassName = "",
-      containerMaxWidth = "7xl",
+      containerMaxWidth = "wide",
       background = "dark",
       padding = "md",
       overflow = "hidden",
@@ -52,7 +54,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
         ref={ref}
         {...props}
         className={cn(
-          "relative w-full",
+          "relative w-full px-4 sm:px-6 md:px-8 lg:px-12",
           paddingClasses[padding],
           overflow === "hidden" ? "overflow-hidden" : "overflow-visible",
           backgroundClass,
@@ -61,7 +63,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       >
         <div
           className={cn(
-            "relative container mx-auto z-10 px-4 sm:px-6 md:px-8",
+            "relative container mx-auto z-10",
             containerMaxWidthClasses[containerMaxWidth],
             containerClassName
           )}

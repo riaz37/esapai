@@ -63,7 +63,7 @@ export function AutomationHub({
 
       <div
         ref={cardsContainerRef}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
       >
         {features.map((feature, index) => {
           const zigZagOffsets = [

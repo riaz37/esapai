@@ -307,7 +307,7 @@ export function ProblemExplorationSection({
                             </h2>
                         </div>
 
-                        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+                        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl">
                             {solutions.map((solution, i) => {
                                 const Icon = solution.icon;
                                 return (

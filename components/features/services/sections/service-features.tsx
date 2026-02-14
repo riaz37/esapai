@@ -354,7 +354,7 @@ export function ServiceFeatures({
 
       {/* Mobile/Tablet View - Vertically Stacked Cards */}
       <div className="block lg:hidden max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pb-8 sm:pb-10 md:pb-12">
-        <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
+        <div className="flex flex-col gap-4">
           {features.map((feature, index) => (
             <Card
               key={index}
@@ -372,7 +372,7 @@ export function ServiceFeatures({
       </div>
 
       {/* Desktop View - Interactive Graph */}
-      <div className="hidden lg:block relative w-full h-[800px] lg:h-[900px] xl:h-[1000px] 2xl:h-[1100px] max-w-7xl mx-auto service-features-flow">
+      <div className="hidden lg:block relative w-full h-[800px] lg:h-[900px] xl:h-[1000px] 2xl:h-[1100px] max-w-[1400px] mx-auto service-features-flow">
         <ConnectionDotsMarkers />
         <style dangerouslySetInnerHTML={{
           __html: `

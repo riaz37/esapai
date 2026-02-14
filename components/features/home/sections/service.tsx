@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 
+import { Section } from "@/components/ui/section";
 import { ServiceCard } from "@/components/ui/service-card";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -113,72 +114,71 @@ export function Service() {
   }, { scope: sectionRef });
 
   return (
-    <section
+    <Section
       ref={sectionRef}
+      padding="none"
       className={cn("relative w-full py-12 sm:py-20 bg-transparent z-20 overflow-hidden")}
     >
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <SectionHeader
-          title="Focus on Growth"
-          subtitle="Explore our comprehensive suite of AI solutions designed to transform your enterprise."
-          badge="Our Solutions"
-          badgeIcon={Cpu}
-          align="center"
-        />
+      <SectionHeader
+        title="Focus on Growth"
+        subtitle="Explore our comprehensive suite of AI solutions designed to transform your enterprise."
+        badge="Our Solutions"
+        badgeIcon={Cpu}
+        align="center"
+      />
 
-        {/* Bento Grid with synced wireframe */}
-        <div ref={gridRef} className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(400px,auto)]">
-            {/* Row 1: Tall left + 2 shorter right */}
-            <div className="md:row-span-2">
-              <ServiceCard
-                title={SERVICES[0].title}
-                description={SERVICES[0].description}
-                className="h-full"
-              />
-            </div>
-            <div>
-              <ServiceCard
-                title={SERVICES[1].title}
-                description={SERVICES[1].description}
-                className="h-full"
-              />
-            </div>
-            <div>
-              <ServiceCard
-                title={SERVICES[2].title}
-                description={SERVICES[2].description}
-                className="h-full"
-              />
-            </div>
+      {/* Bento Grid with synced wireframe */}
+      <div ref={gridRef} className="relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(400px,auto)]">
+          {/* Row 1: Tall left + 2 shorter right */}
+          <div className="md:row-span-2">
+            <ServiceCard
+              title={SERVICES[0].title}
+              description={SERVICES[0].description}
+              className="h-full"
+            />
+          </div>
+          <div>
+            <ServiceCard
+              title={SERVICES[1].title}
+              description={SERVICES[1].description}
+              className="h-full"
+            />
+          </div>
+          <div>
+            <ServiceCard
+              title={SERVICES[2].title}
+              description={SERVICES[2].description}
+              className="h-full"
+            />
+          </div>
 
-            {/* Row 2: Wide card spanning 2 columns */}
-            <div className="md:col-span-2">
-              <ServiceCard
-                title={SERVICES[3].title}
-                description={SERVICES[3].description}
-                className="h-full"
-              />
-            </div>
+          {/* Row 2: Wide card spanning 2 columns */}
+          <div className="md:col-span-2">
+            <ServiceCard
+              title={SERVICES[3].title}
+              description={SERVICES[3].description}
+              className="h-full"
+            />
+          </div>
 
-            {/* Row 3: Two cards */}
-            <div>
-              <ServiceCard
-                title={SERVICES[4].title}
-                description={SERVICES[4].description}
-                className="h-full"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <ServiceCard
-                title={SERVICES[5].title}
-                description={SERVICES[5].description}
-                className="h-full"
-              />
-            </div>
+          {/* Row 3: Two cards */}
+          <div>
+            <ServiceCard
+              title={SERVICES[4].title}
+              description={SERVICES[4].description}
+              className="h-full"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <ServiceCard
+              title={SERVICES[5].title}
+              description={SERVICES[5].description}
+              className="h-full"
+            />
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

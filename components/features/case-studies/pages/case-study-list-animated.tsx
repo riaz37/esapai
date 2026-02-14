@@ -11,7 +11,6 @@ import { useIntersectionAnimation } from "@/lib/hooks/use-intersection-animation
 import { useSharedCardObserver } from "@/lib/hooks/use-case-study-card-animation";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { sanitizeText } from "@/lib/utils/sanitize";
-import Frame from "@/components/shared/frame";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Button, ButtonArrow } from "@/components/ui/button";
@@ -99,12 +98,6 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         containerClassName="max-w-none px-0 sm:px-0 md:px-0"
         className="relative overflow-hidden"
       >
-        {/* Top Background Element (Frame) */}
-        <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none select-none overflow-hidden -z-10">
-          <div className="absolute inset-x-0 top-0 flex items-start justify-center opacity-35">
-            <Frame className="w-full h-full max-w-[1200px] max-h-[1600px] object-contain" />
-          </div>
-        </div>
 
         {/* Unified Content Container */}
         <div className="relative z-10 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-16 sm:pb-20 md:pb-24 lg:pb-32">
@@ -130,7 +123,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
             {caseStudies.length > 0 ? (
               <div
                 ref={cardsContainerRef}
-                className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8"
+                className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12"
                 role="list"
                 aria-label="Case studies"
               >

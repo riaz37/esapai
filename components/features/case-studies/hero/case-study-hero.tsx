@@ -94,8 +94,8 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
             ref={sectionRef}
             className="relative z-10 w-full mb-12 sm:mb-16 md:mb-20 lg:mb-24"
         >
-            <div className="container mx-auto px-4">
-                <div className="max-w-6xl mx-auto w-full">
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+                <div className="max-w-[1400px] mx-auto w-full">
                     {/* Title */}
                     <h1
                         ref={titleRef}

@@ -45,7 +45,7 @@ export type SectionProps = Omit<
   children: ReactNode;
   className?: string;
   containerClassName?: string;
-  containerMaxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "7xl" | "full";
+  containerMaxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "5xl" | "7xl" | "wide" | "full";
   background?: "dark" | "transparent" | string;
   padding?: "none" | "sm" | "md" | "lg";
   overflow?: "hidden" | "visible";

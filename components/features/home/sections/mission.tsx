@@ -162,7 +162,7 @@ export function Mission({
       <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
         <div
           ref={trackRef}
-          className="flex gap-5 sm:gap-6 md:gap-8 px-4 sm:px-12 md:px-24 w-max"
+          className="flex gap-4 px-4 sm:px-12 md:px-24 w-max"
         >
           {cards.map((card, index) => (
             <div

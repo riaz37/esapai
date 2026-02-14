@@ -10,7 +10,6 @@ import { motion } from "motion/react";
 import type { GlobeConfig } from "@/components/ui/globe";
 import type { ServiceHeroProps } from "@/types/props";
 import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
-import Frame from "@/components/shared/frame";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((mod) => mod.World),
@@ -102,20 +101,21 @@ const globeData = [
   },
 ];
 
+import { Section } from "@/components/ui/section";
+
 export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden pt-24 md:pt-32 pb-20">
+    <Section
+      padding="none"
+      className="relative min-h-screen flex items-center overflow-hidden pt-24 md:pt-32 pb-20"
+      containerClassName="relative z-10"
+    >
 
-      {/* Frame Background */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none overflow-hidden select-none">
-        <Frame className="w-full h-full max-w-[1400px] object-contain scale-125" />
-      </div>
-
-      <div className="container relative z-10 mx-auto px-4 md:px-6">
+      <div className="w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
           {/* Left Side: Content */}
-          <div className="lg:col-span-6 xl:col-span-7 flex flex-col items-start text-left">
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
             <BadgeChip
               label="Service Suite"
               icon={Sparkles}
@@ -124,7 +124,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
             <TypewriterTitle
               title={title}
               splitMode="lastWord"
-              className="mb-6"
+              className="mb-6 max-w-3xl"
               align="left"
             />
 
@@ -167,7 +167,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
           </div>
 
           {/* Right Side: Globe Visual */}
-          <div className="lg:col-span-6 xl:col-span-5 relative flex justify-center items-center py-10 lg:py-0">
+          <div className="lg:col-span-5 relative flex justify-center items-center py-10 lg:py-0">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -265,12 +265,11 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
                   </div>
                 </div>
               </div>
-
             </motion.div>
           </div>
 
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

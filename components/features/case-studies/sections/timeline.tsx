@@ -52,7 +52,7 @@ export function Timeline({ timeline }: TimelineProps) {
 
               {/* Images Grid */}
               {entry.images.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {entry.images.map((image, imgIndex) => (
                     <div
                       key={imgIndex}

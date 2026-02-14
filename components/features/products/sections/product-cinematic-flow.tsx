@@ -429,7 +429,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                 className="absolute inset-0 z-10 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 pt-16 pb-20"
             >
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl mx-auto mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[1400px] mx-auto mt-6">
                     {problems.map((p, i) => {
                         const ProblemIcon = p.icon;
                         const SolIcon = p.solIcon;

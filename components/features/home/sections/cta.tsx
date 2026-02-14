@@ -216,8 +216,8 @@ export function CTASection({
             />
 
             {/* Content */}
-            <div className="relative z-20 container mx-auto px-4 sm:px-6 text-center">
-                <div className="max-w-4xl mx-auto">
+            <div className="relative z-20 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 text-center">
+                <div className="max-w-[1400px] mx-auto">
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
                         {title}
