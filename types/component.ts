@@ -21,11 +21,3 @@ export interface ProductHaloFlowProps {
   };
   haloScale?: number;
 }
-
-export interface Robot3DProps {
-  className?: string;
-  style?: React.CSSProperties;
-  primaryColor?: string;
-  secondaryColor?: string;
-  scale?: number;
-}

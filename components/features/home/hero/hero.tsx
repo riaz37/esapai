@@ -156,9 +156,9 @@ export function Hero() {
             // 3. FINAL REVEAL: Fade out the entire Hero Section to reveal content underneath
             mainTl.to(sectionRef.current, {
                 autoAlpha: 0,
-                duration: 0.5,
+                duration: 0.4,
                 ease: "power2.inOut"
-            }, 1.2); // Overlap slightly with the explosion
+            }, 0.8); // Start fading out as the portal peak begins to subside
 
 
 

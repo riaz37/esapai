@@ -1,14 +1,33 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { motion, useScroll, useSpring } from "motion/react";
-import CircularGallery from "@/components/CircularGallery";
+import CircularGallery from "@/components/features/about/circular-gallery";
 import { teamData } from "@/lib/team-data";
 import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { SectionHeader } from "@/components/ui/section-header";
 import { BadgeChip } from "@/components/ui/badge-chip";
+import { LazySection } from "@/components/ui/lazy-section";
+import { AboutHero } from "@/components/features/about/hero";
 import { Users, Info, Rocket } from "lucide-react";
+
+const FoundingStorySection = dynamic(
+  () =>
+    import("@/components/features/about/sections").then((mod) => ({
+      default: mod.FoundingStorySection,
+    })),
+  { ssr: true }
+);
+
+const CTASection = dynamic(
+  () =>
+    import("@/components/features/home/sections/cta").then((mod) => ({
+      default: mod.CTASection,
+    })),
+  { ssr: true }
+);
 
 export default function AboutPage() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -52,7 +71,13 @@ export default function AboutPage() {
       <StructuredDataComponent data={structuredData} />
 
       <main className="bg-black">
-        {/* Static Header Section - Scrolls away before pinning */}
+        <AboutHero />
+
+        <LazySection minHeight="100vh">
+          <FoundingStorySection />
+        </LazySection>
+
+        {/* Our Team - Static Header Section - Scrolls away before pinning */}
         <div className="pt-32 pb-12 px-8 md:px-12">
           <div className="container mx-auto">
             <SectionHeader
@@ -142,6 +167,12 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+
+        <LazySection minHeight="400px">
+          <CTASection
+            subtitle="Meet the team behind ESAP AI, then explore our products or get in touch."
+          />
+        </LazySection>
       </main>
     </>
   );

@@ -51,7 +51,7 @@ export default function Home() {
 
 
       {/* Portal Reveal Target: Technology Excellence */}
-      <LazySection minHeight="800px">
+      <LazySection minHeight="400px">
         <TechnologyExcellenceSection />
       </LazySection>
 
@@ -59,11 +59,11 @@ export default function Home() {
       <TrustedPartnersSection />
 
       {/* Mission Section - Now with proper scroll room */}
-      <LazySection minHeight="600px">
+      <LazySection minHeight="400px">
         <MissionSection />
       </LazySection>
 
-      <LazySection minHeight="800px">
+      <LazySection minHeight="600px">
         <ServiceSection />
       </LazySection>
 
@@ -71,7 +71,7 @@ export default function Home() {
         <ProductShowcaseSection />
       </LazySection>
 
-      <LazySection minHeight="200vh">
+      <LazySection minHeight="120vh">
         <TextRevealSection />
       </LazySection>
 

@@ -22,7 +22,7 @@ export function TextRevealSection() {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
-                    end: "+=200%", // Extended scrolling distance for the extra phase
+                    end: "+=120%", // Tightened scrolling distance
                     scrub: 1,
                     pin: true,
                     invalidateOnRefresh: true,
@@ -80,7 +80,7 @@ export function TextRevealSection() {
     return (
         <section
             ref={containerRef}
-            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden py-20 sm:py-32"
+            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden pt-32 pb-12 sm:pt-40 sm:pb-20"
         >
             <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
                 <div className="max-w-5xl mx-auto flex-1 flex items-center justify-center min-h-[60vh]">

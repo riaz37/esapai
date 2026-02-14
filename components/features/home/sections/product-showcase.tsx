@@ -90,7 +90,7 @@ export function ProductShowcase() {
 
   return (
     <section
-      className="relative w-full py-20 sm:py-32 bg-transparent overflow-visible"
+      className="relative w-full py-12 sm:py-20 bg-transparent overflow-visible"
     >
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeader
@@ -117,7 +117,7 @@ export function ProductShowcase() {
                   top: `${topOffset}px`,
                   zIndex: index + 1,
                   // Margin to allow scrolling. Last card doesn't need margin.
-                  marginBottom: index === products.length - 1 ? "0px" : "40vh",
+                  marginBottom: index === products.length - 1 ? "0px" : "20vh",
                 }}
               >
                 {/* Shadow Overlay for darkening effect */}

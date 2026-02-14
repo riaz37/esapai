@@ -152,11 +152,6 @@ export interface InstancedGridProps {
   gridSize: number;
 }
 
-export interface ConcaveFloorProps {
-  className?: string;
-  intensity?: number;
-}
-
 export type RingParticle = {
   x: number;
   y: number;
@@ -250,24 +245,7 @@ export interface SectionHeaderProps {
   animate?: boolean;
 }
 
-export interface UITimelineEntry {
-  title: string;
-  content: ReactNode;
-}
 
-export type BackgroundRippleEffectProps = {
-  rows?: number;
-  cols?: number;
-  cellSize?: number;
-  className?: string;
-  gridClassName?: string;
-  mask?: boolean;
-  interactive?: boolean;
-  auto?: boolean;
-  autoIntervalMs?: number;
-  triggerPoint?: { x: number; y: number } | null;
-  triggerKey?: number;
-};
 
 export type DivGridProps = {
   className?: string;

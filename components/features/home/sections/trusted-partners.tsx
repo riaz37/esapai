@@ -86,7 +86,7 @@ export function TrustedPartners() {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full pt-8 pb-8 sm:pt-12 sm:pb-12">
+        <section ref={sectionRef} className="w-full pt-4 pb-4 sm:pt-6 sm:pb-6">
             <div className="relative flex overflow-hidden">
                 {/* Marquee Row */}
                 <div ref={marqueeRef} className="flex whitespace-nowrap py-8">

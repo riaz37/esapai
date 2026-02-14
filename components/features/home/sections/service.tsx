@@ -115,7 +115,7 @@ export function Service() {
   return (
     <section
       ref={sectionRef}
-      className={cn("relative w-full py-20 sm:py-32 bg-transparent z-20 overflow-hidden")}
+      className={cn("relative w-full py-12 sm:py-20 bg-transparent z-20 overflow-hidden")}
     >
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <SectionHeader

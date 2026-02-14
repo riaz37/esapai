@@ -99,7 +99,7 @@ export function Achievement() {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full py-20 sm:py-32 bg-transparent overflow-hidden">
+        <section ref={sectionRef} className="w-full py-12 sm:py-20 bg-transparent overflow-hidden">
             <div className="container mx-auto px-4">
                 <SectionHeader
                     badge="Our Achievement"
@@ -107,7 +107,7 @@ export function Achievement() {
                     title="Innovation & Future Focus"
                     subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
                     align="center"
-                    className="mb-16 sm:mb-24"
+                    className="mb-10 sm:mb-16"
                 />
 
                 <div
