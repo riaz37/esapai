@@ -60,7 +60,7 @@ export function Mission({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=300%",
+          end: "+=150%",
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -68,15 +68,15 @@ export function Mission({
         },
       });
 
-      // Synchronized Header Animation (Non-scrubbed feel but tied to scroll)
+      // Proactive Header Animation (Triggers as section enters view)
       const header = sectionRef.current.querySelector('[data-testid="section-header"]');
       if (header) {
-        const badge = header.children[0]; // Badge wrapper
+        const badge = header.children[0];
         const titleEl = header.querySelector("h2");
         const accent = header.querySelector('div[class*="bg-primary"]');
         const subtitleEl = header.querySelector("p");
 
-        tl.fromTo(
+        gsap.fromTo(
           [badge, titleEl, accent, subtitleEl],
           {
             y: 30,
@@ -90,8 +90,12 @@ export function Mission({
             stagger: 0.1,
             duration: 0.8,
             ease: "power3.out",
-          },
-          0 // Start immediately at pin
+            scrollTrigger: {
+              trigger: header,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            }
+          }
         );
       }
 
@@ -143,7 +147,7 @@ export function Mission({
     <Section
       ref={sectionRef}
       padding="none"
-      containerClassName="min-h-screen flex flex-col py-20 sm:py-32"
+      containerClassName="min-h-screen flex flex-col pt-32 pb-12 sm:pt-40 sm:pb-20"
       className="relative overflow-hidden z-20 bg-transparent"
     >
       <SectionHeader
@@ -158,7 +162,7 @@ export function Mission({
       <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
         <div
           ref={trackRef}
-          className="flex gap-5 sm:gap-6 md:gap-8 px-4 sm:px-12 md:px-24 w-max"
+          className="flex gap-4 px-4 sm:px-12 md:px-24 w-max"
         >
           {cards.map((card, index) => (
             <div

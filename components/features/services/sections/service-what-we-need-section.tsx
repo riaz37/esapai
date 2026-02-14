@@ -17,7 +17,7 @@ export function ServiceWhatWeNeedSection({
   return (
     <div className="relative bg-black border-t border-white/5">
       <Section className="min-h-screen flex flex-col justify-center py-24">
-        <div className="container mx-auto px-4">
+        <div className="relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             {/* Left Column: Visual Component */}

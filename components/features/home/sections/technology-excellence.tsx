@@ -68,36 +68,34 @@ export function TechnologyExcellence() {
     );
 
     return (
-        <Section ref={sectionRef} className="py-12 sm:py-20 relative z-10">
-            <div className="container mx-auto px-4">
-                <SectionHeader
-                    title="Our Technology Excellence"
-                    subtitle="Experience the dual power of autonomous execution and deep analytical insight, engineered for the future of enterprise."
-                    badge="Core Tech"
-                    badgeIcon={Cpu}
-                    align="left"
-                    className="mb-8 sm:mb-10"
+        <Section ref={sectionRef} padding="none" className="pt-12 pb-6 sm:pt-20 sm:pb-10 relative z-10">
+            <SectionHeader
+                title="Our Technology Excellence"
+                subtitle="Experience the dual power of autonomous execution and deep analytical insight, engineered for the future of enterprise."
+                badge="Core Tech"
+                badgeIcon={Cpu}
+                align="left"
+                className="mb-8 sm:mb-10"
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Card 1: Autonomous Agents */}
+                <TechCard
+                    ref={card1Ref}
+                    title="Autonomous Agents"
+                    description="Deploy intelligent workers that handle complex workflows 24/7 without supervision."
+                    videoSrc="/technology1.mp4"
+                    delay={0}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
-                    {/* Card 1: Autonomous Agents */}
-                    <TechCard
-                        ref={card1Ref}
-                        title="Autonomous Agents"
-                        description="Deploy intelligent workers that handle complex workflows 24/7 without supervision."
-                        videoSrc="/technology1.mp4"
-                        delay={0}
-                    />
-
-                    {/* Card 2: Neural Processing */}
-                    <TechCard
-                        ref={card2Ref}
-                        title="Neural Processing"
-                        description="Transform raw data into actionable foresight with our advanced neural models."
-                        videoSrc="/technology2.mp4"
-                        delay={0.2}
-                    />
-                </div>
+                {/* Card 2: Neural Processing */}
+                <TechCard
+                    ref={card2Ref}
+                    title="Neural Processing"
+                    description="Transform raw data into actionable foresight with our advanced neural models."
+                    videoSrc="/technology2.mp4"
+                    delay={0.2}
+                />
             </div>
         </Section>
     );

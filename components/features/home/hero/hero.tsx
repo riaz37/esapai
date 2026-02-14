@@ -156,9 +156,9 @@ export function Hero() {
             // 3. FINAL REVEAL: Fade out the entire Hero Section to reveal content underneath
             mainTl.to(sectionRef.current, {
                 autoAlpha: 0,
-                duration: 0.5,
+                duration: 0.4,
                 ease: "power2.inOut"
-            }, 1.2); // Overlap slightly with the explosion
+            }, 0.8); // Start fading out as the portal peak begins to subside
 
 
 
@@ -235,7 +235,7 @@ export function Hero() {
                     <HeroBadge ref={badgeRef} />
 
                     {/* Main Title - Kinetic Typography */}
-                    <div className="hero-main-title w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 overflow-hidden">
+                    <div className="hero-main-title w-full max-w-[1400px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 overflow-hidden">
                         <TypewriterTitle
                             title="AI-Powered Solutions"
                             splitMode="secondLine"

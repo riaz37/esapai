@@ -86,7 +86,7 @@ export function TrustedPartners() {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full pt-8 pb-8 sm:pt-12 sm:pb-12">
+        <section ref={sectionRef} className="w-full pt-4 pb-4 sm:pt-6 sm:pb-6">
             <div className="relative flex overflow-hidden">
                 {/* Marquee Row */}
                 <div ref={marqueeRef} className="flex whitespace-nowrap py-8">
@@ -96,11 +96,14 @@ export function TrustedPartners() {
                             className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 group/partner transition-all duration-300"
                         >
                             <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center">
+                                {/* Soft Glow behind logo */}
+                                <div className="absolute inset-0 bg-primary/0 group-hover/partner:bg-primary/10 blur-2xl rounded-full transition-all duration-700" />
+
                                 <Image
                                     src={partner.logo}
                                     alt={partner.alt}
                                     fill
-                                    className="object-contain opacity-60 brightness-110 group-hover/partner:opacity-100 group-hover/partner:brightness-125 group-hover/partner:scale-110 transition-all duration-500 ease-out"
+                                    className="object-contain opacity-40 brightness-0 invert group-hover/partner:opacity-100 group-hover/partner:brightness-100 group-hover/partner:scale-110 transition-all duration-500 ease-out"
                                     sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
                                 />
                             </div>

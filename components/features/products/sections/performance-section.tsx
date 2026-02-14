@@ -103,7 +103,7 @@ export function PerformanceSection({
   );
 
   return (
-    <Section containerClassName="max-w-6xl mx-auto">
+    <Section>
       <div
         ref={(node) => {
           sectionRef.current = node;
@@ -111,7 +111,7 @@ export function PerformanceSection({
         }}
         className="relative w-full rounded-lg p-8 md:p-12 bg-dark performance-border"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {metrics.map((metric, index) => (
             <PerformanceMetric
               key={index}

@@ -19,7 +19,7 @@ export function ServicesCTASection({
 
   return (
     <Section className="py-24">
-      <div className="container px-4 mx-auto">
+      <div className="relative z-10 w-full">
         <TechEcosystemCard
           title={typeof title === 'string' ? title : "Ready to get started?"}
           subtitle={text}

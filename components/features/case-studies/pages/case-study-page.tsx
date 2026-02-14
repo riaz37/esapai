@@ -55,7 +55,7 @@ export function CaseStudyPage({
 
           {/* Timeline Section embedded seamlessly */}
           <div className="relative">
-            <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
               <Timeline timeline={hydratedCaseStudy.timeline} />
             </div>
           </div>

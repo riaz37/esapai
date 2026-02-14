@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 import { products } from "@/lib/products";
+import { Section } from "@/components/ui/section";
 import { ProductCard } from "@/components/ui/product-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Rocket } from "lucide-react";
@@ -89,58 +90,57 @@ export function ProductShowcase() {
   );
 
   return (
-    <section
-      className="relative w-full py-20 sm:py-32 bg-transparent overflow-visible"
+    <Section
+      padding="none"
+      className="relative w-full py-12 sm:py-20 bg-transparent overflow-visible"
     >
-      <div className="container mx-auto px-4 md:px-6">
-        <SectionHeader
-          title="Product Discovery"
-          subtitle="Experience our ecosystem of intelligent tools."
-          badge="Product Showcase"
-          badgeIcon={Rocket}
-        />
+      <SectionHeader
+        title="Product Discovery"
+        subtitle="Experience our ecosystem of intelligent tools."
+        badge="Product Showcase"
+        badgeIcon={Rocket}
+      />
 
-        {/* Sticky Stacking Container */}
-        <div ref={containerRef} className="flex flex-col items-center pb-10 perspective-[1000px]">
-          {products.map((product, index) => {
-            // Sticky top offset - uniform 120px to clear navbar (80px) with margin
-            const topOffset = 120;
+      {/* Sticky Stacking Container */}
+      <div ref={containerRef} className="flex flex-col items-center pb-10 perspective-[1000px]">
+        {products.map((product, index) => {
+          // Sticky top offset - uniform 120px to clear navbar (80px) with margin
+          const topOffset = 120;
 
-            return (
+          return (
+            <div
+              key={product.id}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              className="sticky w-full max-w-[1400px] preserve-3d"
+              style={{
+                top: `${topOffset}px`,
+                zIndex: index + 1,
+                // Margin to allow scrolling. Last card doesn't need margin.
+                marginBottom: index === products.length - 1 ? "0px" : "20vh",
+              }}
+            >
+              {/* Shadow Overlay for darkening effect */}
               <div
-                key={product.id}
-                ref={(el) => {
-                  cardRefs.current[index] = el;
-                }}
-                className="sticky w-full max-w-[1400px] preserve-3d"
-                style={{
-                  top: `${topOffset}px`,
-                  zIndex: index + 1,
-                  // Margin to allow scrolling. Last card doesn't need margin.
-                  marginBottom: index === products.length - 1 ? "0px" : "40vh",
-                }}
-              >
-                {/* Shadow Overlay for darkening effect */}
-                <div
-                  className="shadow-overlay absolute inset-0 bg-black pointer-events-none z-20 rounded-[inherit] transition-opacity will-change-opacity"
-                  style={{ opacity: 0 }}
-                />
+                className="shadow-overlay absolute inset-0 bg-black pointer-events-none z-20 rounded-[inherit] transition-opacity will-change-opacity"
+                style={{ opacity: 0 }}
+              />
 
-                <div className="w-full h-[700px]">
-                  <ProductCard
-                    product={product}
-                    index={index}
-                    videoRef={(el) => {
-                      videoRefs.current[index] = el;
-                    }}
-                    className="h-full shadow-2xl bg-background"
-                  />
-                </div>
+              <div className="w-full h-[700px]">
+                <ProductCard
+                  product={product}
+                  index={index}
+                  videoRef={(el) => {
+                    videoRefs.current[index] = el;
+                  }}
+                  className="h-full shadow-2xl bg-background"
+                />
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
-    </section>
+    </Section>
   );
 }

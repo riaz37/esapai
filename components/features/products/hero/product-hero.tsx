@@ -2,26 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
-
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
-import { HeroBadge } from "@/components/ui/hero-badge";
-import Frame from "@/components/shared/frame";
-import { InteractiveProductIconHalo } from "@/components/ui/interactive-product-icon-halo";
-import { LazyThreeWrapper } from "@/components/three/lazy-three-wrapper";
-import GridFloor from "@/components/shared/grid-floor";
 import type { ProductHeroProps } from "@/types/props";
-
-const ProductHaloFlow = dynamic(
-  () =>
-    import("@/components/shared/product-halo-flow").then((m) => m.ProductHaloFlow),
-  {
-    ssr: false,
-    loading: () => <div className="w-full h-full" aria-hidden="true" />,
-  }
-);
 
 /**
  * Maps product slugs to their corresponding icon files in the product_icons directory
@@ -54,57 +38,43 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
   const iconAlt = centerIconAlt || `${title} Icon`;
 
   return (
-    <section className="relative w-full overflow-hidden bg-dark min-h-screen flex flex-col justify-center pt-24 pb-12">
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden w-full">
-        <div className="absolute inset-0 w-full h-full left-0 right-0">
-          <div className="absolute inset-0 w-full h-full left-0 right-0 relative overflow-hidden">
-            <div className="absolute inset-0 w-full h-full left-0 right-0 pointer-events-auto">
-              <div className="absolute inset-0 w-full h-full">
-                <LazyThreeWrapper
-                  fallback={
-                    <div className="absolute inset-0 w-full h-full opacity-60 min-h-[400px] bg-transparent" />
-                  }
-                >
-                  <GridFloor className="opacity-60" perspective="dramatic" />
-                </LazyThreeWrapper>
-              </div>
-            </div>
+    <section className="relative w-full overflow-hidden bg-[#050505] min-h-[90vh] md:min-h-screen flex items-center pt-24 pb-12">
+      {/* Background Elements */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+        {/* Subtle Background Grid/Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
 
-            <div className="absolute inset-0 pointer-events-none [background-image:radial-gradient(ellipse_at_center,transparent_0%,transparent_30%,rgba(0,3,0,0.2)_50%,rgba(0,3,0,0.4)_70%,rgba(0,3,0,0.6)_100%)]" />
-            <div className="absolute top-0 left-0 right-0 h-[15%] pointer-events-none [background-image:linear-gradient(to_bottom,rgba(0,3,0,0.85)_0%,rgba(0,3,0,0.4)_40%,rgba(0,3,0,0.15)_70%,transparent_100%)]" />
-            <div className="absolute bottom-0 left-0 right-0 h-[15%] pointer-events-none [background-image:linear-gradient(to_top,rgba(0,3,0,0.9)_0%,rgba(0,3,0,0.4)_60%,transparent_100%)]" />
-            <div className="absolute top-0 bottom-0 left-0 w-[2%] pointer-events-none [background-image:linear-gradient(to_right,rgba(0,3,0,0.5)_0%,transparent_100%)]" />
-            <div className="absolute top-0 bottom-0 right-0 w-[2%] pointer-events-none [background-image:linear-gradient(to_left,rgba(0,3,0,0.5)_0%,transparent_100%)]" />
-          </div>
-        </div>
-
-        <div className="absolute inset-0 flex items-center justify-center opacity-40">
-          <Frame className="w-full h-full max-w-[1200px] max-h-[1600px] object-contain" />
-        </div>
+        {/* Gradients/Overlays */}
+        <div className="absolute inset-0 [background-image:radial-gradient(ellipse_at_center,transparent_0%,rgba(0,3,0,0.4)_70%,rgba(0,3,0,0.8)_100%)]" />
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 h-full flex flex-col justify-center">
-        <div className="max-w-6xl mx-auto w-full">
-          <div className="text-center mb-6">
+      <div className="relative z-10 container mx-auto px-6 md:px-12">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          {/* Left Content */}
+          <div className="flex flex-col items-start text-left max-w-2xl">
+
             <TypewriterTitle
               title={title}
               splitMode="lastWord"
-              className="mb-3 sm:mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
-              align="center"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6"
+              align="left"
             />
 
-            <div className="mb-6 space-y-1.5 sm:space-y-2">
+            <div className="space-y-4 mb-10 max-w-lg">
               {subtitle.map((line, index) => (
                 <p
                   key={index}
-                  className="text-sm sm:text-base md:text-lg lg:text-xl text-light-gray-90"
+                  className="text-lg md:text-xl text-white/70 leading-relaxed font-light"
                 >
                   {line}
                 </p>
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+            <div className="flex flex-wrap items-center gap-5">
               <Button
                 variant="primary"
                 size="lg"
@@ -128,62 +98,37 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
             </div>
           </div>
 
-          <div className="relative z-20 flex items-center justify-center">
-            <div className="w-full h-[40vh] min-h-[300px] max-h-[500px] relative">
-              <ProductHaloFlow
-                haloScale={1.0}
-                centerNode={{
-                  title: title,
-                  icon: (
-                    <InteractiveProductIconHalo scale={1.0} intensity="high">
-                      {iconPath ? (
-                        <Image
-                          src={iconPath}
-                          alt={iconAlt}
-                          width={96}
-                          height={96}
-                          priority
-                          sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                          className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
-                        />
-                      ) : (
-                        <svg
-                          width="96"
-                          height="96"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
-                        >
-                          <path
-                            d="M12 2L2 7L12 12L22 7L12 2Z"
-                            stroke="#13F584"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M2 17L12 22L22 17"
-                            stroke="#13F584"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M2 12L12 17L22 12"
-                            stroke="#13F584"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </InteractiveProductIconHalo>
-                  ),
-                }}
-              />
+          {/* Right Visual (Video) */}
+          <div className="relative flex items-center justify-center lg:justify-end">
+            <div className="relative w-full max-w-[700px] aspect-[16/10] group">
+              {/* Glow Decoration */}
+              <div className="absolute -inset-4 bg-[#13F584]/5 blur-[60px] rounded-full group-hover:bg-[#13F584]/10 transition-all duration-700" />
+
+              {/* Frame/Border */}
+              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl shadow-[#13F584]/2 translate-z-0">
+                <video
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster="/HUD.png"
+                >
+                  <source src="/LP_animation_HomePage_Big_Intro_2X_short.webm" type="video/webm" />
+                  Your browser does not support the video tag.
+                </video>
+
+                {/* Visual Overlays */}
+                <div className="absolute inset-0 pointer-events-none border border-white/5 rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+              </div>
+
+              {/* HUD Decoration Element - Simplified to 2D */}
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 opacity-10 pointer-events-none border-b-2 border-l-2 border-[#13F584] rounded-bl-3xl" />
+              <div className="absolute -top-8 -right-8 w-32 h-32 opacity-10 pointer-events-none border-t-2 border-r-2 border-[#13F584] rounded-tr-3xl" />
             </div>
           </div>
+
         </div>
       </div>
     </section>

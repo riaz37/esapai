@@ -3,13 +3,13 @@
 import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import Image from "next/image";
-
+import { BookOpen } from "lucide-react";
 import { useIntersectionAnimation } from "@/lib/hooks/use-intersection-animation";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import { BadgeChip } from "@/components/ui/badge-chip";
 
-export function ServicesHero() {
+export function AboutHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const anim = useGSAPAnimations(sectionRef as React.RefObject<HTMLElement>);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -20,14 +20,12 @@ export function ServicesHero() {
     rootMargin: "100px",
   });
 
-  // Ensure component is mounted before running animations
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   useGSAP(
     () => {
-      // Early returns for performance
       if (
         !isMounted ||
         !isInView ||
@@ -38,15 +36,25 @@ export function ServicesHero() {
         return;
       }
 
+      const badgeEl = sectionRef.current.querySelector('[data-hero-badge]');
       const titleElement = sectionRef.current.querySelector("h1");
       const descriptionElement = sectionRef.current.querySelector("p");
 
       if (!titleElement && !descriptionElement) return;
 
-      // Mark as animated to prevent re-triggering
       setHasAnimated(true);
 
       const tl = anim.createTimeline();
+
+      if (badgeEl) {
+        gsap.set(badgeEl, { opacity: 0, y: 10 });
+        tl.to(badgeEl, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+        });
+      }
 
       if (titleElement) {
         gsap.set(titleElement, { opacity: 0, y: -20 });
@@ -59,7 +67,7 @@ export function ServicesHero() {
             duration: 0.8,
             ease: "power3.out",
           },
-          0
+          badgeEl ? "-=0.3" : 0
         );
       }
 
@@ -73,7 +81,7 @@ export function ServicesHero() {
             duration: 0.7,
             ease: "power2.out",
           },
-          0.4
+          "-=0.5"
         );
       }
     },
@@ -86,46 +94,17 @@ export function ServicesHero() {
         sectionRef.current = el;
         setIntersectionRef(el);
       }}
-      className="relative min-h-[50vh] sm:min-h-[55vh] md:min-h-[60vh] flex items-center justify-center overflow-hidden bg-dark pt-20 sm:pt-24 md:pt-0"
+      className="relative min-h-[50vh] sm:min-h-[55vh] md:min-h-[60vh] flex items-center justify-center overflow-hidden bg-transparent pt-20 sm:pt-24 md:pt-0"
     >
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-[20%] left-[10%] z-0 pointer-events-none opacity-20">
-        <Image
-          src="/landing/circle.svg"
-          alt="Circle decoration"
-          width={200}
-          height={200}
-          priority
-          sizes="200px"
-          className="w-auto h-auto"
-        />
-      </div>
-      <div className="absolute bottom-[20%] right-[10%] z-0 pointer-events-none opacity-20">
-        <Image
-          src="/landing/box.svg"
-          alt="Box decoration"
-          width={150}
-          height={150}
-          priority
-          sizes="150px"
-          className="w-auto h-auto"
-        />
-      </div>
-
-      {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-14 md:py-16 flex flex-col items-center text-center max-w-4xl">
+        <div data-hero-badge className="mb-4 sm:mb-5">
+          <BadgeChip label="From the co-founders" icon={BookOpen} />
+        </div>
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-5 md:mb-6 leading-tight">
-          <span className="text-white">
-            Our Services
-          </span>
+          <span className="text-white">Our Story</span>
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-light-gray-90 max-w-2xl mx-auto px-2 sm:px-4">
-          Comprehensive AI solutions and services to help you transform your business with intelligent automation
+          Enterprise AI that meets you where your data lives — built from the ground up after digitalizing what couldn&apos;t be digitalized.
         </p>
       </div>
     </section>

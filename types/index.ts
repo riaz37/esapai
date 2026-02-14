@@ -20,3 +20,4 @@ export * from "./provider";
 export * from "./sanity";
 export * from "./three";
 export * from "./api";
+export * from "./about";

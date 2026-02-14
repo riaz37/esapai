@@ -26,12 +26,11 @@ export function ProductFeatures({
 
   return (
     <div
-      className={`relative z-20 py-10 lg:py-40 max-w-7xl mx-auto bg-dark ${
-        className || ""
-      }`}
+      className={`relative z-20 py-10 lg:py-40 max-w-[1400px] mx-auto bg-dark ${className || ""
+        }`}
     >
       {(title || subtitle) && (
-        <div className="px-8">
+        <div className="px-4 sm:px-6 md:px-8 lg:px-12">
           {title && (
             <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-bold text-gradient-radial-white">
               {title}

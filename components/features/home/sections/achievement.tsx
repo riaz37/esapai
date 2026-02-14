@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cpu } from "lucide-react";
 import { SectionHeader } from "@/components/ui/section-header";
 import { cn } from "@/lib/utils";
+import { Section } from "@/components/ui/section";
 import { Spotlight } from "@/components/ui/spotlight";
 
 if (typeof window !== "undefined") {
@@ -99,55 +100,53 @@ export function Achievement() {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="w-full py-20 sm:py-32 bg-transparent overflow-hidden">
-            <div className="container mx-auto px-4">
-                <SectionHeader
-                    badge="Our Achievement"
-                    badgeIcon={Cpu}
-                    title="Innovation & Future Focus"
-                    subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
-                    align="center"
-                    className="mb-16 sm:mb-24"
-                />
+        <Section ref={sectionRef} padding="none" className="w-full py-12 sm:py-20 bg-transparent overflow-hidden">
+            <SectionHeader
+                badge="Our Achievement"
+                badgeIcon={Cpu}
+                title="Innovation & Future Focus"
+                subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
+                align="center"
+                className="mb-10 sm:mb-16"
+            />
 
-                <div
-                    ref={gridRef}
-                    className="relative w-full max-w-6xl mx-auto"
-                >
-                    {/* Horizontal Framing Lines - Contained within content width */}
-                    <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
-                    <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
+            <div
+                ref={gridRef}
+                className="relative w-full max-w-[1400px] mx-auto"
+            >
+                {/* Horizontal Framing Lines - Contained within content width */}
+                <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
+                <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
-                        {ACHIEVEMENTS.map((item, index) => (
-                            <Spotlight
-                                key={index}
-                                className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
-                                intensity={0.45}
-                                radius={400}
-                            >
-                                {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
-                                {index < ACHIEVEMENTS.length - 1 && (
-                                    <div className="absolute top-[-120px] bottom-[-200px] right-0 w-[2px] bg-gradient-to-b from-transparent via-[#13F584]/30 to-transparent hidden md:block z-50 pointer-events-none" />
-                                )}
+                <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
+                    {ACHIEVEMENTS.map((item, index) => (
+                        <Spotlight
+                            key={index}
+                            className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
+                            intensity={0.45}
+                            radius={400}
+                        >
+                            {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
+                            {index < ACHIEVEMENTS.length - 1 && (
+                                <div className="absolute top-[-120px] bottom-[-200px] right-0 w-[2px] bg-gradient-to-b from-transparent via-[#13F584]/30 to-transparent hidden md:block z-50 pointer-events-none" />
+                            )}
 
-                                <div className="relative z-40 pointer-events-none">
-                                    <span
-                                        className="stat-number block text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tighter mb-3"
-                                        data-target={item.number.replace(/[^0-9]/g, "")}
-                                        data-suffix={item.number.replace(/[0-9]/g, "")}
-                                    >
-                                        {item.number}
-                                    </span>
-                                    <span className="text-sm sm:text-base text-white/90 font-bold uppercase tracking-[0.2em]">
-                                        {item.label}
-                                    </span>
-                                </div>
-                            </Spotlight>
-                        ))}
-                    </div>
+                            <div className="relative z-40 pointer-events-none">
+                                <span
+                                    className="stat-number block text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tighter mb-3"
+                                    data-target={item.number.replace(/[^0-9]/g, "")}
+                                    data-suffix={item.number.replace(/[0-9]/g, "")}
+                                >
+                                    {item.number}
+                                </span>
+                                <span className="text-sm sm:text-base text-white/90 font-bold uppercase tracking-[0.2em]">
+                                    {item.label}
+                                </span>
+                            </div>
+                        </Spotlight>
+                    ))}
                 </div>
             </div>
-        </section>
+        </Section>
     );
 }
