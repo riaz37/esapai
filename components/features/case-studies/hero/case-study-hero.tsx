@@ -13,7 +13,6 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
     const sectionRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
-    const tagsRef = useRef<HTMLDivElement>(null);
     const imagesRef = useRef<HTMLDivElement>(null);
 
     const anim = useGSAPAnimations(sectionRef);
@@ -50,23 +49,6 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
                 );
             }
 
-            // Tags stagger animation
-            if (tagsRef.current && caseStudy.tags && caseStudy.tags.length > 0) {
-                const tagElements = tagsRef.current.querySelectorAll<HTMLElement>("span");
-                gsap.set(tagElements, { opacity: 0, scale: 0.8, y: 10 });
-                tl.to(
-                    tagElements,
-                    {
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        duration: 0.6,
-                        stagger: 0.1,
-                        ease: "back.out(1.4)",
-                    },
-                    "-=0.4"
-                );
-            }
 
             // Hero images reveal animation
             if (imagesRef.current && caseStudy.heroImages && caseStudy.heroImages.length >= 2) {
@@ -96,37 +78,23 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
         >
             <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
                 <div className="max-w-[1400px] mx-auto w-full">
-                    {/* Title */}
-                    <h1
-                        ref={titleRef}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight"
-                    >
-                        <span className="text-white">
+                    {/* Hero Header Content */}
+                    <div className="max-w-[1400px] mx-auto w-full mb-12 sm:mb-16">
+                        <h1
+                            ref={titleRef}
+                            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 md:mb-8 leading-[1.1] text-primary"
+                        >
                             {caseStudy.title}
-                        </span>
-                    </h1>
+                        </h1>
 
-                    {/* Subtitle */}
-                    <p
-                        ref={subtitleRef}
-                        className="text-lg md:text-xl lg:text-2xl text-light-gray-90 mb-8 max-w-4xl"
-                    >
-                        {caseStudy.subtitle}
-                    </p>
+                        <p
+                            ref={subtitleRef}
+                            className="text-base sm:text-lg md:text-xl text-light-gray-90 max-w-2xl mb-10"
+                        >
+                            {caseStudy.subtitle}
+                        </p>
 
-                    {/* Tags */}
-                    {caseStudy.tags && caseStudy.tags.length > 0 && (
-                        <div ref={tagsRef} className="flex flex-wrap gap-3 mb-12">
-                            {caseStudy.tags.map((tag, index) => (
-                                <span
-                                    key={index}
-                                    className="px-3 py-1 rounded-full bg-white-opacity-10 border border-white-opacity-20 text-sm text-light-gray-90"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    )}
+                    </div>
 
                     {/* Hero Images */}
                     {caseStudy.heroImages && caseStudy.heroImages.length >= 2 && (

@@ -222,14 +222,19 @@ export function Globe({ globeConfig, data }: WorldProps) {
 }
 
 export function WebGLRendererConfig() {
-  const { gl, size } = useThree();
+  const { gl, size, camera } = useThree();
 
   useEffect(() => {
     // Cap DPR to reduce GPU cost on high-density screens
     gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-    gl.setSize(size.width, size.height);
     gl.setClearColor(0xffaaff, 0);
-  }, [gl, size.width, size.height]);
+
+    // Update camera aspect ratio
+    if (camera instanceof PerspectiveCamera) {
+      camera.aspect = size.width / size.height;
+      camera.updateProjectionMatrix();
+    }
+  }, [gl, size.width, size.height, camera]);
 
   return null;
 }
@@ -243,14 +248,14 @@ export function World(props: WorldProps) {
   }, []);
 
   const camera = useMemo(
-    () => new PerspectiveCamera(50, aspect, 180, 1800),
+    () => new PerspectiveCamera(50, 1, 180, 1800),
     []
   );
 
   return (
     <Canvas scene={scene} camera={camera}>
       <WebGLRendererConfig />
-      <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
+      <ambientLight color={globeConfig.ambientLight} intensity={globeConfig.ambientIntensity || 0.6} />
       <directionalLight
         color={globeConfig.directionalLeftLight}
         position={new Vector3(-400, 100, 400)}
@@ -258,6 +263,10 @@ export function World(props: WorldProps) {
       <directionalLight
         color={globeConfig.directionalTopLight}
         position={new Vector3(-200, 500, 200)}
+      />
+      <directionalLight
+        color={globeConfig.directionalRightLight || globeConfig.directionalLeftLight}
+        position={new Vector3(400, -100, 200)}
       />
       <pointLight
         color={globeConfig.pointLight}

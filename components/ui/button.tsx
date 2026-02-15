@@ -25,24 +25,12 @@ const buttonVariants = cva(
           "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 hover:border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:-translate-y-0.5 active:scale-[0.98]",
       },
       size: {
-        default: "h-12 px-6",
+        default: "h-11 px-5",
         sm: "h-9 px-4 text-xs",
         lg: "h-14 px-8 text-base",
         icon: "size-11",
       },
     },
-    compoundVariants: [
-      {
-        variant: "primary",
-        size: "default",
-        className: "pr-2",
-      },
-      {
-        variant: "primary",
-        size: "lg",
-        className: "pr-2",
-      },
-    ],
     defaultVariants: {
       variant: "default",
       size: "default",

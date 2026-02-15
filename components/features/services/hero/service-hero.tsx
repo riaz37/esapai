@@ -22,18 +22,20 @@ const World = dynamic(
 // Theme-matched globe configuration
 const globeConfig: GlobeConfig = {
   pointSize: 4,
-  globeColor: "#030303",
+  globeColor: "#062013",
   showAtmosphere: true,
   atmosphereColor: "#13F584",
-  atmosphereAltitude: 0.15,
+  atmosphereAltitude: 0.1,
   emissive: "#062013",
-  emissiveIntensity: 0.1,
+  emissiveIntensity: 0.9,
   shininess: 0.9,
   polygonColor: "rgba(19, 245, 132, 0.4)",
   ambientLight: "#13F584",
+  ambientIntensity: 0.8,
   directionalLeftLight: "#ffffff",
-  directionalTopLight: "#13F584",
+  directionalTopLight: "#ffffff",
   pointLight: "#13F584",
+  directionalRightLight: "#ffffff",
   arcTime: 1500,
   arcLength: 0.9,
   rings: 1,
@@ -103,172 +105,85 @@ const globeData = [
 
 import { Section } from "@/components/ui/section";
 
+
 export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
   return (
     <Section
       padding="none"
-      className="relative min-h-screen flex items-center overflow-hidden pt-24 md:pt-32 pb-20"
-      containerClassName="relative z-10"
+      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 pb-12 !px-0"
+      containerClassName="relative z-10 container mx-auto px-6 md:px-12"
+      containerMaxWidth="standard"
     >
+      <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
 
-      <div className="w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-
-          {/* Left Side: Content */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            <BadgeChip
-              label="Service Suite"
-              icon={Sparkles}
-              className="mb-6"
-            />
+        {/* Left Side: Content */}
+        <div className="flex flex-col items-start text-left max-w-2xl relative z-20">
+          {typeof title === "string" ? (
             <TypewriterTitle
               title={title}
               splitMode="lastWord"
-              className="mb-6 max-w-3xl"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6"
               align="left"
             />
+          ) : (
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tighter mb-6 text-left leading-[1.1]">
+              {title}
+            </h1>
+          )}
 
-            <div className="space-y-4 mb-8 md:mb-10 max-w-2xl">
-              {subtitle.map((line, index) => (
-                <motion.p
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="text-base md:text-lg lg:text-xl text-white/80 font-medium"
-                >
-                  {line}
-                </motion.p>
-              ))}
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto">
-              <Button
-                variant="primary"
-                size="lg"
-                asChild
+          <div className="space-y-4 mb-10 max-w-lg">
+            {subtitle.map((line, index) => (
+              <motion.p
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                className="text-lg md:text-xl text-white/70 leading-relaxed font-light"
               >
-                <Link href="#solutions" className="inline-flex items-center gap-2 group">
-                  <span>Get Started</span>
-                  <ButtonArrow />
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                asChild
-              >
-                <Link href="#how-it-works" className="flex items-center gap-2">
-                  View Features
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
+                {line}
+                {index < subtitle.length - 1 && <br className="hidden md:block" />}
+              </motion.p>
+            ))}
           </div>
 
-          {/* Right Side: Globe Visual */}
-          <div className="lg:col-span-5 relative flex justify-center items-center py-10 lg:py-0">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.4 }}
-              className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px]"
+          <div className="flex flex-wrap items-center gap-5">
+            <Button
+              variant="primary"
+              size="lg"
+              asChild
             >
-              {/* Outer Glow for Globe */}
-              <div className="absolute inset-x-0 bottom-1/4 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-md opacity-30" />
-              <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full animate-pulse-slow" />
-
-              <World globeConfig={globeConfig} data={globeData} />
-
-              {/* Top-Right: Neural Link Status Panel */}
-              <div className="absolute -top-4 -right-4 w-44 select-none">
-                {/* Animated corner frame */}
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 176 140" fill="none">
-                  <motion.path
-                    d="M176 8 L176 0 L140 0"
-                    stroke="rgba(19, 245, 132, 0.6)"
-                    strokeWidth="1"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                  />
-                  <motion.path
-                    d="M176 0 L176 100"
-                    stroke="rgba(19, 245, 132, 0.3)"
-                    strokeWidth="1"
-                    strokeDasharray="4 4"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, delay: 0.5 }}
-                  />
-                </svg>
-
-                <div className="relative p-4 text-[10px]">
-                  {/* Status indicator */}
-                  <div className="flex items-center gap-2">
-                    <motion.div
-                      className="w-2 h-2 rounded-full bg-primary"
-                      animate={{
-                        scale: [1, 1.3, 1],
-                        boxShadow: [
-                          "0 0 0 0 rgba(19, 245, 132, 0.4)",
-                          "0 0 0 6px rgba(19, 245, 132, 0)",
-                          "0 0 0 0 rgba(19, 245, 132, 0)"
-                        ]
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                    <motion.span
-                      className="text-primary"
-                      animate={{ opacity: [1, 0.5, 1] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      ONLINE
-                    </motion.span>
-                  </div>
-
-                  {/* Cycling data lines */}
-                  <div className="text-white/60">
-                    <motion.div
-                      animate={{ opacity: [0.4, 1, 0.4] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                    >
-                      LAT: 22.3193°N
-                    </motion.div>
-                    <motion.div
-                      animate={{ opacity: [0.4, 1, 0.4] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 0.3 }}
-                    >
-                      LNG: 114.1694°E
-                    </motion.div>
-                  </div>
-
-                  {/* Signal strength bars */}
-                  <div className="flex items-end gap-0.5 h-3 mt-2">
-                    {[0.3, 0.5, 0.7, 0.9, 1].map((height, i) => (
-                      <motion.div
-                        key={i}
-                        className="w-1 bg-primary rounded-sm"
-                        animate={{
-                          height: [`${height * 100}%`, `${height * 60}%`, `${height * 100}%`],
-                          opacity: [0.6, 1, 0.6]
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          delay: i * 0.1
-                        }}
-                        style={{ height: `${height * 100}%` }}
-                      />
-                    ))}
-                    <span className="text-white/60 ml-2 text-[8px]">SIG</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              <Link href="#solutions" className="inline-flex items-center gap-2 group">
+                <span>Get Started</span>
+                <ButtonArrow />
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              asChild
+            >
+              <Link href="#how-it-works" className="flex items-center gap-2">
+                View Features
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </Button>
           </div>
-
         </div>
+
+        {/* Right Side: Globe Visual */}
+        <div className="relative flex justify-center lg:justify-end items-center py-10 lg:py-0 overflow-visible">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.4 }}
+            className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] -mr-32 lg:-mr-40"
+          >
+
+
+            <World globeConfig={globeConfig} data={globeData} />
+          </motion.div>
+        </div>
+
       </div>
     </Section>
   );

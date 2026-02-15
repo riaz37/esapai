@@ -4,6 +4,8 @@ import Image from "next/image";
 import { forwardRef, useRef } from "react";
 import gsap from "gsap";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import { BadgeChip } from "@/components/ui/badge-chip";
+import { MessageSquare } from "lucide-react";
 
 export const ContactLeftColumn = forwardRef<
   HTMLDivElement,
@@ -16,10 +18,10 @@ export const ContactLeftColumn = forwardRef<
   // Hover effect for social icons - scale, rotation, and background
   const handleSocialHover = (index: number, isEntering: boolean) => {
     if (prefersReducedMotion()) return;
-    
+
     const icon = socialIconRefs.current[index];
     if (!icon) return;
-    
+
     if (isEntering) {
       gsap.to(icon, {
         scale: 1.15,
@@ -43,16 +45,29 @@ export const ContactLeftColumn = forwardRef<
 
   return (
     <div ref={ref} className="lg:col-span-3 space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-8">
+      {/* Badge Indicator */}
+      <div data-gsap="contact-left-item" className="mb-2">
+        <BadgeChip label="Get in touch" icon={MessageSquare} />
+      </div>
+
       {/* Main Heading */}
-      <div className="space-y-2 sm:space-y-3 md:space-y-4">
+      <div className="space-y-4">
         <h1
           data-gsap="contact-left-item"
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-gradient-primary"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] tracking-tight pb-2"
         >
-          <span className="block">Contact us today.</span>
-          <span className="block">We&apos;re ready</span>
-          <span className="block">to assist you.</span>
+          <span className="text-white">Contact us today.</span>
+          <br />
+          <span className="text-white">We&apos;re ready</span>
+          <br />
+          <span className="text-primary">to assist you.</span>
         </h1>
+
+        {/* Accent Line */}
+        <div
+          data-gsap="contact-left-item"
+          className="h-[2px] w-24 bg-primary/80"
+        />
       </div>
 
       {/* Description */}

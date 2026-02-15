@@ -343,7 +343,7 @@ export function ServiceFeatures({
   }, [displayFeatures]);
 
   return (
-    <Section padding="sm">
+    <Section padding="md">
       <SectionHeader
         badge="What we deliver"
         badgeIcon={Layers}
@@ -372,7 +372,7 @@ export function ServiceFeatures({
       </div>
 
       {/* Desktop View - Interactive Graph */}
-      <div className="hidden lg:block relative w-full h-[800px] lg:h-[900px] xl:h-[1000px] 2xl:h-[1100px] max-w-[1400px] mx-auto service-features-flow">
+      <div className="hidden lg:block relative w-full h-[600px] lg:h-[700px] xl:h-[800px] max-w-[1400px] mx-auto service-features-flow">
         <ConnectionDotsMarkers />
         <style dangerouslySetInnerHTML={{
           __html: `

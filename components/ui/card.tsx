@@ -2,8 +2,8 @@ import { Spotlight } from "@/components/ui/spotlight"
 import { cn } from "@/lib/utils";
 import React from "react";
 
-const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { spotlight?: boolean }>(
-  ({ className, style, spotlight = true, onMouseMove, onMouseEnter, onMouseLeave, ...props }, ref) => {
+const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { spotlight?: boolean; spotlightColor?: string }>(
+  ({ className, style, spotlight = true, spotlightColor = "rgba(19, 245, 132, 0.2)", onMouseMove, onMouseEnter, onMouseLeave, ...props }, ref) => {
     const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -48,7 +48,7 @@ const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { sp
             className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-30"
             style={{
               opacity: isHovered ? 1 : 0,
-              background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(19, 245, 132, 0.3), rgba(19, 245, 132, 0.1) 40%, transparent 80%)`,
+              background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, ${spotlightColor}, transparent 80%)`,
             }}
           />
         )}

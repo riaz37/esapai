@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import type { CaseStudyWithUrls } from "@/types/case-study";
 import type { CaseStudyCardProps } from "@/types/props";
 
@@ -13,7 +14,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
     : caseStudy.subtitle;
 
   return (
-    <Link href={`/case-study/${caseStudy.slug}`} className="block h-full">
+    <div className="block h-full">
       <SpotlightCard className="h-full">
         <div className="p-4 sm:p-5 md:p-6 h-full flex flex-col">
           {/* Thumbnail Image */}
@@ -45,7 +46,13 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
               {displayTags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs md:text-sm rounded-full bg-dark border border-primary/30 text-primary"
+                  className="px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs md:text-sm rounded-full border border-white/10 text-primary relative transition-all duration-300"
+                  style={{
+                    background: "var(--neutral-neutral-210, rgba(248, 248, 248, 0.1))",
+                    boxShadow: "0px 0px 13.12px 0px rgba(248, 248, 248, 0.25) inset",
+                    backdropFilter: "blur(19.678752899169922px)",
+                    WebkitBackdropFilter: "blur(19.678752899169922px)",
+                  }}
                 >
                   {tag}
                 </span>
@@ -54,22 +61,24 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
           )}
 
           {/* CTA */}
-          <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-4 transition-all">
-            <span>View</span>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="transition-transform group-hover:translate-x-1"
+          <div className="mt-auto">
+            <Button
+              variant="primary"
+              size="sm"
+              className="group"
+              asChild
             >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+              <Link
+                href={`/case-study/${caseStudy.slug}`}
+                className="flex items-center gap-2"
+              >
+                <span>Explore Success Story</span>
+                <ButtonArrow className="ml-0" />
+              </Link>
+            </Button>
           </div>
         </div>
       </SpotlightCard>
-    </Link>
+    </div>
   );
 }

@@ -20,8 +20,6 @@ interface CTASectionProps {
     product?: Product | null;
     primaryButtonText?: string;
     primaryButtonHref?: string;
-    secondaryButtonText?: string;
-    secondaryButtonHref?: string;
 }
 
 const defaultTitle = (
@@ -38,8 +36,6 @@ export function CTASection({
     product,
     primaryButtonText,
     primaryButtonHref = "/contact",
-    secondaryButtonText = "Explore Products",
-    secondaryButtonHref = "/products",
 }: CTASectionProps) {
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -235,15 +231,6 @@ export function CTASection({
                             <Link ref={primaryButtonRef} href={primaryButtonHref} className="inline-flex items-center gap-2 group">
                                 <span>{primaryButtonText ?? (product ? "Get Started" : "Start Building Now")}</span>
                                 <ButtonArrow />
-                            </Link>
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            asChild
-                        >
-                            <Link href={secondaryButtonHref}>
-                                {secondaryButtonText}
                             </Link>
                         </Button>
                     </div>

@@ -105,7 +105,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
           <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
             <h1
               ref={titleRef}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 leading-tight text-gradient-primary"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 md:mb-8 leading-[1.1] text-primary"
             >
               Case Study
             </h1>
@@ -196,7 +196,15 @@ const CaseStudyCard = memo(
 
         {caseStudy.featured && (
           <div className="mb-2 sm:mb-3">
-            <span className="inline-flex items-center rounded-full bg-primary/10 border border-primary/30 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs uppercase tracking-wide text-primary">
+            <span
+              className="inline-flex items-center rounded-full border border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs uppercase tracking-wide text-primary relative transition-all duration-300"
+              style={{
+                background: "var(--neutral-neutral-210, rgba(248, 248, 248, 0.1))",
+                boxShadow: "0px 0px 13.12px 0px rgba(248, 248, 248, 0.25) inset",
+                backdropFilter: "blur(19.678752899169922px)",
+                WebkitBackdropFilter: "blur(19.678752899169922px)",
+              }}
+            >
               Featured
             </span>
           </div>
@@ -235,7 +243,13 @@ const CaseStudyCard = memo(
                 {displayTags.map((tag) => (
                   <span
                     key={tag}
-                    className="case-study-tag px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-white-opacity-10 border border-white-opacity-20 text-xs sm:text-sm text-light-gray-90"
+                    className="case-study-tag px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-white/10 text-xs sm:text-sm text-light-gray-90 relative transition-all duration-300"
+                    style={{
+                      background: "var(--neutral-neutral-210, rgba(248, 248, 248, 0.1))",
+                      boxShadow: "0px 0px 13.12px 0px rgba(248, 248, 248, 0.25) inset",
+                      backdropFilter: "blur(19.678752899169922px)",
+                      WebkitBackdropFilter: "blur(19.678752899169922px)",
+                    }}
                     role="listitem"
                   >
                     {tag}
@@ -251,19 +265,13 @@ const CaseStudyCard = memo(
               {excerpt}
             </p>
 
-            <Button
-              variant="primary"
-              size="lg"
-              className="case-study-button relative z-10 group"
-              asChild
-            >
+            <Button variant="primary" asChild>
               <Link
                 href={`/case-study/${caseStudy.slug}`}
-                aria-label={`View case study: ${caseStudy.title}`}
-                className="flex items-center gap-2"
+                className="inline-flex items-center gap-2 group w-fit"
               >
-                View
-                <ButtonArrow className="ml-0" />
+                <span>View Case Study</span>
+                <ButtonArrow />
               </Link>
             </Button>
           </div>

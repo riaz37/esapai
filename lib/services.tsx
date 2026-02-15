@@ -12,9 +12,14 @@ export const services: Service[] = [
     content: {
       hero: {
         subtitle: [
-          "From strategy to deployment",
-          "Integration and automation that drives ROI",
+          "From strategy to deployment. Integration and automation that drives ROI.",
         ],
+        heroTitle: (
+          <>
+            Integration & <br />
+            < span className="text-primary" > Automation </span>
+          </>
+        ),
       },
       features: {
         title: "Integration & Automation",
@@ -87,9 +92,14 @@ export const services: Service[] = [
     content: {
       hero: {
         subtitle: [
-          "Managed AI framework platform",
-          "Focus on innovation, we handle scaling",
+          "Managed AI framework platform. Focus on innovation, we handle scaling.",
         ],
+        heroTitle: (
+          <>
+            AI Agents Framework < br />
+            <span className="text-primary" > as a Service(FaaS) </span>
+          </>
+        ),
       },
       features: {
         title: "Managed Framework",
@@ -129,18 +139,21 @@ export const services: Service[] = [
       },
     },
   },
-
   {
     id: "innovation-lab",
-    name: "ESAP AI Innovation & Research Lab",
+    name: "Innovation & Research Lab",
     description: "Cutting-edge AI research and development",
     slug: "innovation-lab",
     content: {
       hero: {
         subtitle: [
-          "Cutting-edge AI R&D",
-          "Pushing boundaries of AI",
+          "Cutting-edge AI R&D. Pushing boundaries of AI.",
         ],
+        heroTitle: (
+          <>
+            Innovation & Research <span className="text-primary">Lab</span>
+          </>
+        ),
       },
       features: {
         title: "Advanced R&D",
@@ -185,4 +198,3 @@ export const services: Service[] = [
 export function getServiceBySlug(slug: string): Service | undefined {
   return services.find((service) => service.slug === slug);
 }
-
