@@ -27,17 +27,16 @@ export const products: Product[] = [
     content: {
       hero: {
         subtitle: [
-          "Voice-Activated ERP for Modern SMEs",
-          "AI-powered voice commands for business",
+          "Voice-Activated ERP for Modern SMEs. AI-powered voice commands for business.",
         ],
         centerIcon: "/products/voiceerp.svg",
         centerIconAlt: "Voice ERP Icon",
         demoVideo: "/productvideo1.mp4",
       },
       mission: {
-        title: "Revolutionize Your Operations",
+        title: "Enterprise Voice Operations",
         subtitle:
-          "Intelligent automation and natural voice interaction for SMEs. Manage everything through voice while ensuring security.",
+          "Manage your entire business operation through natural voice commands while ensuring security.",
         cards: [
           {
             title: "Voice-First Interface",
@@ -138,17 +137,16 @@ export const products: Product[] = [
     content: {
       hero: {
         subtitle: [
-          "Build powerful AI agents",
-          "Scalable enterprise solutions",
+          "Build powerful AI agents. Scalable enterprise solutions.",
         ],
         centerIcon: "/products/ai-framework.svg",
         centerIconAlt: "AI Framework Icon",
         demoVideo: "/productvideo2.mp4",
       },
       mission: {
-        title: "Empower Your Team",
+        title: "Decentralized Intelligence Network",
         subtitle:
-          "Rapidly build and deploy AI agents. Enterprise-grade reliability and performance.",
+          "Rapidly build and deploy AI agents at enterprise scale with modular reliability.",
         cards: [
           {
             title: "Modular Architecture",
@@ -249,17 +247,16 @@ export const products: Product[] = [
     content: {
       hero: {
         subtitle: [
-          "Intelligent Knowledge Management",
-          "Actionable insights from your data",
+          "Intelligent Knowledge Management. Actionable insights from your data.",
         ],
         centerIcon: "/products/zakra.svg",
         centerIconAlt: "Zakra Knowledge Agent Icon",
         demoVideo: "/productvideo3.mp4",
       },
       mission: {
-        title: "Unlock Your Knowledge",
+        title: "Unified Knowledge Intelligence",
         subtitle:
-          "Instant, context-aware answers from your knowledge base. Make information accessible.",
+          "Instant, context-aware answers from your entire knowledge base. Make information accessible.",
         cards: [
           {
             title: "Intelligent Search",
@@ -360,17 +357,16 @@ export const products: Product[] = [
     content: {
       hero: {
         subtitle: [
-          "24/7 AI Support",
-          "Exceptional customer experiences",
+          "24/7 AI Support. Exceptional customer experiences.",
         ],
         centerIcon: "/products/jawib.svg",
         centerIconAlt: "Jawib Customer Service Agent Icon",
         demoVideo: "/productvideo4.mp4",
       },
       mission: {
-        title: "Elevate Service",
+        title: "Automated Support Resolution",
         subtitle:
-          "Intelligent agent for 24/7 personalized support. Improve satisfaction and scale operations.",
+          "Intelligent Customer Service Agent providing 24/7 personalized support. Improve satisfaction and scale operations.",
         cards: [
           {
             title: "24/7 Availability",
@@ -471,17 +467,16 @@ export const products: Product[] = [
     content: {
       hero: {
         subtitle: [
-          "Native Arabic AI",
-          "Built for Arabic understanding",
+          "Native Arabic AI. Built for Arabic understanding.",
         ],
         centerIcon: "/products/fasih.svg",
         centerIconAlt: "Fasih Arabic LLM Icon",
         demoVideo: "/fasih-demo.mp4",
       },
       mission: {
-        title: "Bridging the AI Gap",
+        title: "Nuanced Arabic Understanding",
         subtitle:
-          "Trained on Arabic language and dialects. Accurate, culturally-aware processing.",
+          "Bridging the gap with deep understanding of dialects and cultural nuances for accurate, regionally-aware processing.",
         cards: [
           {
             title: "Native Arabic Understanding",

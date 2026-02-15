@@ -104,9 +104,10 @@ export const ContactFormCard = forwardRef<
             <Button
               type="submit"
               variant="primary"
-              size="lg"
+              size="default"
+              showArrow={false}
               disabled={!agreedToTerms || isSubmitting}
-              className="w-full"
+              className="w-fit"
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </Button>

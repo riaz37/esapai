@@ -22,7 +22,7 @@ export interface ProductHeroProps {
 }
 
 export interface ServiceHeroProps {
-  title: string;
+  title: string | ReactNode;
   subtitle: string[];
   description?: string;
 }

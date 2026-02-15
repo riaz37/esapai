@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FeatureCard, FeatureTitle, FeatureDescription } from "@/components/ui";
+import { Section } from "@/components/ui/section";
 import type { ProductFeatureItem } from "@/types/ui";
 import type { ProductFeaturesProps } from "@/types/props";
 
@@ -25,9 +26,10 @@ export function ProductFeatures({
   ];
 
   return (
-    <div
-      className={`relative z-20 py-10 lg:py-40 max-w-[1400px] mx-auto bg-dark ${className || ""
+    <Section
+      className={`relative z-20 py-10 lg:py-40 ${className || ""
         }`}
+      containerMaxWidth="xl"
     >
       {(title || subtitle) && (
         <div className="px-4 sm:px-6 md:px-8 lg:px-12">
@@ -61,7 +63,7 @@ export function ProductFeatures({
           })}
         </div>
       </div>
-    </div>
+    </Section>
   );
 }
 

@@ -12,20 +12,26 @@ export function Timeline({ timeline }: TimelineProps) {
     if (!timeline) return [];
 
     return timeline.map((entry, index) => {
-      const formatDate = (dateString: string) => {
+      const formatDateValues = (dateString: string) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
+        return {
+          day: date.getDate(),
+          monthYear: `${date.toLocaleDateString("en-US", { month: "long" })}, ${date.getFullYear()}`,
+        };
       };
+
+      const { day, monthYear } = formatDateValues(entry.date);
 
       return {
         id: index,
         leftContent: (
-          <div className="text-xs sm:text-sm md:text-base text-light-gray-90 font-medium pt-2">
-            {formatDate(entry.date)}
+          <div className="flex flex-col items-end pt-1">
+            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-none">
+              {day}
+            </span>
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-light-gray-90 mt-1 text-right">
+              {monthYear}
+            </span>
           </div>
         ),
         rightContent: (

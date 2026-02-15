@@ -2,6 +2,7 @@
 
 import React from "react";
 import { PortalVideoShowcase } from "./portal-video-showcase";
+import { Section } from "@/components/ui/section";
 
 const DEFAULT_VIDEO_SRC = "/compare.mp4";
 
@@ -15,12 +16,17 @@ export function ServiceBeforeAfterSection({
   videoSrc?: string;
 }) {
   return (
-    <section id="before-and-after" className="relative w-full bg-black/5">
+    <Section
+      id="before-and-after"
+      className="relative w-full"
+      padding="none"
+      containerMaxWidth="full"
+    >
       <PortalVideoShowcase
         videoSrc={videoSrc}
         title={title}
         subtitle={subtitle}
       />
-    </section>
+    </Section>
   );
 }

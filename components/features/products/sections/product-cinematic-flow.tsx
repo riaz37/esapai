@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Section } from "@/components/ui/section";
 import { useProductContent } from "@/lib/hooks/use-product-content";
 import { getProductCinematicProblems } from "@/config/product-cinematic-problems";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
@@ -366,9 +367,11 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
 
 
     return (
-        <div
+        <Section
             ref={containerRef}
-            className="relative w-full h-screen overflow-hidden bg-[#09090b] text-white perspective-[2000px]"
+            withContainer={false}
+            className="relative w-full h-screen overflow-hidden text-white perspective-[2000px]"
+            padding="none"
         >
             <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-100" aria-hidden />
 
@@ -509,10 +512,10 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
 
             <div
                 ref={wipeRef}
-                className="pointer-events-none fixed left-0 right-0 z-[100] h-screen bg-[#09090b]"
+                className="pointer-events-none fixed left-0 right-0 z-[100] h-screen bg-background"
                 style={{ top: "100vh", clipPath: "inset(0 0 0% 0)" }}
                 aria-hidden
             />
-        </div>
+        </Section>
     );
 }

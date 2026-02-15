@@ -23,8 +23,10 @@ export type GlobeConfig = {
   shininess?: number;
   polygonColor?: string;
   ambientLight?: string;
+  ambientIntensity?: number;
   directionalLeftLight?: string;
   directionalTopLight?: string;
+  directionalRightLight?: string;
   pointLight?: string;
   arcTime?: number;
   arcLength?: number;
@@ -45,10 +47,11 @@ export type SectionProps = Omit<
   children: ReactNode;
   className?: string;
   containerClassName?: string;
-  containerMaxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "5xl" | "7xl" | "wide" | "full";
+  containerMaxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "5xl" | "7xl" | "wide" | "full" | "standard";
   background?: "dark" | "transparent" | string;
   padding?: "none" | "sm" | "md" | "lg";
   overflow?: "hidden" | "visible";
+  withContainer?: boolean;
 };
 
 export interface ProductFeatureItem {

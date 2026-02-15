@@ -6,6 +6,7 @@ import { Button, ButtonArrow } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import type { ProductHeroProps } from "@/types/props";
+import { Section } from "@/components/ui/section";
 
 /**
  * Maps product slugs to their corresponding icon files in the product_icons directory
@@ -38,19 +39,12 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
   const iconAlt = centerIconAlt || `${title} Icon`;
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] min-h-[90vh] md:min-h-screen flex items-center pt-24 pb-12">
-      {/* Background Elements */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        {/* Subtle Background Grid/Pattern */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
-
-        {/* Gradients/Overlays */}
-        <div className="absolute inset-0 [background-image:radial-gradient(ellipse_at_center,transparent_0%,rgba(0,3,0,0.4)_70%,rgba(0,3,0,0.8)_100%)]" />
-        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent" />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-6 md:px-12">
+    <Section
+      withContainer={false}
+      padding="none"
+      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-32 sm:pt-40 pb-12 sm:pb-20 px-4 sm:px-6 md:px-8 lg:px-12"
+    >
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* Left Content */}
@@ -123,17 +117,12 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               </div>
 
-              {/* HUD Decoration Element - Simplified to 2D */}
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 opacity-10 pointer-events-none border-b-2 border-l-2 border-[#13F584] rounded-bl-3xl" />
-              <div className="absolute -top-8 -right-8 w-32 h-32 opacity-10 pointer-events-none border-t-2 border-r-2 border-[#13F584] rounded-tr-3xl" />
+
             </div>
           </div>
 
         </div>
       </div>
-    </section>
+    </Section >
   );
 }
-
-
-

@@ -48,8 +48,14 @@ export function TextRevealSection() {
                     stagger: 0.08,
                     duration: 1.2,
                     ease: "power4.out",
-                    color: "#ffffff",
-                    textShadow: "0 0 30px rgba(19, 245, 132, 0.4)",
+                    color: (i, target: HTMLElement) => {
+                        return target.classList.contains("highlight") ? "#13f584" : "#ffffff";
+                    },
+                    textShadow: (i, target: HTMLElement) => {
+                        return target.classList.contains("highlight")
+                            ? "0 0 30px rgba(19, 245, 132, 0.4)"
+                            : "0 0 20px rgba(255, 255, 255, 0)";
+                    },
                 }
             );
 
@@ -76,7 +82,8 @@ export function TextRevealSection() {
 
     const text =
         "Forging the intelligence layer of tomorrow. Unlocking limitless potential.";
-    const words = text.split(" ");
+    const wordsArray = text.split(" ");
+    const highlightIndices = [2, 3, 7, 8];
 
     return (
         <Section
@@ -88,12 +95,15 @@ export function TextRevealSection() {
             <div className="flex-1 flex items-center justify-center min-h-[60vh]">
                 <h2
                     ref={textRef}
-                    className="text-center font-bold leading-tight tracking-tighter origin-center will-change-transform"
+                    className="text-center font-bold tracking-tighter origin-center will-change-transform leading-[1.1]"
                 >
-                    {words.map((word, i) => (
+                    {wordsArray.map((word, i) => (
                         <span
                             key={i}
-                            className="word inline-block mr-[0.2em] text-5xl md:text-6xl lg:text-7xl text-white/10"
+                            className={cn(
+                                "word inline-block mr-[0.2em] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white/10",
+                                highlightIndices.includes(i) && "highlight"
+                            )}
                         >
                             {word}
                         </span>

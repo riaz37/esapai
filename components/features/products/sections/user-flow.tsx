@@ -250,7 +250,7 @@ export const AivmBlockchainFlow = () => {
     return (
         <section
             ref={containerRef}
-            className="relative w-full min-h-screen bg-[#050505] overflow-hidden flex items-center justify-center p-0"
+            className="relative w-full min-h-screen bg-background overflow-hidden flex items-center justify-center p-0"
         >
             {/* Context Header - Fades out during deep zoom */}
             <div className="absolute top-12 left-8 md:top-16 md:left-16 z-20 pointer-events-none mix-blend-difference">

@@ -1,24 +1,13 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Section } from "@/components/ui/section";
 import { Layers } from "lucide-react";
 import type { Product } from "@/types/product";
-
-// Custom CSS for micro-animations
-const DECK_STYLES = `
-  @keyframes scan {
-    0% { background-position: 0 -100%; }
-    100% { background-position: 0 100%; }
-  }
-  .animate-scan {
-    background-size: 100% 200%;
-    animation: scan 4s linear infinite;
-  }
-`;
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -151,18 +140,19 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
     );
 
     return (
-        <section
+        <Section
             ref={containerRef}
-            className="relative w-full h-screen bg-[#09090b] overflow-hidden text-white font-sans"
+            withContainer={false}
+            className="relative w-full h-screen overflow-hidden text-white font-sans"
+            padding="none"
         >
-            <style>{DECK_STYLES}</style>
             {/* 1. Deep Space Atmosphere — matches site background */}
-            <div className="absolute inset-0 bg-[#09090b]" />
+            {/* Removed custom bg-[#09090b] div as Section handles it */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] opacity-50" />
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
 
             {/* 2. Transition Header — product-specific label */}
-            <div className="header-wrap absolute inset-0 z-50 flex flex-col items-center justify-start pt-32 pointer-events-none">
+            <div className="header-wrap absolute inset-0 z-50 flex flex-col items-center justify-start pt-48 md:pt-56 pointer-events-none">
                 <div className="container mx-auto px-4">
                     <SectionHeader
                         title="Architecture Deck"
@@ -175,7 +165,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             </div>
 
             {/* 3. The Kinetic 3D Deck Stage */}
-            <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu" style={{ transformStyle: 'preserve-3d' }}>
+            <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu translate-y-4 md:translate-y-8" style={{ transformStyle: 'preserve-3d' }}>
                 <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
                     {REEL_IMAGES.map((src, idx) => (
                         <div
@@ -191,12 +181,6 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                                     alt={`Blade ${idx}`}
                                     className="w-full h-full object-cover"
                                 />
-
-                                {/* Image Info Tag - Simplified */}
-                                <div className="absolute bottom-6 left-6 flex items-center gap-4">
-                                    <div className="w-2 h-2 rounded-full bg-primary" />
-                                    <span className="font-mono text-[10px] tracking-[0.3em] text-white uppercase">Node_0{idx + 1}</span>
-                                </div>
                             </div>
 
                             {/* Prismatic Flair */}
@@ -212,6 +196,6 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(9,9,11,0.6)] z-40" />
             <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#09090b] to-transparent z-45" />
             <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#09090b] to-transparent z-45" />
-        </section>
+        </Section>
     );
 }

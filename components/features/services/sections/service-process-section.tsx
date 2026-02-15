@@ -1,11 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring, type MotionValue } from "motion/react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Card } from "@/components/ui/card";
-import { Workflow, Search, FileText, Code2, Plug, Rocket, Headphones, ChevronRight } from "lucide-react";
+import { Workflow, Search, FileText, Code2, Plug, Rocket, Headphones } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // --- Types ---
 interface ProcessStep {
@@ -62,171 +66,138 @@ const STEPS: ProcessStep[] = [
 ];
 
 export function ServiceProcessSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const stickyWrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll progress of the tall container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
 
-  // Smooth out the scroll progress
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  useGSAP(
+    () => {
+      // Logic for Desktop/Horizontal Scroll
+      const mm = gsap.matchMedia();
 
-  // Map vertical scroll to horizontal translation on desktop only
-  const x = useTransform(smoothProgress, [0, 1], ["0%", "-75%"]);
+      mm.add("(min-width: 768px)", () => {
+        if (!scrollContainerRef.current || !trackRef.current || !stickyWrapperRef.current) return;
+
+        const track = trackRef.current;
+        const trackWidth = track.scrollWidth;
+        const viewportWidth = window.innerWidth;
+        const amountToScroll = trackWidth - viewportWidth;
+
+        // Ensure we have enough scroll distance
+        // The taller the container, the slower the horizontal scroll
+        const scrollDistance = amountToScroll + 1000;
+
+        // Set the height of the scroll container to enable scrolling
+        // We set this dynamically or just use a CSS class (like h-[400vh])
+        // Here we rely on the parent className passed or explicitly set it via CSS.
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: scrollContainerRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            pin: stickyWrapperRef.current, // Pin the internal wrapper, not the container itself
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          }
+        });
+
+        // Horizontal Scroll
+        tl.to(track, {
+          x: -(amountToScroll + 100), // Move slightly past end for padding
+          ease: "none",
+        });
+
+
+      });
+
+      return () => mm.revert();
+    },
+    { scope: scrollContainerRef }
+  );
 
   return (
-    <section ref={containerRef} className="relative min-h-screen md:h-[400vh] bg-black">
-      {/* Sticky Viewport (Desktop) / Normal Flow (Mobile) */}
-      <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col justify-between py-12 md:py-24 overflow-hidden">
-
-        {/* Background Elements */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent hidden md:block" />
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(19,245,132,0.03),transparent_70%)]" />
-        </div>
-
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-8">
+    // Outer scroll container - defines the scrollable height
+    <section
+      ref={scrollContainerRef}
+      className="relative w-full md:h-[300vh]" // Reduced height for tighter scroll
+    >
+      {/* Sticky Wrapper - Pins to viewport */}
+      <div
+        ref={stickyWrapperRef}
+        className="md:h-screen w-full flex flex-col justify-between overflow-hidden relative bg-transparent"
+      >
+        {/* HEADER: Flex-none to keep it at top */}
+        <div className="container mx-auto px-4 md:px-8 pt-24 md:pt-32 flex-none z-10 pointer-events-none">
           <SectionHeader
             badge="Process"
             badgeIcon={Workflow}
             title="How We Build"
             subtitle="From concept to launch, a precise engineering workflow."
             align="left"
+            className="mb-0" // Remove default margin as flex handles it
           />
         </div>
 
-        {/* Horizontal Track (Desktop) / Vertical Stack (Mobile) */}
-        <div ref={trackRef} className="relative w-full px-4 md:px-0 md:pl-[10vw] mb-12">
-          <motion.div
-            style={{ x }}
-            className="flex flex-col md:flex-row gap-8 md:gap-24 items-center md:w-max md:py-20"
+        {/* TRACK CONTAINER: Fills remaining space, aligns cards to top with gap */}
+        <div className="flex-1 w-full flex items-start pt-12 md:pt-24 overflow-hidden no-scrollbar relative z-0">
+          <div
+            ref={trackRef}
+            className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 md:pl-[max(2rem,calc((100vw-1400px)/2+2rem))] md:pr-[5vw] w-full md:w-max"
           >
             {STEPS.map((step, index) => (
-              <ProcessCard
-                key={step.id}
-                step={step}
-                index={index}
-                total={STEPS.length}
-                progress={smoothProgress}
-              />
+              <ProcessCard key={step.id} step={step} index={index} />
             ))}
-          </motion.div>
-        </div>
-
-        {/* Progress Bar (Desktop Only) */}
-        <div className="hidden md:block absolute bottom-10 left-0 w-full px-20">
-          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-            <motion.div
-              style={{ scaleX: smoothProgress, transformOrigin: "left" }}
-              className="h-full bg-primary"
-            />
           </div>
         </div>
+
+        {/* PROGRESS BAR: Fixed at bottom */}
 
       </div>
     </section>
   );
 }
 
-function ProcessCard({
-  step,
-  index,
-  total,
-  progress
-}: {
-  step: ProcessStep;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-}) {
-  // Calculate active range for this card roughly based on index
-  const stepSize = 1 / Math.max(total - 1, 1);
-  const start = Math.max(0, (index * stepSize) - 0.15);
-  const end = Math.min(1, (index * stepSize) + 0.15);
-
-  // Transform scale and opacity based on proximity to "active" scroll position
-  const isActive = useTransform(progress, [start, index * stepSize, end], [0, 1, 0]);
-
-  const scale = useTransform(isActive, [0, 1], [0.95, 1.05]);
-  const opacity = useTransform(isActive, [0, 1], [0.4, 1]);
-
+function ProcessCard({ step, index }: { step: ProcessStep; index: number }) {
   return (
-    <motion.div
-      className="relative group w-full md:w-auto"
-      style={{
-        scale,
-        opacity
-      }}
-    >
-      {/* Connection Line segment (Desktop) */}
-      {index < total - 1 && (
-        <div className="hidden md:block absolute top-1/2 left-full w-8 h-[2px] bg-white/10 -translate-y-1/2 z-0" />
-      )}
-
-      {/* Decorative vertical line (Mobile) */}
-      {index < total - 1 && (
-        <div className="md:hidden absolute top-full left-1/2 w-[1px] h-8 bg-white/10 -translate-x-1/2 z-0" />
-      )}
+    <div className="relative group w-full md:w-[500px] flex-shrink-0">
 
       <Card
         className={cn(
-          "relative w-full md:w-[320px] h-auto md:h-[420px] p-6 md:p-8 flex flex-col justify-between",
-          "bg-black/40 backdrop-blur-md",
-          "transition-colors duration-500",
-          "z-10"
+          "relative min-h-[400px] p-8 flex flex-col", // Removed justify-between
+          "bg-black/40 backdrop-blur-md border-white/10",
+          "hover:border-primary/30 hover:bg-black/60 transition-all duration-500",
+          "group cursor-default"
         )}
-        style={{
-          borderColor: "rgba(255,255,255,0.1)" // Fallback/Base
-        }}
       >
-
-        {/* Step Number */}
-        <div className="text-6xl md:text-9xl font-bold text-white/5 absolute top-4 right-4 select-none">
+        {/* Big Background Number */}
+        <span className="absolute top-4 right-6 text-8xl font-bold text-white/5 select-none transition-colors group-hover:text-primary/10">
           {step.id}
-        </div>
+        </span>
 
-        {/* Top Content */}
-        <div className="relative z-10">
-          <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-primary mb-8">
-            <step.icon className="w-7 h-7" />
+        {/* Card Header */}
+        <div className="relative z-10 pt-4 flex-1">
+          <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
+            <step.icon className="w-6 h-6" />
           </div>
-          <div className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-primary/80 mb-6">
+
+          <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-mono text-primary/80 mb-6">
             {step.duration}
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            {step.title}
-          </h3>
-        </div>
 
-        {/* Bottom Content */}
-        <div className="relative z-10">
-          <p className="text-white/60 leading-relaxed text-base md:text-lg">
+          <h3 className="text-3xl font-bold text-white mb-2">{step.title}</h3>
+
+          {/* Card Description - Matches MissionCard style (no line, small gap) */}
+          <p className="text-gray-400 leading-relaxed text-base">
             {step.description}
           </p>
-
-          {/* Active Indicator Icon */}
-          <motion.div
-            style={{ opacity: isActive }}
-            className="mt-6 flex items-center gap-2 text-sm text-primary -translate-x-2"
-          >
-            <span className="font-mono uppercase tracking-wider">Explore</span>
-            <ChevronRight className="w-4 h-4" />
-          </motion.div>
         </div>
 
-        {/* Glow Effect */}
-        <motion.div
-          style={{ opacity: isActive }}
-          className="absolute inset-0 bg-gradient-to-b from-primary/0 via-primary/5 to-primary/10 pointer-events-none"
-        />
+        {/* Hover Progress Line */}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
       </Card>
-    </motion.div>
-  );
+    </div>
+  )
 }

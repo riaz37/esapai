@@ -27,7 +27,7 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
   ];
 
   return (
-    <div className="relative bg-[#09090b]">
+    <div className="relative">
 
       {/* 1. Hero (ProductHero) */}
       <div>

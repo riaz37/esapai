@@ -18,6 +18,8 @@ export interface ServiceContent {
     subtitle?: string[];
     centerIcon?: string;
     centerIconAlt?: string;
+    /** Custom title override for the hero section (supports JSX) */
+    heroTitle?: React.ReactNode;
   };
   features?: {
     title?: string;

@@ -9,7 +9,7 @@ import {
   ServiceProblemSection,
   ServiceBeforeAfterSection,
   ServiceProcessSection,
-  ServiceWhatWeNeedSection,
+  ServiceVideoSection,
   ServicesCTASection,
 } from "@/components/features/services/sections";
 
@@ -41,12 +41,15 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
   return (
     <div className="relative">
       {/* 1. Hero */}
-      <ServiceHero title={hydratedService.name} subtitle={heroSubtitle} />
+      <ServiceHero title={content.hero?.heroTitle ?? hydratedService.name} subtitle={heroSubtitle} />
 
       {/* 2. Problem: Why this service (placeholder) */}
       <ServiceProblemSection />
 
-      {/* 2b. Before & after: comparison video */}
+      {/* 2b. Showcase: Digital Powerhouse Video */}
+      <ServiceVideoSection />
+
+      {/* 2c. Before & after: comparison video */}
       <ServiceBeforeAfterSection />
 
       {/* 3. Solution: What we deliver */}
@@ -58,22 +61,19 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
         />
       </div>
 
-      <ServiceProcessSection />
 
-      <ServiceWhatWeNeedSection />
+      <ServiceProcessSection />
 
 
 
 
 
       {/* 7. CTA */}
-      <LazySection minHeight="400px">
-        <ServicesCTASection
-          text="Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."
-          buttonText="Initialize Project"
-          buttonHref="/contact"
-        />
-      </LazySection>
+      <ServicesCTASection
+        text="Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."
+        buttonText="Initialize Project"
+        buttonHref="/contact"
+      />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AlertCircle, XCircle, FileWarning, CheckCircle2, Zap, Sparkles, ArrowDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { BadgeChip } from "@/components/ui/badge-chip";
+import { Section } from "@/components/ui/section";
 
 
 if (typeof window !== "undefined") {
@@ -205,9 +206,11 @@ export function ProblemExplorationSection({
     );
 
     return (
-        <section
+        <Section
             ref={containerRef}
-            className="relative h-screen bg-black overflow-hidden"
+            withContainer={false}
+            className="relative h-screen overflow-hidden"
+            padding="none"
         >
             {/* Ambient Background */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -217,8 +220,8 @@ export function ProblemExplorationSection({
 
 
             {/* MAIN STAGE */}
-            <div className="relative z-10 w-full h-full pt-20 flex items-center justify-center px-4">
-                <div className="relative w-full max-w-5xl" style={{ height: '450px' }}>
+            <div className="relative z-10 w-full h-full pt-40 flex items-center justify-center px-4">
+                <div className="relative w-full max-w-[1400px]" style={{ height: '450px' }}>
 
 
 
@@ -307,7 +310,7 @@ export function ProblemExplorationSection({
                             </h2>
                         </div>
 
-                        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl">
+                        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[1400px]">
                             {solutions.map((solution, i) => {
                                 const Icon = solution.icon;
                                 return (
@@ -361,6 +364,6 @@ export function ProblemExplorationSection({
                     </filter>
                 </defs>
             </svg>
-        </section>
+        </Section>
     );
 }

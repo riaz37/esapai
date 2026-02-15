@@ -414,7 +414,7 @@ export function ContactSection() {
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10 lg:py-12">
         <div className="w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-start lg:items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 sm:gap-16 items-start lg:items-center">
             <ContactLeftColumn
               ref={(node) => {
                 leftColumnRef.current = node;

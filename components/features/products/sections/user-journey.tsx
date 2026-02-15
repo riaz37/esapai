@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Section } from "@/components/ui/section";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -106,18 +107,19 @@ const JourneyNode = ({ node }: { node: any }) => {
                 className={cn(
                     "relative flex flex-col items-center justify-center",
                     "rounded-2xl overflow-hidden",
-                    "border border-white/20 hover:border-[#13F584]/50 transition-colors duration-500",
-                    "bg-white/[0.03] backdrop-blur-2xl",
-                    "min-w-[190px] p-7",
-                    "shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_40px_rgba(0,0,0,0.6)]"
+                    "border border-white/10 hover:border-[#13F584]/50 transition-all duration-500",
+                    "bg-white/[0.03] backdrop-blur-3xl",
+                    "min-w-[170px] p-5 md:p-6",
+                    "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_0_40px_rgba(0,0,0,0.8)]",
+                    "group-hover/node:scale-105 group-hover/node:shadow-[0_0_50px_rgba(19,245,132,0.15)]"
                 )}
             >
                 {/* Node Glow Backdrop */}
-                <div className="absolute inset-0 bg-radial-at-t from-[#13F584]/10 to-transparent opacity-0 group-hover/node:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 bg-radial-at-t from-[#13F584]/5 to-transparent opacity-0 group-hover/node:opacity-100 transition-opacity duration-700" />
 
                 {/* Node Image/Icon Container */}
                 <div
-                    className="relative mb-5 w-24 h-24 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.3)] transition-all"
+                    className="relative mb-4 w-18 h-18 flex items-center justify-center rounded-2xl border border-white/5 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.2)] transition-all"
                     style={{ color: PRIMARY }}
                 >
                     {node.data.image ? (
@@ -127,7 +129,7 @@ const JourneyNode = ({ node }: { node: any }) => {
                             className="w-full h-full object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
                         />
                     ) : (
-                        React.cloneElement(node.data.icon as any, { size: 32 })
+                        React.cloneElement(node.data.icon as any, { size: 28 })
                     )}
 
                     {/* Corner accents */}
@@ -135,9 +137,14 @@ const JourneyNode = ({ node }: { node: any }) => {
                     <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#13F584]/40" />
                 </div>
 
-                <h3 className="relative text-xs font-bold uppercase tracking-[0.15em] text-white/90 text-center">
+                <h3 className="relative text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 text-center leading-tight">
                     {node.data.title}
                 </h3>
+
+                {/* Visual scan light effect on hover */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/node:opacity-100">
+                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent -translate-y-full hover-scan-line" />
+                </div>
             </div>
         </div>
     );
@@ -248,7 +255,7 @@ const LayeredJourneyFlow = ({
     }, { scope: containerRef, dependencies: [layers] });
 
     return (
-        <section ref={containerRef} className="relative w-full h-screen bg-[#09090b] overflow-hidden">
+        <Section ref={containerRef} withContainer={false} className="relative w-full h-screen overflow-hidden" padding="none">
             <style jsx global>{`
                 @keyframes dash-move {
                     from { stroke-dashoffset: 100; }
@@ -276,7 +283,7 @@ const LayeredJourneyFlow = ({
             `}</style>
 
             {/* Header Overlay */}
-            <div ref={headerRef} className="absolute top-24 left-0 right-0 z-50 pointer-events-none px-6">
+            <div ref={headerRef} className="absolute top-32 left-0 right-0 z-50 pointer-events-none px-6">
                 <SectionHeader
                     title={title || "System Architecture"}
                     subtitle={subtitle}
@@ -284,8 +291,8 @@ const LayeredJourneyFlow = ({
                     badgeIcon={Workflow}
                     animate={false} // Section is already pinned/animated
                     className="mb-0"
-                    titleClassName="text-4xl md:text-6xl max-w-2xl"
-                    subtitleClassName="text-white/40 text-xs tracking-[0.2em] uppercase font-medium mt-6"
+                    titleClassName="text-4xl md:text-5xl lg:text-6xl max-w-4xl"
+                    subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4"
                 />
             </div>
 
@@ -296,7 +303,7 @@ const LayeredJourneyFlow = ({
                     className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
                     style={{
                         zIndex: index * 10,
-                        backgroundColor: '#09090b',
+                        backgroundColor: 'transparent',
                         boxShadow: index > 0 ? '0 -30px 100px rgba(0,0,0,0.9)' : 'none',
                     }}
                 >
@@ -306,16 +313,10 @@ const LayeredJourneyFlow = ({
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-radial-at-t from-[#13F584]/5 to-transparent opacity-50" />
                     </div>
 
-                    <div className="relative w-full max-w-7xl h-full mx-auto flex flex-col justify-center pt-32 pb-16 px-8 perspective-stage">
-                        {/* Layer Label */}
-                        <div className="absolute top-32 left-12 border-l border-[#13F584]/50 pl-5 z-20">
-                            <span className="block text-[#13F584]/60 text-[10px] font-mono mb-2 tracking-[0.2em]">LAYER 0{index + 1}</span>
-                            <h3 className="text-3xl font-bold text-white tracking-tight">{layer.title}</h3>
-                        </div>
-
+                    <div className="relative w-full max-w-[1400px] h-full mx-auto flex flex-col justify-center pt-40 pb-16 px-8 perspective-stage">
                         {/* Custom SVG Canvas */}
                         <div
-                            className="relative w-full h-[60vh] mt-16 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                            className="relative w-full h-[75vh] min-h-[650px] mt-12 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                         >
                             {/* SVG Edges Layer */}
                             <svg className="absolute inset-0 w-full h-full pointer-events-none">
@@ -343,11 +344,25 @@ const LayeredJourneyFlow = ({
                                     <JourneyNode key={node.id} node={node} />
                                 ))}
                             </div>
+
+                            {/* Internal Stage Title Overlay */}
+                            <div className="absolute top-12 left-12 z-20 pointer-events-none">
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-xs font-mono font-black text-[#13F584] uppercase tracking-[0.5em]">
+                                            Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                                        </span>
+                                    </div>
+                                    <h4 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+                                        {layer.title}
+                                    </h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             ))}
-        </section>
+        </Section>
     );
 };
 
