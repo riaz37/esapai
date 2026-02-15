@@ -303,7 +303,7 @@ const LayeredJourneyFlow = ({
                     className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
                     style={{
                         zIndex: index * 10,
-                        backgroundColor: 'transparent',
+                        backgroundColor: '#09090b',
                         boxShadow: index > 0 ? '0 -30px 100px rgba(0,0,0,0.9)' : 'none',
                     }}
                 >
