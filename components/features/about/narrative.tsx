@@ -67,14 +67,9 @@ export const AboutNarrative: React.FC = () => {
     };
 
     return (
-        <div ref={containerRef} className="relative h-[600vh] bg-black">
+        <div ref={containerRef} className="relative h-[600vh]">
             <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
-                {/* Background Ambient Glows */}
-                <div className="absolute inset-0 z-0 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-primary/5 to-transparent" />
-                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-primary/5 to-transparent" />
-                </div>
 
                 {/* Sidebar Navigator - Right Side */}
                 <div className="absolute right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">

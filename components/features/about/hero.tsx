@@ -7,7 +7,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 
 export const AboutHero: React.FC = () => {
     return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
             {/* Simple gradient background to replace complex mesh */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
 
