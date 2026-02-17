@@ -103,7 +103,7 @@ export function PerformanceSection({
   );
 
   return (
-    <Section>
+    <Section padding="lg">
       <div
         ref={(node) => {
           sectionRef.current = node;

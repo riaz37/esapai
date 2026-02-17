@@ -19,35 +19,57 @@ export function TextRevealSection() {
 
             const words = textRef.current.querySelectorAll(".word");
 
+            // --- Stage 1: Entry / Presence (No Pin) ---
+            // As the section enters the viewport, fade text to a dim state so it's not empty.
+            gsap.fromTo(
+                words,
+                {
+                    opacity: 0,
+                    y: 20,
+                    scale: 0.9,
+                    filter: "blur(4px)",
+                    color: "rgba(255, 255, 255, 0.1)",
+                },
+                {
+                    opacity: 0.3, // Visible but faint
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                    duration: 0.8,
+                    stagger: 0.02,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top 85%", // Start fading in as soon as it enters view
+                        end: "top 40%",
+                        scrub: 1,
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+
+            // --- Stage 2: Focus / Highlight (Pinned) ---
+            // Once focused, pin and light up the text.
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: containerRef.current,
-                    start: "top top",
-                    end: "+=120%", // Tightened scrolling distance
+                    start: "center center",
+                    end: "+=150%", // Reading time
                     scrub: 1,
                     pin: true,
                     invalidateOnRefresh: true,
                 },
             });
 
-            // Phase 1: Reveal Text
-            tl.fromTo(
+            // Reveal Phase
+            tl.to(
                 words,
-                {
-                    opacity: 0,
-                    filter: "blur(12px)",
-                    y: 20,
-                    scale: 0.8,
-                    color: "rgba(255, 255, 255, 0.1)",
-                },
                 {
                     opacity: 1,
                     filter: "blur(0px)",
-                    y: 0,
-                    scale: 1,
-                    stagger: 0.08,
-                    duration: 1.2,
-                    ease: "power4.out",
+                    stagger: 0.1, // Slower, more deliberate reading pace
+                    duration: 1.5,
+                    ease: "power2.out",
                     color: (i, target: HTMLElement) => {
                         return target.classList.contains("highlight") ? "#13f584" : "#ffffff";
                     },
@@ -59,14 +81,9 @@ export function TextRevealSection() {
                 }
             );
 
-            // Phase 2: "Jump" / Zoom Past
-            tl.fromTo(
+            // Exit Phase ("Jump" / Zoom Past)
+            tl.to(
                 textRef.current,
-                {
-                    scale: 1,
-                    opacity: 1,
-                    filter: "blur(0px)",
-                },
                 {
                     scale: 3, // Zoom in massively
                     opacity: 0, // Fade out as we pass through
@@ -90,7 +107,7 @@ export function TextRevealSection() {
             ref={containerRef}
             padding="none"
             containerMaxWidth="5xl"
-            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden pt-32 pb-12 sm:pt-40 sm:pb-20"
+            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden pt-12 pb-12 sm:pt-20 sm:pb-20"
         >
             <div className="flex-1 flex items-center justify-center min-h-[60vh]">
                 <h2

@@ -27,7 +27,7 @@ const buttonVariants = cva(
       size: {
         default: "h-11 px-5",
         sm: "h-9 px-4 text-xs",
-        lg: "h-14 px-8 text-base",
+        lg: "h-14 px-5 text-base",
         icon: "size-11",
       },
     },
@@ -45,17 +45,34 @@ interface ButtonProps
   showArrow?: boolean;
 }
 
-export const ButtonArrow = ({ className }: { className?: string }) => (
-  <div
-    className={cn(
-      "w-8 h-8 rounded-full flex items-center justify-center text-black group-hover/btn:scale-110 group-hover/btn:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ml-2 shrink-0",
-      className
-    )}
-    style={{ background: "linear-gradient(180deg, #13F584 0%, #80FFBF 100%)" }}
-  >
-    <ArrowUpRight size={18} strokeWidth={2.5} className="!size-[18px]" />
-  </div>
-);
+export const ButtonArrow = ({ className, size = "default" }: { className?: string; size?: "default" | "sm" | "lg" | "icon" }) => {
+  const containerSize = {
+    sm: "w-5 h-5",
+    default: "w-6 h-6",
+    lg: "w-8 h-8",
+    icon: "w-8 h-8",
+  }[size || "default"];
+
+  const iconSize = {
+    sm: 12,
+    default: 14,
+    lg: 18,
+    icon: 18,
+  }[size || "default"];
+
+  return (
+    <div
+      className={cn(
+        "rounded-full flex items-center justify-center text-black group-hover/btn:scale-110 group-hover/btn:rotate-[360deg] transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] shrink-0",
+        containerSize,
+        className
+      )}
+      style={{ background: "linear-gradient(180deg, #13F584 0%, #80FFBF 100%)" }}
+    >
+      <ArrowUpRight size={iconSize} strokeWidth={2.5} style={{ width: iconSize, height: iconSize }} />
+    </div>
+  );
+};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, showArrow = true, children, ...props }, ref) => {
@@ -63,7 +80,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          variant === "primary" && showArrow && size === "sm" && "pl-3 pr-1",
+          variant === "primary" && showArrow && size === "default" && "pl-4 pr-1.5",
+          variant === "primary" && showArrow && size === "lg" && "pl-5 pr-2"
+        )}
         ref={ref}
         {...props}
       >
@@ -72,7 +94,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             <span className="relative z-10">{children}</span>
-            {variant === "primary" && showArrow && <ButtonArrow />}
+            {variant === "primary" && showArrow && <ButtonArrow size={size as any} />}
           </>
         )}
       </Comp>

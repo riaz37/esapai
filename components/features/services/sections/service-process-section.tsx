@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 import { Workflow, Search, FileText, Code2, Plug, Rocket, Headphones } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -86,7 +87,7 @@ export function ServiceProcessSection() {
 
         // Ensure we have enough scroll distance
         // The taller the container, the slower the horizontal scroll
-        const scrollDistance = amountToScroll + 1000;
+        const scrollDistance = amountToScroll + 600;
 
         // Set the height of the scroll container to enable scrolling
         // We set this dynamically or just use a CSS class (like h-[400vh])
@@ -120,9 +121,11 @@ export function ServiceProcessSection() {
 
   return (
     // Outer scroll container - defines the scrollable height
-    <section
+    <Section
+      withContainer={false}
+      padding="none"
       ref={scrollContainerRef}
-      className="relative w-full md:h-[300vh]" // Reduced height for tighter scroll
+      className="relative w-full md:h-[250vh]" // Reduced height for tighter scroll
     >
       {/* Sticky Wrapper - Pins to viewport */}
       <div
@@ -130,7 +133,7 @@ export function ServiceProcessSection() {
         className="md:h-screen w-full flex flex-col justify-between overflow-hidden relative bg-transparent"
       >
         {/* HEADER: Flex-none to keep it at top */}
-        <div className="container mx-auto px-4 md:px-8 pt-24 md:pt-32 flex-none z-10 pointer-events-none">
+        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-24 md:pt-32 flex-none z-10 pointer-events-none">
           <SectionHeader
             badge="Process"
             badgeIcon={Workflow}
@@ -142,7 +145,7 @@ export function ServiceProcessSection() {
         </div>
 
         {/* TRACK CONTAINER: Fills remaining space, aligns cards to top with gap */}
-        <div className="flex-1 w-full flex items-start pt-12 md:pt-24 overflow-hidden no-scrollbar relative z-0">
+        <div className="flex-1 w-full flex items-start pt-8 md:pt-12 overflow-hidden no-scrollbar relative z-0">
           <div
             ref={trackRef}
             className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 md:pl-[max(2rem,calc((100vw-1400px)/2+2rem))] md:pr-[5vw] w-full md:w-max"
@@ -156,7 +159,7 @@ export function ServiceProcessSection() {
         {/* PROGRESS BAR: Fixed at bottom */}
 
       </div>
-    </section>
+    </Section>
   );
 }
 

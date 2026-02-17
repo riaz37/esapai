@@ -73,8 +73,8 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                 <div className="relative h-full flex flex-col md:flex-row items-center p-8 md:p-12 gap-12 z-10">
 
                     {/* Left Side: Content */}
-                    <div className="flex-1 text-left space-y-8 z-10">
-                        <div className="space-y-4">
+                    <div className="flex-1 text-left space-y-4 z-10">
+                        <div className="space-y-2">
                             <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
                                 {product.name}
                             </h3>
@@ -85,7 +85,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                         </p>
 
                         <div ref={buttonRef} className="inline-block mt-8">
-                            <Button variant="primary" size="lg" asChild>
+                            <Button variant="primary" size="default" asChild>
                                 <Link href={`/product/${product.slug}`} className="inline-flex items-center gap-2 group/link">
                                     <span>Explore</span>
                                     <ButtonArrow className="ml-0" />

@@ -110,9 +110,9 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
   return (
     <Section
       padding="none"
-      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 pb-12 !px-0"
-      containerClassName="relative z-10 container mx-auto px-6 md:px-12"
-      containerMaxWidth="standard"
+      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12"
+      containerClassName="relative z-10 mx-auto"
+      containerMaxWidth="wide"
     >
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
 
@@ -122,11 +122,11 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
             <TypewriterTitle
               title={title}
               splitMode="lastWord"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
               align="left"
             />
           ) : (
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tighter mb-6 text-left leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-left leading-[1.1]">
               {title}
             </h1>
           )}
@@ -138,7 +138,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                className="text-lg md:text-xl text-white/70 leading-relaxed font-light"
+                className="text-lg md:text-xl text-white/70 leading-relaxed font-normal"
               >
                 {line}
                 {index < subtitle.length - 1 && <br className="hidden md:block" />}
@@ -149,17 +149,17 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
           <div className="flex flex-wrap items-center gap-5">
             <Button
               variant="primary"
-              size="lg"
+              size="default"
               asChild
             >
               <Link href="#solutions" className="inline-flex items-center gap-2 group">
                 <span>Get Started</span>
-                <ButtonArrow />
+                <ButtonArrow size="default" />
               </Link>
             </Button>
             <Button
               variant="outline"
-              size="lg"
+              size="default"
               asChild
             >
               <Link href="#how-it-works" className="flex items-center gap-2">
@@ -176,7 +176,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.4 }}
-            className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] -mr-32 lg:-mr-40"
+            className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px]"
           >
 
 

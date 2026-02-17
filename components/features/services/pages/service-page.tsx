@@ -47,7 +47,7 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       <ServiceProblemSection />
 
       {/* 2b. Showcase: Digital Powerhouse Video */}
-      <ServiceVideoSection />
+
 
       {/* 2c. Before & after: comparison video */}
       <ServiceBeforeAfterSection />
@@ -63,6 +63,9 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
 
 
       <ServiceProcessSection />
+
+      {/* 2b. Showcase: Digital Powerhouse Video */}
+      <ServiceVideoSection />
 
 
 

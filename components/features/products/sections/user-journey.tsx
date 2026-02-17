@@ -34,14 +34,14 @@ const CinematicEdge = ({
     targetY: number;
 }) => {
     // Calculate angle and apply offset to prevent overlapping with nodes
-    // Node width is ~180px, so we offset by ~95px to reach the edge
+    // Node width is ~150px, so we offset by ~80px to reach the edge
     const dx = tX - sX;
     const dy = tY - sY;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const angle = Math.atan2(dy, dx);
 
     // Only apply offset if nodes are far enough apart
-    const offset = distance > 200 ? 95 : 0;
+    const offset = distance > 180 ? 80 : 0;
 
     const sourceX = sX + Math.cos(angle) * offset;
     const sourceY = sY + Math.sin(angle) * offset;
@@ -109,7 +109,7 @@ const JourneyNode = ({ node }: { node: any }) => {
                     "rounded-2xl overflow-hidden",
                     "border border-white/10 hover:border-[#13F584]/50 transition-all duration-500",
                     "bg-white/[0.03] backdrop-blur-3xl",
-                    "min-w-[170px] p-5 md:p-6",
+                    "min-w-[150px] p-5 md:p-6",
                     "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_0_40px_rgba(0,0,0,0.8)]",
                     "group-hover/node:scale-105 group-hover/node:shadow-[0_0_50px_rgba(19,245,132,0.15)]"
                 )}
@@ -137,7 +137,7 @@ const JourneyNode = ({ node }: { node: any }) => {
                     <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#13F584]/40" />
                 </div>
 
-                <h3 className="relative text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 text-center leading-tight">
+                <h3 className="relative text-white/90 text-center leading-tight text-label-caps">
                     {node.data.title}
                 </h3>
 
@@ -160,7 +160,6 @@ const LayeredJourneyFlow = ({
     subtitle?: string
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
     const layersRef = useRef<(HTMLDivElement | null)[]>([]);
 
     useGSAP(() => {
@@ -170,46 +169,31 @@ const LayeredJourneyFlow = ({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: `+=${(layers.length + 0.5) * 100}%`,
+                end: `+=${(layers.length + 0.5) * 70}%`,
                 pin: true,
-                scrub: 1, // Smoother scrub for header fade
+                scrub: 0.8,
                 anticipatePin: 1,
+                invalidateOnRefresh: true,
             },
         });
 
         // Initial state for all layers
         layersRef.current.forEach((layer, i) => {
             if (!layer) return;
-            // First layer starts transparent, others start below the fold
+            // First layer starts visible, others start below the fold
             if (i === 0) {
-                gsap.set(layer, { opacity: 0 });
+                gsap.set(layer, { opacity: 1 });
             } else {
                 gsap.set(layer, { yPercent: 100 });
             }
         });
 
-        // 1. Header Intro: Fade out main title
-        if (headerRef.current) {
-            tl.to(headerRef.current, {
-                opacity: 0,
-                y: -50,
-                scale: 0.9,
-                duration: 1,
-                ease: "power2.inOut"
-            }, 0);
-        }
-
-        // 2. Layer Reveal Orchestration
+        // Layer Reveal Orchestration
         layersRef.current.forEach((layer, i) => {
             if (!layer) return;
 
             if (i === 0) {
-                // First layer fades in as header fades out
-                tl.to(layer, {
-                    opacity: 1,
-                    duration: 1,
-                    ease: "power2.out"
-                }, 0.3);
+                // First layer is already visible, no animation needed
             } else {
                 // Subsequent layers curtain wipe with 3D tilt
                 tl.to(layer, {
@@ -219,43 +203,44 @@ const LayeredJourneyFlow = ({
                 });
             }
 
-            // --- Cinematic Reveal Sequence (Applied to ALL layers) ---
+            // --- Cinematic Reveal Sequence (Applied ONLY to subsequent layers for entrance) ---
+            if (i > 0) {
+                // 3D perspective "tilt-in" effect
+                const surface = layer.querySelector(".architecture-surface");
+                if (surface) {
+                    tl.fromTo(surface,
+                        { rotateX: 10, translateZ: -100, opacity: 0 },
+                        { rotateX: 0, translateZ: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+                        "-=0.5"
+                    );
+                }
 
-            // 3D perspective "tilt-in" effect
-            const surface = layer.querySelector(".architecture-surface");
-            if (surface) {
-                tl.fromTo(surface,
-                    { rotateX: 10, translateZ: -100, opacity: 0 },
-                    { rotateX: 0, translateZ: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-                    "-=0.5"
-                );
-            }
+                // Sequential "Power-on" for nodes and edges
+                const nodes = layer.querySelectorAll(".group\\/node");
+                const edges = layer.querySelectorAll(".cinematic-edge");
 
-            // Sequential "Power-on" for nodes and edges
-            const nodes = layer.querySelectorAll(".group\\/node");
-            const edges = layer.querySelectorAll(".cinematic-edge");
+                if (nodes.length > 0) {
+                    tl.fromTo(nodes,
+                        { scale: 0.5, opacity: 0, filter: "brightness(2)" },
+                        { scale: 1, opacity: 1, filter: "brightness(1)", duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" },
+                        "-=0.4"
+                    );
+                }
 
-            if (nodes.length > 0) {
-                tl.fromTo(nodes,
-                    { scale: 0.5, opacity: 0, filter: "brightness(2)" },
-                    { scale: 1, opacity: 1, filter: "brightness(1)", duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" },
-                    "-=0.4"
-                );
-            }
-
-            if (edges.length > 0) {
-                tl.fromTo(edges,
-                    { opacity: 0, strokeDashoffset: 100 },
-                    { opacity: 1, strokeDashoffset: 0, duration: 0.8, stagger: 0.05, ease: "power2.out" },
-                    "-=0.6"
-                );
+                if (edges.length > 0) {
+                    tl.fromTo(edges,
+                        { opacity: 0, strokeDashoffset: 100 },
+                        { opacity: 1, strokeDashoffset: 0, duration: 0.8, stagger: 0.05, ease: "power2.out" },
+                        "-=0.6"
+                    );
+                }
             }
         });
 
     }, { scope: containerRef, dependencies: [layers] });
 
     return (
-        <Section ref={containerRef} withContainer={false} className="relative w-full h-screen overflow-hidden" padding="none">
+        <div className="relative w-full">
             <style jsx global>{`
                 @keyframes dash-move {
                     from { stroke-dashoffset: 100; }
@@ -282,87 +267,91 @@ const LayeredJourneyFlow = ({
                 }
             `}</style>
 
-            {/* Header Overlay */}
-            <div ref={headerRef} className="absolute top-32 left-0 right-0 z-50 pointer-events-none px-6">
+            {/* Header Overlay - Standard Flow */}
+            <div className="container mx-auto px-6 py-20 pb-0">
                 <SectionHeader
                     title={title || "System Architecture"}
                     subtitle={subtitle}
                     badge="Architecture"
                     badgeIcon={Workflow}
-                    animate={false} // Section is already pinned/animated
+                    animate={true}
                     className="mb-0"
                     titleClassName="text-4xl md:text-5xl lg:text-6xl max-w-4xl"
                     subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4"
                 />
             </div>
 
-            {layers.map((layer, index) => (
-                <div
-                    key={layer.id || index}
-                    ref={(el) => { layersRef.current[index] = el; }}
-                    className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
-                    style={{
-                        zIndex: index * 10,
-                        backgroundColor: '#09090b',
-                        boxShadow: index > 0 ? '0 -30px 100px rgba(0,0,0,0.9)' : 'none',
-                    }}
-                >
+            {/* Pinned Layers Container */}
+            <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden -mt-20">
 
-                    {/* Background Gradients */}
-                    <div className="absolute inset-0 pointer-events-none">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-radial-at-t from-[#13F584]/5 to-transparent opacity-50" />
-                    </div>
+                {layers.map((layer, index) => (
+                    <div
+                        key={layer.id || index}
+                        ref={(el) => { layersRef.current[index] = el; }}
+                        className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
+                        style={{
+                            zIndex: index * 10,
+                            backgroundColor: '#09090b',
+                            boxShadow: index > 0 ? '0 -30px 100px rgba(0,0,0,0.9)' : 'none',
+                        }}
+                    >
 
-                    <div className="relative w-full max-w-[1400px] h-full mx-auto flex flex-col justify-center pt-40 pb-16 px-8 perspective-stage">
-                        {/* Custom SVG Canvas */}
-                        <div
-                            className="relative w-full h-[75vh] min-h-[650px] mt-12 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
-                        >
-                            {/* SVG Edges Layer */}
-                            <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                                {layer.edges.map((edge: any) => {
-                                    const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
-                                    const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
+                        {/* Background Gradients */}
+                        <div className="absolute inset-0 pointer-events-none">
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-radial-at-t from-[#13F584]/5 to-transparent opacity-50" />
+                        </div>
 
-                                    if (!sourceNode || !targetNode) return null;
+                        <div className="relative w-full max-w-[1400px] h-full mx-auto flex flex-col justify-center pt-12 md:pt-20 pb-24 md:pb-32 px-8 perspective-stage">
+                            {/* Custom SVG Canvas */}
+                            <div
+                                className="relative w-full h-[75vh] min-h-[650px] mt-10 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                            >
+                                {/* SVG Edges Layer */}
+                                <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                                    {layer.edges.map((edge: any) => {
+                                        const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
+                                        const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
 
-                                    return (
-                                        <CinematicEdge
-                                            key={edge.id}
-                                            sourceX={sourceNode.position.x}
-                                            sourceY={sourceNode.position.y}
-                                            targetX={targetNode.position.x}
-                                            targetY={targetNode.position.y}
-                                        />
-                                    );
-                                })}
-                            </svg>
+                                        if (!sourceNode || !targetNode) return null;
 
-                            {/* HTML Nodes Layer */}
-                            <div className="absolute inset-0">
-                                {layer.nodes.map((node: any) => (
-                                    <JourneyNode key={node.id} node={node} />
-                                ))}
-                            </div>
+                                        return (
+                                            <CinematicEdge
+                                                key={edge.id}
+                                                sourceX={sourceNode.position.x}
+                                                sourceY={sourceNode.position.y}
+                                                targetX={targetNode.position.x}
+                                                targetY={targetNode.position.y}
+                                            />
+                                        );
+                                    })}
+                                </svg>
 
-                            {/* Internal Stage Title Overlay */}
-                            <div className="absolute top-12 left-12 z-20 pointer-events-none">
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-xs font-mono font-black text-[#13F584] uppercase tracking-[0.5em]">
-                                            Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
-                                        </span>
+                                {/* HTML Nodes Layer */}
+                                <div className="absolute inset-0">
+                                    {layer.nodes.map((node: any) => (
+                                        <JourneyNode key={node.id} node={node} />
+                                    ))}
+                                </div>
+
+                                {/* Internal Stage Title Overlay */}
+                                <div className="absolute top-8 left-8 z-20 pointer-events-none">
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-xs font-mono font-bold text-[#13F584] text-label-caps tracking-cinematic-widest">
+                                                Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                                            </span>
+                                        </div>
+                                        <h4 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                                            {layer.title}
+                                        </h4>
                                     </div>
-                                    <h4 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
-                                        {layer.title}
-                                    </h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
-        </Section>
+                ))}
+            </div>
+        </div>
     );
 };
 

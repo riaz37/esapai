@@ -71,8 +71,8 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   return (
     <motion.div
       ref={ref}
-      // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
-      className={cn("sticky inset-x-0 top-20 z-40 w-full", className)}
+      // Added horizontal padding to match Section.tsx geometry
+      className={cn("fixed inset-x-0 top-2 z-40 w-full px-4 sm:px-6 md:px-8 lg:px-12", className)}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
@@ -103,11 +103,11 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         damping: 50,
       }}
       style={{
-        minWidth: "950px",
+        minWidth: visible ? "950px" : "auto",
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
-        visible && "bg-[rgba(250,250,250,0.02)] backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]",
+        "relative z-[60] mx-auto hidden flex-row items-center justify-between self-start rounded-full bg-transparent px-0 py-2 lg:flex max-w-[1400px]",
+        visible && "bg-[rgba(250,250,250,0.02)] backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all px-2",
         className,
       )}
     >
@@ -266,6 +266,7 @@ export const NavbarButton = ({
   children,
   className,
   variant = "primary",
+  size = "default",
   onClick,
   ...props
 }: {
@@ -273,22 +274,23 @@ export const NavbarButton = ({
   children: React.ReactNode;
   className?: string;
   variant?: "primary";
+  size?: "default" | "sm" | "lg" | "icon";
   onClick?: () => void;
   [key: string]: any;
 }) => {
   if (href) {
     return (
-      <Button variant={variant} className={className} asChild {...props}>
+      <Button variant={variant} size={size} className={className} asChild {...props}>
         <Link href={href} onClick={onClick} className="inline-flex items-center gap-2 group">
           <span>{children}</span>
-          {variant === "primary" && <ButtonArrow />}
+          {variant === "primary" && <ButtonArrow size={size} />}
         </Link>
       </Button>
     );
   }
 
   return (
-    <Button variant={variant} className={className} onClick={onClick} {...props}>
+    <Button variant={variant} size={size} className={className} onClick={onClick} {...props}>
       {children}
     </Button>
   );

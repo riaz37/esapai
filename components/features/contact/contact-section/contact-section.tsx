@@ -9,6 +9,7 @@ import gsap from "gsap";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { useIntersectionAnimation } from "@/lib/hooks/use-intersection-animation";
 import { useToast } from "@/components/ui/toast";
+import { Section } from "@/components/ui/section";
 
 import { socialMediaLinks } from "./contact.constants";
 import { ContactBackdrop } from "./contact-backdrop";
@@ -404,7 +405,9 @@ export function ContactSection() {
   }, []);
 
   return (
-    <section
+    <Section
+      withContainer={false}
+      padding="none"
       ref={(el) => {
         sectionRef.current = el;
       }}
@@ -412,9 +415,9 @@ export function ContactSection() {
     >
       <ContactBackdrop />
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10 lg:py-12">
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10 lg:py-12">
         <div className="w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 sm:gap-16 items-start lg:items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-start lg:items-center">
             <ContactLeftColumn
               ref={(node) => {
                 leftColumnRef.current = node;
@@ -424,7 +427,7 @@ export function ContactSection() {
             />
 
             <ContactFormCard
-              ref={(node) => {
+              ref={(node: HTMLDivElement | null) => {
                 formCardRef.current = node;
                 setIntersectionRef(node);
               }}
@@ -439,7 +442,7 @@ export function ContactSection() {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }
 

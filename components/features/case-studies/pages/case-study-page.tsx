@@ -35,7 +35,7 @@ export function CaseStudyPage({
     <div className="relative" aria-busy={isFetching}>
       {isFetching && (
         <div className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center">
-          <span className="mt-4 rounded-full bg-dark px-4 py-1 text-xs uppercase tracking-wide text-light-gray-90 animate-pulse-slow">
+          <span className="mt-4 rounded-full bg-dark px-4 py-1 text-white/60 text-label-caps animate-pulse-slow">
             Updating content…
           </span>
         </div>
@@ -43,13 +43,13 @@ export function CaseStudyPage({
 
       <Section
         ref={sectionRef}
-        padding="none"
+        padding="lg"
         containerMaxWidth="full"
         containerClassName="max-w-none px-0 sm:px-0 md:px-0"
         className="relative overflow-hidden"
       >
         {/* Content Container */}
-        <div className="relative z-10 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-16 sm:pb-20 md:pb-24 lg:pb-32">
+        <div className="relative z-10 w-full">
           {/* Hero Content */}
           <CaseStudyHero caseStudy={hydratedCaseStudy} />
 
@@ -68,7 +68,7 @@ export function CaseStudyPage({
 function ErrorState({ message }: { message: string }) {
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
-      <p className="text-sm uppercase tracking-[0.3em] text-white/60">
+      <p className="text-white/60 text-label-caps tracking-cinematic-widest">
         Unable to load case study
       </p>
       <p className="text-lg text-white/70">{message}</p>

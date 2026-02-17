@@ -72,13 +72,13 @@ export function Footer() {
               <p className="text-gray-400 text-lg mb-8 max-w-sm">
                 Have a question or want to partner us? Reach out
               </p>
-              <Button variant="primary" asChild>
+              <Button variant="primary" size="default" asChild>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 group w-fit"
                 >
-                  <span>Get Start</span>
-                  <ButtonArrow />
+                  <span>Get Started</span>
+                  <ButtonArrow size="default" />
                 </Link>
               </Button>
             </div>

@@ -44,7 +44,7 @@ export const SidebarNavigator: React.FC<SidebarNavigatorProps> = ({
                     </div>
 
                     <div className="absolute -left-4 top-1/2 -translate-y-1/2 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                        <span className="text-[10px] font-black tracking-widest uppercase text-primary bg-black/80 px-2 py-1 rounded">
+                        <span className="text-primary bg-black/80 px-2 py-1 rounded text-label-caps tracking-cinematic-widest">
                             {item.name}
                         </span>
                     </div>

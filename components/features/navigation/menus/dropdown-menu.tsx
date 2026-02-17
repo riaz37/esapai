@@ -41,7 +41,7 @@ export function DropdownMenu({
         {/* Left Sidebar */}
         <div className="w-[300px] border-r border-white/5 bg-black/20 flex flex-col">
           <div className="p-6">
-            <h2 className="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.25em]">
+            <h2 className="text-emerald-500 text-label-caps tracking-cinematic-wide">
               {title}
             </h2>
           </div>
@@ -55,14 +55,14 @@ export function DropdownMenu({
                 onClick={onClose}
                 className={cn(
                   "group relative px-6 py-4 cursor-pointer transition-all duration-300 block",
-                  hoveredId === item.id ? "bg-emerald-500/5" : "hover:bg-white/5"
+                  hoveredId === item.id ? "bg-[#13F584]/5" : "hover:bg-white/5"
                 )}
               >
                 {/* Active Indicator */}
                 {hoveredId === item.id && (
                   <motion.div
                     layoutId="active-indicator"
-                    className="absolute left-0 top-0 bottom-0 w-[3px] bg-emerald-500"
+                    className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#13F584]"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -71,7 +71,7 @@ export function DropdownMenu({
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
-                      hoveredId === item.id ? "bg-emerald-500/20 text-emerald-400" : "bg-white/5 text-zinc-500"
+                      hoveredId === item.id ? "bg-[#13F584]/20 text-[#13F584]" : "bg-white/5 text-zinc-500"
                     )}>
                       {item.icon ? (
                         <Image src={item.icon} alt={item.name} width={24} height={24} className="opacity-80" />
@@ -88,10 +88,6 @@ export function DropdownMenu({
                       </h3>
                     </div>
                   </div>
-                  <ChevronRight className={cn(
-                    "w-4 h-4 transition-all duration-300",
-                    hoveredId === item.id ? "text-emerald-500 opacity-100 translate-x-0" : "text-zinc-700 opacity-0 -translate-x-2"
-                  )} />
                 </div>
               </Link>
             ))}
@@ -99,7 +95,7 @@ export function DropdownMenu({
         </div>
 
         {/* Right Panel: Dynamic Content */}
-        <div className="flex-1 bg-gradient-to-br from-transparent to-emerald-950/20 relative overflow-hidden">
+        <div className="flex-1 bg-gradient-to-br from-transparent to-[#13F584]/10 relative overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeItem.id}
@@ -116,45 +112,28 @@ export function DropdownMenu({
                     <h4 className="text-4xl font-bold text-white mb-4 tracking-tight">
                       {activeItem.name}
                     </h4>
-                    <p className="text-base text-zinc-400 leading-relaxed font-light">
+                    <p className="text-base text-white/60 leading-relaxed font-normal">
                       {activeItem.menuDescription || activeItem.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Content Grid */}
-                <div className="grid grid-cols-2 gap-8 mb-8">
-                  {/* Features / Modules */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">
-                      <LayoutGrid className="w-3 h-3 text-emerald-500" />
-                      Core Capabilities
-                    </div>
-                    {(activeItem.content?.automationHub?.features ||
-                      activeItem.content?.features?.items ||
-                      activeItem.content?.mission?.cards || []).slice(0, 3).map((f: any, idx: number) => (
-                        <div key={idx} className="flex gap-3 group/feat">
-                          <div className="w-1 h-1 rounded-full bg-emerald-500/40 mt-2 shrink-0 group-hover/feat:bg-emerald-500 transition-colors" />
-                          <div>
-                            <p className="text-sm font-semibold text-zinc-200">{f.title}</p>
-                            <p className="text-[11px] text-zinc-500 line-clamp-1">{f.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-
+                <div className="grid grid-cols-1 gap-8 mb-8">
                   {/* Stats / Metrics */}
                   <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">
-                      <Zap className="w-3 h-3 text-emerald-500" />
+                    <div className="flex items-center gap-2 text-white/40 text-label-caps tracking-cinematic-widest mb-2">
+                      <Zap className="w-3 h-3 text-[#13F584]" />
                       Impact Analysis
                     </div>
-                    {activeItem.content?.performance?.metrics?.map((m: any, idx: number) => (
-                      <div key={idx} className="bg-white/5 border border-white/5 p-3 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
-                        <div className="text-xl font-bold text-emerald-400 font-mono leading-none">{m.value}</div>
-                        <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">{m.label}</div>
-                      </div>
-                    ))}
+                    <div className="grid grid-cols-3 gap-4">
+                      {activeItem.content?.performance?.metrics?.map((m: any, idx: number) => (
+                        <div key={idx} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
+                          <div className="text-2xl font-bold text-[#13F584] font-mono leading-none">{m.value}</div>
+                          <div className="text-white/40 text-label-caps tracking-cinematic-widest mt-2">{m.label}</div>
+                        </div>
+                      ))}
+                    </div>
                     {!activeItem.content?.performance?.metrics && (
                       <div className="p-4 border border-dashed border-white/10 rounded-xl flex items-center justify-center text-zinc-600 text-xs text-center italic">
                         Real-time telemetry <br /> pending deployment...
@@ -164,19 +143,8 @@ export function DropdownMenu({
                 </div>
               </div>
 
-              {/* Action Area */}
-              <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
-                <div className="flex items-center gap-6 opacity-40">
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-3.5 h-3.5 text-emerald-500/50" />
-                    <span className="text-[9px] text-zinc-400 uppercase tracking-[0.2em]">Tier-1 Security</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-emerald-500" />
-                    <span className="text-[9px] text-zinc-400 uppercase tracking-[0.2em]">Alpha Node</span>
-                  </div>
-                </div>
-              </div>
+              {/* Action Area Removed */}
+              <div className="mt-auto" />
             </motion.div>
           </AnimatePresence>
 

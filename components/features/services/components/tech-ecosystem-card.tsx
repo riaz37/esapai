@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useRef } from 'react';
-import { PlayIcon, GearIcon } from './icons';
+import { GearIcon } from './icons';
 import { BadgeChip } from "@/components/ui/badge-chip";
+import { Button, ButtonArrow } from "@/components/ui/button";
 import { Activity } from "lucide-react";
 
 interface TechEcosystemCardProps {
@@ -102,15 +103,14 @@ export const TechEcosystemCard: React.FC<TechEcosystemCardProps> = ({
 
 
                 {/* Primary CTA */}
-                <button
+                <Button
                     onClick={onCtaClick}
-                    className="group/btn relative inline-flex items-center gap-3 pl-6 pr-4 py-3 bg-white text-black rounded-full transition-all duration-300 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] hover:scale-105 pointer-events-auto"
+                    variant="primary"
+                    className="pointer-events-auto"
                 >
-                    <span className="text-sm font-bold tracking-tight">{ctaText}</span>
-                    <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center transition-transform duration-500 group-hover/btn:rotate-[360deg]">
-                        <PlayIcon className="w-2.5 h-2.5 fill-current ml-0.5" />
-                    </div>
-                </button>
+                    <span>{ctaText}</span>
+                    <ButtonArrow />
+                </Button>
 
             </div>
 

@@ -71,19 +71,21 @@ export function Service() {
       let rotateY = 0;
       let scale = 1;
 
-      // Determine animation based on grid position (rough approximation for Concept 1)
-      if (i === 0 || i === 4) { // Left column
-        x = -200;
-        rotateY = 25;
-      } else if (i === 2) { // Top Right
-        x = 200;
-        rotateY = -25;
-      } else if (i === 1) { // Top Center
-        y = 100;
-        scale = 0.95;
-      } else { // Spanning or middle cards
-        y = 150;
-        scale = 0.9;
+      // Animation logic for 1 Left (Big), 2 Right (Small)
+      // Animation logic for 1 Left (Big), 2 Top-Right (Split), 1 Bottom-Right
+      if (i === 0) { // Left Big Card
+        x = -100;
+        rotateY = 20;
+      } else if (i === 1) { // Top Middle (Split Left)
+        y = -50;
+        rotateY = -10;
+      } else if (i === 2) { // Top Right (Split Right)
+        x = 50;
+        y = -50;
+        rotateY = -20;
+      } else if (i === 3) { // Bottom Right (Wide)
+        y = 50;
+        rotateY = -15;
       }
 
       gsap.fromTo(card,
@@ -97,9 +99,9 @@ export function Service() {
         {
           scrollTrigger: {
             trigger: card,
-            start: "top 92%",
-            end: "top 35%",
-            scrub: 2,
+            start: "top 90%",
+            end: "top 60%",
+            scrub: 1,
             invalidateOnRefresh: true,
           },
           opacity: 1,
@@ -107,7 +109,7 @@ export function Service() {
           y: 0,
           rotateY: 0,
           scale: 1,
-          ease: "power2.out",
+          ease: "power3.out",
         }
       );
     });
@@ -125,57 +127,48 @@ export function Service() {
         badge="Our Solutions"
         badgeIcon={Cpu}
         align="center"
+        className="mb-10"
       />
 
       {/* Bento Grid with synced wireframe */}
       <div ref={gridRef} className="relative">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(400px,auto)]">
-          {/* Row 1: Tall left + 2 shorter right */}
-          <div className="md:row-span-2">
-            <ServiceCard
-              title={SERVICES[0].title}
-              description={SERVICES[0].description}
-              className="h-full"
-            />
-          </div>
-          <div>
-            <ServiceCard
-              title={SERVICES[1].title}
-              description={SERVICES[1].description}
-              className="h-full"
-            />
-          </div>
-          <div>
-            <ServiceCard
-              title={SERVICES[2].title}
-              description={SERVICES[2].description}
-              className="h-full"
-            />
-          </div>
+        <div ref={gridRef} className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(360px,auto)]">
+            {/* Big Card on the Left (Spans 2 rows) */}
+            <div className="md:row-span-2 h-full">
+              <ServiceCard
+                title={SERVICES[0].title}
+                description={SERVICES[0].description}
+                className="h-full min-h-[400px] md:min-h-[740px]"
+              />
+            </div>
 
-          {/* Row 2: Wide card spanning 2 columns */}
-          <div className="md:col-span-2">
-            <ServiceCard
-              title={SERVICES[3].title}
-              description={SERVICES[3].description}
-              className="h-full"
-            />
-          </div>
+            {/* Right Column - Top Left (Split) */}
+            <div className="h-full">
+              <ServiceCard
+                title={SERVICES[1].title}
+                description={SERVICES[1].description}
+                className="h-full min-h-[360px]"
+              />
+            </div>
 
-          {/* Row 3: Two cards */}
-          <div>
-            <ServiceCard
-              title={SERVICES[4].title}
-              description={SERVICES[4].description}
-              className="h-full"
-            />
-          </div>
-          <div className="md:col-span-2">
-            <ServiceCard
-              title={SERVICES[5].title}
-              description={SERVICES[5].description}
-              className="h-full"
-            />
+            {/* Right Column - Top Right (Split) */}
+            <div className="h-full">
+              <ServiceCard
+                title={SERVICES[2].title}
+                description={SERVICES[2].description}
+                className="h-full min-h-[360px]"
+              />
+            </div>
+
+            {/* Right Column - Bottom Card (Spans 2 columns of the right side) */}
+            <div className="md:col-span-2 h-full">
+              <ServiceCard
+                title={SERVICES[3].title}
+                description={SERVICES[3].description}
+                className="h-full min-h-[360px]"
+              />
+            </div>
           </div>
         </div>
       </div>

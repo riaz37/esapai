@@ -107,7 +107,7 @@ export function Achievement() {
                 title="Innovation & Future Focus"
                 subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
                 align="center"
-                className="mb-10 sm:mb-16"
+                className="mb-10"
             />
 
             <div
@@ -139,7 +139,7 @@ export function Achievement() {
                                 >
                                     {item.number}
                                 </span>
-                                <span className="text-sm sm:text-base text-white/90 font-bold uppercase tracking-[0.2em]">
+                                <span className="text-white text-label-caps">
                                     {item.label}
                                 </span>
                             </div>

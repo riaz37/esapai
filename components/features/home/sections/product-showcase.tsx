@@ -99,6 +99,7 @@ export function ProductShowcase() {
         subtitle="Experience our ecosystem of intelligent tools."
         badge="Product Showcase"
         badgeIcon={Rocket}
+        className="mb-10"
       />
 
       {/* Sticky Stacking Container */}
@@ -118,7 +119,7 @@ export function ProductShowcase() {
                 top: `${topOffset}px`,
                 zIndex: index + 1,
                 // Margin to allow scrolling. Last card doesn't need margin.
-                marginBottom: index === products.length - 1 ? "0px" : "20vh",
+                marginBottom: index === products.length - 1 ? "0px" : "10vh",
               }}
             >
               {/* Shadow Overlay for darkening effect */}

@@ -93,25 +93,25 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         ref={(el: HTMLElement | null) => {
           setIntersectionRef(el);
         }}
-        padding="none"
+        padding="lg"
         containerMaxWidth="full"
         containerClassName="max-w-none px-0 sm:px-0 md:px-0"
         className="relative overflow-hidden"
       >
 
         {/* Unified Content Container */}
-        <div className="relative z-10 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-16 sm:pb-20 md:pb-24 lg:pb-32">
+        <div className="relative z-10 w-full">
           {/* Hero Content */}
           <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
             <h1
               ref={titleRef}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 md:mb-8 leading-[1.1] text-primary"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] text-primary"
             >
               Case Study
             </h1>
             <p
               ref={subtitleRef}
-              className="text-base sm:text-lg md:text-xl text-light-gray-90 max-w-2xl mx-auto px-4 sm:px-6"
+              className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto px-4 sm:px-6"
             >
               Where Innovation Meets Productivity Driven by agents Powered by
               automation Built for what&apos;s next
@@ -271,7 +271,7 @@ const CaseStudyCard = memo(
                 className="inline-flex items-center gap-2 group w-fit"
               >
                 <span>View Case Study</span>
-                <ButtonArrow />
+                <ButtonArrow size="default" />
               </Link>
             </Button>
           </div>

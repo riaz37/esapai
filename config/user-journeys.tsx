@@ -73,9 +73,9 @@ const aiFrameworkJourney: ProductJourneyData = {
             id: 'layer-app',
             title: 'AI Application Layer',
             nodes: [
-                createNode('app-chat', 200, 325, 'Web3 Chatbot', <Bot size={32} />, '/assets/architecture/chatbot_holographic_1770292441971.png'),
-                createNode('app-alert', 600, 325, 'Crypto Alerts', <Activity size={32} />, '/assets/architecture/crypto_alerts_holographic_1770292459407.png'),
-                createNode('app-agent', 1000, 325, 'AI Agents', <Cpu size={32} />, '/assets/architecture/ai_agent_holographic_1770292475713.png'),
+                createNode('app-chat', 300, 325, 'Web3 Chatbot', <Bot size={32} />, '/assets/architecture/chatbot_holographic_1770292441971.png'),
+                createNode('app-alert', 700, 325, 'Crypto Alerts', <Activity size={32} />, '/assets/architecture/crypto_alerts_holographic_1770292459407.png'),
+                createNode('app-agent', 1100, 325, 'AI Agents', <Cpu size={32} />, '/assets/architecture/ai_agent_holographic_1770292475713.png'),
             ],
             edges: [
                 createEdge('app-chat', 'app-alert', 'r-out', 'l-in'),
@@ -86,9 +86,9 @@ const aiFrameworkJourney: ProductJourneyData = {
             id: 'layer-token',
             title: '$CGPT Token Layer',
             nodes: [
-                createNode('tok-gov', 200, 325, 'Governance', <Users size={32} />, '/assets/architecture/governance_holographic_1770292494430.png'),
-                createNode('tok-util', 600, 325, '$CGPT Utility', <Zap size={32} />, '/assets/architecture/cgpt_token_holographic_1770292512049.png'),
-                createNode('tok-stake', 1000, 325, 'Staking', <Layers size={32} />, '/assets/architecture/staking_holographic_1770292533085.png'),
+                createNode('tok-gov', 300, 325, 'Governance', <Users size={32} />, '/assets/architecture/governance_holographic_1770292494430.png'),
+                createNode('tok-util', 700, 325, '$CGPT Utility', <Zap size={32} />, '/assets/architecture/cgpt_token_holographic_1770292512049.png'),
+                createNode('tok-stake', 1100, 325, 'Staking', <Layers size={32} />, '/assets/architecture/staking_holographic_1770292533085.png'),
             ],
             edges: [
                 createEdge('tok-gov', 'tok-util', 'r-out', 'l-in'),
@@ -99,11 +99,11 @@ const aiFrameworkJourney: ProductJourneyData = {
             id: 'layer-chain',
             title: 'AI Framework Blockchain',
             nodes: [
-                createNode('chn-val', 200, 325, 'Validators', <RefreshCw size={32} />, '/assets/architecture/validators_holographic_1770292550678.png'),
-                createNode('chn-core', 550, 325, 'Framework Core', <Brain size={32} />, '/assets/architecture/aivm_core_holographic_1770292568939.png'),
-                createNode('chn-mkt', 950, 150, 'Data Market', <Database size={32} />, '/assets/architecture/data_market_holographic_1770292586117.png'),
-                createNode('chn-sdk', 950, 325, 'SDK', <Code size={32} />),
-                createNode('chn-gpu', 950, 500, 'GPU Market', <Cpu size={32} />),
+                createNode('chn-val', 300, 325, 'Validators', <RefreshCw size={32} />, '/assets/architecture/validators_holographic_1770292550678.png'),
+                createNode('chn-core', 700, 325, 'Framework Core', <Brain size={32} />, '/assets/architecture/aivm_core_holographic_1770292568939.png'),
+                createNode('chn-mkt', 1100, 150, 'Data Market', <Database size={32} />, '/assets/architecture/data_market_holographic_1770292586117.png'),
+                createNode('chn-sdk', 1100, 325, 'SDK', <Code size={32} />),
+                createNode('chn-gpu', 1100, 500, 'GPU Market', <Cpu size={32} />),
             ],
             edges: [
                 createEdge('chn-val', 'chn-core', 'r-out', 'l-in'),
@@ -124,10 +124,10 @@ const erpJourney: ProductJourneyData = {
             id: 'erp-in',
             title: 'Input Management',
             nodes: [
-                createNode('erp-mic', 400, 200, 'Voice Input', <Mic size={32} />, '/assets/architecture/voice_input_holographic_1770292602178.png'),
-                createNode('erp-nlu', 800, 200, 'Intent NLU', <Brain size={32} />, '/assets/architecture/intent_nlu_holographic_1770292623251.png'),
-                createNode('erp-manual', 400, 450, 'ERP Manual', <FileText size={32} />),
-                createNode('erp-api', 800, 450, 'External API', <Link2 size={32} />),
+                createNode('erp-mic', 500, 200, 'Voice Input', <Mic size={32} />, '/assets/architecture/voice_input_holographic_1770292602178.png'),
+                createNode('erp-nlu', 900, 200, 'Intent NLU', <Brain size={32} />, '/assets/architecture/intent_nlu_holographic_1770292623251.png'),
+                createNode('erp-manual', 500, 450, 'ERP Manual', <FileText size={32} />),
+                createNode('erp-api', 900, 450, 'External API', <Link2 size={32} />),
             ],
             edges: [
                 createEdge('erp-mic', 'erp-nlu', 'r-out', 'l-in'),
@@ -139,10 +139,10 @@ const erpJourney: ProductJourneyData = {
             id: 'erp-proc',
             title: 'Core Engine (Matrix)',
             nodes: [
-                createNode('erp-task', 450, 225, 'Task Planner', <Workflow size={32} />, '/assets/architecture/task_planner_holographic_1770292646038.png'),
-                createNode('erp-logic', 750, 225, 'Business Logic', <Cpu size={32} />),
-                createNode('erp-exec', 450, 425, 'Execution', <Zap size={32} />),
-                createNode('erp-audit', 750, 425, 'Compliance', <CheckCircle size={32} />),
+                createNode('erp-task', 550, 225, 'Task Planner', <Workflow size={32} />, '/assets/architecture/task_planner_holographic_1770292646038.png'),
+                createNode('erp-logic', 850, 225, 'Business Logic', <Cpu size={32} />),
+                createNode('erp-exec', 550, 425, 'Execution', <Zap size={32} />),
+                createNode('erp-audit', 850, 425, 'Compliance', <CheckCircle size={32} />),
             ],
             edges: [
                 createEdge('erp-task', 'erp-logic', 'r-out', 'l-in'),
@@ -155,9 +155,9 @@ const erpJourney: ProductJourneyData = {
             id: 'erp-ext',
             title: 'Global Distribution',
             nodes: [
-                createNode('erp-db', 200, 325, 'Database', <Database size={32} />),
-                createNode('erp-sync', 600, 325, 'Cloud Sync', <RefreshCw size={32} />),
-                createNode('erp-dash', 1000, 325, 'Command Center', <LayoutDashboard size={32} />),
+                createNode('erp-db', 300, 325, 'Database', <Database size={32} />),
+                createNode('erp-sync', 700, 325, 'Cloud Sync', <RefreshCw size={32} />),
+                createNode('erp-dash', 1100, 325, 'Command Center', <LayoutDashboard size={32} />),
             ],
             edges: [
                 createEdge('erp-db', 'erp-sync', 'r-out', 'l-in'),
@@ -176,10 +176,10 @@ const zakraJourney: ProductJourneyData = {
             id: 'zak-ingest',
             title: 'Intake Network',
             nodes: [
-                createNode('zak-src1', 200, 150, 'Documents', <FileStack size={32} />),
-                createNode('zak-src2', 200, 325, 'Databases', <Database size={32} />),
-                createNode('zak-src3', 200, 500, 'Cloud Wiki', <Globe size={32} />),
-                createNode('zak-hub', 700, 325, 'Intake Hub', <Workflow size={32} />),
+                createNode('zak-src1', 450, 140, 'Documents', <FileStack size={32} />),
+                createNode('zak-src2', 450, 350, 'Databases', <Database size={32} />),
+                createNode('zak-src3', 450, 560, 'Cloud Wiki', <Globe size={32} />),
+                createNode('zak-hub', 950, 350, 'Intake Hub', <Workflow size={32} />),
             ],
             edges: [
                 createEdge('zak-src1', 'zak-hub', 'r-out', 'l-in'),
@@ -191,11 +191,11 @@ const zakraJourney: ProductJourneyData = {
             id: 'zak-core',
             title: 'Knowledge Core (Hub)',
             nodes: [
-                createNode('zak-graph', 600, 325, 'Graph Central', <Map size={32} />, '/assets/architecture/knowledge_graph_holographic_1770292665853.png'),
-                createNode('zak-spoke1', 350, 150, 'Entity Sync', <RefreshCw size={32} />),
-                createNode('zak-spoke2', 850, 150, 'Semantic Index', <BookOpen size={32} />),
-                createNode('zak-spoke3', 350, 500, 'Access Control', <CheckCircle size={32} />),
-                createNode('zak-spoke4', 850, 500, 'Cache', <Zap size={32} />),
+                createNode('zak-graph', 700, 350, 'Graph Central', <Map size={32} />, '/assets/architecture/knowledge_graph_holographic_1770292665853.png'),
+                createNode('zak-spoke1', 450, 140, 'Entity Sync', <RefreshCw size={32} />),
+                createNode('zak-spoke2', 950, 140, 'Semantic Index', <BookOpen size={32} />),
+                createNode('zak-spoke3', 450, 560, 'Access Control', <CheckCircle size={32} />),
+                createNode('zak-spoke4', 950, 560, 'Cache', <Zap size={32} />),
             ],
             edges: [
                 createEdge('zak-graph', 'zak-spoke1', 'tl-out', 'br-in'),
@@ -208,9 +208,9 @@ const zakraJourney: ProductJourneyData = {
             id: 'zak-out',
             title: 'Intelligence Delivery',
             nodes: [
-                createNode('zak-usr', 200, 325, 'User Query', <Search size={32} />),
-                createNode('zak-ai', 600, 325, 'Context AI', <Brain size={32} />),
-                createNode('zak-ans', 1000, 325, 'Smart Answer', <MessageSquare size={32} />),
+                createNode('zak-usr', 300, 325, 'User Query', <Search size={32} />),
+                createNode('zak-ai', 700, 325, 'Context AI', <Brain size={32} />),
+                createNode('zak-ans', 1100, 325, 'Smart Answer', <MessageSquare size={32} />),
             ],
             edges: [
                 createEdge('zak-usr', 'zak-ai', 'r-out', 'l-in'),
@@ -229,7 +229,7 @@ const jawibJourney: ProductJourneyData = {
             id: 'jaw-in',
             title: 'Omnichannel Entry',
             nodes: [
-                createNode('jaw-msg', 600, 325, 'Unified Inbox', <Inbox size={32} />, '/assets/architecture/message_inbound_holographic_1770292690901.png'),
+                createNode('jaw-msg', 700, 325, 'Unified Inbox', <Inbox size={32} />, '/assets/architecture/message_inbound_holographic_1770292690901.png'),
             ],
             edges: []
         },
@@ -237,9 +237,9 @@ const jawibJourney: ProductJourneyData = {
             id: 'jaw-route',
             title: 'Triage & Pathing',
             nodes: [
-                createNode('jaw-rte', 400, 325, 'Smart Router', <Workflow size={32} />),
-                createNode('jaw-res', 850, 175, 'AI Resolution', <CheckCircle size={32} />),
-                createNode('jaw-esc', 850, 475, 'Human Escalation', <ArrowRight size={32} />, '/assets/architecture/escalation_holographic_1770292729442.png'),
+                createNode('jaw-rte', 475, 325, 'Smart Router', <Workflow size={32} />),
+                createNode('jaw-res', 925, 175, 'AI Resolution', <CheckCircle size={32} />),
+                createNode('jaw-esc', 925, 475, 'Human Escalation', <ArrowRight size={32} />, '/assets/architecture/escalation_holographic_1770292729442.png'),
             ],
             edges: [
                 createEdge('jaw-rte', 'jaw-res', 'tr-out', 'bl-in'),
@@ -271,9 +271,9 @@ const fasihJourney: ProductJourneyData = {
             id: 'fas-in',
             title: 'Input Pre-processing',
             nodes: [
-                createNode('fas-txt', 200, 325, 'Text Input', <MessageSquare size={32} />),
-                createNode('fas-tok', 500, 325, 'Tokenizer', <Code size={32} />),
-                createNode('fas-det', 850, 325, 'Dialect ID', <Globe size={32} />),
+                createNode('fas-txt', 400, 325, 'Text Input', <MessageSquare size={32} />),
+                createNode('fas-tok', 650, 325, 'Tokenizer', <Code size={32} />),
+                createNode('fas-det', 1000, 325, 'Dialect ID', <Globe size={32} />),
             ],
             edges: [
                 createEdge('fas-txt', 'fas-tok', 'r-out', 'l-in'),
@@ -284,7 +284,7 @@ const fasihJourney: ProductJourneyData = {
             id: 'fas-proc',
             title: 'Neural Core',
             nodes: [
-                createNode('fas-llm', 600, 325, 'Arabic LLM', <Brain size={32} />, '/assets/architecture/arabic_llm_holographic_1770292748399.png'),
+                createNode('fas-llm', 700, 325, 'Arabic LLM', <Brain size={32} />, '/assets/architecture/arabic_llm_holographic_1770292748399.png'),
             ],
             edges: []
         },
@@ -292,9 +292,9 @@ const fasihJourney: ProductJourneyData = {
             id: 'fas-out',
             title: 'Generation Pipeline',
             nodes: [
-                createNode('fas-gen', 250, 325, 'Generation', <Sparkles size={32} />),
-                createNode('fas-aud', 600, 325, 'Compliance Audit', <CheckCircle size={32} />),
-                createNode('fas-fin', 950, 325, 'Final Output', <FileText size={32} />),
+                createNode('fas-gen', 350, 325, 'Generation', <Sparkles size={32} />),
+                createNode('fas-aud', 700, 325, 'Compliance Audit', <CheckCircle size={32} />),
+                createNode('fas-fin', 1050, 325, 'Final Output', <FileText size={32} />),
             ],
             edges: [
                 createEdge('fas-gen', 'fas-aud', 'r-out', 'l-in'),

@@ -32,6 +32,8 @@ export interface ProductContent {
     centerIconAlt?: string;
     /** Hero background video (e.g. /productvideo1.mp4). When set, used as cinematic hero background. Falls back to gradient when not set. */
     demoVideo?: string;
+    /** Complementary tagline for the hero title (e.g. Knowledge Synthesis) */
+    tagline?: string;
   };
   mission?: {
     title?: string;

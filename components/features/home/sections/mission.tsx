@@ -60,7 +60,7 @@ export function Mission({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=150%",
+          end: "+=120%",
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -149,6 +149,7 @@ export function Mission({
       padding="none"
       containerClassName="min-h-screen flex flex-col pt-32 pb-12 sm:pt-40 sm:pb-20"
       className="relative overflow-hidden z-20 bg-transparent"
+      containerMaxWidth="full"
     >
       <SectionHeader
         title={title}
@@ -156,18 +157,18 @@ export function Mission({
         badge="Our Mission"
         badgeIcon={Target}
         animate={false}
-        className="mission-header"
+        className="mission-header mb-10"
       />
 
       <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
         <div
           ref={trackRef}
-          className="flex gap-4 px-4 sm:px-12 md:px-24 w-max"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 sm:px-6 w-full max-w-[1400px] mx-auto"
         >
           {cards.map((card, index) => (
             <div
               key={index}
-              className="w-[300px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[380px] md:h-[420px] flex-shrink-0"
+              className="w-full h-[340px] sm:h-[380px] md:h-[420px]"
             >
               <MissionCard
                 title={card.title}

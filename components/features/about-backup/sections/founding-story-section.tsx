@@ -12,7 +12,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const SCROLL_DURATION = 800; // % of viewport for full story
+const SCROLL_DURATION = 400; // % of viewport for full story
 
 export function FoundingStorySection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -88,9 +88,9 @@ export function FoundingStorySection() {
   if (reduceMotion) {
     return (
       <div className="bg-dark">
-        <section className="py-20 sm:py-28 px-4 sm:px-6 md:px-8 max-w-4xl mx-auto space-y-24">
+        <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 max-w-4xl mx-auto space-y-24">
           <div className="text-center">
-            <p className="text-xl md:text-2xl font-light text-white/70 italic">
+            <p className="text-xl md:text-2xl font-normal text-white/70 italic">
               {foundingStoryConfig.hook}
             </p>
           </div>
@@ -101,7 +101,7 @@ export function FoundingStorySection() {
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 tracking-tight">
               {foundingStoryConfig.visionTitle}
             </h2>
-            <div className="text-light-gray-90 text-base sm:text-lg leading-relaxed space-y-4">
+            <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">
               {foundingStoryConfig.visionBody.split(/\n\n+/).map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
@@ -127,7 +127,7 @@ export function FoundingStorySection() {
 
       <div
         ref={stageContainerRef}
-        className="relative z-10 w-full h-full pt-20 pb-16 flex items-center justify-center px-4 sm:px-6"
+        className="relative z-10 w-full h-full py-12 sm:py-16 md:py-24 lg:py-32 flex items-center justify-center px-4 sm:px-6"
       >
         <div className="relative w-full max-w-4xl min-h-[400px] flex items-center justify-center">
           {/* Hook - matches problem-exploration intro text styling */}
@@ -135,7 +135,7 @@ export function FoundingStorySection() {
             ref={hookRef}
             className="absolute inset-0 flex items-center justify-center text-center pointer-events-none opacity-0"
           >
-            <p className="text-2xl md:text-3xl font-light text-white/70 max-w-3xl leading-relaxed italic">
+            <p className="text-2xl md:text-3xl font-normal text-white/70 max-w-3xl leading-relaxed italic">
               {foundingStoryConfig.hook}
             </p>
           </div>
@@ -164,7 +164,7 @@ export function FoundingStorySection() {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
                 {foundingStoryConfig.visionTitle}
               </h2>
-              <div className="text-light-gray-90 text-base sm:text-lg leading-relaxed space-y-4">
+              <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">
                 {foundingStoryConfig.visionBody.split(/\n\n+/).map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}

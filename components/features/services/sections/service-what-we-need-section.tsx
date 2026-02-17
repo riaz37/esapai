@@ -16,7 +16,7 @@ export function ServiceWhatWeNeedSection({
 }) {
   return (
     <Section
-      className="flex flex-col items-center justify-center py-24"
+      className="flex flex-col items-center justify-center"
       containerMaxWidth="wide"
       padding="md"
     >

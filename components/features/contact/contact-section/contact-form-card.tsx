@@ -1,5 +1,6 @@
 "use client";
 
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { forwardRef } from "react";
 import type { ChangeEvent, FormEvent } from "react";
@@ -29,21 +30,31 @@ export const ContactFormCard = forwardRef<
     onInputChange,
     onSubmit,
     onAgreedToTermsChange,
+  }: {
+    formData: ContactFormData;
+    agreedToTerms: boolean;
+    isSubmitting: boolean;
+    submissionState: SubmissionState;
+    onInputChange: (
+      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+    onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    onAgreedToTermsChange: (checked: boolean) => void;
   },
   ref
 ) {
   return (
-    <div className="lg:col-span-2 w-full">
-      <div
+    <div className="lg:col-span-1 w-full">
+      <Card
         ref={ref}
-        className="contact-form-card p-4 sm:p-5 md:p-6 lg:p-8 xl:p-10 rounded-2xl md:rounded-3xl"
+        className="contact-form-card px-6 sm:px-8 py-8 sm:py-10"
       >
         <form onSubmit={onSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
           {/* Full Name Field */}
           <div data-gsap="contact-form-item" className="space-y-1.5 sm:space-y-2">
             <label
               htmlFor="fullName"
-              className="text-white-opacity-70 text-xs sm:text-sm font-semibold tracking-wide block"
+              className="text-white/70 text-xs sm:text-sm font-semibold tracking-wide block"
             >
               Full Name
             </label>
@@ -63,7 +74,7 @@ export const ContactFormCard = forwardRef<
           <div data-gsap="contact-form-item" className="space-y-1.5 sm:space-y-2">
             <label
               htmlFor="email"
-              className="text-white-opacity-70 text-xs sm:text-sm font-semibold tracking-wide block"
+              className="text-white/70 text-xs sm:text-sm font-semibold tracking-wide block"
             >
               Email
             </label>
@@ -83,7 +94,7 @@ export const ContactFormCard = forwardRef<
           <div data-gsap="contact-form-item" className="space-y-1.5 sm:space-y-2">
             <label
               htmlFor="message"
-              className="text-white-opacity-70 text-xs sm:text-sm font-semibold tracking-wide block"
+              className="text-white/70 text-xs sm:text-sm font-semibold tracking-wide block"
             >
               Message
             </label>
@@ -105,7 +116,6 @@ export const ContactFormCard = forwardRef<
               type="submit"
               variant="primary"
               size="default"
-              showArrow={false}
               disabled={!agreedToTerms || isSubmitting}
               className="w-fit"
             >
@@ -125,7 +135,7 @@ export const ContactFormCard = forwardRef<
             />
             <label
               htmlFor="terms"
-              className="text-light-gray-90 text-xs sm:text-sm md:text-base cursor-pointer leading-relaxed"
+              className="text-white/60 text-xs sm:text-sm md:text-base cursor-pointer leading-relaxed"
             >
               By submitting, I agree to the{" "}
               <a
@@ -139,7 +149,7 @@ export const ContactFormCard = forwardRef<
             </label>
           </div>
         </form>
-      </div>
+      </Card>
     </div>
   );
 });
