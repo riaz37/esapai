@@ -16,7 +16,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
     isFlipped,
 }) => {
     return (
-        <div className="relative w-full h-full flex items-center justify-center pointer-events-none bg-black">
+        <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
             {/* Main Content Grid - Added pt-20 to clear fixed navbar */}
             <div className={`container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col ${isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"} items-center justify-between relative h-full gap-8 z-10 max-w-[1400px] pt-20`}>
 
