@@ -105,13 +105,13 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
           <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
             <h1
               ref={titleRef}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 md:mb-8 leading-[1.1] text-primary"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] text-primary"
             >
               Case Study
             </h1>
             <p
               ref={subtitleRef}
-              className="text-base sm:text-lg md:text-xl text-light-gray-90 max-w-2xl mx-auto px-4 sm:px-6"
+              className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto px-4 sm:px-6"
             >
               Where Innovation Meets Productivity Driven by agents Powered by
               automation Built for what&apos;s next

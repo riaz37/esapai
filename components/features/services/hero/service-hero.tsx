@@ -122,11 +122,11 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
             <TypewriterTitle
               title={title}
               splitMode="lastWord"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
               align="left"
             />
           ) : (
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tighter mb-6 text-left leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-left leading-[1.1]">
               {title}
             </h1>
           )}

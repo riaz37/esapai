@@ -82,7 +82,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
                     <div className="max-w-[1400px] mx-auto w-full mb-12 sm:mb-16">
                         <h1
                             ref={titleRef}
-                            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 md:mb-8 leading-[1.1] text-primary"
+                            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] text-primary"
                         >
                             {caseStudy.title}
                         </h1>

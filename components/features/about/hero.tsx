@@ -18,7 +18,7 @@ export const AboutHero: React.FC = () => {
                     transition={{ duration: 0.8 }}
                     className="mb-8"
                 >
-                    <Badge variant="outline" className="px-4 py-1.5 text-sm border-white/10 text-primary bg-white/5 backdrop-blur-sm rounded-full">
+                    <Badge variant="outline" className="px-4 py-1.5 text-[10px] sm:text-xs uppercase tracking-[0.2em] border-white/10 text-primary bg-white/5 backdrop-blur-sm rounded-full font-medium">
                         Legacy & Vision
                     </Badge>
                 </motion.div>
@@ -27,7 +27,7 @@ export const AboutHero: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.2 }}
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-8 leading-[1.1] text-white"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-[1.1] text-white"
                 >
                     Our <span className="text-primary">Legacy</span>
                 </motion.h1>
