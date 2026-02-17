@@ -153,8 +153,8 @@ export function MissionCard({
             <div className="flex flex-col gap-2 items-start h-full relative w-full z-40 pointer-events-none">
                 <div className="flex-1 min-h-[140px]" />
                 <div className="w-full mt-auto">
-                    <h3 className="text-[#fafafa] text-xl font-semibold mb-2">{title}</h3>
-                    <p className="text-[#a1a1aa] text-sm font-normal leading-relaxed">
+                    <h3 className="text-white text-xl font-semibold mb-2">{title}</h3>
+                    <p className="text-white/60 text-sm font-normal leading-relaxed">
                         {description}
                     </p>
                 </div>

@@ -42,9 +42,11 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
-                    end: "+=1500%", // Extended for maximum buttery smoothness
+                    end: "+=350%", // Reduced from 600% to reduce dead scroll space
                     pin: true,
-                    scrub: 1.5, // Increased viscosity for smoother feel
+                    scrub: 1, // Tighter response
+                    anticipatePin: 1,
+                    invalidateOnRefresh: true,
                 },
             });
 
@@ -56,42 +58,56 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 const el = imagesRef.current[index];
                 if (!el) return;
 
-                // All images start as "Blades" in the background
-                gsap.set(el, {
-                    opacity: 0,
-                    z: -1500,
-                    rotationY: index % 2 === 0 ? 45 : -45,
-                    scaleX: 0.1, // Blade state
-                    xPercent: index % 2 === 0 ? 150 : -150,
-                    filter: "blur(20px) brightness(2)",
-                });
+                if (index === 0) {
+                    // First image starts VISIBLE and CENTERED
+                    gsap.set(el, {
+                        opacity: 1,
+                        z: 0,
+                        rotationY: 0,
+                        scaleX: 1,
+                        xPercent: 0,
+                        filter: "blur(0px) brightness(1)",
+                    });
+                } else {
+                    // Others start as "Blades" in the background
+                    gsap.set(el, {
+                        opacity: 0,
+                        z: -1500,
+                        rotationY: index % 2 === 0 ? 45 : -45,
+                        scaleX: 0.1, // Blade state
+                        xPercent: index % 2 === 0 ? 150 : -150,
+                        filter: "blur(20px) brightness(2)",
+                    });
+                }
             });
 
-            // 2. Introduction: System Warm-up
-            tl.to(".header-wrap", { opacity: 0, y: -50, scale: 0.9, duration: 2, ease: "power4.inOut" }, 0);
-
-
-            // 3. The Deck Orchestration
+            // 2. The Deck Orchestration
             REEL_IMAGES.forEach((_, index) => {
-                const startTime = 2 + (index * 4);
-                const holdDuration = 2; // Sharp focal hold
-                const transitionDuration = 2;
+                // Tighter timing calculation
+                const startTime = index * 3; // Shifted start time
+                const holdDuration = 1.5;
+                const transitionDuration = 1.5;
 
                 const el = imagesRef.current[index];
 
-                // STEP A: The "Unfurl" - Buttery smooth entry
-                tl.to(el, {
-                    opacity: 1,
-                    z: 0,
-                    rotationY: 0,
-                    scaleX: 1,
-                    xPercent: 0,
-                    filter: "blur(0px) brightness(1)",
-                    duration: transitionDuration,
-                    ease: "power4.out"
-                }, startTime);
+                if (index === 0) {
+                    // First image is already visible - SKIP entrance animation
+                    // It just waits for its turn to be discarded
+                } else {
+                    // STEP A: The "Unfurl" - Buttery smooth entry for subsequent images
+                    tl.to(el, {
+                        opacity: 1,
+                        z: 0,
+                        rotationY: 0,
+                        scaleX: 1,
+                        xPercent: 0,
+                        filter: "blur(0px) brightness(1)",
+                        duration: transitionDuration,
+                        ease: "power4.out"
+                    }, startTime);
+                }
 
-                // STEP B: The Focal Hold - Smooth drift
+                // STEP B: The Focal Hold - Smooth drift (Applied to ALL)
                 tl.to(el, {
                     z: 100, // Slightly more drift
                     duration: holdDuration,
@@ -110,12 +126,12 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                         ease: "expo.in"
                     }, startTime + transitionDuration + holdDuration);
                 } else {
-                    // Final Dissolve
+                    // Final Dissolve - Much faster now
                     tl.to(containerRef.current, {
                         opacity: 0,
-                        duration: 3,
-                        ease: "power3.inOut"
-                    }, startTime + transitionDuration + holdDuration + 1);
+                        duration: 1, // Faster fade out
+                        ease: "power2.inOut"
+                    }, startTime + transitionDuration + holdDuration + 0.5);
                 }
             });
 
@@ -140,62 +156,56 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
     );
 
     return (
-        <Section
-            ref={containerRef}
-            withContainer={false}
-            className="relative w-full h-screen overflow-hidden text-white font-sans"
-            padding="none"
-        >
+        <div className="relative w-full">
             {/* 1. Deep Space Atmosphere — matches site background */}
-            {/* Removed custom bg-[#09090b] div as Section handles it */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] opacity-50" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] opacity-50 pointer-events-none" />
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
 
-            {/* 2. Transition Header — product-specific label */}
-            <div className="header-wrap absolute inset-0 z-50 flex flex-col items-center justify-start pt-48 md:pt-56 pointer-events-none">
-                <div className="container mx-auto px-4">
-                    <SectionHeader
-                        title="Architecture Deck"
-                        subtitle={architectureSubtitle}
-                        badge="Visual Index"
-                        badgeIcon={Layers}
-                        align="center"
-                    />
-                </div>
+            {/* 2. Transition Header — Unpinned, Natural Scroll directly above deck */}
+            <div className="container mx-auto px-6 py-20 pb-0 relative z-20">
+                <SectionHeader
+                    title="Architecture Deck"
+                    subtitle={architectureSubtitle}
+                    badge="Visual Index"
+                    badgeIcon={Layers}
+                    align="center"
+                    className="mb-0"
+                    animate={true}
+                />
             </div>
 
-            {/* 3. The Kinetic 3D Deck Stage */}
-            <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu translate-y-4 md:translate-y-8" style={{ transformStyle: 'preserve-3d' }}>
-                <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
-                    {REEL_IMAGES.map((src, idx) => (
-                        <div
-                            key={src}
-                            ref={(el) => { imagesRef.current[idx] = el; }}
-                            className="absolute w-[70vw] h-[75vh] will-change-transform"
-                            style={{ transformStyle: 'preserve-3d' }}
-                        >
-                            {/* Inner Card UI - Stripped of styles */}
-                            <div className="relative w-full h-full overflow-hidden">
-                                <img
-                                    src={src}
-                                    alt={`Blade ${idx}`}
-                                    className="w-full h-full object-cover"
-                                />
+            {/* 3. The Kinetic 3D Deck Stage - Pinned Container */}
+            <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden -mt-20">
+                <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu mt-10" style={{ transformStyle: 'preserve-3d' }}>
+                    <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
+                        {REEL_IMAGES.map((src, idx) => (
+                            <div
+                                key={src}
+                                ref={(el) => { imagesRef.current[idx] = el; }}
+                                className="absolute w-[70vw] h-[75vh] will-change-transform"
+                                style={{ transformStyle: 'preserve-3d' }}
+                            >
+                                {/* Inner Card UI - Stripped of styles */}
+                                <div className="relative w-full h-full overflow-hidden">
+                                    <img
+                                        src={src}
+                                        alt={`Blade ${idx}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+
+                                {/* Prismatic Flair */}
+                                <div className="absolute -inset-1 bg-gradient-to-tr from-primary/20 via-transparent to-primary/20 blur-2xl -z-10 opacity-30" />
                             </div>
-
-                            {/* Prismatic Flair */}
-                            <div className="absolute -inset-1 bg-gradient-to-tr from-primary/20 via-transparent to-primary/20 blur-2xl -z-10 opacity-30" />
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+
+                {/* 5. Edge Masking */}
+                <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(9,9,11,0.6)] z-40" />
+                <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#09090b] to-transparent z-45" />
+                <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#09090b] to-transparent z-45" />
             </div>
-
-
-
-            {/* 5. Edge Masking */}
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(9,9,11,0.6)] z-40" />
-            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#09090b] to-transparent z-45" />
-            <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#09090b] to-transparent z-45" />
-        </Section>
+        </div>
     );
 }

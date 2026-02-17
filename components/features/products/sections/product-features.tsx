@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { FeatureCard, FeatureTitle, FeatureDescription } from "@/components/ui";
 import { Section } from "@/components/ui/section";
 import type { ProductFeatureItem } from "@/types/ui";
@@ -14,6 +14,7 @@ export function ProductFeatures({
   features,
   className,
 }: ProductFeaturesProps) {
+  const containerRef = useRef<HTMLElement>(null);
   if (!features || features.length === 0) {
     return null;
   }
@@ -27,9 +28,10 @@ export function ProductFeatures({
 
   return (
     <Section
-      className={`relative z-20 py-10 lg:py-40 ${className || ""
-        }`}
-      containerMaxWidth="xl"
+      ref={containerRef}
+      className="relative overflow-hidden"
+      containerMaxWidth="wide"
+      padding="lg"
     >
       {(title || subtitle) && (
         <div className="px-4 sm:px-6 md:px-8 lg:px-12">

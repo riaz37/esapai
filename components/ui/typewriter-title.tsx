@@ -5,21 +5,27 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface TypewriterTitleProps {
-    /** The full title text to animate */
+    /** The full title text to animate (Part 1 in manual mode) */
     title: string;
     /** 
      * How to split the title for highlighting:
-     * - "lastWord": Highlights the last word in primary color (default)
-     * - "secondLine": Treats the title as two lines separated by newline
+     * - "lastWord": Highlights the last word (default)
+     * - "firstWord": Highlights the first word
+     * - "secondLine": Treats Part 2 as a separate line
+     * - "manual": Explicitly uses 'title' as Part 1 and 'tagline' as Part 2
      */
-    splitMode?: "lastWord" | "secondLine";
+    splitMode?: "lastWord" | "firstWord" | "secondLine" | "manual";
+    /** Which part to highlight with the primary color */
+    highlightPart?: "first" | "last";
+    /** The tagline or second part of the title for manual/secondLine modes */
+    tagline?: string;
     /** Custom class for the main title wrapper */
     className?: string;
     /** Custom class for the white/main text portion */
     mainTextClassName?: string;
     /** Custom class for the highlighted/primary text portion */
     highlightTextClassName?: string;
-    /** For secondLine mode: provide the second line separately */
+    /** @deprecated Use 'tagline' instead */
     secondLine?: string;
     /** Delay before animation starts (in seconds) */
     startDelay?: number;
@@ -59,7 +65,7 @@ const AnimatedLetter = ({
             delay: startDelay + (staggerDelay * index),
             ease: [0.25, 0.46, 0.45, 0.94],
         }}
-        className={className}
+        className={cn("inline-block", className)}
     >
         {letter === " " ? "\u00A0" : letter}
     </motion.span>
@@ -77,6 +83,8 @@ const AnimatedLetter = ({
 export function TypewriterTitle({
     title,
     splitMode = "lastWord",
+    highlightPart = "last",
+    tagline,
     className,
     mainTextClassName,
     highlightTextClassName,
@@ -87,24 +95,37 @@ export function TypewriterTitle({
     showGlow = true,
     align = "left",
 }: TypewriterTitleProps) {
-    // Parse title into main and highlighted parts
-    const { mainText, highlightText } = useMemo(() => {
-        if (splitMode === "secondLine" && secondLine) {
+    // Aliasing secondLine to tagline for backward compatibility
+    const effectiveTagline = tagline || secondLine;
+
+    // Parse title into parts
+    const { part1, part2, highlightIndex } = useMemo(() => {
+        const hIdx = highlightPart === "first" ? 0 : 1;
+
+        if ((splitMode === "secondLine" || splitMode === "manual") && effectiveTagline) {
             return {
-                mainText: title,
-                highlightText: secondLine,
+                part1: title,
+                part2: effectiveTagline,
+                highlightIndex: hIdx,
             };
         }
 
-        // Default: highlight last word
         const words = title.split(' ');
-        const mainTitle = words.slice(0, -1).join(' ');
-        const highlightWord = words.slice(-1)[0];
+        if (splitMode === "firstWord") {
+            return {
+                part1: words[0],
+                part2: words.slice(1).join(' '),
+                highlightIndex: 0, // Force first word if mode is firstWord
+            };
+        }
+
+        // Default: last word
         return {
-            mainText: mainTitle,
-            highlightText: highlightWord,
+            part1: words.slice(0, -1).join(' '),
+            part2: words.slice(-1)[0],
+            highlightIndex: 1, // Force last word if mode is lastWord
         };
-    }, [title, splitMode, secondLine]);
+    }, [title, splitMode, effectiveTagline, highlightPart]);
 
     const alignmentClass = {
         left: "text-left",
@@ -112,45 +133,92 @@ export function TypewriterTitle({
         right: "text-right",
     }[align];
 
+    // Determine which part is highlighted
+    const isPart1Highlighted = highlightIndex === 0;
+    const isPart2Highlighted = highlightIndex === 1;
+
+    let indexCounter = 0;
+
     return (
         <h1 className={cn(
             "text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight",
             alignmentClass,
             className
         )}>
-            {/* Main text with typewriter animation */}
-            <span className={cn("block text-white", mainTextClassName)}>
-                {mainText.split('').map((letter, index) => (
-                    <AnimatedLetter
-                        key={index}
-                        letter={letter}
-                        index={index}
-                        duration={letterDuration}
-                        staggerDelay={staggerDelay}
-                        startDelay={startDelay}
-                    />
-                ))}
-            </span>
-
-            {/* Highlighted text with typewriter + optional glow effect */}
-            <span className="block relative">
-                {showGlow && (
+            {/* Part 1 */}
+            <span className={cn(
+                "block relative",
+                isPart1Highlighted ? "text-primary" : "text-white",
+                isPart1Highlighted ? highlightTextClassName : mainTextClassName
+            )}>
+                {isPart1Highlighted && showGlow && (
                     <span
                         className="absolute inset-0 blur-2xl bg-primary/20 animate-pulse-slow"
                         aria-hidden="true"
                     />
                 )}
-                <span className={cn("relative", highlightTextClassName)}>
-                    {highlightText.split('').map((letter, index) => (
-                        <AnimatedLetter
-                            key={index}
-                            letter={letter}
-                            index={mainText.length + index + 1}
-                            duration={letterDuration}
-                            staggerDelay={staggerDelay}
-                            startDelay={startDelay}
-                            className="text-primary"
-                        />
+                <span className="relative">
+                    {part1.split(' ').map((word, wordIndex, wordsArr) => (
+                        <span key={wordIndex} className="inline-block whitespace-nowrap">
+                            {word.split('').map((letter, letterIndex) => (
+                                <AnimatedLetter
+                                    key={letterIndex}
+                                    letter={letter}
+                                    index={indexCounter++}
+                                    duration={letterDuration}
+                                    staggerDelay={staggerDelay}
+                                    startDelay={startDelay}
+                                />
+                            ))}
+                            {wordIndex < wordsArr.length - 1 && (
+                                <AnimatedLetter
+                                    letter=" "
+                                    index={indexCounter++}
+                                    duration={letterDuration}
+                                    staggerDelay={staggerDelay}
+                                    startDelay={startDelay}
+                                />
+                            )}
+                        </span>
+                    ))}
+                </span>
+            </span>
+
+            {/* Part 2 */}
+            <span className={cn(
+                "block relative",
+                isPart2Highlighted ? "text-primary" : "text-white",
+                isPart2Highlighted ? highlightTextClassName : mainTextClassName
+            )}>
+                {isPart2Highlighted && showGlow && (
+                    <span
+                        className="absolute inset-0 blur-2xl bg-primary/20 animate-pulse-slow"
+                        aria-hidden="true"
+                    />
+                )}
+                <span className="relative">
+                    {part2.split(' ').map((word, wordIndex, wordsArr) => (
+                        <span key={wordIndex} className="inline-block whitespace-nowrap">
+                            {word.split('').map((letter, letterIndex) => (
+                                <AnimatedLetter
+                                    key={letterIndex}
+                                    letter={letter}
+                                    index={indexCounter++}
+                                    duration={letterDuration}
+                                    staggerDelay={staggerDelay}
+                                    startDelay={startDelay}
+                                />
+                            ))}
+                            {wordIndex < wordsArr.length - 1 && (
+                                <AnimatedLetter
+                                    letter=" "
+                                    index={indexCounter++}
+                                    duration={letterDuration}
+                                    staggerDelay={staggerDelay}
+                                    startDelay={startDelay}
+                                />
+                            )}
+                        </span>
                     ))}
                 </span>
             </span>

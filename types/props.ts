@@ -19,6 +19,7 @@ export interface ProductHeroProps {
   centerIcon?: string;
   centerIconAlt?: string;
   productSlug?: string;
+  tagline?: string;
 }
 
 export interface ServiceHeroProps {

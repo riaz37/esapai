@@ -108,7 +108,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
         badge="Proof"
         badgeIcon={BarChart3}
         align="center"
-        className="mb-20"
+        className="mb-10"
       />
 
       {/* Metrics grid — same structure as landing achievement section (with visible grid lines) */}
@@ -142,7 +142,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
                 >
                   {metric.value}
                 </span>
-                <span className="text-sm sm:text-base text-white/90 font-bold uppercase tracking-[0.2em]">
+                <span className="text-white text-label-caps">
                   {metric.label}
                 </span>
               </div>

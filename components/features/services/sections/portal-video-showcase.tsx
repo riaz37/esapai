@@ -95,22 +95,26 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
 
             <div ref={wrapperRef} className="relative w-full h-full">
 
-                {/* Text Content (Initial Right Side) */}
-                <div
-                    ref={textRef}
-                    className="absolute top-[20%] right-[10%] w-[40%] pl-10 z-10 hidden md:block"
-                >
-                    <div className="mb-6">
-                        <BadgeChip label="Before & after" icon={GitCompare} />
+                {/* Text Content (Initial Right Side) - Aligned to Container */}
+                <div className="absolute inset-x-0 top-[20%] z-10 pointer-events-none">
+                    <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+                        <div
+                            ref={textRef}
+                            className="w-full md:w-[45%] lg:w-[40%] ml-auto pointer-events-auto hidden md:block"
+                        >
+                            <div className="mb-6">
+                                <BadgeChip label="Before & after" icon={GitCompare} />
+                            </div>
+                            <h2 className="text-4xl md:text-6xl font-bold leading-tight text-white mb-6">
+                                {title}
+                            </h2>
+                            {subtitle && (
+                                <p className="text-xl text-gray-400 max-w-lg leading-relaxed">
+                                    {subtitle}
+                                </p>
+                            )}
+                        </div>
                     </div>
-                    <h2 className="text-4xl md:text-6xl font-bold leading-tight text-white mb-6">
-                        {title}
-                    </h2>
-                    {subtitle && (
-                        <p className="text-xl text-gray-400 max-w-lg leading-relaxed">
-                            {subtitle}
-                        </p>
-                    )}
                 </div>
 
                 {/* Mobile Text (Visible only on small screens, static) */}

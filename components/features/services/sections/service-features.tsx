@@ -349,7 +349,7 @@ export function ServiceFeatures({
         badgeIcon={Layers}
         title={title}
         subtitle={subtitle}
-        subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4 mb-16"
+        subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4 mb-10"
       />
 
       {/* Mobile/Tablet View - Vertically Stacked Cards */}

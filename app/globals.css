@@ -15,6 +15,11 @@
       transform: translateX(200%) skewX(-20deg);
     }
   }
+
+  /* Cinematic Tracking Tokens */
+  --tracking-cinematic: 0.2em;
+  --tracking-cinematic-wide: 0.3em;
+  --tracking-cinematic-widest: 0.5em;
 }
 
 @layer base {
@@ -234,6 +239,12 @@
   /* Standardized Text Styles (Removing static gradients) */
   .text-premium-body {
     color: rgba(255, 255, 255, 0.9);
+  }
+
+  .text-label-caps {
+    @apply uppercase tracking-cinematic font-bold;
+    font-size: 11px;
+    /* Standardize the small label size */
   }
 
 

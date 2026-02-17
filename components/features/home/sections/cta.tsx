@@ -230,7 +230,7 @@ export function CTASection({
                         >
                             <Link ref={primaryButtonRef} href={primaryButtonHref} className="inline-flex items-center gap-2 group">
                                 <span>{primaryButtonText ?? (product ? "Get Started" : "Start Building Now")}</span>
-                                <ButtonArrow />
+                                <ButtonArrow size="lg" />
                             </Link>
                         </Button>
                     </div>

@@ -37,6 +37,7 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
           centerIcon={content.hero?.centerIcon}
           centerIconAlt={content.hero?.centerIconAlt}
           productSlug={slug}
+          tagline={content.hero?.tagline}
         />
       </div>
 

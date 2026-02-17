@@ -67,12 +67,12 @@ const Node = ({ title, icon, x, y, items, subtitle, size = 'md', active }: NodeP
                 </div>
 
                 {/* Title */}
-                <h3 className={`font-bold tracking-wider text-center ${isLarge ? 'text-lg' : 'text-sm'} uppercase text-white/90`}>
+                <h3 className={`text-center ${isLarge ? 'text-lg' : 'text-sm'} text-white/90 text-label-caps`}>
                     {title}
                 </h3>
 
                 {subtitle && (
-                    <p className="text-[10px] text-white/40 mt-1 uppercase tracking-tighter">{subtitle}</p>
+                    <p className="text-white/40 mt-1 text-label-caps tracking-cinematic-widest">{subtitle}</p>
                 )}
 
                 {/* List Items */}
@@ -254,11 +254,11 @@ export const AivmBlockchainFlow = () => {
         >
             {/* Context Header - Fades out during deep zoom */}
             <div className="absolute top-12 left-8 md:top-16 md:left-16 z-20 pointer-events-none mix-blend-difference">
-                <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tighter uppercase">
+                <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tighter text-label-caps">
                     AIVM Ecosystem
                 </h2>
                 <div className="flex items-center gap-2 mt-4 text-[#13F584] font-mono text-xs tracking-[0.3em] uppercase">
-                    <span>Live Flow</span>
+                    <span className="text-label-caps tracking-cinematic-widest">Live Flow</span>
                     <div className="w-12 h-[1px] bg-[#13F584]" />
                 </div>
             </div>

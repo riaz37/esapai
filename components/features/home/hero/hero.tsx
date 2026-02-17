@@ -249,7 +249,7 @@ export function Hero() {
                     {/* Subtitle/Description */}
                     <div
                         ref={subtitleRef}
-                        className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized tracking-tight"
+                        className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white-opacity-70 max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized tracking-cinematic"
                     >
                         <p>
                             Transform your business with intelligent automation, voice-activated
@@ -262,13 +262,13 @@ export function Hero() {
                     <Button
                         ref={buttonRef}
                         variant="primary"
-                        size="lg"
+                        size="default"
                         className="gsap-scale-in-optimized"
                         asChild
                     >
                         <Link href="/contact" className="inline-flex items-center gap-2 group">
                             <span>Get Started</span>
-                            <ButtonArrow />
+                            <ButtonArrow size="default" />
                         </Link>
                     </Button>
                 </div>

@@ -44,7 +44,7 @@ export const ContactLeftColumn = forwardRef<
   };
 
   return (
-    <div ref={ref} className="lg:col-span-3 space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-8">
+    <div ref={ref} className="lg:col-span-1 space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-8">
       {/* Badge Indicator */}
       <div data-gsap="contact-left-item" className="mb-2">
         <BadgeChip label="Get in touch" icon={MessageSquare} />
@@ -54,7 +54,7 @@ export const ContactLeftColumn = forwardRef<
       <div className="space-y-4">
         <h1
           data-gsap="contact-left-item"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] tracking-tight pb-2"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tighter pb-2"
         >
           <span className="text-white">Contact us today.</span>
           <br />
@@ -73,7 +73,7 @@ export const ContactLeftColumn = forwardRef<
       {/* Description */}
       <p
         data-gsap="contact-left-item"
-        className="text-light-gray-90 text-base sm:text-lg md:text-xl max-w-2xl"
+        className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl"
       >
         Whether you have a question, a comment, or just want to say hello, please
         don&apos;t hesitate to get in touch.

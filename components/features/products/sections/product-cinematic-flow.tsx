@@ -130,7 +130,7 @@ function ProblemSceneCard({
             <CardHeader className="pb-4 px-6 pt-6">
                 <div className="flex justify-between items-center mb-2">
                     <Icon className="w-5 h-5 text-red-500 shrink-0" />
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-red-500 font-mono font-medium">ERR_0{problem.id}</span>
+                    <span className="text-red-500 font-mono text-label-caps">ERR_0{problem.id}</span>
                 </div>
                 <div ref={titleRef as React.RefObject<HTMLDivElement>} className="opacity-0">
                     <CardTitle className="text-white text-xl md:text-2xl font-bold tracking-tight leading-tight">
@@ -140,7 +140,7 @@ function ProblemSceneCard({
             </CardHeader>
             <CardContent className="px-6 pb-8">
                 <div ref={descRef as React.RefObject<HTMLDivElement>} className="opacity-0">
-                    <CardDescription className="text-gray-400 text-sm md:text-base font-normal leading-relaxed">
+                    <CardDescription className="text-white/60 text-sm md:text-base font-normal leading-relaxed">
                         {problem.description}
                     </CardDescription>
                 </div>
@@ -211,7 +211,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=800%",
+                end: "+=400%",
                 pin: true,
                 scrub: 1,
                 anticipatePin: 1,
@@ -391,9 +391,8 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
 
 
 
-            {/* Problem scenes: one card per scene, alternating left/right; only one visible at a time */}
-            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 md:px-8 pt-16 pb-20 pointer-events-none">
-                <div className="relative w-full max-w-5xl h-full flex items-center justify-center">
+            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 md:px-8 pt-24 md:pt-32 pb-24 md:pb-32 pointer-events-none">
+                <div className="relative w-full max-w-[1400px] h-full flex items-center justify-center">
                     {problems.map((p, i) => (
                         <div
                             key={p.id}
@@ -463,7 +462,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                                             <CardHeader className="pb-4 px-6 pt-6">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <ProblemIcon className="w-5 h-5 text-red-500 shrink-0" />
-                                                    <span className="text-[10px] uppercase tracking-[0.2em] text-red-500 font-mono font-medium">
+                                                    <span className="text-red-500 font-mono text-label-caps">
                                                         ERR_0{p.id}
                                                     </span>
                                                 </div>
@@ -484,7 +483,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                                             <CardHeader className="pb-4 px-6 pt-6">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <SolIcon className="w-5 h-5 text-primary shrink-0" />
-                                                    <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-mono font-bold glow-primary">
+                                                    <span className="text-primary font-mono text-label-caps glow-primary">
                                                         {p.solImpact}
                                                     </span>
                                                 </div>
@@ -496,7 +495,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                                             </CardHeader>
                                             <CardContent className="px-6 pb-8">
                                                 <div ref={(el) => { solDescRefs.current[i] = el; }} className="opacity-0">
-                                                    <CardDescription className="text-gray-400 text-sm md:text-base font-normal leading-relaxed">
+                                                    <CardDescription className="text-white/60 text-sm md:text-base font-normal leading-relaxed">
                                                         {p.solDesc}
                                                     </CardDescription>
                                                 </div>

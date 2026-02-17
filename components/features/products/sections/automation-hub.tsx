@@ -47,7 +47,7 @@ export function AutomationHub({
   const glowRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Section ref={sectionRef} className="relative">
+    <Section ref={sectionRef} className="relative" padding="lg">
       <div ref={glowRef} className="absolute inset-0 z-0 opacity-30">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>

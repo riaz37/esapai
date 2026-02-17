@@ -34,7 +34,7 @@ const getProductIconPath = (slug?: string, centerIcon?: string): string | null =
   return null;
 };
 
-export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug }: ProductHeroProps) {
+export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug, tagline }: ProductHeroProps) {
   const iconPath = getProductIconPath(productSlug, centerIcon);
   const iconAlt = centerIconAlt || `${title} Icon`;
 
@@ -50,18 +50,22 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
           {/* Left Content */}
           <div className="flex flex-col items-start text-left max-w-2xl">
 
-            <TypewriterTitle
-              title={title}
-              splitMode="lastWord"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6"
-              align="left"
-            />
+            <div className="flex flex-col mb-6">
+              <TypewriterTitle
+                title={title}
+                tagline={tagline}
+                splitMode="manual"
+                highlightPart="first"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter"
+                align="left"
+              />
+            </div>
 
             <div className="space-y-4 mb-10 max-w-lg">
               {subtitle.map((line, index) => (
                 <p
                   key={index}
-                  className="text-lg md:text-xl text-white/70 leading-relaxed font-light"
+                  className="text-lg md:text-xl text-white/70 leading-relaxed font-normal"
                 >
                   {line}
                 </p>
@@ -71,22 +75,13 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
             <div className="flex flex-wrap items-center gap-5">
               <Button
                 variant="primary"
-                size="lg"
+                size="default"
                 asChild
+                className="pr-1.5"
               >
                 <Link href="#explore" className="inline-flex items-center gap-2 group">
                   <span>Explore Solution</span>
                   <ButtonArrow />
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                asChild
-              >
-                <Link href="#features" className="flex items-center gap-2">
-                  View Features
-                  <ChevronRight className="w-4 h-4" />
                 </Link>
               </Button>
             </div>

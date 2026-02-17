@@ -17,7 +17,7 @@ export function BadgeChip({ label, icon: Icon, className }: BadgeChipProps) {
     return (
         <div
             className={cn(
-                "group inline-flex items-center gap-2 px-3 py-1.5 rounded-full",
+                "group inline-flex items-center gap-2 px-4 py-2 rounded-full",
                 "border border-white/10 relative",
                 "transition-all duration-300",
                 "hover:border-[#13F584]/30",
@@ -33,7 +33,7 @@ export function BadgeChip({ label, icon: Icon, className }: BadgeChipProps) {
                     <Icon className="w-4 h-4 text-[#13F584] drop-shadow-[0_0_8px_rgba(19,245,132,0.4)]" strokeWidth={2.5} />
                 </div>
             )}
-            <span className="text-[#13F584] text-xs sm:text-sm font-semibold pr-3.5 tracking-tight leading-none">
+            <span className="text-[#13F584] text-label-caps">
                 {label}
             </span>
         </div>

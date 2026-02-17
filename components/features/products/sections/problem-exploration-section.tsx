@@ -116,7 +116,7 @@ export function ProblemExplorationSection({
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
-                    end: "+=1200%",
+                    end: "+=600%",
                     pin: true,
                     scrub: 1.2,
                     anticipatePin: 1
@@ -220,7 +220,7 @@ export function ProblemExplorationSection({
 
 
             {/* MAIN STAGE */}
-            <div className="relative z-10 w-full h-full pt-40 flex items-center justify-center px-4">
+            <div className="relative z-10 w-full h-full pt-24 md:pt-32 flex items-center justify-center px-4">
                 <div className="relative w-full max-w-[1400px]" style={{ height: '450px' }}>
 
 
@@ -230,7 +230,7 @@ export function ProblemExplorationSection({
                         ref={storyRef}
                         className="absolute inset-0 flex items-center justify-center text-center pointer-events-none opacity-0"
                     >
-                        <p className="text-2xl md:text-3xl font-light text-white/70 max-w-3xl leading-relaxed italic">
+                        <p className="text-2xl md:text-3xl font-normal text-white/70 max-w-3xl leading-relaxed italic">
                             "Behind every great enterprise, friction hides in plain sight..."
                         </p>
                     </div>
@@ -256,14 +256,14 @@ export function ProblemExplorationSection({
                                             <CardHeader className="pb-3 px-5">
                                                 <div className="flex items-center justify-between w-full">
                                                     <div className="p-2 rounded-lg bg-zinc-800/50 border border-zinc-700/30">
-                                                        <Icon className="w-4 h-4 text-zinc-400" />
+                                                        <Icon className="w-4 h-4 text-white/60" />
                                                     </div>
-                                                    <span className={`text-[9px] font-mono uppercase tracking-widest ${problem.accent}`}>Entropy Pt.{problem.id}</span>
+                                                    <span className={`${problem.accent} text-label-caps tracking-cinematic-widest`}>Entropy Pt.{problem.id}</span>
                                                 </div>
                                             </CardHeader>
                                             <CardContent className="pt-0 px-5 pb-6">
                                                 <CardTitle className="text-sm md:text-base font-medium text-zinc-100 mb-1.5">{problem.title}</CardTitle>
-                                                <CardDescription className="text-zinc-500 text-xs md:text-sm leading-relaxed">
+                                                <CardDescription className="text-white/40 text-xs md:text-sm leading-relaxed">
                                                     {problem.description}
                                                 </CardDescription>
                                             </CardContent>
@@ -328,12 +328,12 @@ export function ProblemExplorationSection({
                                                     <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                                                         <Icon className="w-4 h-4 text-primary" />
                                                     </div>
-                                                    <span className="text-[9px] font-mono text-primary uppercase tracking-widest font-bold glow-primary">{solution.impact}</span>
+                                                    <span className="text-primary text-label-caps tracking-cinematic-widest glow-primary">{solution.impact}</span>
                                                 </div>
                                             </CardHeader>
                                             <CardContent className="pt-0 px-5 pb-6">
                                                 <CardTitle className="text-sm md:text-base text-white mb-1">{solution.title}</CardTitle>
-                                                <CardDescription className="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                                                <CardDescription className="text-white/60 text-xs md:text-sm leading-relaxed">
                                                     {solution.description}
                                                 </CardDescription>
                                             </CardContent>

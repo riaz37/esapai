@@ -32,6 +32,7 @@ export const products: Product[] = [
         centerIcon: "/products/voiceerp.svg",
         centerIconAlt: "Voice ERP Icon",
         demoVideo: "/productvideo1.mp4",
+        tagline: "Operational Intelligence",
       },
       mission: {
         title: "Enterprise Voice Operations",
@@ -142,6 +143,7 @@ export const products: Product[] = [
         centerIcon: "/products/ai-framework.svg",
         centerIconAlt: "AI Framework Icon",
         demoVideo: "/productvideo2.mp4",
+        tagline: "Agent Orchestration",
       },
       mission: {
         title: "Decentralized Intelligence Network",
@@ -252,6 +254,7 @@ export const products: Product[] = [
         centerIcon: "/products/zakra.svg",
         centerIconAlt: "Zakra Knowledge Agent Icon",
         demoVideo: "/productvideo3.mp4",
+        tagline: "Knowledge Synthesis",
       },
       mission: {
         title: "Unified Knowledge Intelligence",
@@ -362,6 +365,7 @@ export const products: Product[] = [
         centerIcon: "/products/jawib.svg",
         centerIconAlt: "Jawib Customer Service Agent Icon",
         demoVideo: "/productvideo4.mp4",
+        tagline: "Service Automation",
       },
       mission: {
         title: "Automated Support Resolution",
@@ -472,6 +476,7 @@ export const products: Product[] = [
         centerIcon: "/products/fasih.svg",
         centerIconAlt: "Fasih Arabic LLM Icon",
         demoVideo: "/fasih-demo.mp4",
+        tagline: "Cultural Nuance",
       },
       mission: {
         title: "Nuanced Arabic Understanding",

@@ -89,7 +89,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
 
                         <p
                             ref={subtitleRef}
-                            className="text-base sm:text-lg md:text-xl text-light-gray-90 max-w-2xl mb-10"
+                            className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mb-10"
                         >
                             {caseStudy.subtitle}
                         </p>
