@@ -2,9 +2,14 @@
 
 import { m, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { Player } from "@remotion/player";
 import { usePathname } from "next/navigation";
-import { LogoBootSequence } from "@/components/features/products/hero/remotion/LogoBootSequence";
+import dynamic from "next/dynamic";
+
+// Dynamically import Remotion Player wrapper to defer ~608KB from initial bundle
+const RemotionPlayerWrapper = dynamic(
+    () => import("./remotion-player-wrapper").then((mod) => mod.RemotionPlayerWrapper),
+    { ssr: false }
+);
 interface IntroLoaderProps {
     children: React.ReactNode;
 }
@@ -88,7 +93,8 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                         className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-[#050505]"
                     >
                         {/* Cinematic Grain Overlay - Static noise for better color accuracy */}
-                        <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.02] mix-blend-screen bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                        {/* Inline SVG grain — no external network request */}
+                        <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.02] mix-blend-screen" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")' }} />
 
                         {/* Immersive Background Depth */}
                         <m.div
@@ -132,20 +138,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                     }}
                                     className="relative z-10 w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"
                                 >
-                                    <Player
-                                        component={LogoBootSequence}
-                                        durationInFrames={120} // 4 seconds
-                                        compositionWidth={400} // Higher res for crisp scaling
-                                        compositionHeight={400}
-                                        fps={30}
-                                        loop={false} // One-shot boot
-                                        autoPlay
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                        }}
-                                        inputProps={{}}
-                                    />
+                                    <RemotionPlayerWrapper />
                                 </m.div>
                             </div>
                         </div>

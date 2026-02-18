@@ -4,7 +4,7 @@ import { m } from "motion/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { AlertTriangle, Clock, Database, FileX, ZapOff } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
 const PAIN_POINTS = [
   {
@@ -92,10 +92,10 @@ export function ServiceProblemSection({
               }
             }
           }}
-          className="relative min-h-[400px] lg:h-[600px] w-full flex flex-col lg:flex-row items-center justify-center perspective-[1000px] gap-6 lg:gap-0"
+          className="relative min-h-[400px] lg:h-[600px] w-full flex flex-col lg:block items-center justify-center perspective-[1000px] gap-6 lg:gap-0"
         >
-          {PAIN_POINTS.map((point, i) => (
-            <PainCard key={point.title} point={point} index={i} />
+          {PAIN_POINTS.map((point) => (
+            <PainCard key={point.title} point={point} />
           ))}
         </m.div>
 
@@ -104,14 +104,12 @@ export function ServiceProblemSection({
   );
 }
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useState } from "react";
-
-function PainCard({ point, index }: { point: typeof PAIN_POINTS[0], index: number }) {
-  const [randomDuration] = useState(() => 4 + Math.random() * 3);
-  const [randomY] = useState(() => 5 + Math.random() * 10);
-  const [randomRotate] = useState(() => -2 + Math.random() * 4);
-  const [randomDelay] = useState(() => Math.random() * 2);
+function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
+  // Stable random values for the "chaos" drift
+  const randomDuration = useMemo(() => 4 + Math.random() * 3, []); // 4-7s duration
+  const randomY = useMemo(() => 5 + Math.random() * 10, []); // 5-15px drift
+  const randomRotate = useMemo(() => -2 + Math.random() * 4, []); // -2 to +2 deg wobble
+  const randomDelay = useMemo(() => Math.random() * 2, []);
 
   return (
     <m.div
@@ -137,33 +135,24 @@ function PainCard({ point, index }: { point: typeof PAIN_POINTS[0], index: numbe
         }
       }}
       whileHover={{
-        scale: 1.05,
+        scale: 1.1,
         rotate: 0,
         zIndex: 50,
         transition: { type: "spring", stiffness: 300, damping: 20 }
       }}
-      className={cn(
-        "relative lg:absolute w-full sm:w-80 lg:w-72 cursor-pointer group",
-        "lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
-      )}
+      className="relative w-full sm:w-80 lg:absolute lg:w-72 cursor-pointer group"
       style={{
-        ["--x-offset" as any]: `${point.x * 3}px`,
-        ["--y-offset" as any]: `${point.y * 3}px`,
+        left: `calc(50% + ${point.x * 3}px)`,
+        top: `calc(50% + ${point.y * 3}px)`,
+        marginLeft: "-144px",
+        marginTop: "-100px",
       }}
     >
-      <style jsx>{`
-        @media (min-width: 1024px) {
-          .pain-card-inner {
-             margin-left: var(--x-offset);
-             margin-top: var(--y-offset);
-          }
-        }
-      `}</style>
       {/* Continuous Drift Wrapper - independent of entrance */}
       <m.div
         animate={{
-          y: typeof window !== 'undefined' && window.innerWidth >= 1024 ? [0, -randomY, randomY / 2, 0] : 0,
-          rotate: typeof window !== 'undefined' && window.innerWidth >= 1024 ? [0, randomRotate, -randomRotate, 0] : 0,
+          y: [0, -randomY, randomY / 2, 0],
+          rotate: [0, randomRotate, -randomRotate, 0],
         }}
         transition={{
           duration: randomDuration,

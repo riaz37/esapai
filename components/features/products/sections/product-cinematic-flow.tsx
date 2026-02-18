@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
+import { SectionHeader } from "@/components/ui/section-header";
 import { useProductContent } from "@/lib/hooks/use-product-content";
 import { getProductCinematicProblems } from "@/config/product-cinematic-problems";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import { AlertCircle } from "lucide-react";
 import type { Product } from "@/types/product";
 import type { CinematicProblemItem } from "@/config/product-cinematic-problems";
 
@@ -36,21 +38,19 @@ interface CinematicAssistantProps {
 }
 
 function CinematicAssistant({ state, className, reducedMotion }: CinematicAssistantProps) {
-    const [currentFrame, setCurrentFrame] = React.useState(0);
+    const [currentFrame, setCurrentFrame] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
     const frames = MARCO_FRAMES[state];
-    const [jitter] = React.useState(() => 150 + Math.random() * 100);
+    const [jitter] = useState(() => 150 + Math.random() * 100);
 
-    // Frame cycling
-    React.useEffect(() => {
+    useEffect(() => {
         if (reducedMotion) return;
         const interval = setInterval(() => {
             setCurrentFrame((prev) => (prev + 1) % frames.length);
-        }, jitter); // Use stable jitter for consistency
+        }, jitter);
         return () => clearInterval(interval);
     }, [frames.length, reducedMotion, jitter]);
 
-    // Idle bobbing
     useGSAP(() => {
         if (reducedMotion) return;
         gsap.to(containerRef.current, {
@@ -64,7 +64,7 @@ function CinematicAssistant({ state, className, reducedMotion }: CinematicAssist
     }, { scope: containerRef, dependencies: [reducedMotion] });
 
     return (
-        <div ref={containerRef} className={`relative select-none ${className}`}>
+        <div ref={containerRef} className={`relative select-none ${className ?? ""}`}>
             {/* Holographic Glow */}
             <div
                 className={`absolute inset-0 scale-125 blur-3xl opacity-20 transition-colors duration-1000 ${state === "problem" ? "bg-red-500" : "bg-emerald-500"
@@ -88,9 +88,9 @@ function CinematicAssistant({ state, className, reducedMotion }: CinematicAssist
                     src={frames[currentFrame % frames.length]}
                     alt="Marco AI Assistant"
                     fill
-                    sizes="(max-width: 1060px) 42vw, 448px"
+                    sizes="256px"
                     unoptimized
-                    className="object-contain transition-opacity duration-150"
+                    className="object-contain"
                     key={`${state}-${currentFrame}`}
                 />
             </div>
@@ -106,11 +106,6 @@ function CinematicAssistant({ state, className, reducedMotion }: CinematicAssist
             `}</style>
         </div>
     );
-}
-
-interface ProductCinematicFlowProps {
-    slug: string;
-    initialProduct: Product | null;
 }
 
 /** Single problem card for one-by-one scenes (with refs for title/description reveal). */
@@ -154,10 +149,112 @@ function ProblemSceneCard({
     );
 }
 
-export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicFlowProps) {
+/**
+ * MOBILE VIEW: Vertical Scroll Flow
+ */
+const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicProblemItem[] }) => {
+    return (
+        <div className="flex flex-col gap-16 px-6 py-12">
+            {problems.map((p) => {
+                const Icon = p.icon;
+                const SolIcon = p.solIcon;
+                return (
+                    <div key={p.id} className="flex flex-col gap-6">
+                        {/* Problem Card */}
+                        <Card className="bg-zinc-900/90 border-red-500/20 backdrop-blur-xl">
+                            <CardHeader className="pb-4">
+                                <div className="flex justify-between items-center mb-2">
+                                    <Icon className="w-5 h-5 text-red-500" />
+                                    <span className="text-red-500 font-mono text-[10px] uppercase tracking-widest">Problem_0{p.id}</span>
+                                </div>
+                                <CardTitle className="text-white text-xl font-bold leading-tight">
+                                    {p.title}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <CardDescription className="text-white/60 text-sm leading-relaxed">
+                                    {p.description}
+                                </CardDescription>
+                            </CardContent>
+                        </Card>
+
+                        {/* Transition Indicator */}
+                        <div className="flex flex-col items-center gap-2 py-2">
+                            <div className="w-[1px] h-8 bg-gradient-to-b from-red-500/50 to-[#13F584]/50" />
+                            <div className="p-2 rounded-full border border-white/10 bg-white/5">
+                                <CinematicAssistant state="solution" className="w-8 h-8 scale-110" />
+                            </div>
+                            <div className="w-[1px] h-8 bg-gradient-to-b from-[#13F584]/50 to-transparent" />
+                        </div>
+
+                        {/* Solution Card */}
+                        <Card className="bg-black/80 border-[#13F584]/30 backdrop-blur-2xl">
+                            <CardHeader className="pb-4">
+                                <div className="flex justify-between items-center mb-2">
+                                    <SolIcon className="w-5 h-5 text-[#13F584]" />
+                                    <span className="text-[#13F584] font-mono text-[10px] uppercase tracking-widest">{p.solImpact}</span>
+                                </div>
+                                <CardTitle className="text-white text-xl font-bold leading-tight">
+                                    {p.solTitle}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <CardDescription className="text-white/70 text-sm leading-relaxed">
+                                    {p.solDesc}
+                                </CardDescription>
+                            </CardContent>
+                        </Card>
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
+
+export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; initialProduct: Product | null }) {
     const { product } = useProductContent(slug, { initialProduct });
     const problems = useMemo(() => getProductCinematicProblems(slug), [slug]);
+    const [isMobile, setIsMobile] = useState(false);
 
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    return (
+        <section className="relative w-full bg-[#09090b]">
+            <div className="max-w-[1400px] mx-auto px-6 py-20 md:pt-32 pb-0">
+                <SectionHeader
+                    title={
+                        <>
+                            Current Market <span className="text-red-500">Challenges</span>
+                        </>
+                    }
+                    subtitle="Identifying the friction points and systemic inefficiencies that currently throttle growth and AI adoption in established industries."
+                    badge="Pain Points"
+                    badgeIcon={AlertCircle}
+                    badgeVariant="red"
+                    animate={true}
+                    titleClassName="text-4xl md:text-5xl lg:text-7xl"
+                    subtitleClassName="text-base md:text-xl text-white/50 max-w-2xl"
+                />
+            </div>
+
+            {isMobile ? (
+                <ResponsiveMobileProblemFlow problems={problems} />
+            ) : (
+                <CinematicDesktopFlow slug={slug} problems={problems} />
+            )}
+        </section>
+    );
+}
+
+/**
+ * DESKTOP VIEW: Cinematic Storytelling Flow (restored from working version)
+ */
+function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: CinematicProblemItem[] }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const bgRef = useRef<HTMLDivElement>(null);
     const problemSceneRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -170,8 +267,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
     const solDescRefs = useRef<(HTMLParagraphElement | null)[]>([]);
     const wipeRef = useRef<HTMLDivElement>(null);
     const assistantRef = useRef<HTMLDivElement>(null);
-    const [assistantState, setAssistantState] = React.useState<"problem" | "solution">("problem");
-
+    const [assistantState, setAssistantState] = useState<"problem" | "solution">("problem");
 
     const reducedMotion = prefersReducedMotion();
 
@@ -216,7 +312,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=300%", // Reduced from 400% to tighten for mobile
+                end: "+=400%",
                 pin: true,
                 scrub: 1,
                 anticipatePin: 1,
@@ -230,7 +326,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             xPercent: -50,
             x: "20vw",
             yPercent: 0,
-            duration: 0.8, // Reduced from 1.2
+            duration: 1.2,
             ease: "back.out(1.2)",
             force3D: true
         }, "problem1");
@@ -369,8 +465,6 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
         );
     }, { scope: containerRef, dependencies: [slug] });
 
-
-
     return (
         <Section
             ref={containerRef}
@@ -393,8 +487,6 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                     reducedMotion={reducedMotion}
                 />
             </div>
-
-
 
             <div className="absolute inset-0 z-10 flex items-center justify-center px-4 md:px-8 pt-24 md:pt-32 pb-24 md:pb-32 pointer-events-none">
                 <div className="relative w-full max-w-[1400px] h-full flex items-center justify-center">
@@ -428,14 +520,11 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
                 </div>
             </div>
 
-
-
             {/* Solution stage: three cards that flip (same Card component, both faces) */}
             <div
                 ref={cardsStageRef}
                 className="absolute inset-0 z-10 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 pt-16 pb-20"
             >
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[1400px] mx-auto mt-6">
                     {problems.map((p, i) => {
                         const ProblemIcon = p.icon;

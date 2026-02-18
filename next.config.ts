@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
     formats: ["image/webp", "image/avif"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 2592000, // 30 days — images rarely change
   },
 
   // React Compiler (requires babel-plugin-react-compiler)
@@ -74,7 +74,7 @@ const nextConfig: NextConfig = {
     // Build CSP header based on environment
     const isDevelopment = process.env.NODE_ENV === "development";
     const cspMode = isDevelopment ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy";
-    
+
     // CSP directives
     const cspDirectives = [
       "default-src 'self'",

@@ -125,6 +125,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                                 loop
                                 muted
                                 playsInline
+                                preload="none"
                                 className="w-full h-full object-cover"
                             />
 
