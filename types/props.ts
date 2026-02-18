@@ -86,6 +86,7 @@ export interface SectionHeaderProps {
   subtitle?: string;
   badge?: string;
   badgeIcon?: LucideIcon;
+  badgeVariant?: "primary" | "red";
   align?: "center" | "left" | "right";
   className?: string;
   titleClassName?: string;

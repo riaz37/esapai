@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import Image from "next/image";
-import { Workflow } from "lucide-react";
+import { Workflow, ArrowDown, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Section } from "@/components/ui/section";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -20,8 +19,7 @@ const PRIMARY = "#13F584";
 // --- Components ---
 
 /**
- * Lightweight SVG Edge Renderer
- * Replaces ReactFlow's edge system for maximum performance.
+ * Lightweight SVG Edge Renderer for Desktop
  */
 const CinematicEdge = ({
     sourceX: sX,
@@ -34,59 +32,28 @@ const CinematicEdge = ({
     targetX: number;
     targetY: number;
 }) => {
-    // Calculate angle and apply offset to prevent overlapping with nodes
-    // Node width is ~150px, so we offset by ~80px to reach the edge
     const dx = tX - sX;
     const dy = tY - sY;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const angle = Math.atan2(dy, dx);
-
-    // Only apply offset if nodes are far enough apart
     const offset = distance > 180 ? 80 : 0;
 
     const sourceX = sX + Math.cos(angle) * offset;
     const sourceY = sY + Math.sin(angle) * offset;
-    const targetX = tX - Math.cos(angle) * (offset + 5); // Extra 5px for arrow breathing room
+    const targetX = tX - Math.cos(angle) * (offset + 5);
     const targetY = tY - Math.sin(angle) * (offset + 5);
 
-    // Generate a simple smooth path (Bézier curve)
     const deltaX = Math.abs(targetX - sourceX);
     const controlPointX = deltaX * 0.4;
     const path = `M ${sourceX},${sourceY} C ${sourceX + controlPointX},${sourceY} ${targetX - controlPointX},${targetY} ${targetX},${targetY}`;
 
     return (
         <g className="cinematic-edge">
-            {/* Background Trace */}
-            <path
-                d={path}
-                fill="none"
-                stroke={PRIMARY}
-                strokeWidth={1}
-                strokeOpacity={0.1}
-            />
-
-            {/* Glowing Flow */}
-            <path
-                d={path}
-                fill="none"
-                stroke={PRIMARY}
-                strokeWidth={2}
-                strokeOpacity={0.4}
-                strokeDasharray="10, 20"
-                className="animate-flow-pulse"
-            />
-
-            {/* Light Pellets for Kinetic Feedback */}
+            <path d={path} fill="none" stroke={PRIMARY} strokeWidth={1} strokeOpacity={0.1} />
+            <path d={path} fill="none" stroke={PRIMARY} strokeWidth={2} strokeOpacity={0.4} strokeDasharray="10, 20" className="animate-flow-pulse" />
             <circle r="3" fill="#fff" className="light-pellet">
-                <animateMotion
-                    path={path}
-                    dur="3s"
-                    repeatCount="indefinite"
-                    rotate="auto"
-                />
+                <animateMotion path={path} dur="3s" repeatCount="indefinite" rotate="auto" />
             </circle>
-
-            {/* Target Indicator */}
             <g transform={`translate(${targetX}, ${targetY})`}>
                 <circle r={4} fill={PRIMARY} className="animate-pulse shadow-glow" />
                 <circle r={8} fill={PRIMARY} opacity={0.3} className="animate-ping" />
@@ -95,11 +62,14 @@ const CinematicEdge = ({
     );
 };
 
-const JourneyNode = ({ node }: { node: any }) => {
+const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean }) => {
     return (
         <div
-            className="absolute -translate-x-1/2 -translate-y-1/2 group/node"
-            style={{
+            className={cn(
+                "group/node",
+                isMobile ? "relative" : "absolute -translate-x-1/2 -translate-y-1/2"
+            )}
+            style={isMobile ? {} : {
                 left: node.position.x,
                 top: node.position.y,
             }}
@@ -110,17 +80,15 @@ const JourneyNode = ({ node }: { node: any }) => {
                     "rounded-2xl overflow-hidden",
                     "border border-white/10 hover:border-[#13F584]/50 transition-all duration-500",
                     "bg-white/[0.03] backdrop-blur-3xl",
-                    "min-w-[110px] md:min-w-[150px] p-3.5 md:p-6",
+                    "min-w-full md:min-w-[150px] p-4 md:p-6",
                     "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_0_40px_rgba(0,0,0,0.8)]",
                     "group-hover/node:scale-105 group-hover/node:shadow-[0_0_50px_rgba(19,245,132,0.15)]"
                 )}
             >
-                {/* Node Glow Backdrop */}
                 <div className="absolute inset-0 bg-radial-at-t from-[#13F584]/5 to-transparent opacity-0 group-hover/node:opacity-100 transition-opacity duration-700" />
 
-                {/* Node Image/Icon Container */}
                 <div
-                    className="relative mb-4 w-18 h-18 flex items-center justify-center rounded-2xl border border-white/5 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.2)] transition-all"
+                    className="relative mb-3 md:mb-4 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-2xl border border-white/5 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.2)] transition-all"
                     style={{ color: PRIMARY }}
                 >
                     {node.data.image ? (
@@ -128,31 +96,25 @@ const JourneyNode = ({ node }: { node: any }) => {
                             src={node.data.image}
                             alt={node.data.title}
                             fill
-                            sizes="72px"
-                            unoptimized
+                            sizes="64px"
                             className="object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
                         />
                     ) : (
-                        <>
-                            <div className="md:hidden">
-                                {React.cloneElement(node.data.icon as any, { size: 20 })}
-                            </div>
-                            <div className="hidden md:block">
-                                {React.cloneElement(node.data.icon as any, { size: 28 })}
-                            </div>
-                        </>
+                        <div className="scale-75 md:scale-100 italic">
+                            {node.data.icon && React.cloneElement(node.data.icon as any, {
+                                size: 24,
+                                strokeWidth: 1.5
+                            })}
+                        </div>
                     )}
-
-                    {/* Corner accents */}
-                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#13F584]/40" />
-                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#13F584]/40" />
+                    <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#13F584]/40" />
+                    <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#13F584]/40" />
                 </div>
 
-                <h3 className="relative text-white/90 text-center leading-tight text-label-caps">
+                <h3 className="relative text-white/90 text-center leading-tight text-[11px] md:text-xs font-mono tracking-widest uppercase">
                     {node.data.title}
                 </h3>
 
-                {/* Visual scan light effect on hover */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/node:opacity-100">
                     <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent -translate-y-full hover-scan-line" />
                 </div>
@@ -161,15 +123,50 @@ const JourneyNode = ({ node }: { node: any }) => {
     );
 };
 
-const LayeredJourneyFlow = ({
-    layers,
-    title,
-    subtitle
-}: {
-    layers: any[],
-    title?: string,
-    subtitle?: string
-}) => {
+/**
+ * MOBILE VIEW: Vertical Timeline/Card Layout
+ */
+const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
+    return (
+        <div className="flex flex-col gap-12 px-4 pb-24">
+            {layers.map((layer, index) => (
+                <div key={layer.id} className="relative group">
+                    {/* Stage Label */}
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-8 h-[1px] bg-[#13F584]/30" />
+                        <span className="text-[10px] font-mono font-bold text-[#13F584] tracking-[0.2em] uppercase">
+                            Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                        </span>
+                    </div>
+
+                    {/* Stage Card */}
+                    <div className="relative p-6 rounded-[32px] border border-white/10 bg-white/[0.02] backdrop-blur-xl transition-all duration-500 hover:border-[#13F584]/20 group-hover:shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+                        <h4 className="text-2xl font-bold text-white mb-8 tracking-tight">
+                            {layer.title}
+                        </h4>
+
+                        {/* Nodes Grid */}
+                        <div className="grid grid-cols-2 gap-4">
+                            {layer.nodes.map((node: any) => (
+                                <JourneyNode key={node.id} node={node} isMobile={true} />
+                            ))}
+                        </div>
+
+                        {/* Edge Visualizer for Mobile (Simplified) */}
+                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-30 group-last:hidden">
+                            <ArrowDown size={32} className="text-[#13F584] animate-bounce" />
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+/**
+ * DESKTOP VIEW: Layered Pinning Layout (Fixed Coordinates)
+ */
+const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const layersRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -180,69 +177,43 @@ const LayeredJourneyFlow = ({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: `+=${(layers.length + 0.5) * 70}%`,
+                end: `+=${(layers.length + 0.5) * 80}%`,
                 pin: true,
-                scrub: 0.8,
+                scrub: 1,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
             },
         });
 
-        // Initial state for all layers
         layersRef.current.forEach((layer, i) => {
             if (!layer) return;
-            // First layer starts visible, others start below the fold
-            if (i === 0) {
-                gsap.set(layer, { opacity: 1 });
-            } else {
+            if (i > 0) {
                 gsap.set(layer, { yPercent: 100 });
-            }
-        });
-
-        // Layer Reveal Orchestration
-        layersRef.current.forEach((layer, i) => {
-            if (!layer) return;
-
-            if (i === 0) {
-                // First layer is already visible, no animation needed
-            } else {
-                // Subsequent layers curtain wipe with 3D tilt
                 tl.to(layer, {
                     yPercent: 0,
                     duration: 1,
                     ease: "none"
-                });
+                }, ">");
             }
 
-            // --- Cinematic Reveal Sequence (Applied ONLY to subsequent layers for entrance) ---
+            // Elements Entrance
+            const surface = layer.querySelector(".architecture-surface");
+            const nodes = layer.querySelectorAll(".group\\/node");
+            const edges = layer.querySelectorAll(".cinematic-edge");
+
             if (i > 0) {
-                // 3D perspective "tilt-in" effect
-                const surface = layer.querySelector(".architecture-surface");
                 if (surface) {
                     tl.fromTo(surface,
                         { rotateX: 10, translateZ: -100, opacity: 0 },
-                        { rotateX: 0, translateZ: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-                        "-=0.5"
-                    );
-                }
-
-                // Sequential "Power-on" for nodes and edges
-                const nodes = layer.querySelectorAll(".group\\/node");
-                const edges = layer.querySelectorAll(".cinematic-edge");
-
-                if (nodes.length > 0) {
-                    tl.fromTo(nodes,
-                        { scale: 0.5, opacity: 0, filter: "brightness(2)" },
-                        { scale: 1, opacity: 1, filter: "brightness(1)", duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" },
-                        "-=0.4"
-                    );
-                }
-
-                if (edges.length > 0) {
-                    tl.fromTo(edges,
-                        { opacity: 0, strokeDashoffset: 100 },
-                        { opacity: 1, strokeDashoffset: 0, duration: 0.8, stagger: 0.05, ease: "power2.out" },
+                        { rotateX: 0, translateZ: 0, opacity: 1, duration: 0.8 },
                         "-=0.6"
+                    );
+                }
+                if (nodes.length) {
+                    tl.fromTo(nodes,
+                        { scale: 0.8, opacity: 0 },
+                        { scale: 1, opacity: 1, stagger: 0.1, duration: 0.5 },
+                        "-=0.4"
                     );
                 }
             }
@@ -251,134 +222,108 @@ const LayeredJourneyFlow = ({
     }, { scope: containerRef, dependencies: [layers] });
 
     return (
-        <div className="relative w-full">
-            <style jsx global>{`
-                @keyframes dash-move {
-                    from { stroke-dashoffset: 100; }
-                    to { stroke-dashoffset: 0; }
-                }
-                .perspective-stage {
-                    perspective: 1500px;
-                    perspective-origin: center center;
-                }
-                .architecture-surface {
-                    transform-style: preserve-3d;
-                    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-                }
-                @keyframes flow-pulse {
-                    0% { stroke-dashoffset: 100; opacity: 0.2; }
-                    50% { opacity: 0.8; }
-                    100% { stroke-dashoffset: 0; opacity: 0.2; }
-                }
-                .animate-flow-pulse {
-                    animation: flow-pulse 3s linear infinite;
-                }
-                .shadow-glow {
-                    filter: drop-shadow(0 0 8px #13F584);
-                }
-            `}</style>
+        <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden">
+            {layers.map((layer, index) => (
+                <div
+                    key={layer.id}
+                    ref={(el) => { layersRef.current[index] = el; }}
+                    className="absolute inset-0 w-full h-full flex items-center justify-center"
+                    style={{
+                        zIndex: index * 10,
+                        backgroundColor: '#09090b',
+                        boxShadow: index > 0 ? '0 -50px 100px rgba(0,0,0,0.9)' : 'none'
+                    }}
+                >
+                    <div className="relative w-full max-w-[1400px] h-full flex flex-col justify-center px-12 pt-20">
+                        <div className="relative w-full h-[70vh] min-h-[600px] architecture-surface rounded-[40px] border border-white/10 bg-white/[0.02] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)]">
 
-            {/* Header Overlay - Standard Flow */}
-            <div className="container mx-auto px-6 py-12 sm:py-24 pb-0">
-                <SectionHeader
-                    title={title || "System Architecture"}
-                    subtitle={subtitle}
-                    badge="Architecture"
-                    badgeIcon={Workflow}
-                    animate={true}
-                    className="mb-10"
-                    titleClassName="text-4xl md:text-5xl lg:text-6xl max-w-4xl"
-                    subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4"
-                />
-            </div>
+                            {/* SVG Edges */}
+                            <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                                {layer.edges.map((edge: any) => {
+                                    const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
+                                    const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
+                                    if (!sourceNode || !targetNode) return null;
+                                    return (
+                                        <CinematicEdge
+                                            key={edge.id}
+                                            sourceX={sourceNode.position.x}
+                                            sourceY={sourceNode.position.y}
+                                            targetX={targetNode.position.x}
+                                            targetY={targetNode.position.y}
+                                        />
+                                    );
+                                })}
+                            </svg>
 
-            {/* Pinned Layers Container - Removed -mt-20 on mobile to clear navbar */}
-            <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden md:-mt-20">
+                            {/* Nodes */}
+                            <div className="absolute inset-0">
+                                {layer.nodes.map((node: any) => (
+                                    <JourneyNode key={node.id} node={node} />
+                                ))}
+                            </div>
 
-                {layers.map((layer, index) => (
-                    <div
-                        key={layer.id || index}
-                        ref={(el) => { layersRef.current[index] = el; }}
-                        className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform"
-                        style={{
-                            zIndex: index * 10,
-                            backgroundColor: '#09090b',
-                            boxShadow: index > 0 ? '0 -30px 100px rgba(0,0,0,0.9)' : 'none',
-                        }}
-                    >
-
-                        {/* Background Gradients */}
-                        <div className="absolute inset-0 pointer-events-none">
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-radial-at-t from-[#13F584]/5 to-transparent opacity-50" />
-                        </div>
-
-                        <div className="relative w-full max-w-[1400px] h-full mx-auto flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-32 px-4 md:px-8 perspective-stage">
-                            {/* Scrollable Wrapper for Mobile - Allows panning nodes on small screens */}
-                            <div className="relative w-full h-full overflow-x-auto md:overflow-visible no-scrollbar pb-10">
-                                <div
-                                    className="relative w-[850px] md:w-full h-[75vh] min-h-[600px] mt-10 md:mt-10 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
-                                >
-                                    {/* SVG Edges Layer */}
-                                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                                        {layer.edges.map((edge: any) => {
-                                            const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
-                                            const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
-
-                                            if (!sourceNode || !targetNode) return null;
-
-                                            return (
-                                                <CinematicEdge
-                                                    key={edge.id}
-                                                    sourceX={sourceNode.position.x}
-                                                    sourceY={sourceNode.position.y}
-                                                    targetX={targetNode.position.x}
-                                                    targetY={targetNode.position.y}
-                                                />
-                                            );
-                                        })}
-                                    </svg>
-
-                                    {/* HTML Nodes Layer */}
-                                    <div className="absolute inset-0">
-                                        {layer.nodes.map((node: any) => (
-                                            <JourneyNode key={node.id} node={node} />
-                                        ))}
-                                    </div>
-
-                                    {/* Internal Stage Title Overlay */}
-                                    <div className="absolute top-8 left-8 z-20 pointer-events-none">
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex items-center gap-4">
-                                                <span className="text-xs font-mono font-bold text-[#13F584] text-label-caps tracking-cinematic-widest">
-                                                    Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
-                                                </span>
-                                            </div>
-                                            <h4 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
-                                                {layer.title}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/* Title Component inside the surface */}
+                            <div className="absolute top-12 left-12">
+                                <span className="text-xs font-mono font-bold text-[#13F584] tracking-[0.3em] uppercase mb-2 block">
+                                    Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                                </span>
+                                <h4 className="text-5xl font-bold text-white tracking-tighter">
+                                    {layer.title}
+                                </h4>
                             </div>
                         </div>
                     </div>
-                ))}
-            </div>
+                </div>
+            ))}
         </div>
     );
 };
 
 export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: string }) => {
-    const journeyData = useMemo(() =>
-        PRODUCT_JOURNEYS[productSlug] ?? PRODUCT_JOURNEYS["ai-framework"],
-        [productSlug]
-    );
+    const journeyData = useMemo(() => PRODUCT_JOURNEYS[productSlug] || PRODUCT_JOURNEYS["ai-framework"], [productSlug]);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     return (
-        <LayeredJourneyFlow
-            layers={journeyData.layers || []}
-            title={journeyData.journeyTitle}
-            subtitle={journeyData.journeySubtitle}
-        />
+        <section className="relative w-full py-24 bg-[#09090b]">
+            <style jsx global>{`
+                @keyframes flow-pulse {
+                    0% { stroke-dashoffset: 100; opacity: 0.2; }
+                    50% { opacity: 0.8; }
+                    100% { stroke-dashoffset: 0; opacity: 0.2; }
+                }
+                .animate-flow-pulse { animation: flow-pulse 3s linear infinite; }
+                .shadow-glow { filter: drop-shadow(0 0 8px #13F584); }
+                .hover-scan-line { animation: scan 2s linear infinite; }
+                @keyframes scan {
+                    0% { transform: translateY(-100%); }
+                    100% { transform: translateY(500%); }
+                }
+            `}</style>
+
+            <div className="max-w-[1400px] mx-auto px-6 mb-16 md:mb-24">
+                <SectionHeader
+                    title={journeyData.journeyTitle || "System Architecture"}
+                    subtitle={journeyData.journeySubtitle}
+                    badge="Architecture"
+                    badgeIcon={Workflow}
+                    animate={true}
+                    titleClassName="text-4xl md:text-5xl lg:text-7xl"
+                    subtitleClassName="text-base md:text-xl text-white/50 max-w-2xl"
+                />
+            </div>
+
+            {isMobile ? (
+                <MobileJourneyFlow layers={journeyData.layers} />
+            ) : (
+                <DesktopJourneyFlow layers={journeyData.layers} />
+            )}
+        </section>
     );
 };

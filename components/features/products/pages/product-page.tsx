@@ -5,12 +5,36 @@ import type { ProductPageClientProps } from "@/types/page";
 import dynamic from "next/dynamic";
 import { LazySection } from "@/components/ui/lazy-section";
 import { ProductHero } from "../hero";
-import { ProductSolutionVideo, UserJourney, ProductCinematicReelSection, BusinessImpact } from "../sections";
-import { ProductCinematicFlow } from "../sections/product-cinematic-flow";
 
+// --- Dynamic imports for below-fold sections (code-split + no SSR) ---
+const ProductCinematicFlow = dynamic(
+  () => import("../sections/product-cinematic-flow").then((mod) => mod.ProductCinematicFlow),
+  { ssr: false }
+);
+
+const ProductSolutionVideo = dynamic(
+  () => import("../sections/product-solution-video").then((mod) => mod.ProductSolutionVideo),
+  { ssr: false }
+);
+
+const ProductCinematicReelSection = dynamic(
+  () => import("../sections/product-cinematic-reel-section").then((mod) => mod.ProductCinematicReelSection),
+  { ssr: false }
+);
+
+const UserJourney = dynamic(
+  () => import("../sections/user-journey").then((mod) => mod.UserJourney),
+  { ssr: false }
+);
+
+const BusinessImpact = dynamic(
+  () => import("../sections/business-impact").then((mod) => mod.BusinessImpact),
+  { ssr: false }
+);
 
 const CTASection = dynamic(
-  () => import("@/components/features/home/sections/cta").then((mod) => mod.CTASection)
+  () => import("@/components/features/home/sections/cta").then((mod) => mod.CTASection),
+  { ssr: false }
 );
 
 
@@ -29,7 +53,7 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
   return (
     <div className="relative">
 
-      {/* 1. Hero (ProductHero) */}
+      {/* 1. Hero (ProductHero) — static import, above-fold */}
       <div>
         <ProductHero
           title={hydratedProduct?.name ?? ""}
@@ -42,36 +66,38 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
       </div>
 
       {/* 2. Cinematic Flow (Problem -> Solution) */}
-      <div id="cinematic">
-        <ProductCinematicFlow slug={slug} initialProduct={hydratedProduct} />
-      </div>
+      <LazySection minHeight="600px" rootMargin="400px">
+        <div id="cinematic">
+          <ProductCinematicFlow slug={slug} initialProduct={hydratedProduct} />
+        </div>
+      </LazySection>
 
       {/* 3. Product Solution Video (Demo) */}
-      <div id="solution-video">
-        <ProductSolutionVideo product={hydratedProduct} />
-      </div>
+      <LazySection minHeight="600px" rootMargin="300px">
+        <div id="solution-video">
+          <ProductSolutionVideo product={hydratedProduct} />
+        </div>
+      </LazySection>
 
       {/* 4. Cinematic Showcase (Infinite Zoom Reel) */}
-      <div>
+      <LazySection minHeight="600px" rootMargin="300px">
         <ProductCinematicReelSection product={hydratedProduct} />
-      </div>
+      </LazySection>
 
       {/* 5. User Journey Layer */}
-      <div>
+      <LazySection minHeight="600px" rootMargin="300px">
         <UserJourney productSlug={hydratedProduct.slug} />
-      </div>
+      </LazySection>
 
       {/* 6. Business Impact (Outcomes) */}
-      <div>
+      <LazySection minHeight="400px" rootMargin="300px">
         <BusinessImpact product={hydratedProduct} />
-      </div>
+      </LazySection>
 
       {/* 7. CTA Section */}
-      <div>
-        <LazySection minHeight="400px">
-          <CTASection product={hydratedProduct} />
-        </LazySection>
-      </div>
+      <LazySection minHeight="400px">
+        <CTASection product={hydratedProduct} />
+      </LazySection>
     </div>
   );
 }

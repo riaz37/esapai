@@ -17,6 +17,7 @@ export function SectionHeader({
   subtitle,
   badge,
   badgeIcon,
+  badgeVariant = "primary",
   align = "center",
   className = "",
   titleClassName = "",
@@ -116,7 +117,7 @@ export function SectionHeader({
       {/* Premium BadgeChip Indicator */}
       {badge && (
         <div ref={badgeRef} className="mb-2">
-          <BadgeChip label={badge} icon={badgeIcon} />
+          <BadgeChip label={badge} icon={badgeIcon} variant={badgeVariant} />
         </div>
       )}
 

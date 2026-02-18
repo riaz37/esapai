@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Node, Edge } from 'reactflow';
 import {
     Activity,
     Bot,
@@ -33,6 +32,23 @@ import {
     LayoutDashboard,
     TrendingUp,
 } from 'lucide-react';
+
+// Local lightweight types replacing reactflow's Node/Edge (eliminates reactflow from bundle)
+type Node = {
+    id: string;
+    type?: string;
+    position: { x: number; y: number };
+    data: Record<string, unknown>;
+};
+
+type Edge = {
+    id: string;
+    source: string;
+    target: string;
+    type?: string;
+    sourceHandle?: string;
+    targetHandle?: string;
+};
 
 type JourneyLayer = {
     id: string;

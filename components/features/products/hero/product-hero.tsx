@@ -101,6 +101,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   poster="/HUD.png"
                 >
                   <source src="/LP_animation_HomePage_Big_Intro_2X_short.webm" type="video/webm" />
