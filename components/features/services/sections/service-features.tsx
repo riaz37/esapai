@@ -343,7 +343,7 @@ export function ServiceFeatures({
   }, [displayFeatures]);
 
   return (
-    <Section padding="md">
+    <Section padding="md" className="scroll-mt-20 md:scroll-mt-32">
       <SectionHeader
         badge="What we deliver"
         badgeIcon={Layers}
@@ -357,13 +357,13 @@ export function ServiceFeatures({
         <div className="flex flex-col gap-4">
           {features.map((feature, index) => (
             <Card
-              key={index}
-              className="p-5 sm:p-6 md:p-7 lg:p-8"
+              key={feature.title}
+              className="p-4 sm:p-5 md:p-6"
             >
-              <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 text-gradient-radial-white">
+              <CardTitle className="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3 text-gradient-radial-white">
                 {feature.title}
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base md:text-lg text-light-gray-90 leading-relaxed">
+              <CardDescription className="text-xs sm:text-sm md:text-base text-light-gray-90 leading-relaxed">
                 {feature.description}
               </CardDescription>
             </Card>

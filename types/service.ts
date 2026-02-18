@@ -2,35 +2,27 @@
  * Service-related type definitions
  */
 
-export interface ServiceFeature {
-  title: string;
-  description: string;
-}
-
-export interface ServiceProcessStep {
-  duration?: string;
-  title: string;
-  description: string;
-}
-
-export interface ServiceContent {
+interface ServiceContent {
   hero?: {
     subtitle?: string[];
     centerIcon?: string;
     centerIconAlt?: string;
-    /** Custom title override for the hero section (supports JSX) */
-    heroTitle?: React.ReactNode;
+    /** Main part of the title */
+    titleMain?: string;
+    /** Highlighted part of the title */
+    titleHighlight?: string;
+    heroTitle?: React.ReactNode; // Keeping for compatibility temporarily
   };
   features?: {
     title?: string;
     subtitle?: string;
-    items?: ServiceFeature[];
+    items?: { title: string; description: string }[];
   };
   youtubeVideo?: {
     videoId?: string;
     title?: string;
   };
-  processSteps?: ServiceProcessStep[];
+  processSteps?: { duration?: string; title: string; description: string }[];
 }
 
 export interface Service {

@@ -101,7 +101,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
                         <div ref={imagesRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {caseStudy.heroImages.slice(0, 2).map((image, index) => (
                                 <div
-                                    key={index}
+                                    key={image.url}
                                     className="hero-image-container relative aspect-video rounded-lg overflow-hidden"
                                 >
                                     <Image

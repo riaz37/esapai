@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { useScroll, motion, useSpring, AnimatePresence } from "motion/react";
+import { useScroll, m, useSpring, AnimatePresence } from "motion/react";
 import { ABOUT_V2_DATA } from "@/lib/about-v2-data";
 import { NarrativeItem } from "./narrative-item";
 import { SidebarNavigator } from "./sidebar-navigator";
@@ -67,7 +67,7 @@ export const AboutNarrative: React.FC = () => {
     };
 
     return (
-        <div ref={containerRef} className="relative h-[600vh]">
+        <div ref={containerRef} className="relative h-[600vh] scroll-mt-20 md:scroll-mt-32">
             <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
 
@@ -83,7 +83,7 @@ export const AboutNarrative: React.FC = () => {
                 {/* Narrative Slides */}
                 <div className="relative w-full h-full flex-1">
                     <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                        <motion.div
+                        <m.div
                             key={activeIndex}
                             custom={direction}
                             variants={variants}
@@ -103,7 +103,7 @@ export const AboutNarrative: React.FC = () => {
                                 isActive={true}
                                 isFlipped={activeIndex % 2 !== 0}
                             />
-                        </motion.div>
+                        </m.div>
                     </AnimatePresence>
                 </div>
             </div>

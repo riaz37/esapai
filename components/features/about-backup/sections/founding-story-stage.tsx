@@ -20,8 +20,8 @@ export function FoundingStoryStage({ phase, className }: FoundingStoryStageProps
         {phase.title}
       </h2>
       <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">
-        {phase.body.split(/\n\n+/).map((paragraph, i) => (
-          <p key={i}>{paragraph}</p>
+        {phase.body.split(/\n\n+/).map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
         ))}
       </div>
       {phase.quote && (

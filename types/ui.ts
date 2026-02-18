@@ -4,14 +4,6 @@
 
 import type { ReactNode } from "react";
 
-export interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  description: string;
-  image: string;
-}
-
 export type GlobeConfig = {
   pointSize?: number;
   globeColor?: string;
@@ -53,9 +45,3 @@ export type SectionProps = Omit<
   overflow?: "hidden" | "visible";
   withContainer?: boolean;
 };
-
-export interface ProductFeatureItem {
-  title: string;
-  description: string;
-  className?: string;
-}

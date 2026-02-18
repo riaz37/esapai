@@ -125,7 +125,7 @@ export function ServiceProcessSection() {
       withContainer={false}
       padding="none"
       ref={scrollContainerRef}
-      className="relative w-full md:h-[250vh]" // Reduced height for tighter scroll
+      className="relative w-full md:h-[250vh] scroll-mt-20 md:scroll-mt-32" // Reduced height for tighter scroll
     >
       {/* Sticky Wrapper - Pins to viewport */}
       <div
@@ -133,7 +133,7 @@ export function ServiceProcessSection() {
         className="md:h-screen w-full flex flex-col justify-between overflow-hidden relative bg-transparent"
       >
         {/* HEADER: Flex-none to keep it at top */}
-        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-24 md:pt-32 flex-none z-10 pointer-events-none">
+        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-32 md:pt-32 flex-none z-10 pointer-events-none">
           <SectionHeader
             badge="Process"
             badgeIcon={Workflow}

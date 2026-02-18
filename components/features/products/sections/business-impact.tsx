@@ -97,9 +97,9 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
   return (
     <Section
       ref={sectionRef}
-      padding="lg"
+      padding="none"
       containerMaxWidth="wide"
-      className="bg-transparent overflow-hidden"
+      className="bg-transparent overflow-hidden py-12 sm:py-24"
       data-section="impact"
     >
       <SectionHeader
@@ -120,7 +120,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-[#13F584]/30">
           {metrics.map((metric, index) => (
             <Spotlight
-              key={index}
+              key={metric.label}
               className="relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
               intensity={0.45}
               radius={400}

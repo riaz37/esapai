@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { SEO_CONFIG, getCanonicalUrl } from "./config";
 import type { PageMetadataOptions } from "@/types/seo";
 
-export type { PageMetadataOptions };
-
 /**
  * Generate comprehensive metadata for a page
  */

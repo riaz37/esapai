@@ -17,33 +17,22 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
   const [consentStatus, setConsentStatus] = useState<CookieConsentStatus>(
     "pending"
   );
-  const [hasConsented, setHasConsented] = useState(false);
+  const hasConsented = consentStatus === "accepted";
 
   useEffect(() => {
-    // Check for existing consent in localStorage
     const storedConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    
-    if (storedConsent) {
-      try {
-        const consent = JSON.parse(storedConsent);
-        const expiryDate = new Date(consent.expiry);
-        
-        // Check if consent has expired
-        if (expiryDate > new Date()) {
-          setConsentStatus(consent.status);
-          setHasConsented(consent.status === "accepted");
-        } else {
-          // Consent expired, reset to pending
-          localStorage.removeItem(COOKIE_CONSENT_KEY);
-          setConsentStatus("pending");
-          setHasConsented(false);
-        }
-      } catch (error) {
-        // Invalid stored consent, reset
+    if (!storedConsent) return;
+
+    try {
+      const consent = JSON.parse(storedConsent);
+      const expiryDate = new Date(consent.expiry);
+      if (expiryDate > new Date()) {
+        setConsentStatus(consent.status);
+      } else {
         localStorage.removeItem(COOKIE_CONSENT_KEY);
-        setConsentStatus("pending");
-        setHasConsented(false);
       }
+    } catch {
+      localStorage.removeItem(COOKIE_CONSENT_KEY);
     }
   }, []);
 
@@ -59,7 +48,6 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
     
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(consent));
     setConsentStatus("accepted");
-    setHasConsented(true);
   };
 
   const rejectCookies = () => {
@@ -74,7 +62,6 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
     
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(consent));
     setConsentStatus("rejected");
-    setHasConsented(false);
   };
 
   return (

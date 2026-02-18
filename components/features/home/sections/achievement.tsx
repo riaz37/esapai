@@ -121,7 +121,7 @@ export function Achievement() {
                 <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
                     {ACHIEVEMENTS.map((item, index) => (
                         <Spotlight
-                            key={index}
+                            key={item.label}
                             className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
                             intensity={0.45}
                             radius={400}

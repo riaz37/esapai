@@ -1,6 +1,4 @@
-import type { ServiceFeature, ServiceContent, Service } from "@/types/service";
-
-export type { ServiceFeature, ServiceContent, Service };
+import type { Service } from "@/types/service";
 
 export const services: Service[] = [
   {
@@ -14,12 +12,8 @@ export const services: Service[] = [
         subtitle: [
           "From strategy to deployment. Integration and automation that drives ROI.",
         ],
-        heroTitle: (
-          <>
-            Integration & <br />
-            < span className="text-primary" > Automation </span>
-          </>
-        ),
+        titleMain: "Integration &",
+        titleHighlight: "Automation",
       },
       features: {
         title: "Integration & Automation",
@@ -94,12 +88,8 @@ export const services: Service[] = [
         subtitle: [
           "Managed AI framework platform. Focus on innovation, we handle scaling.",
         ],
-        heroTitle: (
-          <>
-            AI Agents Framework < br />
-            <span className="text-primary" > as a Service(FaaS) </span>
-          </>
-        ),
+        titleMain: "AI Agents Framework",
+        titleHighlight: "as a Service (FaaS)",
       },
       features: {
         title: "Managed Framework",
@@ -149,11 +139,8 @@ export const services: Service[] = [
         subtitle: [
           "Cutting-edge AI R&D. Pushing boundaries of AI.",
         ],
-        heroTitle: (
-          <>
-            Innovation & Research <span className="text-primary">Lab</span>
-          </>
-        ),
+        titleMain: "Innovation & Research",
+        titleHighlight: "Lab",
       },
       features: {
         title: "Advanced R&D",

@@ -18,7 +18,7 @@ export function ServiceBeforeAfterSection({
   return (
     <Section
       id="before-and-after"
-      className="relative w-full"
+      className="relative w-full scroll-mt-20 md:scroll-mt-32"
       padding="none"
       containerMaxWidth="full"
     >

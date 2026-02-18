@@ -3,12 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { m, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { ChevronRight, LayoutGrid, Zap, Shield, Cpu } from "lucide-react";
 import type { MenuItem, DropdownMenuProps } from "@/types/navigation";
-
-export type { MenuItem, DropdownMenuProps };
 
 export function DropdownMenu({
   title,
@@ -60,7 +58,7 @@ export function DropdownMenu({
               >
                 {/* Active Indicator */}
                 {hoveredId === item.id && (
-                  <motion.div
+                  <m.div
                     layoutId="active-indicator"
                     className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#13F584]"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -97,7 +95,7 @@ export function DropdownMenu({
         {/* Right Panel: Dynamic Content */}
         <div className="flex-1 bg-gradient-to-br from-transparent to-[#13F584]/10 relative overflow-hidden">
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={activeItem.id}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -128,7 +126,7 @@ export function DropdownMenu({
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       {activeItem.content?.performance?.metrics?.map((m: any, idx: number) => (
-                        <div key={idx} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
+                        <div key={m.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
                           <div className="text-2xl font-bold text-[#13F584] font-mono leading-none">{m.value}</div>
                           <div className="text-white/40 text-label-caps tracking-cinematic-widest mt-2">{m.label}</div>
                         </div>
@@ -145,7 +143,7 @@ export function DropdownMenu({
 
               {/* Action Area Removed */}
               <div className="mt-auto" />
-            </motion.div>
+            </m.div>
           </AnimatePresence>
 
           {/* Decorative Corner Glow */}

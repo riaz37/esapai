@@ -1,0 +1,33 @@
+---
+description: Technical constraints – CSP, env, images, security
+globs: ["**/next.config.*", "**/.env*", "**/api/**", "**/layout.tsx", "**/page.tsx"]
+alwaysApply: false
+---
+
+# Technical Constraints
+
+## Image domains
+Only these remote hosts are allowed in `next/image` and CSP:
+- `images.unsplash.com`
+- `assets.aceternity.com`
+- `cdn.sanity.io`
+
+Do not add new remote image domains without updating `next.config.ts` and the CSP headers in the same file.
+
+## Content Security Policy (CSP)
+- **Scripts**: `self`, `unsafe-inline`, `unsafe-eval` (minimize where possible).
+- **Connect**: `sanity.io`, `arcjet.com`, `google-analytics.com`, `web3forms.com`, and related GA/GTM/githack URLs as in current config.
+- **Do not** add external script tags (e.g. CDN scripts) that are not in the CSP allowlist. Adding a new third-party script requires a CSP update in `next.config.ts`.
+
+## Environment variables
+- **Server-only (never expose to browser)**: Do not prefix with `NEXT_PUBLIC_`. Use in API routes and server components only.
+  - `ARCJET_KEY`
+  - `SANITY_API_READ_TOKEN`
+  - `WEB3FORMS_ACCESS_KEY`
+- **Client-safe** (may use `NEXT_PUBLIC_`): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_SITE_URL`.
+- Store secrets in `.env.local`; never commit them.
+
+## API & security
+- Use Arcjet and `lib/security/url-validator` where relevant.
+- Validate and sanitize user input (e.g. contact form with `lib/validation`).
+- Keep CSP and security headers in sync with `next.config.ts` when adding new integrations.

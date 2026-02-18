@@ -49,40 +49,78 @@ export function Mission({
     () => {
       if (!sectionRef.current || !trackRef.current) return;
 
-      const cardsElements = trackRef.current.children;
+      const mm = gsap.matchMedia();
 
-      // Clear any previous props to ensure clean state on refresh
-      gsap.set(cardsElements, { clearProps: "all" });
+      mm.add({
+        isDesktop: "(min-width: 1024px)",
+        isTablet: "(min-width: 768px) and (max-width: 1023px)",
+        isMobile: "(max-width: 767px)",
+      }, (context) => {
+        if (!trackRef.current) return;
+        const cardsElements = Array.from(trackRef.current.children);
+        const { isMobile, isTablet } = context.conditions as any;
 
-      gsap.set(trackRef.current, { perspective: 2000 });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: isMobile ? "+=80%" : "+=120%",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=120%",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+        // Luxury "Cylindrical Unrolling" Assembly
+        tl.fromTo(
+          cardsElements,
+          {
+            x: isMobile ? "20%" : (isTablet ? "80%" : "150%"),
+            rotationY: isMobile ? -10 : -60,
+            rotationX: isMobile ? 5 : 15,
+            scale: isMobile ? 0.9 : 0.5,
+            z: isMobile ? -100 : -800,
+            autoAlpha: 0,
+            filter: "blur(15px)",
+            transformOrigin: "50% 50%",
+          },
+          {
+            x: 0,
+            rotationY: 0,
+            rotationX: 0,
+            scale: 1,
+            z: 0,
+            autoAlpha: 1,
+            filter: "blur(0px)",
+            duration: 1.5,
+            stagger: isMobile ? 0.3 : 0.8,
+            ease: "expo.out",
+            force3D: true,
+          },
+          0.5
+        );
+
+        // Add a subtle "parallax" drift
+        tl.to(cardsElements, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 2,
+          },
+          z: 20,
+          ease: "none"
+        });
       });
 
-      // Proactive Header Animation (Triggers as section enters view)
-      const header = sectionRef.current.querySelector('[data-testid="section-header"]');
+      // Proactive Header Animation (outside matchMedia since it's simpler)
+      const header = sectionRef.current?.querySelector('[data-testid="section-header"]');
       if (header) {
-        const badge = header.children[0];
-        const titleEl = header.querySelector("h2");
-        const accent = header.querySelector('div[class*="bg-primary"]');
-        const subtitleEl = header.querySelector("p");
-
+        const children = Array.from(header.children);
         gsap.fromTo(
-          [badge, titleEl, accent, subtitleEl],
-          {
-            y: 30,
-            opacity: 0,
-            filter: "blur(10px)",
-          },
+          children,
+          { y: 30, opacity: 0, filter: "blur(10px)" },
           {
             y: 0,
             opacity: 1,
@@ -98,47 +136,6 @@ export function Mission({
           }
         );
       }
-
-      // Luxury "Cylindrical Unrolling" Assembly
-      tl.fromTo(
-        cardsElements,
-        {
-          x: "150%",           // Enter from much further right
-          rotationY: -60,     // Stronger cylindrical curve
-          rotationX: 15,      // Tilted for perspective
-          scale: 0.5,         // Distant perspective
-          z: -800,            // Deep space
-          autoAlpha: 0,
-          filter: "blur(15px)",
-          transformOrigin: "50% 50%",
-        },
-        {
-          x: 0,
-          rotationY: 0,
-          rotationX: 0,
-          scale: 1,
-          z: 0,
-          autoAlpha: 1,
-          filter: "blur(0px)",
-          duration: 1.5,      // Longer, weighted duration
-          stagger: 0.8,       // Overlapping "unrolling" feel
-          ease: "expo.out",   // Smooth, buttery deceleration
-          force3D: true,      // GPU acceleration
-        },
-        0.5 // Start soon after pin begins
-      );
-
-      // Add a subtle "parallax" drift to cards as they are scrolled through
-      tl.to(cardsElements, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 2,
-        },
-        z: 20,              // Slight drift towards camera
-        ease: "none"
-      });
     },
     { scope: sectionRef, dependencies: [cards] }
   );
@@ -147,7 +144,7 @@ export function Mission({
     <Section
       ref={sectionRef}
       padding="none"
-      containerClassName="min-h-screen flex flex-col pt-32 pb-12 sm:pt-40 sm:pb-20"
+      containerClassName="flex flex-col pt-12 pb-12 sm:pt-24 sm:pb-24"
       className="relative overflow-hidden z-20 bg-transparent"
       containerMaxWidth="full"
     >
@@ -167,7 +164,7 @@ export function Mission({
         >
           {cards.map((card, index) => (
             <div
-              key={index}
+              key={card.title}
               className="w-full h-[340px] sm:h-[380px] md:h-[420px]"
             >
               <MissionCard

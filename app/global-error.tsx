@@ -17,7 +17,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
   }, [error]);
 
   return (
-    <html>
+    <html lang="en">
       <body>
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
           {/* Background gradient effect */}

@@ -4,12 +4,10 @@
 
 import type { PerformanceTier } from "@/types/performance";
 
-export type { PerformanceTier };
-
 /**
  * Get device performance tier for optimization
  */
-export const getPerformanceTier = (): PerformanceTier => {
+const getPerformanceTier = (): PerformanceTier => {
   if (typeof window === "undefined") return "medium";
   
   const hardwareConcurrency = navigator.hardwareConcurrency || 4;
@@ -36,7 +34,7 @@ export const prefersReducedMotion = (): boolean => {
 /**
  * Get adaptive quality settings based on performance tier
  */
-export const getAdaptiveQuality = (tier: PerformanceTier) => {
+const getAdaptiveQuality = (tier: PerformanceTier) => {
   switch (tier) {
     case "high":
       return {
@@ -71,7 +69,7 @@ export const getAdaptiveQuality = (tier: PerformanceTier) => {
 /**
  * Throttle function calls based on frame rate
  */
-export const createFrameThrottle = (targetFPS: number) => {
+const createFrameThrottle = (targetFPS: number) => {
   const frameInterval = 1000 / targetFPS;
   let lastFrameTime = 0;
   

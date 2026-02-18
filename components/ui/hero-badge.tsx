@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface HeroBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,13 +15,13 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
             <div
                 ref={ref}
                 className={cn(
-                    "relative inline-flex items-center p-1.5 rounded-full bg-[#020305]/80 backdrop-blur-md border border-[#13F584]/20 shadow-[0_0_20px_rgba(19,245,132,0.1)] mb-2 sm:mb-3 overflow-hidden scale-90 sm:scale-95 md:scale-100 gsap-slide-up-optimized",
+                    "relative inline-flex items-center p-1 sm:p-1.5 rounded-full bg-[#020305]/80 backdrop-blur-md border border-[#13F584]/20 shadow-[0_0_20px_rgba(19,245,132,0.1)] mb-6 overflow-hidden gsap-slide-up-optimized",
                     className
                 )}
                 {...props}
             >
                 {/* Animated beam effect */}
-                <motion.div
+                <m.div
                     className="absolute inset-0 w-[200%] z-0 pointer-events-none"
                     style={{
                         background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(19, 245, 132, 0.1) 50%, transparent 55%, transparent 100%)',
@@ -31,15 +31,15 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
                 />
 
                 {/* Left: Exclusive Pill */}
-                <div className="relative z-10 flex items-center justify-center px-3 py-1 sm:px-3 sm:py-1.5 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
-                    <span className="text-label-caps sm:text-sm text-black leading-none">
+                <div className="relative z-10 flex items-center justify-center px-3 py-0.5 sm:px-4 sm:py-1 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
+                    <span className="text-[10px] sm:text-xs font-bold tracking-tight sm:tracking-cinematic text-black leading-none">
                         {pillText}
                     </span>
                 </div>
 
                 {/* Right: Text */}
-                <div className="relative z-10 flex items-center px-4 py-1.5 sm:px-5 sm:py-1.5 ml-1">
-                    <span className="text-sm sm:text-base font-medium tracking-cinematic text-[#13F584] leading-none">
+                <div className="relative z-10 flex items-center px-2 py-0.5 sm:px-4 sm:py-1 ml-1">
+                    <span className="text-xs sm:text-sm font-medium tracking-tight sm:tracking-cinematic text-[#13F584] leading-none">
                         {description}
                     </span>
                 </div>

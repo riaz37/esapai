@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo } from "react";
+import Image from "next/image";
 import { Workflow } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -109,7 +110,7 @@ const JourneyNode = ({ node }: { node: any }) => {
                     "rounded-2xl overflow-hidden",
                     "border border-white/10 hover:border-[#13F584]/50 transition-all duration-500",
                     "bg-white/[0.03] backdrop-blur-3xl",
-                    "min-w-[150px] p-5 md:p-6",
+                    "min-w-[110px] md:min-w-[150px] p-3.5 md:p-6",
                     "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_0_40px_rgba(0,0,0,0.8)]",
                     "group-hover/node:scale-105 group-hover/node:shadow-[0_0_50px_rgba(19,245,132,0.15)]"
                 )}
@@ -123,13 +124,23 @@ const JourneyNode = ({ node }: { node: any }) => {
                     style={{ color: PRIMARY }}
                 >
                     {node.data.image ? (
-                        <img
+                        <Image
                             src={node.data.image}
                             alt={node.data.title}
-                            className="w-full h-full object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
+                            fill
+                            sizes="72px"
+                            unoptimized
+                            className="object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
                         />
                     ) : (
-                        React.cloneElement(node.data.icon as any, { size: 28 })
+                        <>
+                            <div className="md:hidden">
+                                {React.cloneElement(node.data.icon as any, { size: 20 })}
+                            </div>
+                            <div className="hidden md:block">
+                                {React.cloneElement(node.data.icon as any, { size: 28 })}
+                            </div>
+                        </>
                     )}
 
                     {/* Corner accents */}
@@ -268,21 +279,21 @@ const LayeredJourneyFlow = ({
             `}</style>
 
             {/* Header Overlay - Standard Flow */}
-            <div className="container mx-auto px-6 py-20 pb-0">
+            <div className="container mx-auto px-6 py-12 sm:py-24 pb-0">
                 <SectionHeader
                     title={title || "System Architecture"}
                     subtitle={subtitle}
                     badge="Architecture"
                     badgeIcon={Workflow}
                     animate={true}
-                    className="mb-0"
+                    className="mb-10"
                     titleClassName="text-4xl md:text-5xl lg:text-6xl max-w-4xl"
                     subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4"
                 />
             </div>
 
-            {/* Pinned Layers Container */}
-            <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden -mt-20">
+            {/* Pinned Layers Container - Removed -mt-20 on mobile to clear navbar */}
+            <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden md:-mt-20">
 
                 {layers.map((layer, index) => (
                     <div
@@ -301,49 +312,51 @@ const LayeredJourneyFlow = ({
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-radial-at-t from-[#13F584]/5 to-transparent opacity-50" />
                         </div>
 
-                        <div className="relative w-full max-w-[1400px] h-full mx-auto flex flex-col justify-center pt-12 md:pt-20 pb-24 md:pb-32 px-8 perspective-stage">
-                            {/* Custom SVG Canvas */}
-                            <div
-                                className="relative w-full h-[75vh] min-h-[650px] mt-10 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
-                            >
-                                {/* SVG Edges Layer */}
-                                <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                                    {layer.edges.map((edge: any) => {
-                                        const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
-                                        const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
+                        <div className="relative w-full max-w-[1400px] h-full mx-auto flex flex-col justify-center pt-20 md:pt-20 pb-8 md:pb-32 px-4 md:px-8 perspective-stage">
+                            {/* Scrollable Wrapper for Mobile - Allows panning nodes on small screens */}
+                            <div className="relative w-full h-full overflow-x-auto md:overflow-visible no-scrollbar pb-10">
+                                <div
+                                    className="relative w-[850px] md:w-full h-[75vh] min-h-[600px] mt-10 md:mt-10 architecture-surface rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-2xl group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                                >
+                                    {/* SVG Edges Layer */}
+                                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                                        {layer.edges.map((edge: any) => {
+                                            const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
+                                            const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
 
-                                        if (!sourceNode || !targetNode) return null;
+                                            if (!sourceNode || !targetNode) return null;
 
-                                        return (
-                                            <CinematicEdge
-                                                key={edge.id}
-                                                sourceX={sourceNode.position.x}
-                                                sourceY={sourceNode.position.y}
-                                                targetX={targetNode.position.x}
-                                                targetY={targetNode.position.y}
-                                            />
-                                        );
-                                    })}
-                                </svg>
+                                            return (
+                                                <CinematicEdge
+                                                    key={edge.id}
+                                                    sourceX={sourceNode.position.x}
+                                                    sourceY={sourceNode.position.y}
+                                                    targetX={targetNode.position.x}
+                                                    targetY={targetNode.position.y}
+                                                />
+                                            );
+                                        })}
+                                    </svg>
 
-                                {/* HTML Nodes Layer */}
-                                <div className="absolute inset-0">
-                                    {layer.nodes.map((node: any) => (
-                                        <JourneyNode key={node.id} node={node} />
-                                    ))}
-                                </div>
+                                    {/* HTML Nodes Layer */}
+                                    <div className="absolute inset-0">
+                                        {layer.nodes.map((node: any) => (
+                                            <JourneyNode key={node.id} node={node} />
+                                        ))}
+                                    </div>
 
-                                {/* Internal Stage Title Overlay */}
-                                <div className="absolute top-8 left-8 z-20 pointer-events-none">
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex items-center gap-4">
-                                            <span className="text-xs font-mono font-bold text-[#13F584] text-label-caps tracking-cinematic-widest">
-                                                Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
-                                            </span>
+                                    {/* Internal Stage Title Overlay */}
+                                    <div className="absolute top-8 left-8 z-20 pointer-events-none">
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex items-center gap-4">
+                                                <span className="text-xs font-mono font-bold text-[#13F584] text-label-caps tracking-cinematic-widest">
+                                                    Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                                                </span>
+                                            </div>
+                                            <h4 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                                                {layer.title}
+                                            </h4>
                                         </div>
-                                        <h4 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
-                                            {layer.title}
-                                        </h4>
                                     </div>
                                 </div>
                             </div>

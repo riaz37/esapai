@@ -9,7 +9,7 @@ export interface MissionCard {
   image?: string;
 }
 
-export interface AutomationFeature {
+interface AutomationFeature {
   title: string;
   description: string;
 }
@@ -17,12 +17,6 @@ export interface AutomationFeature {
 export interface PerformanceMetric {
   value: string;
   label: string;
-}
-
-export interface ProductFeature {
-  title: string;
-  description: string;
-  className?: string;
 }
 
 export interface ProductContent {
@@ -55,7 +49,7 @@ export interface ProductContent {
   aceternityFeatures?: {
     title?: string;
     subtitle?: string;
-    features?: ProductFeature[];
+    features?: { title: string; description: string; className?: string }[];
     className?: string;
   };
 }

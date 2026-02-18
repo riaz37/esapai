@@ -96,7 +96,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         padding="lg"
         containerMaxWidth="full"
         containerClassName="max-w-none px-0 sm:px-0 md:px-0"
-        className="relative overflow-hidden"
+        className="relative overflow-hidden pt-32 md:pt-40"
       >
 
         {/* Unified Content Container */}
@@ -201,8 +201,8 @@ const CaseStudyCard = memo(
               style={{
                 background: "var(--neutral-neutral-210, rgba(248, 248, 248, 0.1))",
                 boxShadow: "0px 0px 13.12px 0px rgba(248, 248, 248, 0.25) inset",
-                backdropFilter: "blur(19.678752899169922px)",
-                WebkitBackdropFilter: "blur(19.678752899169922px)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
               }}
             >
               Featured
@@ -247,8 +247,8 @@ const CaseStudyCard = memo(
                     style={{
                       background: "var(--neutral-neutral-210, rgba(248, 248, 248, 0.1))",
                       boxShadow: "0px 0px 13.12px 0px rgba(248, 248, 248, 0.25) inset",
-                      backdropFilter: "blur(19.678752899169922px)",
-                      WebkitBackdropFilter: "blur(19.678752899169922px)",
+                      backdropFilter: "blur(8px)",
+                      WebkitBackdropFilter: "blur(8px)",
                     }}
                     role="listitem"
                   >
