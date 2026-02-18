@@ -17,6 +17,7 @@ export function ServiceVideoSection({
         <Section
             id="service-video"
             padding="md"
+            className="scroll-mt-20 md:scroll-mt-32"
         >
             <SectionHeader
                 badge="Demo"

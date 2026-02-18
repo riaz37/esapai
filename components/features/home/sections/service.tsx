@@ -61,65 +61,71 @@ export function Service() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!gridRef.current) return;
+    const mm = gsap.matchMedia();
 
-    const cards = Array.from(gridRef.current.children[0].children);
+    mm.add({
+      isDesktop: "(min-width: 1024px)",
+      isMobile: "(max-width: 1023px)",
+    }, (context) => {
+      const { isMobile } = context.conditions as any;
+      const cards = Array.from(gridRef.current!.children[0].children);
 
-    cards.forEach((card, i) => {
-      let x = 0;
-      let y = 0;
-      let rotateY = 0;
-      let scale = 1;
+      cards.forEach((card, i) => {
+        let x = 0;
+        let y = 0;
+        let rotateY = 0;
+        let scale = 1;
 
-      // Animation logic for 1 Left (Big), 2 Right (Small)
-      // Animation logic for 1 Left (Big), 2 Top-Right (Split), 1 Bottom-Right
-      if (i === 0) { // Left Big Card
-        x = -100;
-        rotateY = 20;
-      } else if (i === 1) { // Top Middle (Split Left)
-        y = -50;
-        rotateY = -10;
-      } else if (i === 2) { // Top Right (Split Right)
-        x = 50;
-        y = -50;
-        rotateY = -20;
-      } else if (i === 3) { // Bottom Right (Wide)
-        y = 50;
-        rotateY = -15;
-      }
-
-      gsap.fromTo(card,
-        {
-          opacity: 0,
-          x,
-          y,
-          rotateY,
-          scale,
-        },
-        {
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%",
-            end: "top 60%",
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-          opacity: 1,
-          x: 0,
-          y: 0,
-          rotateY: 0,
-          scale: 1,
-          ease: "power3.out",
+        if (!isMobile) {
+          if (i === 0) {
+            x = -100;
+            rotateY = 20;
+          } else if (i === 1) {
+            y = -50;
+            rotateY = -10;
+          } else if (i === 2) {
+            x = 50;
+            y = -50;
+            rotateY = -20;
+          } else if (i === 3) {
+            y = 50;
+            rotateY = -15;
+          }
         }
-      );
+
+        gsap.fromTo(card,
+          {
+            opacity: 0,
+            x: isMobile ? 0 : x,
+            y: isMobile ? 20 : y,
+            rotateY: isMobile ? 0 : rotateY,
+            scale: isMobile ? 0.95 : scale,
+          },
+          {
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              end: "top 60%",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+            opacity: 1,
+            x: 0,
+            y: 0,
+            rotateY: 0,
+            scale: 1,
+            ease: "power3.out",
+          }
+        );
+      });
     });
   }, { scope: sectionRef });
 
   return (
     <Section
       ref={sectionRef}
-      padding="none"
-      className={cn("relative w-full py-12 sm:py-20 bg-transparent z-20 overflow-hidden")}
+      padding="md"
+      className={cn("relative w-full bg-transparent z-20 overflow-hidden")}
     >
       <SectionHeader
         title="Focus on Growth"

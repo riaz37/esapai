@@ -97,7 +97,6 @@ export const ContactLeftColumn = forwardRef<
               target="_blank"
               rel="noopener noreferrer"
               className="group w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 flex items-center justify-center rounded-full transition-shadow duration-300 min-h-[44px] min-w-[44px] sm:min-h-[40px] sm:min-w-[40px]"
-              style={{ willChange: "transform, background-color" }}
               aria-label={social.name}
               onMouseEnter={() => handleSocialHover(index, true)}
               onMouseLeave={() => handleSocialHover(index, false)}

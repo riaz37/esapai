@@ -46,7 +46,7 @@ export function CaseStudyPage({
         padding="lg"
         containerMaxWidth="full"
         containerClassName="max-w-none px-0 sm:px-0 md:px-0"
-        className="relative overflow-hidden"
+        className="relative overflow-hidden pt-40 md:pt-48 scroll-mt-32"
       >
         {/* Content Container */}
         <div className="relative z-10 w-full">

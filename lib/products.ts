@@ -1,20 +1,4 @@
-import type {
-  MissionCard,
-  AutomationFeature,
-  PerformanceMetric,
-  ProductFeature,
-  ProductContent,
-  Product,
-} from "@/types/product";
-
-export type {
-  MissionCard,
-  AutomationFeature,
-  PerformanceMetric,
-  ProductFeature,
-  ProductContent,
-  Product,
-};
+import type { Product } from "@/types/product";
 
 export const products: Product[] = [
   {
@@ -31,7 +15,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/voiceerp.svg",
         centerIconAlt: "Voice ERP Icon",
-        demoVideo: "/productvideo1.mp4",
+        demoVideo: "/fasih-demo.mp4",
         tagline: "Operational Intelligence",
       },
       mission: {
@@ -142,7 +126,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/ai-framework.svg",
         centerIconAlt: "AI Framework Icon",
-        demoVideo: "/productvideo2.mp4",
+        demoVideo: "/fasih-demo.mp4",
         tagline: "Agent Orchestration",
       },
       mission: {
@@ -253,7 +237,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/zakra.svg",
         centerIconAlt: "Zakra Knowledge Agent Icon",
-        demoVideo: "/productvideo3.mp4",
+        demoVideo: "/fasih-demo.mp4",
         tagline: "Knowledge Synthesis",
       },
       mission: {
@@ -364,7 +348,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/jawib.svg",
         centerIconAlt: "Jawib Customer Service Agent Icon",
-        demoVideo: "/productvideo4.mp4",
+        demoVideo: "/fasih-demo.mp4",
         tagline: "Service Automation",
       },
       mission: {

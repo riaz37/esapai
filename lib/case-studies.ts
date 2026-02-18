@@ -8,8 +8,6 @@ import type {
 } from "@/types/case-study";
 import type { SanityImage } from "@/types/sanity";
 
-export type { TimelineEntry, CaseStudy, CaseStudyWithUrls };
-
 const CASE_STUDY_QUERY = `*[_type == "caseStudy"] | order(publishedAt desc) {
   _id,
   title,

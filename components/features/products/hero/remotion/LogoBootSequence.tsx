@@ -51,6 +51,7 @@ export const LogoBootSequence = () => {
             {/* 1. Red Channel (Glitch Layer) - Offset Left */}
             <img
                 src={LOGO_PATH}
+                alt=""
                 style={{
                     ...imageBaseStyle,
                     transform: `scale(${scale}) translate(${glitchX - 4}px, ${glitchY}px)`,
@@ -63,6 +64,7 @@ export const LogoBootSequence = () => {
             {/* 2. Blue Channel (Glitch Layer) - Offset Right */}
             <img
                 src={LOGO_PATH}
+                alt=""
                 style={{
                     ...imageBaseStyle,
                     transform: `scale(${scale}) translate(${glitchX + 4}px, ${glitchY}px)`,
@@ -75,6 +77,7 @@ export const LogoBootSequence = () => {
             {/* 3. Main Layer (Green Tech Glow & Reveal) */}
             <img
                 src={LOGO_PATH}
+                alt=""
                 style={{
                     ...imageBaseStyle,
                     transform: `scale(${scale})`,

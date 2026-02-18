@@ -82,8 +82,8 @@ export function LegalList({ items, ordered = false }: LegalListProps) {
   const ListTag = ordered ? "ol" : "ul";
   return (
     <ListTag className={`${ordered ? "list-decimal" : "list-disc"} ml-5 sm:ml-6 md:ml-8 space-y-2 sm:space-y-3 text-sm sm:text-base text-light-gray-90 leading-relaxed`}>
-      {items.map((item, index) => (
-        <li key={index} className="pl-1.5 sm:pl-2 md:pl-3 relative">
+      {items.map((item) => (
+        <li key={item} className="pl-1.5 sm:pl-2 md:pl-3 relative">
           <span className="relative z-10">{item}</span>
         </li>
       ))}

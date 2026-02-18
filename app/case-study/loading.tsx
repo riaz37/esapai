@@ -10,9 +10,9 @@ export default function CaseStudiesLoading() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 max-w-6xl mx-auto">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((n) => (
               <div
-                key={i}
+                key={`card-skeleton-${n}`}
                 className="h-96 bg-dark/50 rounded-lg animate-pulse"
               />
             ))}

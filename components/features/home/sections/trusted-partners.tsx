@@ -19,6 +19,11 @@ const PARTNERS = [
     { logo: "/partners/EMp-5.svg", alt: "Partner 6" },
 ];
 
+const MARQUEE_PARTNERS = [
+    ...PARTNERS.map((p) => ({ ...p, id: `a-${p.logo}` })),
+    ...PARTNERS.map((p) => ({ ...p, id: `b-${p.logo}` })),
+];
+
 export function TrustedPartners() {
     const sectionRef = useRef<HTMLElement>(null);
     const marqueeRef = useRef<HTMLDivElement>(null);
@@ -90,9 +95,9 @@ export function TrustedPartners() {
             <div className="relative flex overflow-hidden">
                 {/* Marquee Row */}
                 <div ref={marqueeRef} className="flex whitespace-nowrap py-8">
-                    {[...PARTNERS, ...PARTNERS].map((partner, index) => (
+                    {MARQUEE_PARTNERS.map((partner) => (
                         <div
-                            key={index}
+                            key={partner.id}
                             className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 group/partner transition-all duration-300"
                         >
                             <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center">

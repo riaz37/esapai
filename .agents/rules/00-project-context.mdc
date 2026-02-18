@@ -1,0 +1,69 @@
+---
+description: ESAP AI project overview, business domain, and architecture
+globs: 
+alwaysApply: true
+---
+
+# ESAP AI – Project Context
+
+**Agent instruction:** When performing tasks, always check `.cursor/skills/` for relevant skills and use them—read the skill file and follow its guidance when it applies (e.g. coding standards, constraints, React/Next.js practices, design guidelines).
+
+## 1. Project Overview & Business Domain
+ESAP AI is a modern, high-performance platform for enterprise AI solutions. The platform ecosystem includes:
+- **Voice Activated ERP**: Transforms complex forms into natural voice commands (zero training required).
+- **Zakra**: Intelligent knowledge agent for context-aware answers from scattered data/Excel files.
+- **Fasih**: Native Arabic LLM for dialectal nuances and cultural contexts.
+- **Jawib**: 24/7 support automation for high-volume inquiries (HR, Support).
+- **Domain Expansion**: Bridges legacy systems with modern AI capabilities.
+
+**Goal**: Address legacy paralysis, data silos, and digitalization fears in construction/government sectors.
+
+## 2. Technology Stack
+- **Framework**: Next.js 16 (App Router), React 19.
+- **Language**: TypeScript 5 (strict mode).
+- **Styling**: Tailwind CSS 4, Radix UI.
+- **Animations**: GSAP 3.13, Motion (Framer Motion). Prefer `useGSAP` from `@gsap/react` for complex sequences.
+- **3D**: Three.js, React Three Fiber, Drei, Postprocessing.
+- **Content**: Sanity CMS (headless), next-sanity.
+- **Video**: Remotion, @remotion/player.
+- **Package manager**: pnpm.
+
+## 3. Architecture & Structure (Index)
+
+### App Router (`app/`)
+- `app/page.tsx` – Home
+- `app/about/`, `app/contact/`, `app/privacy/`, `app/terms/`
+- `app/product/[slug]/`, `app/service/[slug]/`, `app/case-study/[slug]/`
+- `app/api/` – contact, case-studies, globe routes
+- `app/layout.tsx`, `app/globals.css`, `app/robots.ts`, `app/sitemap.ts`
+
+### Feature components (`components/features/`)
+- `about/` – mission, team, gravity-bubbles
+- `case-studies/` – hero, pages (case-study-page, case-study-list-animated), sections (timeline)
+- `contact/` – contact-section (backdrop, form card, left column)
+- `home/` – hero (globe, kinetic-text, framer), sections (achievement, cta, product-showcase, service, technology-excellence, text-reveal, trusted-partners)
+- `navigation/` – navbar, footer, menus (product, service dropdowns and contexts)
+- `products/` – hero (product-hero, remotion LogoBootSequence), pages (product-page), sections (automation-hub, business-impact, product-cinematic-flow, product-cinematic-reel-section, product-features, product-solution-video, user-flow, user-journey, remotion sequences)
+- `services/` – hero (service-hero, services-hero), pages (service-page), sections (repetitive-work, service-features, services-cta, services-grid, services-header)
+
+### Shared & UI (`components/`)
+- `ui/` – Reusable primitives (button, card, section, lazy-section, toast, feature-card, service-card, product-card, intro-loader, cookie-consent-banner, etc.). Use `cn()` from `@/lib/utils` for class names.
+- `shared/` – product-halo-flow, concave-floor, grid-floor, youtube-video, legal-page, etc.
+- `three/` – instanced-grid-floor, lazy-three-wrapper, shader-floor-grid
+- `providers/` – web-vitals, cookie-consent, google-analytics, smooth-scroll
+- `seo/` – structured-data
+
+### Lib (`lib/`)
+- `hooks/` – use-product-content, use-service-content, use-case-study-content, use-gsap-animations, use-intersection-animation, use-performance-monitor, use-body-scroll-lock
+- `sanity/` – client, image
+- `seo/` – metadata, structured-data, config
+- `utils/` – animation, performance-utils, sanitize, logger
+- `validation/` – contact-form, schemas
+- `arcjet/`, `security/` – security config and URL validation
+
+### Types (`types/`)
+- Central exports in `types/index.ts`: product, service, case-study, seo, ui, navigation, contact, component, animation, performance, hooks, props, page, provider, sanity, three, api. Define interfaces here or co-locate for feature-specific types; no `any`.
+
+### Config & data
+- `config/` – e.g. user-journeys
+- `public/` – static assets

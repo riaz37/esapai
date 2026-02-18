@@ -5,6 +5,14 @@ import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { LazySectionProps } from "@/types/props";
 
+const DefaultFallback = ({ className, minHeight }: { className?: string; minHeight?: string }) => (
+  <div
+    className={cn("relative w-full", className)}
+    style={{ minHeight }}
+    aria-hidden="true"
+  />
+);
+
 /**
  * Wrapper for sections that:
  * 1. Only loads when approaching viewport (Intersection Observer)
@@ -30,37 +38,32 @@ export function LazySection({
   const isInView = useInView(ref, { once: true, margin: rootMargin as `${number}px`, amount: threshold });
 
   useEffect(() => {
-    if (isInView) {
-      // Small delay to ensure smooth transition
-      const timer = setTimeout(() => {
-        setShouldLoad(true);
-        // Important: Refresh ScrollTrigger after content is loaded to update layout positions
-        import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-          setTimeout(() => {
-            ScrollTrigger.refresh();
-          }, 100);
-        });
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
+    if (!isInView || shouldLoad) return;
 
-  const DefaultFallback = () => (
-    <div
-      className={cn("relative w-full", className)}
-      style={{ minHeight }}
-      aria-hidden="true"
-    />
-  );
+    // Small delay to ensure smooth transition
+    const timer = setTimeout(() => {
+      setShouldLoad(true);
+      // Important: Refresh ScrollTrigger after content is loaded to update layout positions
+      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
+      });
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [isInView, shouldLoad]);
+
+  const fallbackElement = fallback || <DefaultFallback className={className} minHeight={minHeight} />;
 
   return (
     <div ref={ref} className={cn("relative w-full", className)}>
       {shouldLoad ? (
-        <Suspense fallback={fallback || <DefaultFallback />}>
+        <Suspense fallback={fallbackElement}>
           {children}
         </Suspense>
       ) : (
-        fallback || <DefaultFallback />
+        fallbackElement
       )}
     </div>
   );

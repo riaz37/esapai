@@ -7,15 +7,7 @@ import type {
   ServiceSchemaOptions,
 } from "@/types/seo";
 
-export type {
-  StructuredData,
-  BreadcrumbItem,
-  ArticleSchemaOptions,
-  ProductSchemaOptions,
-  ServiceSchemaOptions,
-};
-
-export type CollectionPageSchemaOptions = {
+type CollectionPageSchemaOptions = {
   name: string;
   description: string;
   url: string;

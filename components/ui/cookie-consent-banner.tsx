@@ -10,15 +10,11 @@ export function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Only show banner if consent is pending
     if (consentStatus === "pending") {
-      // Delay to ensure it doesn't interfere with LCP
       const timer = setTimeout(() => {
         setIsVisible(true);
       }, 2500);
       return () => clearTimeout(timer);
-    } else {
-      setIsVisible(false);
     }
   }, [consentStatus]);
 

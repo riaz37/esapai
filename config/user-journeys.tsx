@@ -34,14 +34,14 @@ import {
     TrendingUp,
 } from 'lucide-react';
 
-export type JourneyLayer = {
+type JourneyLayer = {
     id: string;
     title: string;
     nodes: Node[];
     edges: Edge[];
 };
 
-export type ProductJourneyData = {
+type ProductJourneyData = {
     layers: JourneyLayer[];
     journeyTitle?: string;
     journeySubtitle?: string;

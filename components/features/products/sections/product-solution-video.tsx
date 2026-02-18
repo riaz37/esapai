@@ -79,34 +79,41 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
 
     return (
         <div className="relative w-full">
-            {/* Unpinned Transition Header - Kept the same as requested */}
-            <div className="container mx-auto px-6 py-20 pb-0 relative z-20">
+            {/* Desktop/Tablet Header - Unpinned */}
+            <div className="hidden md:block container mx-auto px-6 py-12 sm:py-24 pb-0 relative z-20">
                 <SectionHeader
                     title={product?.content?.mission?.title ?? "Intelligence in Motion"}
                     subtitle="Experience the standard of enterprise autonomy."
                     badge="Demo"
                     badgeIcon={Play}
                     align="center"
-                    className="mb-0"
+                    className="mb-10"
                 />
             </div>
 
             <Section
                 ref={containerRef}
                 withContainer={false}
-                className="relative w-full h-screen perspective-[2500px] overflow-hidden -mt-20"
+                className="relative w-full h-[85vh] md:h-screen perspective-[2500px] overflow-hidden md:-mt-20"
                 padding="none"
             >
-                {/* 
-                  Removed custom background elements (bg-black, glows, edge masks) 
-                  to allow the section to be transparent/neutral as requested.
-                */}
+                {/* Mobile-Only Pinned Header - Clears Navbar */}
+                <div className="block md:hidden container mx-auto px-6 pt-32 pb-0 relative z-20">
+                    <SectionHeader
+                        title={product?.content?.mission?.title ?? "Intelligence in Motion"}
+                        subtitle="Experience the standard of enterprise autonomy."
+                        badge="Demo"
+                        badgeIcon={Play}
+                        align="center"
+                        className="mb-0"
+                    />
+                </div>
 
-                {/* The Kinetic 3D Stage - Pushed down to clear Nav while keeping video large */}
-                <div className="video-stage absolute inset-0 z-10 flex items-start justify-center pointer-events-none px-4 md:px-8 pt-32 md:pt-40">
+                {/* The Kinetic 3D Stage - Tightened for mobile to reduce gaps */}
+                <div className="video-stage absolute inset-0 z-10 flex items-start justify-center pointer-events-none px-4 md:px-8 pt-72 md:pt-40">
                     <div
                         ref={videoWrapperRef}
-                        className="relative w-[90vw] max-w-[1400px] max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 bg-zinc-950 pointer-events-auto will-change-transform"
+                        className="relative w-[95vw] md:w-[90vw] max-w-[1400px] max-h-[40vh] md:max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 bg-zinc-950 pointer-events-auto will-change-transform"
                         style={{ transformStyle: "preserve-3d" }}
                     >
                         {/* Video Content */}

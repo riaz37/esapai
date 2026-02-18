@@ -1,0 +1,37 @@
+---
+description: Coding standards, design rules, and performance guidelines
+globs: ["**/*.ts", "**/*.tsx", "**/*.css"]
+alwaysApply: false
+---
+
+# Coding & Design Rules
+
+## General
+- **Type safety**: No `any`. Use types from `@/types` or define interfaces in `types/` or co-locate when feature-specific.
+- **Path alias**: Use `@/*` for project root (e.g. `@/components/ui`, `@/lib/utils`, `@/types`).
+- **Barrel exports**: Prefer index files for public API of a feature (e.g. `components/features/products/sections/index.ts`).
+
+## Styling
+- **Tailwind v4**: Use current Tailwind CSS 4 syntax. Utility-first; use `cn()` from `@/lib/utils` to merge classes.
+- **Aesthetics**: Prioritize “WOW” factor: micro-animations, glassmorphism, dark mode where it fits.
+- **No placeholder assets**: Use `generate_image` or allowed image domains when assets are missing.
+
+## Components
+- **Server vs client**: Use `"use client"` only where needed (hooks, event handlers, browser APIs). Prefer server components by default.
+- **3D**: Lazy load Three/R3F with `next/dynamic` and use `LazySection` or similar for below-the-fold 3D.
+- **Images**: Always `next/image` with WebP/AVIF; respect `next.config.ts` remote patterns.
+
+## Animations
+- **GSAP**: Prefer `useGSAP` from `@gsap/react` for scoped, cleanup-safe sequences. Use `useGSAPAnimations` from `@/lib/hooks/use-gsap-animations` when it fits.
+- **Motion**: Use Motion (Framer Motion) for declarative UI animations.
+- **Accessibility**: Respect `prefers-reduced-motion` via `@/lib/utils/performance-utils` (e.g. `prefersReducedMotion()`).
+
+## SEO & semantics
+- Semantic HTML and clear H1–H6 hierarchy.
+- Metadata via `lib/seo/metadata` and structured data (JSON-LD) from `lib/seo/structured-data`.
+- Use `StructuredDataComponent` and layout-level metadata generation where defined.
+
+## Performance
+- Lazy load heavy/3D components with `next/dynamic`.
+- Use `LazySection` for below-the-fold sections.
+- Prefer existing hooks (`use-performance-monitor`, `use-intersection-animation`) for monitoring and enter-view animations.

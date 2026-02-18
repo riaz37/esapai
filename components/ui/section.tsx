@@ -2,8 +2,6 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import type { SectionProps } from "@/types/ui";
 
-export type { SectionProps };
-
 const containerMaxWidthClasses = {
   sm: "max-w-sm",
   md: "max-w-md",

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { motion, useScroll, useSpring } from "motion/react";
+import { m, useScroll, useSpring } from "motion/react";
 import CircularGallery from "@/components/features/about-backup/circular-gallery";
 import { teamData } from "@/lib/team-data";
 import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
@@ -100,7 +100,7 @@ export default function AboutPage() {
 
               {/* Team Member Info - Bottom Left */}
               <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 z-30 max-w-md pointer-events-none">
-                <motion.div
+                <m.div
                   key={activeMember.id}
                   initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
                   animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
@@ -139,7 +139,7 @@ export default function AboutPage() {
                       <span>Status: Active</span>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               </div>
 
               {/* Circular Gallery - Full Screen */}

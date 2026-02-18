@@ -42,7 +42,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
     <Section
       withContainer={false}
       padding="none"
-      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-32 sm:pt-40 pb-12 sm:pb-20 px-4 sm:px-6 md:px-8 lg:px-12"
+      className="relative min-h-screen flex items-center overflow-hidden pt-32 sm:pt-40 pb-12 sm:pb-20 px-4 sm:px-6 md:px-8 lg:px-12"
     >
       <div className="relative z-10 w-full max-w-[1400px] mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -64,7 +64,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
             <div className="space-y-4 mb-10 max-w-lg">
               {subtitle.map((line, index) => (
                 <p
-                  key={index}
+                  key={line}
                   className="text-lg md:text-xl text-white/70 leading-relaxed font-normal"
                 >
                   {line}

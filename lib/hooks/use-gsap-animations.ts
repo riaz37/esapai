@@ -1,4 +1,3 @@
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { RefObject } from "react";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
@@ -7,12 +6,6 @@ import type {
   ContinuousAnimationOptions,
   StaggerOptions,
 } from "@/types/animation";
-
-export type {
-  FadeInOptions,
-  ContinuousAnimationOptions,
-  StaggerOptions,
-};
 
 /**
  * Reusable GSAP animation utilities hook
@@ -430,18 +423,4 @@ export function useGSAPAnimations(scope: RefObject<HTMLElement | SVGSVGElement |
   };
 }
 
-/**
- * Hook wrapper that automatically provides scope
- */
-export function useGSAPAnimationsWithScope(
-  scope: RefObject<HTMLElement | SVGSVGElement | null>
-) {
-  const animations = useGSAPAnimations(scope);
-
-  useGSAP(() => {
-    // Hook is ready, animations can be called
-  }, { scope });
-
-  return animations;
-}
 

@@ -15,6 +15,7 @@ import { generateHomeMetadata } from "@/lib/seo/metadata";
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { IntroLoader } from "@/components/ui/intro-loader";
+import { MotionProvider } from "@/components/providers/motion-provider";
 
 // Inter font - similar to SF Pro, from Google Fonts
 const inter = Inter({
@@ -52,25 +53,27 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
         <StructuredDataComponent data={structuredData} />
-        <ToastProvider>
-          <CookieConsentProvider>
-            <WebVitalsProvider>
-              <SmoothScrollProvider>
-                <ProductMenuProvider>
-                  <ServiceMenuProvider>
-                    <IntroLoader>
-                      <Navbar />
-                      <main className="flex-1">{children}</main>
-                      <Footer />
-                      <CookieConsentBanner />
-                    </IntroLoader>
-                  </ServiceMenuProvider>
-                </ProductMenuProvider>
-              </SmoothScrollProvider>
-            </WebVitalsProvider>
-            <GoogleAnalyticsProvider gaId={gaId} />
-          </CookieConsentProvider>
-        </ToastProvider>
+        <MotionProvider>
+          <ToastProvider>
+            <CookieConsentProvider>
+              <WebVitalsProvider>
+                <SmoothScrollProvider>
+                  <ProductMenuProvider>
+                    <ServiceMenuProvider>
+                      <IntroLoader>
+                        <Navbar />
+                        <main className="flex-1">{children}</main>
+                        <Footer />
+                        <CookieConsentBanner />
+                      </IntroLoader>
+                    </ServiceMenuProvider>
+                  </ProductMenuProvider>
+                </SmoothScrollProvider>
+              </WebVitalsProvider>
+              <GoogleAnalyticsProvider gaId={gaId} />
+            </CookieConsentProvider>
+          </ToastProvider>
+        </MotionProvider>
       </body>
     </html>
   );

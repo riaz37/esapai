@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import {
-  motion,
+  m,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
@@ -69,7 +69,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       // Added horizontal padding to match Section.tsx geometry
       className={cn("fixed inset-x-0 top-2 z-40 w-full px-4 sm:px-6 md:px-8 lg:px-12", className)}
@@ -82,13 +82,13 @@ export const Navbar = ({ children, className }: NavbarProps) => {
           )
           : child,
       )}
-    </motion.div>
+    </m.div>
   );
 };
 
 export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
-    <motion.div
+    <m.div
       animate={{
         backdropFilter: visible ? "blur(10px)" : "none",
         boxShadow: visible
@@ -112,15 +112,15 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
       )}
     >
       {children}
-    </motion.div >
+    </m.div >
   );
 };
 
-export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
+const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <motion.div
+    <m.div
       onMouseLeave={() => setHovered(null)}
       className={cn(
         "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
@@ -132,11 +132,11 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
           onMouseEnter={() => setHovered(idx)}
           onClick={onItemClick}
           className="relative px-4 py-2 text-premium-body transition-colors hover:text-white"
-          key={`link-${idx}`}
+          key={item.link}
           href={item.link}
         >
           {hovered === idx && (
-            <motion.div
+            <m.div
               layoutId="hovered"
               className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
             />
@@ -144,13 +144,13 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
           <span className="relative z-20">{item.name}</span>
         </a>
       ))}
-    </motion.div>
+    </m.div>
   );
 };
 
 export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
   return (
-    <motion.div
+    <m.div
       animate={{
         backdropFilter: visible ? "blur(10px)" : "none",
         boxShadow: visible
@@ -174,11 +174,11 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
       )}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };
 
-export const MobileNavHeader = ({
+const MobileNavHeader = ({
   children,
   className,
 }: MobileNavHeaderProps) => {
@@ -203,7 +203,7 @@ export const MobileNavMenu = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -213,7 +213,7 @@ export const MobileNavMenu = ({
           )}
         >
           {children}
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

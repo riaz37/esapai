@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface TypewriterTitleProps {
@@ -39,6 +39,14 @@ interface TypewriterTitleProps {
     align?: "left" | "center" | "right";
 }
 
+function wordStartOffset(words: string[], wordIndex: number): number {
+    let pos = 0;
+    for (let i = 0; i < wordIndex; i++) {
+        pos += words[i].length + 1;
+    }
+    return pos;
+}
+
 /**
  * Animated letter component for typewriter effect
  */
@@ -57,7 +65,7 @@ const AnimatedLetter = ({
     staggerDelay?: number;
     startDelay?: number;
 }) => (
-    <motion.span
+    <m.span
         initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         transition={{
@@ -68,7 +76,7 @@ const AnimatedLetter = ({
         className={cn("inline-block", className)}
     >
         {letter === " " ? "\u00A0" : letter}
-    </motion.span>
+    </m.span>
 );
 
 /**
@@ -137,11 +145,13 @@ export function TypewriterTitle({
     const isPart1Highlighted = highlightIndex === 0;
     const isPart2Highlighted = highlightIndex === 1;
 
-    let indexCounter = 0;
+    const part1Words = part1.split(' ');
+    const part2Words = part2.split(' ');
+    const part2Offset = part1.length;
 
     return (
         <h1 className={cn(
-            "text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight",
+            "font-bold leading-[1.1] tracking-tight",
             alignmentClass,
             className
         )}>
@@ -158,22 +168,22 @@ export function TypewriterTitle({
                     />
                 )}
                 <span className="relative">
-                    {part1.split(' ').map((word, wordIndex, wordsArr) => (
+                    {part1Words.map((word, wordIndex) => (
                         <span key={wordIndex} className="inline-block whitespace-nowrap">
                             {word.split('').map((letter, letterIndex) => (
                                 <AnimatedLetter
                                     key={letterIndex}
                                     letter={letter}
-                                    index={indexCounter++}
+                                    index={wordStartOffset(part1Words, wordIndex) + letterIndex}
                                     duration={letterDuration}
                                     staggerDelay={staggerDelay}
                                     startDelay={startDelay}
                                 />
                             ))}
-                            {wordIndex < wordsArr.length - 1 && (
+                            {wordIndex < part1Words.length - 1 && (
                                 <AnimatedLetter
                                     letter=" "
-                                    index={indexCounter++}
+                                    index={wordStartOffset(part1Words, wordIndex) + word.length}
                                     duration={letterDuration}
                                     staggerDelay={staggerDelay}
                                     startDelay={startDelay}
@@ -197,22 +207,22 @@ export function TypewriterTitle({
                     />
                 )}
                 <span className="relative">
-                    {part2.split(' ').map((word, wordIndex, wordsArr) => (
+                    {part2Words.map((word, wordIndex) => (
                         <span key={wordIndex} className="inline-block whitespace-nowrap">
                             {word.split('').map((letter, letterIndex) => (
                                 <AnimatedLetter
                                     key={letterIndex}
                                     letter={letter}
-                                    index={indexCounter++}
+                                    index={part2Offset + wordStartOffset(part2Words, wordIndex) + letterIndex}
                                     duration={letterDuration}
                                     staggerDelay={staggerDelay}
                                     startDelay={startDelay}
                                 />
                             ))}
-                            {wordIndex < wordsArr.length - 1 && (
+                            {wordIndex < part2Words.length - 1 && (
                                 <AnimatedLetter
                                     letter=" "
-                                    index={indexCounter++}
+                                    index={part2Offset + wordStartOffset(part2Words, wordIndex) + word.length}
                                     duration={letterDuration}
                                     staggerDelay={staggerDelay}
                                     startDelay={startDelay}

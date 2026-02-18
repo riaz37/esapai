@@ -27,7 +27,7 @@ export type { GlobeConfig };
 
 type CountriesGeoJSON = { features: object[] };
 
-export function Globe({ globeConfig, data }: WorldProps) {
+function Globe({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
   const groupRef = useRef<THREE_Group | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -221,7 +221,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
   return <group ref={groupRef} />;
 }
 
-export function WebGLRendererConfig() {
+function WebGLRendererConfig() {
   const { gl, size, camera } = useThree();
 
   useEffect(() => {
@@ -288,7 +288,7 @@ export function World(props: WorldProps) {
   );
 }
 
-export function hexToRgb(hex: string) {
+function hexToRgb(hex: string) {
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function (m, r, g, b) {
     return r + r + g + g + b + b;
@@ -304,7 +304,7 @@ export function hexToRgb(hex: string) {
     : null;
 }
 
-export function genRandomNumbers(min: number, max: number, count: number) {
+function genRandomNumbers(min: number, max: number, count: number) {
   const arr = [];
   while (arr.length < count) {
     const r = Math.floor(Math.random() * (max - min)) + min;

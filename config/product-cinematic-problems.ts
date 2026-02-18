@@ -21,7 +21,7 @@ export interface CinematicProblemItem {
 }
 
 /** Narrative copy for documentary-style cinematic flow (opening → problems → epiphany → solution → bridge). */
-export interface ProductCinematicNarrative {
+interface ProductCinematicNarrative {
   introLine?: string;
   problemsIntroLine?: string;
   epiphanyPreLine?: string;
@@ -76,7 +76,7 @@ const NARRATIVES_BY_SLUG: Record<string, Partial<ProductCinematicNarrative>> = {
 
 };
 
-export function getProductCinematicNarrative(slug: string): ProductCinematicNarrative {
+function getProductCinematicNarrative(slug: string): ProductCinematicNarrative {
   const overrides = NARRATIVES_BY_SLUG[slug];
   return { ...DEFAULT_NARRATIVE, ...overrides };
 }

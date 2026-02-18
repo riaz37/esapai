@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { forwardRef } from "react";
@@ -138,14 +139,14 @@ export const ContactFormCard = forwardRef<
               className="text-white/60 text-xs sm:text-sm md:text-base cursor-pointer leading-relaxed"
             >
               By submitting, I agree to the{" "}
-              <a
+              <Link
                 href="/terms"
                 className="text-primary hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 ESAP Terms of Conditions
-              </a>
+              </Link>
             </label>
           </div>
         </form>

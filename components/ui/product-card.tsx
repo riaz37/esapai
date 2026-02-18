@@ -70,12 +70,12 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                 {/* Cinematic Sheen Effect */}
                 <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine pointer-events-none" />
 
-                <div className="relative h-full flex flex-col md:flex-row items-center p-8 md:p-12 gap-12 z-10">
+                <div className="relative h-full flex flex-col md:flex-row items-center p-6 sm:p-8 md:p-12 gap-6 md:gap-12 z-10">
 
                     {/* Left Side: Content */}
                     <div className="flex-1 text-left space-y-4 z-10">
                         <div className="space-y-2">
-                            <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
+                            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-tight">
                                 {product.name}
                             </h3>
                         </div>
@@ -84,7 +84,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                             {product.description}
                         </p>
 
-                        <div ref={buttonRef} className="inline-block mt-8">
+                        <div ref={buttonRef} className="inline-block mt-2 md:mt-8">
                             <Button variant="primary" size="default" asChild>
                                 <Link href={`/product/${product.slug}`} className="inline-flex items-center gap-2 group/link">
                                     <span>Explore</span>
@@ -95,7 +95,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                     </div>
 
                     {/* Right Side: Media (Video or Placeholder) */}
-                    <div className="flex-1 relative w-full h-full flex items-center justify-center">
+                    <div className="flex-1 relative w-full h-[280px] sm:h-[320px] md:h-full flex items-center justify-center">
                         <div className="relative w-full h-full bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
                             {product.content?.hero?.demoVideo ? (
                                 <div className="relative w-full h-full">

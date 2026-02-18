@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { m, useScroll, useTransform } from "motion/react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ export interface ProcessTimelineItem {
     nodeContent?: React.ReactNode;
 }
 
-export interface ProcessTimelineProps {
+interface ProcessTimelineProps {
     items: ProcessTimelineItem[];
     className?: string;
 }
@@ -169,7 +169,7 @@ export function ProcessTimeline({ items, className }: ProcessTimelineProps) {
                         // - LG: 160 + 48 + 20 = 228px (14.25rem)
                         className="absolute left-[8rem] sm:left-[9.625rem] md:left-[11.25rem] lg:left-[14.25rem] top-0 overflow-hidden w-[2px] -translate-x-1/2 hidden md:block bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-primary/20 to-transparent to-[99%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
                     >
-                        <motion.div
+                        <m.div
                             style={{
                                 height: heightTransform,
                                 opacity: opacityTransform,

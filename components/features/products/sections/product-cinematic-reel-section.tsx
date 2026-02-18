@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -161,36 +162,52 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] opacity-50 pointer-events-none" />
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
 
-            {/* 2. Transition Header — Unpinned, Natural Scroll directly above deck */}
-            <div className="container mx-auto px-6 py-20 pb-0 relative z-20">
+            {/* Desktop/Tablet Header - Unpinned */}
+            <div className="hidden md:block container mx-auto px-6 py-12 sm:py-24 pb-0 relative z-20">
                 <SectionHeader
                     title="Architecture Deck"
                     subtitle={architectureSubtitle}
                     badge="Visual Index"
                     badgeIcon={Layers}
                     align="center"
-                    className="mb-0"
+                    className="mb-10"
                     animate={true}
                 />
             </div>
 
             {/* 3. The Kinetic 3D Deck Stage - Pinned Container */}
-            <div ref={containerRef} className="relative w-full h-[110vh] overflow-hidden -mt-20">
-                <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu mt-10" style={{ transformStyle: 'preserve-3d' }}>
+            <div ref={containerRef} className="relative w-full h-[90vh] md:h-[110vh] overflow-hidden md:-mt-20">
+
+                {/* Mobile-Only Pinned Header - Clears Navbar */}
+                <div className="block md:hidden container mx-auto px-6 pt-32 pb-0 relative z-20">
+                    <SectionHeader
+                        title="Architecture Deck"
+                        subtitle={architectureSubtitle}
+                        badge="Visual Index"
+                        badgeIcon={Layers}
+                        align="center"
+                        className="mb-0"
+                        animate={true}
+                    />
+                </div>
+
+                <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu mt-40 md:mt-10" style={{ transformStyle: 'preserve-3d' }}>
                     <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
                         {REEL_IMAGES.map((src, idx) => (
                             <div
                                 key={src}
                                 ref={(el) => { imagesRef.current[idx] = el; }}
-                                className="absolute w-[70vw] h-[75vh] will-change-transform"
+                                className="absolute w-[90vw] md:w-[70vw] h-[50vh] sm:h-[60vh] md:h-[75vh] will-change-transform"
                                 style={{ transformStyle: 'preserve-3d' }}
                             >
                                 {/* Inner Card UI - Stripped of styles */}
                                 <div className="relative w-full h-full overflow-hidden">
-                                    <img
+                                    <Image
                                         src={src}
                                         alt={`Blade ${idx}`}
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        sizes="(max-width: 768px) 90vw, 70vw"
+                                        className="object-contain md:object-cover"
                                     />
                                 </div>
 

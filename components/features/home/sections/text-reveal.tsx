@@ -101,6 +101,11 @@ export function TextRevealSection() {
         "Forging the intelligence layer of tomorrow. Unlocking limitless potential.";
     const wordsArray = text.split(" ");
     const highlightIndices = [2, 3, 7, 8];
+    const wordsWithKeys = wordsArray.map((word, pos) => ({
+        word,
+        key: `${word}-${pos}`,
+        isHighlight: highlightIndices.includes(pos),
+    }));
 
     return (
         <Section
@@ -114,15 +119,15 @@ export function TextRevealSection() {
                     ref={textRef}
                     className="text-center font-bold tracking-tighter origin-center will-change-transform leading-[1.1]"
                 >
-                    {wordsArray.map((word, i) => (
+                    {wordsWithKeys.map((item) => (
                         <span
-                            key={i}
+                            key={item.key}
                             className={cn(
                                 "word inline-block mr-[0.2em] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white/10",
-                                highlightIndices.includes(i) && "highlight"
+                                item.isHighlight && "highlight"
                             )}
                         >
-                            {word}
+                            {item.word}
                         </span>
                     ))}
                 </h2>

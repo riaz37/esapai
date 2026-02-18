@@ -6,10 +6,11 @@ import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import type { GlobeConfig } from "@/components/ui/globe";
 import type { ServiceHeroProps } from "@/types/props";
 import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((mod) => mod.World),
@@ -106,11 +107,14 @@ const globeData = [
 import { Section } from "@/components/ui/section";
 
 
-export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
+export function ServiceHero({ titleMain, titleHighlight, subtitle, className }: ServiceHeroProps) {
   return (
     <Section
       padding="none"
-      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12"
+      className={cn(
+        "relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-32 md:pt-40 pb-12 px-4 sm:px-6 md:px-8 lg:px-12",
+        className
+      )}
       containerClassName="relative z-10 mx-auto"
       containerMaxWidth="wide"
     >
@@ -118,23 +122,19 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
 
         {/* Left Side: Content */}
         <div className="flex flex-col items-start text-left max-w-2xl relative z-20">
-          {typeof title === "string" ? (
-            <TypewriterTitle
-              title={title}
-              splitMode="lastWord"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-              align="left"
-            />
-          ) : (
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-left leading-[1.1]">
-              {title}
-            </h1>
-          )}
+          <TypewriterTitle
+            title={titleMain || ""}
+            tagline={titleHighlight}
+            splitMode="manual"
+            highlightPart="last"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
+            align="left"
+          />
 
           <div className="space-y-4 mb-10 max-w-lg">
             {subtitle.map((line, index) => (
-              <motion.p
-                key={index}
+              <m.p
+                key={line}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
@@ -142,7 +142,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
               >
                 {line}
                 {index < subtitle.length - 1 && <br className="hidden md:block" />}
-              </motion.p>
+              </m.p>
             ))}
           </div>
 
@@ -172,7 +172,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
 
         {/* Right Side: Globe Visual */}
         <div className="relative flex justify-center lg:justify-end items-center py-10 lg:py-0 overflow-visible">
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.4 }}
@@ -181,7 +181,7 @@ export function ServiceHero({ title, subtitle }: ServiceHeroProps) {
 
 
             <World globeConfig={globeConfig} data={globeData} />
-          </motion.div>
+          </m.div>
         </div>
 
       </div>

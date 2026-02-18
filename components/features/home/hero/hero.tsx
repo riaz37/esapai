@@ -46,7 +46,7 @@ export function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: "top top",
-                    end: "+=100%", // Determines scroll distance for the effect
+                    end: "+=50%", // Tightened further for mobile responsiveness
                     scrub: 1, // Smooth scrubbing
                     pin: true, // Pin the hero section during the effect
                     pinSpacing: false, // Allow next section to scroll underneath
@@ -158,7 +158,7 @@ export function Hero() {
                 autoAlpha: 0,
                 duration: 0.4,
                 ease: "power2.inOut"
-            }, 0.8); // Start fading out as the portal peak begins to subside
+            }, 0.4); // Start fading out earlier (was 0.8) to reveal content underneath
 
 
 
@@ -181,12 +181,12 @@ export function Hero() {
             ref={(el) => {
                 sectionRef.current = el;
             }}
-            className="relative w-full z-30 min-h-0 sm:min-h-screen overflow-hidden"
+            className="relative w-full z-30 min-h-screen overflow-hidden"
         >
             <SectionMask
                 fadeTop={false}
                 fadeBottom={false}
-                className="w-full h-full min-h-0 sm:min-h-screen flex items-start sm:items-center justify-center pb-6 sm:pb-16 md:pb-24 lg:pb-32 xl:pb-40 pt-20 sm:pt-24 md:pt-0"
+                className="w-full h-full min-h-screen flex items-center justify-center pb-12 sm:pb-16 md:pb-24 lg:pb-32 xl:pb-40 pt-20 sm:pt-24 md:pt-0"
             >
 
                 {/* Animated Gradient Background */}
@@ -211,7 +211,6 @@ export function Hero() {
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] rounded-full z-1 pointer-events-none opacity-0 blur-[100px] mix-blend-screen"
                     style={{
                         background: 'radial-gradient(circle, rgba(200,255,220,1) 0%, rgba(19,245,132,0.6) 30%, rgba(19,245,132,0) 70%)',
-                        willChange: "opacity, transform"
                     }}
                 />
 
@@ -240,7 +239,7 @@ export function Hero() {
                             title="AI-Powered Solutions"
                             splitMode="secondLine"
                             secondLine="For Modern Enterprises"
-                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 sm:mb-3 md:mb-4 leading-[1.1] w-full"
+                            className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 sm:mb-3 md:mb-4 leading-[1.1] w-full"
                             align="center"
                             mainTextClassName="mt-1 sm:mt-2"
                         />

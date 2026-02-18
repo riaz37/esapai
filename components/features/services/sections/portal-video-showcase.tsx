@@ -127,7 +127,6 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
                 <div
                     ref={videoRef}
                     className="absolute z-20 shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 bg-black overflow-hidden aspect-video"
-                    style={{ willChange: "transform, width, left, top" }}
                 >
                     <video
                         src={videoSrc}

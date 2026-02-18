@@ -158,7 +158,7 @@ export function AnimatedSVGLoader({
 /**
  * SVG Path-based loader - draws a path progressively
  */
-export function SVGPathLoader({
+function SVGPathLoader({
   size = "md",
   variant = "primary",
   className = "",
@@ -247,7 +247,7 @@ export function SVGPathLoader({
 /**
  * Morphing shape loader - transforms between different shapes
  */
-export function MorphingLoader({
+function MorphingLoader({
   size = "md",
   variant = "primary",
   className = "",

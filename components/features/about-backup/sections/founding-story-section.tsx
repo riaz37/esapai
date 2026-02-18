@@ -102,8 +102,8 @@ export function FoundingStorySection() {
               {foundingStoryConfig.visionTitle}
             </h2>
             <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">
-              {foundingStoryConfig.visionBody.split(/\n\n+/).map((p, i) => (
-                <p key={i}>{p}</p>
+              {foundingStoryConfig.visionBody.split(/\n\n+/).map((p) => (
+                <p key={p}>{p}</p>
               ))}
             </div>
           </div>
@@ -165,8 +165,8 @@ export function FoundingStorySection() {
                 {foundingStoryConfig.visionTitle}
               </h2>
               <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">
-                {foundingStoryConfig.visionBody.split(/\n\n+/).map((p, i) => (
-                  <p key={i}>{p}</p>
+                {foundingStoryConfig.visionBody.split(/\n\n+/).map((p) => (
+                  <p key={p}>{p}</p>
                 ))}
               </div>
             </div>

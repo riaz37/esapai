@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo } from "react";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -38,15 +39,16 @@ function CinematicAssistant({ state, className, reducedMotion }: CinematicAssist
     const [currentFrame, setCurrentFrame] = React.useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
     const frames = MARCO_FRAMES[state];
+    const [jitter] = React.useState(() => 150 + Math.random() * 100);
 
     // Frame cycling
     React.useEffect(() => {
         if (reducedMotion) return;
         const interval = setInterval(() => {
             setCurrentFrame((prev) => (prev + 1) % frames.length);
-        }, 150 + Math.random() * 100); // Varied jitter for "organic" AI feel
+        }, jitter); // Use stable jitter for consistency
         return () => clearInterval(interval);
-    }, [frames.length, reducedMotion]);
+    }, [frames.length, reducedMotion, jitter]);
 
     // Idle bobbing
     useGSAP(() => {
@@ -82,10 +84,13 @@ function CinematicAssistant({ state, className, reducedMotion }: CinematicAssist
 
             {/* Main Character Image */}
             <div className="relative z-10 w-full h-full filter drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                <img
+                <Image
                     src={frames[currentFrame % frames.length]}
                     alt="Marco AI Assistant"
-                    className="w-full h-full object-contain transition-opacity duration-150"
+                    fill
+                    sizes="(max-width: 1060px) 42vw, 448px"
+                    unoptimized
+                    className="object-contain transition-opacity duration-150"
                     key={`${state}-${currentFrame}`}
                 />
             </div>
@@ -211,7 +216,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: "+=400%",
+                end: "+=300%", // Reduced from 400% to tighten for mobile
                 pin: true,
                 scrub: 1,
                 anticipatePin: 1,
@@ -225,7 +230,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: ProductCinematicF
             xPercent: -50,
             x: "20vw",
             yPercent: 0,
-            duration: 1.2,
+            duration: 0.8, // Reduced from 1.2
             ease: "back.out(1.2)",
             force3D: true
         }, "problem1");

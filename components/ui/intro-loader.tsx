@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { m, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { Player } from "@remotion/player";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,12 @@ interface IntroLoaderProps {
 }
 
 const SCRAMBLE_CHARS = "01$#%&@*?><{}[]";
+
+const PULSE_ITEMS = [
+    { key: "pulse-a", delay: 0 },
+    { key: "pulse-b", delay: 0.4 },
+    { key: "pulse-c", delay: 0.8 },
+] as const;
 
 function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
     const [displayText, setDisplayText] = useState("");
@@ -35,7 +41,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
                     .join("");
 
                 setDisplayText(scrambled);
-                frame++;
+                frame += 1;
             }, 40);
             return () => clearInterval(interval);
         }, delay * 1000);
@@ -52,10 +58,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     const [isLoading, setIsLoading] = useState(isHomePage);
 
     useEffect(() => {
-        if (!isHomePage) {
-            setIsLoading(false);
-            return;
-        }
+        if (!isHomePage) return;
 
         // Smooth transition time for cinematic reveal
         const timer = setTimeout(() => {
@@ -71,7 +74,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
         <>
             <AnimatePresence mode="wait">
                 {isLoading && (
-                    <motion.div
+                    <m.div
                         key="intro-loader"
                         initial={{ opacity: 1 }}
                         exit={{
@@ -88,7 +91,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                         <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.02] mix-blend-screen bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
                         {/* Immersive Background Depth */}
-                        <motion.div
+                        <m.div
                             animate={{
                                 scale: [1, 1.2, 1],
                                 opacity: [0.1, 0.2, 0.1],
@@ -105,13 +108,13 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                         <div className="relative flex flex-col items-center gap-16">
                             <div className="relative group">
                                 {/* Tiered Glow Layers */}
-                                <motion.div
+                                <m.div
                                     animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                     className="absolute inset-0 -m-8 rounded-full bg-[#00A551]/20 blur-[60px]"
                                 />
 
-                                <motion.div
+                                <m.div
                                     initial={{ scale: 0.9, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     exit={{
@@ -143,12 +146,12 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                         }}
                                         inputProps={{}}
                                     />
-                                </motion.div>
+                                </m.div>
                             </div>
                         </div>
 
                         {/* Typography - Refined Spacing */}
-                        <motion.div
+                        <m.div
                             exit={{
                                 opacity: 0,
                                 y: 10,
@@ -156,16 +159,16 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                             }}
                             className="flex flex-col items-center gap-6"
                         >
-                            <motion.h1
+                            <m.h1
                                 initial={{ opacity: 0, y: 20, letterSpacing: "0.2em" }}
                                 animate={{ opacity: 1, y: 0, letterSpacing: "1em" }}
                                 transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
                                 className="text-xl md:text-2xl font-semibold uppercase text-white/90 text-center ml-[1em]"
                             >
                                 <ScrambleText text="ESAP AI" delay={1} />
-                            </motion.h1>
+                            </m.h1>
 
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 1.2, delay: 1.8 }}
@@ -177,9 +180,9 @@ export function IntroLoader({ children }: IntroLoaderProps) {
 
                                 {/* Performance-neutral breathing indicator */}
                                 <div className="flex gap-2 mt-4">
-                                    {[0, 1, 2].map((i) => (
-                                        <motion.div
-                                            key={i}
+                                    {PULSE_ITEMS.map((pulse) => (
+                                        <m.div
+                                            key={pulse.key}
                                             animate={{
                                                 scale: [1, 1.5, 1],
                                                 opacity: [0.2, 0.5, 0.2]
@@ -187,16 +190,16 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                             transition={{
                                                 duration: 2,
                                                 repeat: Infinity,
-                                                delay: i * 0.4,
+                                                delay: pulse.delay,
                                                 ease: "easeInOut"
                                             }}
                                             className="h-1 w-1 rounded-full bg-[#00A551]"
                                         />
                                     ))}
                                 </div>
-                            </motion.div>
-                        </motion.div>
-                    </motion.div>
+                            </m.div>
+                        </m.div>
+                    </m.div>
                 )}
             </AnimatePresence >
             {children}

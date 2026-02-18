@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { AlertTriangle, Clock, Database, FileX, ZapOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const PAIN_POINTS = [
   {
@@ -42,7 +43,7 @@ export function ServiceProblemSection({
   return (
     <Section
       id="why-this-service"
-      className="relative flex items-center"
+      className="relative flex items-center scroll-mt-20 md:scroll-mt-32"
       padding="md"
     >
       {/* Background Chaos Elements */}
@@ -64,7 +65,7 @@ export function ServiceProblemSection({
             className="mb-10"
             titleClassName="text-5xl md:text-6xl font-bold tracking-tight"
           />
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -75,11 +76,11 @@ export function ServiceProblemSection({
               Every growing enterprise hits a wall where complexity outpaces capacity.
               When your brightest minds are stuck moving data instead of making decisions, growth stalls.
             </p>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Floating Cards Visual */}
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -91,12 +92,12 @@ export function ServiceProblemSection({
               }
             }
           }}
-          className="relative h-[600px] w-full flex items-center justify-center perspective-[1000px]"
+          className="relative min-h-[400px] lg:h-[600px] w-full flex flex-col lg:flex-row items-center justify-center perspective-[1000px] gap-6 lg:gap-0"
         >
           {PAIN_POINTS.map((point, i) => (
-            <PainCard key={i} point={point} index={i} />
+            <PainCard key={point.title} point={point} index={i} />
           ))}
-        </motion.div>
+        </m.div>
 
       </div>
     </Section>
@@ -104,16 +105,16 @@ export function ServiceProblemSection({
 }
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useMemo } from "react";
+import { useState } from "react";
 
 function PainCard({ point, index }: { point: typeof PAIN_POINTS[0], index: number }) {
-  // Generate random values for the "chaos" drift
-  const randomDuration = useMemo(() => 4 + Math.random() * 3, []); // 4-7s duration
-  const randomY = useMemo(() => 5 + Math.random() * 10, []); // 5-15px drift
-  const randomRotate = useMemo(() => -2 + Math.random() * 4, []); // -2 to +2 deg wobble
+  const [randomDuration] = useState(() => 4 + Math.random() * 3);
+  const [randomY] = useState(() => 5 + Math.random() * 10);
+  const [randomRotate] = useState(() => -2 + Math.random() * 4);
+  const [randomDelay] = useState(() => Math.random() * 2);
 
   return (
-    <motion.div
+    <m.div
       variants={{
         hidden: {
           opacity: 0,
@@ -136,30 +137,39 @@ function PainCard({ point, index }: { point: typeof PAIN_POINTS[0], index: numbe
         }
       }}
       whileHover={{
-        scale: 1.1,
+        scale: 1.05,
         rotate: 0,
         zIndex: 50,
         transition: { type: "spring", stiffness: 300, damping: 20 }
       }}
-      className="absolute w-72 cursor-pointer group"
+      className={cn(
+        "relative lg:absolute w-full sm:w-80 lg:w-72 cursor-pointer group",
+        "lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
+      )}
       style={{
-        left: `calc(50% + ${point.x * 3}px)`,
-        top: `calc(50% + ${point.y * 3}px)`,
-        marginLeft: "-144px",
-        marginTop: "-100px"
+        ["--x-offset" as any]: `${point.x * 3}px`,
+        ["--y-offset" as any]: `${point.y * 3}px`,
       }}
     >
+      <style jsx>{`
+        @media (min-width: 1024px) {
+          .pain-card-inner {
+             margin-left: var(--x-offset);
+             margin-top: var(--y-offset);
+          }
+        }
+      `}</style>
       {/* Continuous Drift Wrapper - independent of entrance */}
-      <motion.div
+      <m.div
         animate={{
-          y: [0, -randomY, randomY / 2, 0],
-          rotate: [0, randomRotate, -randomRotate, 0],
+          y: typeof window !== 'undefined' && window.innerWidth >= 1024 ? [0, -randomY, randomY / 2, 0] : 0,
+          rotate: typeof window !== 'undefined' && window.innerWidth >= 1024 ? [0, randomRotate, -randomRotate, 0] : 0,
         }}
         transition={{
           duration: randomDuration,
           repeat: Infinity,
           ease: "easeInOut",
-          delay: Math.random() * 2
+          delay: randomDelay
         }}
         className="w-full h-full"
       >
@@ -172,7 +182,7 @@ function PainCard({ point, index }: { point: typeof PAIN_POINTS[0], index: numbe
           <h3 className="text-xl font-semibold text-white mb-2">{point.title}</h3>
           <p className="text-sm text-white/60">{point.desc}</p>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }

@@ -1,3 +1,4 @@
+import Script from "next/script";
 import type { StructuredData } from "@/types/seo";
 import type { StructuredDataProps } from "@/types/props";
 
@@ -10,10 +11,11 @@ export function StructuredDataComponent({ data }: StructuredDataProps) {
 
   return (
     <>
-      {schemas.map((schema, index) => (
-        <script
-          key={index}
+      {schemas.map((schema) => (
+        <Script
+          key={schema["@type"]}
           type="application/ld+json"
+          id={`structured-data-${schema["@type"]}`}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}

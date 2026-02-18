@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 
-export interface ServiceCardProps {
+interface ServiceCardProps {
     title: string;
     description: string;
     className?: string;
