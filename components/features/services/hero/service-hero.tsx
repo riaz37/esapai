@@ -106,13 +106,12 @@ const globeData = [
 
 import { Section } from "@/components/ui/section";
 
-
-export function ServiceHero({ titleMain, titleHighlight, subtitle, className }: ServiceHeroProps) {
+export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
   return (
     <Section
       padding="none"
       className={cn(
-        "relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-32 md:pt-40 pb-12 px-4 sm:px-6 md:px-8 lg:px-12",
+        "relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12",
         className
       )}
       containerClassName="relative z-10 mx-auto"
@@ -122,14 +121,18 @@ export function ServiceHero({ titleMain, titleHighlight, subtitle, className }: 
 
         {/* Left Side: Content */}
         <div className="flex flex-col items-start text-left max-w-2xl relative z-20">
-          <TypewriterTitle
-            title={titleMain || ""}
-            tagline={titleHighlight}
-            splitMode="manual"
-            highlightPart="last"
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-            align="left"
-          />
+          {typeof title === "string" ? (
+            <TypewriterTitle
+              title={title}
+              splitMode="lastWord"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
+              align="left"
+            />
+          ) : (
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-left leading-[1.1]">
+              {title}
+            </h1>
+          )}
 
           <div className="space-y-4 mb-10 max-w-lg">
             {subtitle.map((line, index) => (

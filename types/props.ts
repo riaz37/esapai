@@ -18,8 +18,7 @@ export interface ProductHeroProps {
 }
 
 export interface ServiceHeroProps {
-  titleMain?: string;
-  titleHighlight?: string;
+  title: string | ReactNode;
   subtitle: string[];
   description?: string;
   className?: string;

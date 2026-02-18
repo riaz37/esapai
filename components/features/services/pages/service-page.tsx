@@ -42,10 +42,8 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
     <div className="relative">
       {/* 1. Hero */}
       <ServiceHero
-        titleMain={content.hero?.titleMain ?? hydratedService.name}
-        titleHighlight={content.hero?.titleHighlight}
+        title={content.hero?.heroTitle ?? hydratedService.name}
         subtitle={heroSubtitle}
-        className="pt-32 md:pt-40"
       />
 
       {/* 2. Problem: Why this service (placeholder) */}
