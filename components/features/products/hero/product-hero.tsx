@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { OptimizedVideo } from "@/components/ui/optimized-video";
+
 import { ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import type { ProductHeroProps } from "@/types/props";
@@ -95,18 +97,16 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
 
               {/* Frame/Border */}
               <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl shadow-[#13F584]/2 translate-z-0">
-                <video
-                  className="w-full h-full object-cover"
+                <OptimizedVideo
+                  src="/LP_animation_HomePage_Big_Intro_2X_short.webm"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  preload="metadata"
-                  poster="/HUD.png"
-                >
-                  <source src="/LP_animation_HomePage_Big_Intro_2X_short.webm" type="video/webm" />
-                  Your browser does not support the video tag.
-                </video>
+                  priority={true}
+                  className="w-full h-full object-cover"
+                />
+
 
                 {/* Visual Overlays */}
                 <div className="absolute inset-0 pointer-events-none border border-white/5 rounded-2xl" />

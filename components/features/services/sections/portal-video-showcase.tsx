@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { GitCompare } from "lucide-react";
+import { OptimizedVideo } from "@/components/ui/optimized-video";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -138,7 +140,7 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
                         ref={videoRef}
                         className="relative lg:absolute z-20 w-full shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 bg-black overflow-hidden aspect-video rounded-2xl lg:rounded-[48px]"
                     >
-                        <video
+                        <OptimizedVideo
                             src={videoSrc}
                             autoPlay
                             loop
@@ -146,6 +148,7 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
                             playsInline
                             className="w-full h-full object-cover"
                         />
+
 
                         {/* Overlay Tint (Visible only on Desktop initially) */}
                         <div

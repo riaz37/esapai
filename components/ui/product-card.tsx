@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { Card } from "@/components/ui/card";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { OptimizedVideo } from "@/components/ui/optimized-video";
 
 
 
@@ -99,8 +100,7 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                         <div className="relative w-full h-full bg-neutral-900/50 rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
                             {product.content?.hero?.demoVideo ? (
                                 <div className="relative w-full h-full">
-                                    <video
-                                        ref={videoRef}
+                                    <OptimizedVideo
                                         src={product.content.hero.demoVideo}
                                         autoPlay
                                         loop
