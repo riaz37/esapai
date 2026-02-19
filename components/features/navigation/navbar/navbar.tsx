@@ -223,11 +223,11 @@ export function Navbar() {
           isOpen={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
         >
-          <div className="flex flex-col w-full gap-2">
+          <div className="flex flex-col w-full gap-0.5">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`nav-link-group relative group px-4 py-3 rounded-lg transition-all duration-300 ${isActive("/") ? "bg-zinc-100 dark:bg-zinc-800 text-[var(--color-primary)]" : "text-zinc-600 dark:text-zinc-400"
+              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
                 }`}
             >
               <span className="relative z-10 text-base font-semibold">Home</span>
@@ -264,7 +264,7 @@ export function Navbar() {
             <Link
               href="/about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`nav-link-group relative group px-4 py-3 rounded-lg transition-all duration-300 ${isActive("/about") ? "bg-zinc-100 dark:bg-zinc-800 text-[var(--color-primary)]" : "text-zinc-600 dark:text-zinc-400"
+              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/about") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
                 }`}
             >
               <span className="relative z-10 text-base font-semibold">About Us</span>
@@ -273,20 +273,24 @@ export function Navbar() {
             <Link
               href="/case-study"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`nav-link-group relative group px-4 py-3 rounded-lg transition-all duration-300 ${isActive("/case-study") ? "bg-zinc-100 dark:bg-zinc-800 text-[var(--color-primary)]" : "text-zinc-600 dark:text-zinc-400"
+              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/case-study") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
                 }`}
             >
               <span className="relative z-10 text-base font-semibold">Case Study</span>
             </Link>
 
-            <NavbarButton
-              href="/contact"
-              variant="primary"
-              className="w-full mt-4"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Contact Us
-            </NavbarButton>
+            {/* Separator */}
+            <div className="h-px bg-white/5 mx-3 my-2" />
+
+            <div className="px-2">
+              <NavbarButton
+                href="/contact"
+                variant="primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contact Us
+              </NavbarButton>
+            </div>
           </div>
         </MobileNavMenu>
       </MobileNav>

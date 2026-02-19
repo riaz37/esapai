@@ -159,7 +159,7 @@ export function Footer() {
                     required
                     className="contact-input w-full px-4 py-3.5 text-base text-light-gray"
                   />
-                  <Button variant="primary" size="default" className="w-full md:w-fit">
+                  <Button variant="primary" size="default" className="w-fit">
                     Subscribe
                   </Button>
                 </form>

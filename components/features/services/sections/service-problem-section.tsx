@@ -116,17 +116,16 @@ function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
       variants={{
         hidden: {
           opacity: 0,
-          x: point.x * 20,
-          y: point.y * 20,
-          scale: 0.5,
-          rotate: point.rotate * 2
+          y: 20,
+          scale: 0.95,
+          rotate: point.rotate * 0.5
         },
         visible: {
           opacity: 1,
-          x: point.x,
-          y: point.y,
+          x: typeof window !== "undefined" && window.innerWidth >= 1024 ? point.x : 0,
+          y: typeof window !== "undefined" && window.innerWidth >= 1024 ? point.y : 0,
           scale: 1,
-          rotate: point.rotate,
+          rotate: typeof window !== "undefined" && window.innerWidth >= 1024 ? point.rotate : 0,
           transition: {
             duration: 0.8,
             type: "spring",
@@ -135,17 +134,17 @@ function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
         }
       }}
       whileHover={{
-        scale: 1.1,
+        scale: 1.05,
         rotate: 0,
         zIndex: 50,
         transition: { type: "spring", stiffness: 300, damping: 20 }
       }}
-      className="relative w-full sm:w-80 lg:absolute lg:w-72 cursor-pointer group"
+      className="relative w-full max-w-[340px] lg:absolute lg:w-72 cursor-pointer group"
       style={{
-        left: `calc(50% + ${point.x * 3}px)`,
-        top: `calc(50% + ${point.y * 3}px)`,
-        marginLeft: "-144px",
-        marginTop: "-100px",
+        left: typeof window !== "undefined" && window.innerWidth >= 1024 ? `calc(50% + ${point.x * 3}px)` : undefined,
+        top: typeof window !== "undefined" && window.innerWidth >= 1024 ? `calc(50% + ${point.y * 3}px)` : undefined,
+        marginLeft: typeof window !== "undefined" && window.innerWidth >= 1024 ? "-144px" : undefined,
+        marginTop: typeof window !== "undefined" && window.innerWidth >= 1024 ? "-100px" : undefined,
       }}
     >
       {/* Continuous Drift Wrapper - independent of entrance */}
@@ -163,13 +162,13 @@ function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
         className="w-full h-full"
       >
         <div
-          className="h-full w-full rounded-xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl p-6 cursor-pointer group transition-colors hover:bg-white/10 hover:border-red-500/30"
+          className="h-full w-full rounded-xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl p-4 md:p-6 cursor-pointer group transition-colors hover:bg-white/10 hover:border-red-500/30"
         >
-          <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center mb-4 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors duration-300">
-            <point.icon className="w-6 h-6" />
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-red-500/10 flex items-center justify-center mb-4 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors duration-300">
+            <point.icon className="w-5 h-5 md:w-6 md:h-6" />
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">{point.title}</h3>
-          <p className="text-sm text-white/60">{point.desc}</p>
+          <h3 className="text-lg md:text-xl font-semibold text-white mb-2">{point.title}</h3>
+          <p className="text-xs md:text-sm text-white/60">{point.desc}</p>
         </div>
       </m.div>
     </m.div>

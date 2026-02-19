@@ -25,11 +25,11 @@ export function Timeline({ timeline }: TimelineProps) {
       return {
         id: index,
         leftContent: (
-          <div className="flex flex-col items-end pt-[1px] sm:pt-0 md:-mt-1 lg:-mt-1.5">
-            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-none">
+          <div className="flex flex-row md:flex-col items-center md:items-end gap-2 md:gap-0 pt-[1px] sm:pt-0 md:-mt-1 lg:-mt-1.5">
+            <span className="text-xl sm:text-2xl md:text-5xl font-bold text-white leading-none">
               {day}
             </span>
-            <span className="text-white/60 text-right text-label-caps">
+            <span className="text-white/60 text-left md:text-right text-xs sm:text-sm md:text-label-caps uppercase tracking-wider md:tracking-normal">
               {monthYear}
             </span>
           </div>
