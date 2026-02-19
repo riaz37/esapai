@@ -7,7 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Section } from "@/components/ui/section";
 import { Play } from "lucide-react";
+import { OptimizedVideo } from "@/components/ui/optimized-video";
 import type { Product } from "@/types/product";
+
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -118,16 +120,15 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                     >
                         {/* Video Content */}
                         <div className="relative w-full h-full">
-                            <video
-                                ref={videoRef}
+                            <OptimizedVideo
                                 src={demoVideo}
                                 autoPlay
                                 loop
                                 muted
                                 playsInline
-                                preload="none"
                                 className="w-full h-full object-cover"
                             />
+
 
                             {/* Internal Cinematic Finish Overlays */}
                             <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.04] to-transparent pointer-events-none mix-blend-overlay" />

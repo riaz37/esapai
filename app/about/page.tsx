@@ -1,8 +1,5 @@
 import React from "react";
-import { AboutHero } from "@/components/features/about/hero";
-import { AboutNarrative } from "@/components/features/about/narrative";
-import { AboutHistory } from "@/components/features/about/history";
-import { Footer } from "@/components/features/navigation/footer/footer";
+import { AboutPageClient } from "@/components/features/about/pages/about-page";
 
 export const metadata = {
     title: "About Us | ESAP AI ",
@@ -12,9 +9,8 @@ export const metadata = {
 export default function AboutPage() {
     return (
         <main className="min-h-screen">
-            <AboutHero />
-            <AboutNarrative />
-            <AboutHistory />
+            <AboutPageClient />
         </main>
     );
 }
+

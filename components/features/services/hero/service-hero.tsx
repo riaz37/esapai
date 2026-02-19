@@ -117,7 +117,7 @@ export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
       containerClassName="relative z-10 mx-auto"
       containerMaxWidth="wide"
     >
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
+      <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
 
         {/* Left Side: Content */}
         <div className="flex flex-col items-start text-left max-w-2xl relative z-20">
@@ -174,12 +174,12 @@ export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
         </div>
 
         {/* Right Side: Globe Visual */}
-        <div className="relative flex justify-center lg:justify-end items-center py-10 lg:py-0 overflow-visible">
+        <div className="relative flex justify-center md:justify-end items-center py-10 md:py-0 overflow-visible">
           <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.4 }}
-            className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px]"
+            className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] md:-mr-20 lg:-mr-32"
           >
 
 

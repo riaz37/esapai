@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
+import { OptimizedVideo } from "@/components/ui/optimized-video";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -210,15 +211,14 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 )}
             >
                 {/* Video Background */}
-                <video
+                <OptimizedVideo
+                    src={videoSrc}
                     autoPlay
                     muted
                     loop
                     playsInline
                     className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700 ease-out"
-                >
-                    <source src={videoSrc} type="video/mp4" />
-                </video>
+                />
 
                 {/* Interactive Spotlight Glow */}
                 <div
