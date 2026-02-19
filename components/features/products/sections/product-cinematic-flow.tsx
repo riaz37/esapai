@@ -525,7 +525,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
                 ref={cardsStageRef}
                 className="absolute inset-0 z-10 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 pt-16 pb-20"
             >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[1400px] mx-auto mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-[1400px] mx-auto mt-6">
                     {problems.map((p, i) => {
                         const ProblemIcon = p.icon;
                         const SolIcon = p.solIcon;
@@ -535,7 +535,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
                                 ref={(el) => {
                                     cardWrapperRefs.current[i] = el;
                                 }}
-                                className="w-[300px] md:w-[340px] h-[280px] shrink-0 opacity-0 overflow-visible"
+                                className="w-full h-[280px] opacity-0 overflow-visible"
                                 style={{ perspective: "1200px" }}
                             >
                                 <div

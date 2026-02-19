@@ -396,6 +396,47 @@
     opacity: 1;
     transform: scale(1);
   }
+
+  /* Mobile Menu Item */
+  .mobile-menu-item {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .mobile-menu-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg,
+        rgba(19, 245, 132, 0) 0%,
+        rgba(19, 245, 132, 0.25) 50%,
+        rgba(19, 245, 132, 0) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-menu-item:hover,
+  .mobile-menu-item:active {
+    background: rgba(19, 245, 132, 0.05);
+    border-color: rgba(19, 245, 132, 0.15);
+  }
+
+  .mobile-menu-item:hover::before,
+  .mobile-menu-item:active::before {
+    opacity: 1;
+  }
 }
 
 @layer components {

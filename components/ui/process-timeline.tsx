@@ -98,27 +98,40 @@ function TimelineEntry({ item, index, entryRef }: { item: ProcessTimelineItem; i
                 containerRef.current = el;
                 entryRef(el);
             }}
-            className="relative flex gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-8 sm:mb-10 md:mb-12 last:mb-0"
+            className="relative flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-10 md:mb-12 last:mb-0"
         >
-            {/* Left Content */}
-            <div className="flex-shrink-0 w-24 sm:w-28 md:w-32 lg:w-40">
+            {/* Mobile Header: Date + Node */}
+            <div className="flex md:hidden items-center gap-4 mb-2">
+                <div ref={nodeRef} className="relative z-10 flex items-center justify-center">
+                    {item.nodeContent || (
+                        <div className="h-8 w-8 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-[#13F58440] shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
+                            <div className="h-4 w-4 rounded-full border bg-[#13F5844D] border-[#13F584BF]" />
+                        </div>
+                    )}
+                </div>
+                <div ref={leftRef} className="flex-1">
+                    {item.leftContent}
+                </div>
+            </div>
+
+            {/* Desktop Left Content */}
+            <div className="hidden md:block flex-shrink-0 w-32 lg:w-40">
                 <div ref={leftRef}>{item.leftContent}</div>
             </div>
 
-            {/* Node */}
-            <div className="flex-shrink-0 relative w-8 sm:w-9 md:w-10 flex items-start justify-center">
+            {/* Desktop Node */}
+            <div className="hidden md:flex flex-shrink-0 relative w-10 items-start justify-center">
                 <div ref={nodeRef} className="relative z-10 flex items-center justify-center">
                     {item.nodeContent || (
-                        // Default Node Style (Glassmorphism)
-                        <div className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-[#13F58440] shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
-                            <div className="h-4 w-4 sm:h-4.5 sm:w-4.5 md:h-5 md:w-5 rounded-full border bg-[#13F5844D] border-[#13F584BF]" />
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-[#13F58440] shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
+                            <div className="h-5 w-5 rounded-full border bg-[#13F5844D] border-[#13F584BF]" />
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Right Content */}
-            <div ref={rightRef} className="flex-1 pb-6 sm:pb-7 md:pb-8">
+            <div ref={rightRef} className="flex-1 pb-2 md:pb-8">
                 {item.rightContent}
             </div>
         </div>
