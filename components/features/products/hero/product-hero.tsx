@@ -60,6 +60,8 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                 highlightPart="first"
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
                 align="left"
+                staggerDelay={0.015}
+                letterDuration={0.3}
               />
             </div>
 
