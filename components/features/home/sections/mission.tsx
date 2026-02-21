@@ -143,8 +143,8 @@ export function Mission({
   return (
     <Section
       ref={sectionRef}
-      padding="none"
-      containerClassName="flex flex-col pt-12 pb-12 sm:pt-24 sm:pb-24"
+      padding="md"
+      containerClassName="flex flex-col"
       className="relative overflow-hidden z-20 bg-transparent"
       containerMaxWidth="full"
     >

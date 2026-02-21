@@ -100,7 +100,7 @@ export function Achievement() {
     }, { scope: sectionRef });
 
     return (
-        <Section ref={sectionRef} padding="none" className="w-full py-12 sm:py-20 bg-transparent overflow-hidden">
+        <Section ref={sectionRef} padding="md" className="w-full bg-transparent overflow-hidden">
             <SectionHeader
                 badge="Our Achievement"
                 badgeIcon={Cpu}

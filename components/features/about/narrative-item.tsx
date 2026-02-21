@@ -33,7 +33,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
                                 initial={{ y: "100%" }}
                                 animate={{ y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                                className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white"
+                                className="text-3xl md:text-5xl lg:text-6xl text-white"
                             >
                                 {item.name}
                             </m.h3>
@@ -45,14 +45,14 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
                             transition={{ duration: 0.8, delay: 0.4 }}
                             className="space-y-4 lg:space-y-8"
                         >
-                            <p className="text-base md:text-xl text-white/60 leading-relaxed font-normal line-clamp-3 md:line-clamp-4 lg:line-clamp-none">
+                            <p className="text-base md:text-xl text-white/60 leading-relaxed line-clamp-3 md:line-clamp-4 lg:line-clamp-none">
                                 {item.description}
                             </p>
 
                             <div className={`flex items-center gap-6 lg:gap-10 ${isFlipped ? "flex-row-reverse" : "flex-row"}`}>
                                 <div className="flex flex-col">
-                                    <span className="text-xs lg:text-sm font-semibold text-white/40 mb-1 uppercase tracking-tight">Designation</span>
-                                    <span className="text-base lg:text-lg font-bold text-white uppercase tracking-wider">{item.price}</span>
+                                    <span className="text-xs lg:text-sm text-white/40 mb-1">Designation</span>
+                                    <span className="text-base lg:text-lg text-white">{item.price}</span>
                                 </div>
 
                                 <div className="h-8 lg:h-10 w-[1px] bg-white/10" />

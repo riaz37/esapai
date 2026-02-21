@@ -55,7 +55,7 @@ export const ContactFormCard = forwardRef<
           <div data-gsap="contact-form-item" className="space-y-1.5 sm:space-y-2">
             <label
               htmlFor="fullName"
-              className="text-white/70 text-xs sm:text-sm font-semibold tracking-wide block"
+              className="text-white text-xs sm:text-sm font-semibold tracking-wide block"
             >
               Full Name
             </label>
@@ -75,7 +75,7 @@ export const ContactFormCard = forwardRef<
           <div data-gsap="contact-form-item" className="space-y-1.5 sm:space-y-2">
             <label
               htmlFor="email"
-              className="text-white/70 text-xs sm:text-sm font-semibold tracking-wide block"
+              className="text-white text-xs sm:text-sm font-semibold tracking-wide block"
             >
               Email
             </label>
@@ -95,7 +95,7 @@ export const ContactFormCard = forwardRef<
           <div data-gsap="contact-form-item" className="space-y-1.5 sm:space-y-2">
             <label
               htmlFor="message"
-              className="text-white/70 text-xs sm:text-sm font-semibold tracking-wide block"
+              className="text-white text-xs sm:text-sm font-semibold tracking-wide block"
             >
               Message
             </label>

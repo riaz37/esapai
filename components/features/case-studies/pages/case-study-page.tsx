@@ -44,9 +44,8 @@ export function CaseStudyPage({
       <Section
         ref={sectionRef}
         padding="lg"
-        containerMaxWidth="full"
-        containerClassName="max-w-none px-0 sm:px-0 md:px-0"
-        className="relative overflow-hidden pt-40 md:pt-48 scroll-mt-32"
+        containerMaxWidth="wide"
+        className="relative overflow-hidden"
       >
         {/* Content Container */}
         <div className="relative z-10 w-full">
@@ -55,9 +54,7 @@ export function CaseStudyPage({
 
           {/* Timeline Section embedded seamlessly */}
           <div className="relative">
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-              <Timeline timeline={hydratedCaseStudy.timeline} />
-            </div>
+            <Timeline timeline={hydratedCaseStudy.timeline} />
           </div>
         </div>
       </Section>

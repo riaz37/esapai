@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
+import { m, AnimatePresence } from "motion/react";
 import type { TimelineProps } from "@/types/props";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -52,9 +53,7 @@ export function Timeline({ timeline }: TimelineProps) {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-gradient-radial-white">
                 {entry.title}
               </h3>
-              <p className="text-sm sm:text-base md:text-lg text-white/60 mb-4 sm:mb-5 md:mb-6 leading-relaxed">
-                {entry.description}
-              </p>
+              <TimelineDescription text={entry.description} />
 
               {/* Images Grid */}
               {entry.images.length > 0 && (
@@ -88,3 +87,60 @@ export function Timeline({ timeline }: TimelineProps) {
 
   return <ProcessTimeline items={items} />;
 }
+
+function TimelineDescription({ text }: { text: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const isLong = text.length > 250;
+
+  return (
+    <div className="mb-4 sm:mb-5 md:mb-6">
+      <m.div
+        initial={false}
+        animate={{
+          height: isExpanded || !isLong ? "auto" : "4.8em",
+        }}
+        transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+        className="relative overflow-hidden"
+      >
+        <p className={cn(
+          "text-sm sm:text-base md:text-lg text-white/60 leading-[1.6]",
+          !isExpanded && isLong && "line-clamp-3"
+        )}>
+          {text}
+        </p>
+      </m.div>
+
+      {isLong && (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsExpanded(!isExpanded);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setIsExpanded(!isExpanded);
+            }
+          }}
+          className="mt-2 inline-flex items-center gap-1 text-primary hover:text-primary transition-all duration-300 cursor-pointer select-none group/readmore text-sm font-semibold border-none bg-transparent p-0"
+        >
+          <span className="group-hover/readmore:underline underline-offset-4 decoration-primary/30">
+            {isExpanded ? "Show Less" : "Read More"}
+          </span>
+          <m.span
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center"
+          >
+            <ArrowRight className={cn("w-3.5 h-3.5 transition-transform", !isExpanded && "group-hover/readmore:translate-x-0.5")} />
+          </m.span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+import { ArrowRight } from "lucide-react";

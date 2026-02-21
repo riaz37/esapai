@@ -110,9 +110,9 @@ export function TextRevealSection() {
     return (
         <Section
             ref={containerRef}
-            padding="none"
+            padding="md"
             containerMaxWidth="5xl"
-            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden pt-12 pb-12 sm:pt-20 sm:pb-20"
+            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden"
         >
             <div className="flex-1 flex items-center justify-center min-h-[60vh]">
                 <h2

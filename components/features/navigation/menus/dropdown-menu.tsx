@@ -39,7 +39,7 @@ export function DropdownMenu({
         {/* Left Sidebar */}
         <div className="w-[300px] border-r border-white/5 bg-black/20 flex flex-col">
           <div className="p-6">
-            <h2 className="text-emerald-500 text-label-caps tracking-cinematic-wide">
+            <h2 className="text-emerald-500 text-xs font-bold">
               {title}
             </h2>
           </div>
@@ -120,15 +120,15 @@ export function DropdownMenu({
                 <div className="grid grid-cols-1 gap-8 mb-8">
                   {/* Stats / Metrics */}
                   <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-white/40 text-label-caps tracking-cinematic-widest mb-2">
+                    <div className="flex items-center gap-2 text-white/40 text-[11px] font-bold mb-2">
                       <Zap className="w-3 h-3 text-[#13F584]" />
                       Impact Analysis
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       {activeItem.content?.performance?.metrics?.map((m: any, idx: number) => (
                         <div key={m.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
-                          <div className="text-2xl font-bold text-[#13F584] font-mono leading-none">{m.value}</div>
-                          <div className="text-white/40 text-label-caps tracking-cinematic-widest mt-2">{m.label}</div>
+                          <div className="text-2xl font-bold text-[#13F584] leading-none">{m.value}</div>
+                          <div className="text-white/40 text-[11px] font-bold mt-2">{m.label}</div>
                         </div>
                       ))}
                     </div>

@@ -186,7 +186,7 @@ export function Hero() {
             <SectionMask
                 fadeTop={false}
                 fadeBottom={false}
-                className="w-full h-full min-h-screen flex items-center justify-center pb-12 sm:pb-16 md:pb-24 lg:pb-32 xl:pb-40 pt-20 sm:pt-24 md:pt-0"
+                className="w-full h-full min-h-screen flex items-center justify-center pt-20 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20"
             >
 
                 {/* Animated Gradient Background */}

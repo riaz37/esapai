@@ -109,9 +109,9 @@ import { Section } from "@/components/ui/section";
 export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
   return (
     <Section
-      padding="none"
+      padding="md"
       className={cn(
-        "relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12",
+        "relative min-h-[90vh] flex items-center overflow-hidden",
         className
       )}
       containerClassName="relative z-10 mx-auto"
