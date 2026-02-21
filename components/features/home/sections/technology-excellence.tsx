@@ -69,7 +69,7 @@ export function TechnologyExcellence() {
     );
 
     return (
-        <Section ref={sectionRef} padding="md" className="py-12 sm:py-24 relative z-10">
+        <Section ref={sectionRef} padding="md" className="relative z-10">
             <SectionHeader
                 title="Our Technology Excellence"
                 subtitle="Experience the dual power of autonomous execution and deep analytical insight, engineered for the future of enterprise."

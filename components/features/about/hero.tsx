@@ -18,7 +18,7 @@ export const AboutHero: React.FC = () => {
                     transition={{ duration: 0.8 }}
                     className="mb-8"
                 >
-                    <Badge variant="outline" className="px-4 py-1.5 text-[10px] sm:text-xs uppercase tracking-[0.2em] border-white/10 text-primary bg-white/5 backdrop-blur-sm rounded-full font-medium">
+                    <Badge variant="outline" className="px-4 py-1.5 text-xs sm:text-xs border-white/10 text-primary bg-white/5 backdrop-blur-sm rounded-full">
                         Legacy & Vision
                     </Badge>
                 </m.div>
@@ -27,7 +27,7 @@ export const AboutHero: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.2 }}
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-[1.1] text-white"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-8 leading-[1.1] text-white"
                 >
                     Our <span className="text-primary">Legacy</span>
                 </m.h1>
@@ -36,7 +36,7 @@ export const AboutHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.4 }}
-                    className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto font-normal leading-relaxed"
+                    className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed"
                 >
                     Building the foundation for enterprise intelligence. From humble beginnings to global infrastructure — this is our story.
                 </m.p>

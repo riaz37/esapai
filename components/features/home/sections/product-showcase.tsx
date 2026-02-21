@@ -92,7 +92,7 @@ export function ProductShowcase() {
   return (
     <Section
       padding="md"
-      className="relative w-full py-12 sm:py-20 bg-transparent overflow-visible"
+      className="relative w-full bg-transparent overflow-visible"
     >
       <SectionHeader
         title="Product Discovery"

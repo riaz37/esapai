@@ -97,9 +97,9 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
   return (
     <Section
       ref={sectionRef}
-      padding="none"
+      padding="md"
       containerMaxWidth="wide"
-      className="bg-transparent overflow-hidden py-12 sm:py-24"
+      className="bg-transparent overflow-hidden"
       data-section="impact"
     >
       <SectionHeader

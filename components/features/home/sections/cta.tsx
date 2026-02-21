@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { Section } from "@/components/ui/section";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import type { Product } from "@/types/product";
 
@@ -196,10 +197,13 @@ export function CTASection({
 
 
     return (
-        <section
+        <Section
             ref={sectionRef}
+            padding="md"
+            background="transparent"
+            withContainer={false}
             // Seamless blend: Using mask-image for the smoothest possible edge blending
-            className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-transparent"
+            className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden"
             style={{
                 maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
                 WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)"
@@ -212,7 +216,7 @@ export function CTASection({
             />
 
             {/* Content */}
-            <div className="relative z-20 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 text-center">
+            <div className="relative z-20 w-full px-4 sm:px-6 md:px-8 lg:px-12 text-center">
                 <div className="max-w-[1400px] mx-auto">
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
@@ -238,6 +242,6 @@ export function CTASection({
             </div>
 
 
-        </section>
+        </Section>
     );
 }

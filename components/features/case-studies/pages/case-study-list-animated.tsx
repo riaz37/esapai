@@ -4,6 +4,7 @@ import { useRef, useState, memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { m } from "motion/react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
@@ -12,7 +13,7 @@ import { useSharedCardObserver } from "@/lib/hooks/use-case-study-card-animation
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { sanitizeText } from "@/lib/utils/sanitize";
 import { Section } from "@/components/ui/section";
-import { SectionHeader } from "@/components/ui/section-header";
+import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { LazySection } from "@/components/ui/lazy-section";
 import type { CaseStudyWithUrls } from "@/types/case-study";
@@ -48,31 +49,9 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
 
       const tl = anim.createTimeline();
 
-      // Hero title animation
-      if (titleRef.current) {
-        gsap.set(titleRef.current, { opacity: 0, y: 30 });
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        });
-      }
+      // Title/Subtitle animations are now handled by TypewriterTitle and Motion
 
-      // Hero subtitle animation
-      if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, { opacity: 0, y: 20 });
-        tl.to(
-          subtitleRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power2.out",
-          },
-          "-=0.4"
-        );
-      }
+      // Subtitle animation handled via initial/animate props on the element
     },
     { scope: sectionRef }
   );
@@ -94,28 +73,34 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
           setIntersectionRef(el);
         }}
         padding="lg"
-        containerMaxWidth="full"
-        containerClassName="max-w-none px-0 sm:px-0 md:px-0"
-        className="relative overflow-hidden pt-32 md:pt-40"
+        containerMaxWidth="wide"
+        className="relative overflow-hidden"
       >
 
         {/* Unified Content Container */}
         <div className="relative z-10 w-full">
           {/* Hero Content */}
-          <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
-            <h1
-              ref={titleRef}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] text-primary"
-            >
-              Case Study
-            </h1>
-            <p
+          <div className="text-left mb-16 sm:mb-20 md:mb-24 lg:mb-28">
+            <TypewriterTitle
+              title="Creative Case"
+              tagline="Study"
+              splitMode="manual"
+              highlightPart="last"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 pl-2"
+              align="left"
+              staggerDelay={0.02}
+              letterDuration={0.4}
+            />
+            <m.p
               ref={subtitleRef}
-              className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto px-4 sm:px-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl font-normal leading-relaxed"
             >
               Where Innovation Meets Productivity Driven by agents Powered by
               automation Built for what&apos;s next
-            </p>
+            </m.p>
           </div>
 
           {/* Grid Content */}
@@ -123,7 +108,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
             {caseStudies.length > 0 ? (
               <div
                 ref={cardsContainerRef}
-                className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12"
+                className="w-full"
                 role="list"
                 aria-label="Case studies"
               >
@@ -265,12 +250,12 @@ const CaseStudyCard = memo(
               {excerpt}
             </p>
 
-            <Button variant="primary" asChild>
+            <Button variant="primary" asChild className="pl-4 pr-1.5">
               <Link
                 href={`/case-study/${caseStudy.slug}`}
                 className="inline-flex items-center gap-2 group w-fit"
               >
-                <span>View Case Study</span>
+                <span>View Details</span>
                 <ButtonArrow size="default" />
               </Link>
             </Button>

@@ -133,7 +133,7 @@ export function ServiceProcessSection() {
         className="md:h-screen w-full flex flex-col justify-between overflow-hidden relative bg-transparent"
       >
         {/* HEADER: Flex-none to keep it at top */}
-        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-32 md:pt-32 flex-none z-10 pointer-events-none">
+        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-20 md:pt-20 flex-none z-10 pointer-events-none">
           <SectionHeader
             badge="Process"
             badgeIcon={Workflow}

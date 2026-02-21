@@ -163,7 +163,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")' }} />
 
             {/* Desktop/Tablet Header - Unpinned */}
-            <div className="hidden md:block container mx-auto px-6 py-12 sm:py-24 pb-0 relative z-20">
+            <div className="hidden md:block container mx-auto px-6 pt-20 pb-0 relative z-20">
                 <SectionHeader
                     title="Architecture Deck"
                     subtitle={architectureSubtitle}
@@ -191,7 +191,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                     />
                 </div>
 
-                <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu mt-40 md:mt-10" style={{ transformStyle: 'preserve-3d' }}>
+                <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu mt-32 md:mt-10" style={{ transformStyle: 'preserve-3d' }}>
                     <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
                         {REEL_IMAGES.map((src, idx) => (
                             <div

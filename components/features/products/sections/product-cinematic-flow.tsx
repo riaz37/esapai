@@ -224,8 +224,12 @@ export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; i
     }, []);
 
     return (
-        <section className="relative w-full bg-[#09090b]">
-            <div className="max-w-[1400px] mx-auto px-6 py-20 md:pt-32 pb-0">
+        <Section
+            padding="none"
+            background="transparent"
+            className="relative"
+        >
+            <div className="max-w-[1400px] mx-auto px-6 pt-20 pb-0">
                 <SectionHeader
                     title={
                         <>
@@ -247,7 +251,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; i
             ) : (
                 <CinematicDesktopFlow slug={slug} problems={problems} />
             )}
-        </section>
+        </Section>
     );
 }
 
@@ -488,7 +492,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
                 />
             </div>
 
-            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 md:px-8 pt-24 md:pt-32 pb-24 md:pb-32 pointer-events-none">
+            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 md:px-8 pt-20 md:pt-24 pb-20 md:pb-24 pointer-events-none">
                 <div className="relative w-full max-w-[1400px] h-full flex items-center justify-center">
                     {problems.map((p, i) => (
                         <div

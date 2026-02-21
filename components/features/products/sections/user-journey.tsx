@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Section } from "@/components/ui/section";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -234,7 +235,7 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
                         boxShadow: index > 0 ? '0 -50px 100px rgba(0,0,0,0.9)' : 'none'
                     }}
                 >
-                    <div className="relative w-full max-w-[1400px] h-full flex flex-col justify-center px-12 pt-20">
+                    <div className="relative w-full max-w-[1400px] h-full flex flex-col justify-center px-12 pt-12">
                         <div className="relative w-full h-[70vh] min-h-[600px] architecture-surface rounded-[40px] border border-white/10 bg-white/[0.02] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)]">
 
                             {/* SVG Edges */}
@@ -291,7 +292,7 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
     }, []);
 
     return (
-        <section className="relative w-full py-24 bg-[#09090b]">
+        <Section className="relative w-full" padding="md">
             <style jsx global>{`
                 @keyframes flow-pulse {
                     0% { stroke-dashoffset: 100; opacity: 0.2; }
@@ -307,7 +308,7 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
                 }
             `}</style>
 
-            <div className="max-w-[1400px] mx-auto px-6 mb-16 md:mb-24">
+            <div className="w-full mx-auto px-0 mb-10">
                 <SectionHeader
                     title={journeyData.journeyTitle || "System Architecture"}
                     subtitle={journeyData.journeySubtitle}
@@ -324,6 +325,6 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
             ) : (
                 <DesktopJourneyFlow layers={journeyData.layers} />
             )}
-        </section>
+        </Section>
     );
 };
