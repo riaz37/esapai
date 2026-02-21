@@ -116,7 +116,7 @@ export function GlobalLoader({
       <div className="relative z-10 flex flex-col items-center gap-4 text-center">
         <AnimatedSVGLoader size="lg" variant="primary" />
         <div ref={textRef} className="space-y-1">
-          <p className="text-sm uppercase tracking-[0.4em] text-white/60">
+          <p className="text-xs uppercase tracking-widest text-white/60">
             {subMessage}
           </p>
           <p className="text-2xl font-semibold text-white md:text-3xl">

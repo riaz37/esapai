@@ -110,7 +110,7 @@ export function SectionHeader({
     <div
       ref={containerRef}
       data-testid="section-header"
-      className={cn("relative z-10 flex flex-col mb-4 sm:mb-6", alignClass, className)}
+      className={cn("relative z-10 flex flex-col mb-10 sm:mb-12 lg:mb-16", alignClass, className)}
     >
 
 

@@ -89,7 +89,6 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                     badge="Demo"
                     badgeIcon={Play}
                     align="center"
-                    className="mb-10"
                 />
             </div>
 
@@ -115,7 +114,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                 <div className="video-stage absolute inset-0 z-10 flex items-start justify-center pointer-events-none px-4 md:px-8 pt-64 md:pt-32">
                     <div
                         ref={videoWrapperRef}
-                        className="relative w-[95vw] md:w-[90vw] max-w-[1400px] max-h-[40vh] md:max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 bg-zinc-950 pointer-events-auto will-change-transform"
+                        className="relative w-[95vw] md:w-[90vw] max-w-[1400px] max-h-[40vh] md:max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 pointer-events-auto will-change-transform"
                         style={{ transformStyle: "preserve-3d" }}
                     >
                         {/* Video Content */}

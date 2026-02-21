@@ -56,7 +56,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["start start", "center start"],
   });
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -90,24 +90,28 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
     <m.div
       animate={{
-        backdropFilter: visible ? "blur(10px)" : "none",
+        backdropFilter: visible ? "blur(8px)" : "blur(0px)",
+        backgroundColor: visible ? "rgba(250, 250, 250, 0.02)" : "rgba(250, 250, 250, 0)",
+        borderColor: visible ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0)",
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
         width: visible ? "40%" : "100%",
+        paddingLeft: visible ? "12px" : "0px",
+        paddingRight: visible ? "12px" : "0px",
         y: visible ? 20 : 0,
       }}
       transition={{
         type: "spring",
         stiffness: 200,
-        damping: 50,
+        damping: 40,
+        mass: 1,
       }}
       style={{
         minWidth: visible ? "950px" : "auto",
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden flex-row items-center justify-between self-start rounded-full bg-transparent px-0 py-2 lg:flex max-w-[1400px]",
-        visible && "bg-[rgba(250,250,250,0.02)] backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all px-2",
+        "relative z-[60] mx-auto hidden flex-row items-center justify-between self-start rounded-full bg-transparent border border-transparent py-2 lg:flex max-w-[1400px]",
         className,
       )}
     >
@@ -152,7 +156,9 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
   return (
     <m.div
       animate={{
-        backdropFilter: visible ? "blur(10px)" : "none",
+        backdropFilter: visible ? "blur(8px)" : "blur(0px)",
+        backgroundColor: visible ? "rgba(250, 250, 250, 0.02)" : "rgba(250, 250, 250, 0)",
+        borderColor: visible ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0)",
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
@@ -165,11 +171,11 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
       transition={{
         type: "spring",
         stiffness: 200,
-        damping: 50,
+        damping: 40,
+        mass: 1,
       }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
-        visible && "bg-[rgba(250,250,250,0.02)] backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]",
+        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent border border-transparent px-0 py-2 lg:hidden",
         className,
       )}
     >

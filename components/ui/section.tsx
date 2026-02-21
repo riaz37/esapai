@@ -23,7 +23,7 @@ const paddingClasses = {
 };
 
 const backgroundClasses = {
-  dark: "bg-[#09090b]", // Solid background to prevent bleed-through
+  dark: "bg-black", // Solid black to match new global background
   transparent: "bg-transparent",
 };
 
@@ -34,7 +34,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       className = "",
       containerClassName = "",
       containerMaxWidth = "wide",
-      background = "dark",
+      background = "transparent",
       padding = "md",
       overflow = "hidden",
       withContainer = true,
@@ -46,7 +46,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       typeof background === "string" && background in backgroundClasses
         ? backgroundClasses[background as keyof typeof backgroundClasses]
         : background === "dark"
-          ? "bg-[#09090b]"
+          ? "bg-[#000000]"
           : "";
 
     // Content inside the section - either wrapped in a container or not

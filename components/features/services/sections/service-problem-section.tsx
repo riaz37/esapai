@@ -62,7 +62,6 @@ export function ServiceProblemSection({
             title={title}
             subtitle={subtitle}
             align="left"
-            className="mb-10"
             titleClassName="text-5xl md:text-6xl font-bold tracking-tight"
           />
           <m.div

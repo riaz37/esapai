@@ -99,7 +99,6 @@ export function ProductShowcase() {
         subtitle="Experience our ecosystem of intelligent tools."
         badge="Product Showcase"
         badgeIcon={Rocket}
-        className="mb-10"
       />
 
       {/* Sticky Stacking Container */}
@@ -114,7 +113,7 @@ export function ProductShowcase() {
               ref={(el) => {
                 cardRefs.current[index] = el;
               }}
-              className="sticky w-full max-w-[1400px] preserve-3d"
+              className="sticky w-full max-w-[1400px] preserve-3d overflow-hidden rounded-[32px]"
               style={{
                 top: `${topOffset}px`,
                 zIndex: index + 1,
@@ -124,7 +123,7 @@ export function ProductShowcase() {
             >
               {/* Shadow Overlay for darkening effect */}
               <div
-                className="shadow-overlay absolute inset-0 bg-black pointer-events-none z-20 rounded-[inherit] transition-opacity will-change-opacity"
+                className="shadow-overlay absolute inset-0 bg-black pointer-events-none z-20 rounded-[32px] will-change-opacity"
                 style={{ opacity: 0 }}
               />
 
@@ -135,7 +134,7 @@ export function ProductShowcase() {
                   videoRef={(el) => {
                     videoRefs.current[index] = el;
                   }}
-                  className="h-full shadow-2xl bg-background"
+                  className="h-full shadow-2xl"
                 />
               </div>
             </div>

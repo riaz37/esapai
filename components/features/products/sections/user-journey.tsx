@@ -10,6 +10,7 @@ import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Section } from "@/components/ui/section";
+import { Card } from "@/components/ui/card";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -80,9 +81,9 @@ const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean
                     "relative flex flex-col items-center justify-center",
                     "rounded-2xl overflow-hidden",
                     "border border-white/10 hover:border-[#13F584]/50 transition-all duration-500",
-                    "bg-white/[0.03] backdrop-blur-3xl",
+                    "bg-transparent backdrop-blur-3xl",
                     "min-w-full md:min-w-[150px] p-4 md:p-6",
-                    "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_0_40px_rgba(0,0,0,0.8)]",
+                    "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]",
                     "group-hover/node:scale-105 group-hover/node:shadow-[0_0_50px_rgba(19,245,132,0.15)]"
                 )}
             >
@@ -112,13 +113,11 @@ const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean
                     <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#13F584]/40" />
                 </div>
 
-                <h3 className="relative text-white/90 text-center leading-tight text-[11px] md:text-xs font-mono tracking-widest uppercase">
+                <h3 className="relative text-white/90 text-center leading-tight text-xs tracking-widest uppercase">
                     {node.data.title}
                 </h3>
 
-                <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/node:opacity-100">
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent -translate-y-full hover-scan-line" />
-                </div>
+
             </div>
         </div>
     );
@@ -135,19 +134,19 @@ const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
                     {/* Stage Label */}
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-8 h-[1px] bg-[#13F584]/30" />
-                        <span className="text-[10px] font-mono font-bold text-[#13F584] tracking-[0.2em] uppercase">
+                        <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase">
                             Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
                         </span>
                     </div>
 
                     {/* Stage Card */}
-                    <div className="relative p-6 rounded-[32px] border border-white/10 bg-white/[0.02] backdrop-blur-xl transition-all duration-500 hover:border-[#13F584]/20 group-hover:shadow-[0_0_40px_rgba(0,0,0,0.5)]">
-                        <h4 className="text-2xl font-bold text-white mb-8 tracking-tight">
+                    <Card className="relative p-5 sm:p-6 transition-all duration-500">
+                        <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 sm:mb-8 tracking-tight px-1">
                             {layer.title}
                         </h4>
 
                         {/* Nodes Grid */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4">
                             {layer.nodes.map((node: any) => (
                                 <JourneyNode key={node.id} node={node} isMobile={true} />
                             ))}
@@ -157,7 +156,7 @@ const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
                         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-30 group-last:hidden">
                             <ArrowDown size={32} className="text-[#13F584] animate-bounce" />
                         </div>
-                    </div>
+                    </Card>
                 </div>
             ))}
         </div>
@@ -228,15 +227,13 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
                 <div
                     key={layer.id}
                     ref={(el) => { layersRef.current[index] = el; }}
-                    className="absolute inset-0 w-full h-full flex items-center justify-center"
+                    className="absolute inset-0 w-full h-full flex items-center justify-center bg-black"
                     style={{
-                        zIndex: index * 10,
-                        backgroundColor: '#09090b',
-                        boxShadow: index > 0 ? '0 -50px 100px rgba(0,0,0,0.9)' : 'none'
+                        zIndex: index * 10
                     }}
                 >
-                    <div className="relative w-full max-w-[1400px] h-full flex flex-col justify-center px-12 pt-12">
-                        <div className="relative w-full h-[70vh] min-h-[600px] architecture-surface rounded-[40px] border border-white/10 bg-white/[0.02] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)]">
+                    <div className="relative w-full max-w-[1400px] h-full flex flex-col justify-center px-6 md:px-12 pt-12">
+                        <Card className="relative w-full h-[70vh] min-h-[600px] architecture-surface" spotlight={true}>
 
                             {/* SVG Edges */}
                             <svg className="absolute inset-0 w-full h-full pointer-events-none">
@@ -264,15 +261,15 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
                             </div>
 
                             {/* Title Component inside the surface */}
-                            <div className="absolute top-12 left-12">
-                                <span className="text-xs font-mono font-bold text-[#13F584] tracking-[0.3em] uppercase mb-2 block">
+                            <div className="absolute top-8 left-8 md:top-12 md:left-12">
+                                <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase mb-2 block">
                                     Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
                                 </span>
-                                <h4 className="text-5xl font-bold text-white tracking-tighter">
+                                <h4 className="text-3xl md:text-5xl font-bold text-white tracking-tighter">
                                     {layer.title}
                                 </h4>
                             </div>
-                        </div>
+                        </Card>
                     </div>
                 </div>
             ))}
@@ -301,14 +298,9 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
                 }
                 .animate-flow-pulse { animation: flow-pulse 3s linear infinite; }
                 .shadow-glow { filter: drop-shadow(0 0 8px #13F584); }
-                .hover-scan-line { animation: scan 2s linear infinite; }
-                @keyframes scan {
-                    0% { transform: translateY(-100%); }
-                    100% { transform: translateY(500%); }
-                }
             `}</style>
 
-            <div className="w-full mx-auto px-0 mb-10">
+            <div className="w-full mx-auto px-0">
                 <SectionHeader
                     title={journeyData.journeyTitle || "System Architecture"}
                     subtitle={journeyData.journeySubtitle}

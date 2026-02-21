@@ -170,8 +170,8 @@ function ProcessCard({ step, index }: { step: ProcessStep; index: number }) {
       <Card
         className={cn(
           "relative min-h-[400px] p-8 flex flex-col", // Removed justify-between
-          "bg-black/40 backdrop-blur-md border-white/10",
-          "hover:border-primary/30 hover:bg-black/60 transition-all duration-500",
+          "bg-white/[0.02] backdrop-blur-md border-white/10",
+          "hover:border-primary/30 hover:bg-white/[0.05] transition-all duration-500",
           "group cursor-default"
         )}
       >
@@ -186,7 +186,7 @@ function ProcessCard({ step, index }: { step: ProcessStep; index: number }) {
             <step.icon className="w-6 h-6" />
           </div>
 
-          <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-mono text-primary/80 mb-6">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-primary/80 mb-6">
             {step.duration}
           </div>
 

@@ -126,13 +126,6 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                         duration: transitionDuration * 0.8,
                         ease: "expo.in"
                     }, startTime + transitionDuration + holdDuration);
-                } else {
-                    // Final Dissolve - Much faster now
-                    tl.to(containerRef.current, {
-                        opacity: 0,
-                        duration: 1, // Faster fade out
-                        ease: "power2.inOut"
-                    }, startTime + transitionDuration + holdDuration + 0.5);
                 }
             });
 
@@ -158,11 +151,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
 
     return (
         <div className="relative w-full">
-            {/* 1. Deep Space Atmosphere — matches site background */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(19,245,132,0.05)_0%,_transparent_70%)] opacity-50 pointer-events-none" />
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")' }} />
-
-            {/* Desktop/Tablet Header - Unpinned */}
+            {/* Desktop Header - Outside pinned Section */}
             <div className="hidden md:block container mx-auto px-6 pt-20 pb-0 relative z-20">
                 <SectionHeader
                     title="Architecture Deck"
@@ -170,59 +159,63 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                     badge="Visual Index"
                     badgeIcon={Layers}
                     align="center"
-                    className="mb-10"
                     animate={true}
                 />
             </div>
 
-            {/* 3. The Kinetic 3D Deck Stage - Pinned Container */}
-            <div ref={containerRef} className="relative w-full h-[90vh] md:h-[110vh] overflow-hidden md:-mt-20">
-
-                {/* Mobile-Only Pinned Header - Clears Navbar */}
-                <div className="block md:hidden container mx-auto px-6 pt-32 pb-0 relative z-20">
-                    <SectionHeader
-                        title="Architecture Deck"
-                        subtitle={architectureSubtitle}
-                        badge="Visual Index"
-                        badgeIcon={Layers}
-                        align="center"
-                        className="mb-0"
-                        animate={true}
-                    />
-                </div>
-
-                <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu mt-32 md:mt-10" style={{ transformStyle: 'preserve-3d' }}>
-                    <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
-                        {REEL_IMAGES.map((src, idx) => (
-                            <div
-                                key={src}
-                                ref={(el) => { imagesRef.current[idx] = el; }}
-                                className="absolute w-[90vw] md:w-[70vw] h-[50vh] sm:h-[60vh] md:h-[75vh] will-change-transform"
-                                style={{ transformStyle: 'preserve-3d' }}
-                            >
-                                {/* Inner Card UI - Stripped of styles */}
-                                <div className="relative w-full h-full overflow-hidden">
-                                    <Image
-                                        src={src}
-                                        alt={`Blade ${idx}`}
-                                        fill
-                                        sizes="(max-width: 768px) 90vw, 70vw"
-                                        className="object-contain md:object-cover"
-                                    />
-                                </div>
-
-                                {/* Prismatic Flair */}
-                                <div className="absolute -inset-1 bg-gradient-to-tr from-primary/20 via-transparent to-primary/20 blur-2xl -z-10 opacity-30" />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* 5. Edge Masking */}
-                <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(9,9,11,0.6)] z-40" />
-                <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#09090b] to-transparent z-45" />
-                <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#09090b] to-transparent z-45" />
+            {/* Mobile Header - Also outside pinned Section to avoid GSAP pin height conflict */}
+            <div className="block md:hidden container mx-auto px-6 pt-8 pb-0 relative z-20">
+                <SectionHeader
+                    title="Architecture Deck"
+                    subtitle={architectureSubtitle}
+                    badge="Visual Index"
+                    badgeIcon={Layers}
+                    align="center"
+                    className="mb-0"
+                    animate={true}
+                />
             </div>
+
+            {/* Pinned Section - GSAP pins this element. overflow must be visible for pin to work. */}
+            <Section
+                ref={containerRef}
+                padding="none"
+                background="dark"
+                className="relative md:-mt-20"
+                withContainer={false}
+                overflow="visible"
+            >
+                {/* The Kinetic 3D Deck Stage - Visual clipping happens here */}
+                <div className="relative w-full h-[60vh] md:h-[110vh] overflow-hidden">
+                    <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu" style={{ transformStyle: 'preserve-3d' }}>
+                        <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
+                            {REEL_IMAGES.map((src, idx) => (
+                                <div
+                                    key={src}
+                                    ref={(el) => { imagesRef.current[idx] = el; }}
+                                    className="absolute w-[90vw] md:w-[70vw] h-[50vh] sm:h-[60vh] md:h-[75vh] will-change-transform"
+                                    style={{ transformStyle: 'preserve-3d' }}
+                                >
+                                    <div className="relative w-full h-full overflow-hidden">
+                                        <Image
+                                            src={src}
+                                            alt={`Blade ${idx}`}
+                                            fill
+                                            sizes="(max-width: 768px) 90vw, 70vw"
+                                            className="object-contain md:object-cover"
+                                        />
+                                    </div>
+                                    <div className="absolute -inset-1 bg-gradient-to-tr from-primary/20 via-transparent to-primary/20 blur-2xl -z-10 opacity-30" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Edge Masking */}
+                    <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black to-transparent z-15" />
+                    <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent z-15" />
+                </div>
+            </Section>
         </div>
     );
 }

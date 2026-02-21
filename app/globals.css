@@ -16,10 +16,7 @@
     }
   }
 
-  /* Cinematic Tracking Tokens */
-  --tracking-cinematic: 0.2em;
-  --tracking-cinematic-wide: 0.3em;
-  --tracking-cinematic-widest: 0.5em;
+  /* Cinematic Tracking Tokens Removed during Typography Standardization */
 }
 
 @layer base {
@@ -66,7 +63,7 @@
   }
 
   body {
-    background: rgba(9, 9, 11, 1);
+    background: #000000;
     background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
@@ -242,9 +239,7 @@
   }
 
   .text-label-caps {
-    @apply uppercase tracking-cinematic font-bold;
-    font-size: 11px;
-    /* Standardize the small label size */
+    @apply font-bold uppercase tracking-widest text-xs;
   }
 
 

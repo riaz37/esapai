@@ -108,7 +108,6 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
         badge="Proof"
         badgeIcon={BarChart3}
         align="center"
-        className="mb-10"
       />
 
       {/* Metrics grid — same structure as landing achievement section (with visible grid lines) */}

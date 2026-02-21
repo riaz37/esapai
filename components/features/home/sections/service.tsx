@@ -68,44 +68,44 @@ export function Service() {
       isMobile: "(max-width: 1023px)",
     }, (context) => {
       const { isMobile } = context.conditions as any;
-      const cards = Array.from(gridRef.current!.children[0].children);
+      const cards = gsap.utils.toArray(gridRef.current!.querySelectorAll(".service-card-wrapper"));
 
-      cards.forEach((card, i) => {
-        let x = 0;
-        let y = 0;
+      cards.forEach((card: any, i) => {
+        let entryX = 0;
+        let entryY = 30;
         let rotateY = 0;
-        let scale = 1;
 
         if (!isMobile) {
+          // Large card on left
           if (i === 0) {
-            x = -100;
-            rotateY = 20;
-          } else if (i === 1) {
-            y = -50;
+            entryX = -40;
+            rotateY = 15;
+          }
+          // Top cards
+          else if (i === 1 || i === 2) {
+            entryY = -20;
+            rotateY = i === 1 ? -5 : 5;
+          }
+          // Bottom wide card
+          else if (i === 3) {
+            entryY = 40;
             rotateY = -10;
-          } else if (i === 2) {
-            x = 50;
-            y = -50;
-            rotateY = -20;
-          } else if (i === 3) {
-            y = 50;
-            rotateY = -15;
           }
         }
 
         gsap.fromTo(card,
           {
             opacity: 0,
-            x: isMobile ? 0 : x,
-            y: isMobile ? 20 : y,
+            x: isMobile ? 0 : entryX,
+            y: isMobile ? 40 : entryY,
             rotateY: isMobile ? 0 : rotateY,
-            scale: isMobile ? 0.95 : scale,
+            scale: 0.9,
           },
           {
             scrollTrigger: {
               trigger: card,
-              start: "top 90%",
-              end: "top 60%",
+              start: "top 85%",
+              end: "top 55%",
               scrub: 1,
               invalidateOnRefresh: true,
             },
@@ -114,7 +114,7 @@ export function Service() {
             y: 0,
             rotateY: 0,
             scale: 1,
-            ease: "power3.out",
+            ease: "power2.out",
           }
         );
       });
@@ -133,48 +133,45 @@ export function Service() {
         badge="Our Solutions"
         badgeIcon={Cpu}
         align="center"
-        className="mb-10"
       />
 
       {/* Bento Grid with synced wireframe */}
-      <div ref={gridRef} className="relative">
-        <div ref={gridRef} className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(360px,auto)]">
-            {/* Big Card on the Left (Spans 2 rows) */}
-            <div className="md:row-span-2 h-full">
-              <ServiceCard
-                title={SERVICES[0].title}
-                description={SERVICES[0].description}
-                className="h-full min-h-[400px] md:min-h-[740px]"
-              />
-            </div>
+      <div ref={gridRef} className="relative w-full">
+        <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(360px,auto)]">
+          {/* Big Card on the Left (Spans 2 rows) */}
+          <div className="service-card-wrapper md:row-span-2 h-full">
+            <ServiceCard
+              title={SERVICES[0].title}
+              description={SERVICES[0].description}
+              className="h-full min-h-[400px] md:min-h-[740px]"
+            />
+          </div>
 
-            {/* Right Column - Top Left (Split) */}
-            <div className="h-full">
-              <ServiceCard
-                title={SERVICES[1].title}
-                description={SERVICES[1].description}
-                className="h-full min-h-[360px]"
-              />
-            </div>
+          {/* Right Column - Top Left (Split) */}
+          <div className="service-card-wrapper h-full">
+            <ServiceCard
+              title={SERVICES[1].title}
+              description={SERVICES[1].description}
+              className="h-full min-h-[360px]"
+            />
+          </div>
 
-            {/* Right Column - Top Right (Split) */}
-            <div className="h-full">
-              <ServiceCard
-                title={SERVICES[2].title}
-                description={SERVICES[2].description}
-                className="h-full min-h-[360px]"
-              />
-            </div>
+          {/* Right Column - Top Right (Split) */}
+          <div className="service-card-wrapper h-full">
+            <ServiceCard
+              title={SERVICES[2].title}
+              description={SERVICES[2].description}
+              className="h-full min-h-[360px]"
+            />
+          </div>
 
-            {/* Right Column - Bottom Card (Spans 2 columns of the right side) */}
-            <div className="md:col-span-2 h-full">
-              <ServiceCard
-                title={SERVICES[3].title}
-                description={SERVICES[3].description}
-                className="h-full min-h-[360px]"
-              />
-            </div>
+          {/* Right Column - Bottom Card (Spans 2 columns of the right side) */}
+          <div className="service-card-wrapper md:col-span-2 h-full">
+            <ServiceCard
+              title={SERVICES[3].title}
+              description={SERVICES[3].description}
+              className="h-full min-h-[360px]"
+            />
           </div>
         </div>
       </div>

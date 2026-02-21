@@ -117,7 +117,7 @@ export function TextRevealSection() {
             <div className="flex-1 flex items-center justify-center min-h-[60vh]">
                 <h2
                     ref={textRef}
-                    className="text-center font-bold tracking-tighter origin-center will-change-transform leading-[1.1]"
+                    className="text-center font-bold tracking-tighter origin-center will-change-transform leading-none"
                 >
                     {wordsWithKeys.map((item) => (
                         <span

@@ -133,7 +133,7 @@ export default function AboutPage() {
                       {activeMember.bio}
                     </p>
 
-                    <div className="pt-4 flex items-center gap-4 text-xs font-mono text-white/30 tracking-widest uppercase">
+                    <div className="pt-4 flex items-center gap-4 text-xs text-white/30 tracking-widest uppercase">
                       <span>Protocol: 0{activeMember.id}</span>
                       <span className="w-1 h-1 bg-white/20 rounded-full" />
                       <span>Status: Active</span>
