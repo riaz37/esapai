@@ -27,10 +27,9 @@ export function ServiceVideoSection({
                 title={title}
                 subtitle={subtitle}
                 align="center"
-                className="mb-10"
             />
 
-            <div className="relative w-full max-w-[1400px] mx-auto aspect-[21/9] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black/50">
+            <div className="relative w-full max-w-[1400px] mx-auto aspect-[21/9] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                 <OptimizedVideo
                     src={videoSrc}
                     autoPlay

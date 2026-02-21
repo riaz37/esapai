@@ -76,7 +76,6 @@ export function TechnologyExcellence() {
                 badge="Core Tech"
                 badgeIcon={Cpu}
                 align="left"
-                className="mb-8 sm:mb-10"
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -206,7 +205,7 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 onMouseMove={onMouseMove}
                 onMouseLeave={onMouseLeave}
                 className={cn(
-                    "relative w-full h-full overflow-hidden rounded-[32px] bg-neutral-900 border border-transparent transition-all duration-300 transform-gpu preserve-3d will-change-transform",
+                    "relative w-full h-full overflow-hidden rounded-[32px] bg-white/[0.02] border border-transparent transition-all duration-300 transform-gpu preserve-3d will-change-transform",
                     className
                 )}
             >

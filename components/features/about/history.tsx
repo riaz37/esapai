@@ -28,7 +28,6 @@ export function AboutHistory() {
                 title="The Journey of ESAP AI"
                 subtitle="From complex manual workflows to enterprise-grade AI autonomy."
                 align="center"
-                className="mb-12 md:mb-16"
             />
             <div className="max-w-7xl mx-auto px-6">
                 <Timeline timeline={historyTimeline} />

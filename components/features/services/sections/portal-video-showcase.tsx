@@ -95,7 +95,7 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
     );
 
     return (
-        <div ref={containerRef} className="relative w-full h-auto lg:h-screen lg:overflow-hidden bg-black/5 flex flex-col pt-24 pb-12 lg:pt-0 lg:pb-0 lg:block">
+        <div ref={containerRef} className="relative w-full h-auto lg:h-screen lg:overflow-hidden flex flex-col pt-24 pb-12 lg:pt-0 lg:pb-0 lg:block">
             {/* Background Grid */}
             <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -113,11 +113,11 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
                             <div className="mb-6">
                                 <BadgeChip label="Before & after" icon={GitCompare} />
                             </div>
-                            <h2 className="text-4xl md:text-6xl font-bold leading-tight text-white mb-6">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tight mb-6">
                                 {title}
                             </h2>
                             {subtitle && (
-                                <p className="text-xl text-gray-400 max-w-lg leading-relaxed">
+                                <p className="text-base sm:text-lg md:text-xl lg:text-xl text-white/70 leading-relaxed max-w-3xl tracking-tight">
                                     {subtitle}
                                 </p>
                             )}
@@ -130,15 +130,15 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
                     <div className="flex justify-center mb-4">
                         <BadgeChip label="Before & after" icon={GitCompare} />
                     </div>
-                    <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4 tracking-tight">{title}</h2>
-                    <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">{subtitle}</p>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tight mb-4">{title}</h2>
+                    <p className="text-base sm:text-lg md:text-xl lg:text-xl text-white/70 leading-relaxed max-w-3xl tracking-tight mx-auto">{subtitle}</p>
                 </div>
 
                 {/* Video Container Wrapper */}
                 <div className="w-full px-4 sm:px-6 md:px-8 lg:px-0 relative lg:static">
                     <div
                         ref={videoRef}
-                        className="relative lg:absolute z-20 w-full shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 bg-black overflow-hidden aspect-video rounded-2xl lg:rounded-[48px]"
+                        className="relative lg:absolute z-20 w-full shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 overflow-hidden aspect-video rounded-2xl lg:rounded-[48px]"
                     >
                         <OptimizedVideo
                             src={videoSrc}

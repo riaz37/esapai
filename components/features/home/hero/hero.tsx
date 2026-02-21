@@ -239,7 +239,7 @@ export function Hero() {
                             title="AI-Powered Solutions"
                             splitMode="secondLine"
                             secondLine="For Modern Enterprises"
-                            className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 sm:mb-3 md:mb-4 leading-[1.1] w-full"
+                            className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 sm:mb-3 md:mb-4 leading-none w-full"
                             align="center"
                             mainTextClassName="mt-1 sm:mt-2"
                             staggerDelay={0.015}

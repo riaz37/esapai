@@ -124,13 +124,13 @@ function ProblemSceneCard({
     return (
         <Card
             spotlight={false}
-            className={`w-full max-w-lg bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col justify-between ${side === "left" ? "mr-auto" : "ml-auto"
+            className={`w-full max-w-lg border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col justify-between ${side === "left" ? "mr-auto" : "ml-auto"
                 }`}
         >
             <CardHeader className="pb-4 px-6 pt-6">
                 <div className="flex justify-between items-center mb-2">
                     <Icon className="w-5 h-5 text-red-500 shrink-0" />
-                    <span className="text-red-500 font-mono text-label-caps">ERR_0{problem.id}</span>
+                    <span className="text-red-500 text-label-caps">ERR_0{problem.id}</span>
                 </div>
                 <div ref={titleRef as React.RefObject<HTMLDivElement>} className="opacity-0">
                     <CardTitle className="text-white text-xl md:text-2xl font-bold tracking-tight leading-tight">
@@ -161,11 +161,11 @@ const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicProblemI
                 return (
                     <div key={p.id} className="flex flex-col gap-6">
                         {/* Problem Card */}
-                        <Card className="bg-zinc-900/90 border-red-500/20 backdrop-blur-xl">
+                        <Card className="bg-transparent border-red-500/20 backdrop-blur-xl">
                             <CardHeader className="pb-4">
                                 <div className="flex justify-between items-center mb-2">
                                     <Icon className="w-5 h-5 text-red-500" />
-                                    <span className="text-red-500 font-mono text-[10px] uppercase tracking-widest">Problem_0{p.id}</span>
+                                    <span className="text-red-500 text-xs uppercase tracking-widest">Problem_0{p.id}</span>
                                 </div>
                                 <CardTitle className="text-white text-xl font-bold leading-tight">
                                     {p.title}
@@ -188,11 +188,11 @@ const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicProblemI
                         </div>
 
                         {/* Solution Card */}
-                        <Card className="bg-black/80 border-[#13F584]/30 backdrop-blur-2xl">
+                        <Card className="bg-transparent border-[#13F584]/30 backdrop-blur-2xl">
                             <CardHeader className="pb-4">
                                 <div className="flex justify-between items-center mb-2">
                                     <SolIcon className="w-5 h-5 text-[#13F584]" />
-                                    <span className="text-[#13F584] font-mono text-[10px] uppercase tracking-widest">{p.solImpact}</span>
+                                    <span className="text-[#13F584] text-xs uppercase tracking-widest">{p.solImpact}</span>
                                 </div>
                                 <CardTitle className="text-white text-xl font-bold leading-tight">
                                     {p.solTitle}
@@ -555,12 +555,12 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
                                     >
                                         <Card
                                             spotlight={false}
-                                            className="w-full h-full bg-zinc-900/90 border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] flex flex-col justify-between"
+                                            className="w-full h-full bg-transparent border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] flex flex-col justify-between"
                                         >
                                             <CardHeader className="pb-4 px-6 pt-6">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <ProblemIcon className="w-5 h-5 text-red-500 shrink-0" />
-                                                    <span className="text-red-500 font-mono text-label-caps">
+                                                    <span className="text-red-500 text-label-caps">
                                                         ERR_0{p.id}
                                                     </span>
                                                 </div>
@@ -577,11 +577,11 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
                                         className="absolute inset-0 rounded-2xl overflow-hidden"
                                         style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
                                     >
-                                        <Card className="w-full h-full bg-black/90 border-primary/50 backdrop-blur-xl flex flex-col justify-between">
+                                        <Card className="w-full h-full bg-transparent border-primary/50 backdrop-blur-xl flex flex-col justify-between">
                                             <CardHeader className="pb-4 px-6 pt-6">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <SolIcon className="w-5 h-5 text-primary shrink-0" />
-                                                    <span className="text-primary font-mono text-label-caps glow-primary">
+                                                    <span className="text-primary text-label-caps glow-primary">
                                                         {p.solImpact}
                                                     </span>
                                                 </div>
@@ -609,7 +609,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
 
             <div
                 ref={wipeRef}
-                className="pointer-events-none fixed left-0 right-0 z-[100] h-screen bg-background"
+                className="pointer-events-none fixed left-0 right-0 z-[100] h-screen bg-[#09090b]"
                 style={{ top: "100vh", clipPath: "inset(0 0 0% 0)" }}
                 aria-hidden
             />

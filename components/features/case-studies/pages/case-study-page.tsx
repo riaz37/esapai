@@ -65,7 +65,7 @@ export function CaseStudyPage({
 function ErrorState({ message }: { message: string }) {
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
-      <p className="text-white/60 text-label-caps tracking-cinematic-widest">
+      <p className="text-white/60 text-label-caps">
         Unable to load case study
       </p>
       <p className="text-lg text-white/70">{message}</p>

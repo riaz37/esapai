@@ -12,7 +12,7 @@ export function FoundingStoryStage({ phase, className }: FoundingStoryStageProps
   return (
     <div className={cn("text-center max-w-3xl mx-auto", className)}>
       {phase.phaseLabel && (
-        <p className="text-primary mb-3 text-label-caps tracking-cinematic-widest">
+        <p className="text-primary mb-3 text-label-caps">
           {phase.phaseLabel}
         </p>
       )}

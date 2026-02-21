@@ -94,9 +94,8 @@ export function CTASection({
         resize();
 
         const draw = () => {
-            // Clear with trail effect - matching site background exactly (#09090b)
-            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-            ctx.fillRect(0, 0, width, height);
+            // Clear the canvas completely for a fully transparent background blending
+            ctx.clearRect(0, 0, width, height);
 
             const cx = width / 2;
             const cy = height / 2;
@@ -119,8 +118,12 @@ export function CTASection({
                 const x = cx + (star.x / star.z) * width;
                 const y = cy + (star.y / star.z) * height;
 
+                // Calculate trail (previous position)
+                const trailLength = speed * 5;
+                const px = cx + (star.x / (star.z + trailLength)) * width;
+                const py = cy + (star.y / (star.z + trailLength)) * height;
+
                 // Calculate size and brightness based on depth (z)
-                const size = (1 - star.z / width) * 4;
                 const opacity = (1 - star.z / width);
 
                 if (x >= 0 && x < width && y >= 0 && y < height) {
@@ -135,9 +138,12 @@ export function CTASection({
                     }
 
                     ctx.beginPath();
-                    ctx.fillStyle = `rgba(19, 245, 132, ${opacity * edgeOpacity})`; // Primary green color
-                    ctx.arc(x, y, size, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.strokeStyle = `rgba(19, 245, 132, ${opacity * edgeOpacity})`;
+                    ctx.lineWidth = (1 - star.z / width) * 3;
+                    ctx.lineCap = "round";
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(px, py);
+                    ctx.stroke();
                 }
             });
 
@@ -182,16 +188,7 @@ export function CTASection({
             );
         }
 
-        // Subtle glow pulse on primary button (no continuous motion if reduced motion)
-        if (!prefersReducedMotion() && primaryButtonRef.current) {
-            gsap.to(primaryButtonRef.current, {
-                boxShadow: "0 0 25px rgba(19,245,132,0.4)",
-                duration: 2,
-                ease: "power2.inOut",
-                yoyo: true,
-                repeat: -1,
-            });
-        }
+
     }, { scope: sectionRef });
 
 
@@ -219,22 +216,21 @@ export function CTASection({
             <div className="relative z-20 w-full px-4 sm:px-6 md:px-8 lg:px-12 text-center">
                 <div className="max-w-[1400px] mx-auto">
 
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tight mb-4 md:mb-6">
                         {title}
                     </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-zinc-400 mb-8 md:mb-10 max-w-2xl mx-auto tracking-tight">
+                    <p className="text-base sm:text-lg md:text-xl lg:text-xl text-white/70 leading-relaxed max-w-3xl tracking-tight mx-auto mb-8 md:mb-10">
                         {subtitle}
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
                         <Button
                             variant="primary"
-                            size="lg"
-                            className="shadow-[0_0_20px_rgba(19,245,132,0.3)]"
+                            size="default"
                             asChild
                         >
-                            <Link ref={primaryButtonRef} href={primaryButtonHref} className="inline-flex items-center gap-2 group">
+                            <Link href={primaryButtonHref} className="inline-flex items-center gap-2 group">
                                 <span>{primaryButtonText ?? (product ? "Get Started" : "Start Building Now")}</span>
-                                <ButtonArrow size="lg" />
+                                <ButtonArrow size="default" />
                             </Link>
                         </Button>
                     </div>

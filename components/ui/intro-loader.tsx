@@ -167,7 +167,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 transition={{ duration: 1.2, delay: 1.8 }}
                                 className="flex flex-col items-center gap-3"
                             >
-                                <div className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-white/30 ml-[0.6em]">
+                                <div className="text-xs uppercase tracking-widest text-white/30 ml-2">
                                     <ScrambleText text="The Vanguard of Intelligence" delay={2} />
                                 </div>
 

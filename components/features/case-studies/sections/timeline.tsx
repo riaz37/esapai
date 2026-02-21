@@ -30,7 +30,7 @@ export function Timeline({ timeline }: TimelineProps) {
             <span className="text-xl sm:text-2xl md:text-5xl font-bold text-white leading-none">
               {day}
             </span>
-            <span className="text-white/60 text-left md:text-right text-xs sm:text-sm md:text-label-caps uppercase tracking-wider md:tracking-normal">
+            <span className="text-white/60 text-left md:text-right text-xs font-bold uppercase tracking-widest">
               {monthYear}
             </span>
           </div>
@@ -104,7 +104,7 @@ function TimelineDescription({ text }: { text: string }) {
         className="relative overflow-hidden"
       >
         <p className={cn(
-          "text-sm sm:text-base md:text-lg text-white/60 leading-[1.6]",
+          "text-sm sm:text-base md:text-lg text-white/60 leading-relaxed",
           !isExpanded && isLong && "line-clamp-3"
         )}>
           {text}

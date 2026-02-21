@@ -98,7 +98,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
               <div className="absolute -inset-4 bg-[#13F584]/5 blur-[60px] rounded-full group-hover:bg-[#13F584]/10 transition-all duration-700" />
 
               {/* Frame/Border */}
-              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl shadow-[#13F584]/2 translate-z-0">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-[#13F584]/2 translate-z-0">
                 <OptimizedVideo
                   src="/LP_animation_HomePage_Big_Intro_2X_short.webm"
                   autoPlay

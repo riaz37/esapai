@@ -52,7 +52,7 @@ export function MissionCard({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={{
-                background: 'rgba(250, 250, 250, 0.02)',
+                background: 'rgba(255, 255, 255, 0.02)',
                 border: '1px solid transparent',
                 boxShadow: `
                     inset 0 -40px 80px -20px rgba(226, 226, 226, 0.02), 

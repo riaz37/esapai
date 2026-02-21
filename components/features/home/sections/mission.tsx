@@ -154,7 +154,7 @@ export function Mission({
         badge="Our Mission"
         badgeIcon={Target}
         animate={false}
-        className="mission-header mb-10"
+        className="mission-header"
       />
 
       <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">

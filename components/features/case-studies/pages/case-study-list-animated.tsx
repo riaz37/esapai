@@ -182,7 +182,7 @@ const CaseStudyCard = memo(
         {caseStudy.featured && (
           <div className="mb-2 sm:mb-3">
             <span
-              className="inline-flex items-center rounded-full border border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs uppercase tracking-wide text-primary relative transition-all duration-300"
+              className="inline-flex items-center rounded-full border border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-xs font-bold uppercase tracking-widest text-primary relative transition-all duration-300"
               style={{
                 background: "var(--neutral-neutral-210, rgba(248, 248, 248, 0.1))",
                 boxShadow: "0px 0px 13.12px 0px rgba(248, 248, 248, 0.25) inset",

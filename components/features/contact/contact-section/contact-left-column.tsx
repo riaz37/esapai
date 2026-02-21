@@ -54,7 +54,7 @@ export const ContactLeftColumn = forwardRef<
       <div className="space-y-4">
         <h1
           data-gsap="contact-left-item"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tighter pb-2"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-none tracking-tighter pb-2"
         >
           <span className="text-white">Contact us today.</span>
           <br />

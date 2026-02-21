@@ -151,7 +151,7 @@ export function TypewriterTitle({
 
     return (
         <h1 className={cn(
-            "font-bold leading-[1.1] tracking-tight",
+            "font-bold leading-none tracking-tight",
             alignmentClass,
             className
         )}>

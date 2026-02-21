@@ -98,7 +98,7 @@ export function FoundingStorySection() {
             <FoundingStoryStage key={phase.id} phase={phase} />
           ))}
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tight mb-6">
               {foundingStoryConfig.visionTitle}
             </h2>
             <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">
@@ -161,7 +161,7 @@ export function FoundingStorySection() {
             className="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none"
           >
             <div className="w-full max-h-[80vh] overflow-y-auto py-4 text-center max-w-3xl mx-auto">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tight mb-6">
                 {foundingStoryConfig.visionTitle}
               </h2>
               <div className="text-white/70 text-base sm:text-lg leading-relaxed space-y-4">

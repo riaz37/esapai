@@ -107,7 +107,6 @@ export function Achievement() {
                 title="Innovation & Future Focus"
                 subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
                 align="center"
-                className="mb-10"
             />
 
             <div

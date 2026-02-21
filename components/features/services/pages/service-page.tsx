@@ -31,7 +31,7 @@ const ServicesCTASection = dynamic(
 
 import { ServiceHero } from "@/components/features/services/hero/service-hero";
 import { Section } from "@/components/ui/section";
-import { SectionHeader } from "@/components/ui/section-header";
+
 import { LazySection } from "@/components/ui/lazy-section";
 
 const defaultHeroSubtitle = [
