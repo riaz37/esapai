@@ -52,6 +52,7 @@ export const LogoBootSequence = () => {
             <img
                 src={LOGO_PATH}
                 alt=""
+                fetchPriority="high"
                 style={{
                     ...imageBaseStyle,
                     transform: `scale(${scale}) translate(${glitchX - 4}px, ${glitchY}px)`,
@@ -65,6 +66,7 @@ export const LogoBootSequence = () => {
             <img
                 src={LOGO_PATH}
                 alt=""
+                fetchPriority="high"
                 style={{
                     ...imageBaseStyle,
                     transform: `scale(${scale}) translate(${glitchX + 4}px, ${glitchY}px)`,
@@ -78,6 +80,7 @@ export const LogoBootSequence = () => {
             <img
                 src={LOGO_PATH}
                 alt=""
+                fetchPriority="high"
                 style={{
                     ...imageBaseStyle,
                     transform: `scale(${scale})`,

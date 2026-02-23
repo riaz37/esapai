@@ -77,6 +77,8 @@ export function IntroLoader({ children }: IntroLoaderProps) {
 
     return (
         <>
+            {/* Preload the LCP image to make it discoverable in the initial HTML request */}
+            <link rel="preload" href="/logo/mainlogo.png" as="image" fetchPriority="high" />
             <AnimatePresence mode="wait">
                 {isLoading && (
                     <m.div
