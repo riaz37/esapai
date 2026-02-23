@@ -257,6 +257,7 @@ export const NavbarLogo = () => {
           alt="Main Logo"
           width={40}
           height={40}
+          priority
           className="h-8 w-auto"
         />
         <Image
