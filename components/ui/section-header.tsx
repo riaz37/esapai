@@ -102,9 +102,22 @@ export function SectionHeader({
       ? "text-center items-center"
       : align === "left"
         ? "text-left items-start"
-        : "text-right items-end";
+        : align === "right"
+          ? "text-right items-end"
+          : align === "center-md-left"
+            ? "text-center items-center md:text-left md:items-start"
+            : align === "center-lg-left"
+              ? "text-center items-center lg:text-left lg:items-start"
+              : "text-center items-center";
 
-  const mxClass = align === "center" ? "mx-auto" : "";
+  const mxClass =
+    align === "center"
+      ? "mx-auto"
+      : align === "center-md-left"
+        ? "mx-auto md:mr-auto md:ml-0"
+        : align === "center-lg-left"
+          ? "mx-auto lg:mr-auto lg:ml-0"
+          : "";
 
   return (
     <div

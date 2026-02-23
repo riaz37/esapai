@@ -50,16 +50,16 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* Left Content */}
-          <div className="flex flex-col items-start text-left max-w-2xl">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left max-w-2xl mx-auto lg:mx-0">
 
-            <div className="flex flex-col mb-6">
+            <div className="flex flex-col mb-6 items-center lg:items-start">
               <TypewriterTitle
                 title={title}
                 tagline={tagline}
                 splitMode="manual"
                 highlightPart="first"
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
-                align="left"
+                align="center-lg-left"
                 staggerDelay={0.015}
                 letterDuration={0.3}
               />
@@ -76,7 +76,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center gap-5">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-5">
               <Button
                 variant="primary"
                 size="default"

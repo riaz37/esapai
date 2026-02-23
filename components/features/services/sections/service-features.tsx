@@ -353,7 +353,7 @@ export function ServiceFeatures({
       />
 
       {/* Mobile/Tablet View - Vertically Stacked Cards */}
-      <div className="block lg:hidden max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pb-8 sm:pb-10 md:pb-12">
+      <div className="block lg:hidden max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="flex flex-col gap-4">
           {features.map((feature, index) => (
             <Card

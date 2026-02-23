@@ -55,7 +55,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
             className="relative z-10 w-full mb-12 sm:mb-16 md:mb-20 lg:mb-24"
         >
             {/* Hero Header Content */}
-            <div className="max-w-4xl w-full mb-12 sm:mb-16">
+            <div className="max-w-4xl w-full mb-12 sm:mb-16 pt-24 sm:pt-32 lg:pt-40">
                 <TypewriterTitle
                     title={caseStudy.title}
                     splitMode="lastWord"

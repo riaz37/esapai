@@ -148,7 +148,7 @@ export function ServiceProcessSection() {
         <div className="flex-1 w-full flex items-start pt-8 md:pt-12 overflow-hidden no-scrollbar relative z-0">
           <div
             ref={trackRef}
-            className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 md:pl-[max(2rem,calc((100vw-1400px)/2+2rem))] md:pr-[5vw] w-full md:w-max"
+            className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 md:pl-[max(2rem,calc((100vw-1400px)/2+2rem))] md:pr-[5vw] pb-16 sm:pb-20 md:pb-0 w-full md:w-max"
           >
             {STEPS.map((step, index) => (
               <ProcessCard key={step.id} step={step} index={index} />
