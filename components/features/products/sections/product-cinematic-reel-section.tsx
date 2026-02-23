@@ -43,7 +43,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
-                    end: "+=350%", // Reduced from 600% to reduce dead scroll space
+                    end: "+=250%", // Reduced to minimize dead scroll space on mobile
                     pin: true,
                     scrub: 1, // Tighter response
                     anticipatePin: 1,
@@ -54,6 +54,29 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             // 1. Initial State: Stack the "Blades"
             gsap.set(".deck-stage", { perspective: "2500px" });
 
+
+            // Proactive Mobile Header Animation
+            const header = containerRef.current?.querySelector('.mobile-section-header [data-testid="section-header"]');
+            if (header) {
+                const children = Array.from(header.children);
+                gsap.fromTo(
+                    children,
+                    { y: 30, opacity: 0, filter: "blur(10px)" },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        stagger: 0.1,
+                        duration: 0.8,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: header,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse",
+                        }
+                    }
+                );
+            }
 
             REEL_IMAGES.forEach((_, index) => {
                 const el = imagesRef.current[index];
@@ -163,19 +186,6 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 />
             </div>
 
-            {/* Mobile Header - Also outside pinned Section to avoid GSAP pin height conflict */}
-            <div className="block md:hidden container mx-auto px-6 pt-8 pb-0 relative z-20">
-                <SectionHeader
-                    title="Architecture Deck"
-                    subtitle={architectureSubtitle}
-                    badge="Visual Index"
-                    badgeIcon={Layers}
-                    align="center"
-                    className="mb-0"
-                    animate={true}
-                />
-            </div>
-
             {/* Pinned Section - GSAP pins this element. overflow must be visible for pin to work. */}
             <Section
                 ref={containerRef}
@@ -185,9 +195,22 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 withContainer={false}
                 overflow="visible"
             >
+                {/* Mobile Header - Inside pinned Section to avoid scrolling out of view */}
+                <div className="mobile-section-header block md:hidden absolute top-0 inset-x-0 w-full container mx-auto px-6 pt-24 pb-0 z-50 pointer-events-auto">
+                    <SectionHeader
+                        title="Architecture Deck"
+                        subtitle={architectureSubtitle}
+                        badge="Visual Index"
+                        badgeIcon={Layers}
+                        align="center"
+                        className="mb-0"
+                        animate={false}
+                    />
+                </div>
+
                 {/* The Kinetic 3D Deck Stage - Visual clipping happens here */}
-                <div className="relative w-full h-[60vh] md:h-[110vh] overflow-hidden">
-                    <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu" style={{ transformStyle: 'preserve-3d' }}>
+                <div className="relative w-full h-[100svh] md:h-[110vh] overflow-hidden">
+                    <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu pt-20 md:pt-0" style={{ transformStyle: 'preserve-3d' }}>
                         <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
                             {REEL_IMAGES.map((src, idx) => (
                                 <div

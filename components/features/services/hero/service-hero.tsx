@@ -106,12 +106,12 @@ const globeData = [
 
 import { Section } from "@/components/ui/section";
 
-export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
+export function ServiceHero({ title, tagline, subtitle, className }: ServiceHeroProps) {
   return (
     <Section
-      padding="md"
+      padding="none"
       className={cn(
-        "relative min-h-[90vh] flex items-center overflow-hidden",
+        "relative min-h-[90vh] flex items-center pt-28 pb-16 md:pt-32 md:pb-24 overflow-hidden",
         className
       )}
       containerClassName="relative z-10 mx-auto"
@@ -120,23 +120,25 @@ export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
       <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
 
         {/* Left Side: Content */}
-        <div className="flex flex-col items-start text-left max-w-2xl relative z-20">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left max-w-2xl relative z-20">
           {typeof title === "string" ? (
             <TypewriterTitle
               title={title}
-              splitMode="lastWord"
+              tagline={tagline}
+              splitMode={tagline ? "manual" : "lastWord"}
+              highlightPart="last"
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-              align="left"
+              align="center-lg-left"
               staggerDelay={0.015}
               letterDuration={0.3}
             />
           ) : (
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-left leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-center lg:text-left leading-none">
               {title}
             </h1>
           )}
 
-          <div className="space-y-4 mb-10 max-w-lg">
+          <div className="space-y-4 mb-10 max-w-lg mx-auto lg:mx-0">
             {subtitle.map((line, index) => (
               <m.p
                 key={line}
@@ -151,7 +153,7 @@ export function ServiceHero({ title, subtitle, className }: ServiceHeroProps) {
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center gap-5">
+          <div className="flex flex-wrap justify-center lg:justify-start items-center gap-5">
             <Button
               variant="primary"
               size="default"

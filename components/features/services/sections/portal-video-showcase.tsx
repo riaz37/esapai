@@ -95,7 +95,7 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
     );
 
     return (
-        <div ref={containerRef} className="relative w-full h-auto lg:h-screen lg:overflow-hidden flex flex-col pt-24 pb-12 lg:pt-0 lg:pb-0 lg:block">
+        <div ref={containerRef} className="relative w-full h-auto lg:h-screen lg:overflow-hidden flex flex-col py-16 sm:py-20 lg:py-0 lg:block">
             {/* Background Grid */}
             <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />

@@ -154,17 +154,17 @@ function ProblemSceneCard({
  */
 const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicProblemItem[] }) => {
     return (
-        <div className="flex flex-col gap-16 px-6 py-12">
+        <div className="flex flex-col gap-10 px-6 pt-0 pb-16 sm:pb-20 lg:pb-24">
             {problems.map((p) => {
                 const Icon = p.icon;
                 const SolIcon = p.solIcon;
                 return (
                     <div key={p.id} className="flex flex-col gap-6">
                         {/* Problem Card */}
-                        <Card className="bg-transparent border-red-500/20 backdrop-blur-xl">
-                            <CardHeader className="pb-4">
-                                <div className="flex justify-between items-center mb-2">
-                                    <Icon className="w-5 h-5 text-red-500" />
+                        <Card className="bg-transparent border-red-500/20 backdrop-blur-xl text-center">
+                            <CardHeader className="pb-4 items-center">
+                                <div className="flex flex-col items-center justify-center gap-2 mb-3">
+                                    <Icon className="w-6 h-6 text-red-500" />
                                     <span className="text-red-500 text-xs uppercase tracking-widest">Problem_0{p.id}</span>
                                 </div>
                                 <CardTitle className="text-white text-xl font-bold leading-tight">
@@ -188,10 +188,10 @@ const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicProblemI
                         </div>
 
                         {/* Solution Card */}
-                        <Card className="bg-transparent border-[#13F584]/30 backdrop-blur-2xl">
-                            <CardHeader className="pb-4">
-                                <div className="flex justify-between items-center mb-2">
-                                    <SolIcon className="w-5 h-5 text-[#13F584]" />
+                        <Card className="bg-transparent border-[#13F584]/30 backdrop-blur-2xl text-center">
+                            <CardHeader className="pb-4 items-center">
+                                <div className="flex flex-col items-center justify-center gap-2 mb-3">
+                                    <SolIcon className="w-6 h-6 text-[#13F584]" />
                                     <span className="text-[#13F584] text-xs uppercase tracking-widest">{p.solImpact}</span>
                                 </div>
                                 <CardTitle className="text-white text-xl font-bold leading-tight">
@@ -229,7 +229,7 @@ export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; i
             background="transparent"
             className="relative"
         >
-            <div className="max-w-[1400px] mx-auto px-6 pt-20 pb-0">
+            <div className="max-w-[1400px] mx-auto px-6 pt-16 sm:pt-20 lg:pt-24 pb-0">
                 <SectionHeader
                     title={
                         <>

@@ -21,7 +21,7 @@ export function AboutHistory() {
     });
 
     return (
-        <Section className="py-12 sm:py-20 md:py-28 scroll-mt-20 md:scroll-mt-32">
+        <Section className="scroll-mt-20 md:scroll-mt-32">
             <SectionHeader
                 badge="Our Legacy"
                 badgeIcon={History}

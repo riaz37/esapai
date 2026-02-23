@@ -128,20 +128,20 @@ const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean
  */
 const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
     return (
-        <div className="flex flex-col gap-12 px-4 pb-24">
+        <div className="flex flex-col gap-12 px-4">
             {layers.map((layer, index) => (
                 <div key={layer.id} className="relative group">
                     {/* Stage Label */}
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-8 h-[1px] bg-[#13F584]/30" />
-                        <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase">
+                    <div className="flex flex-col items-center justify-center gap-2 mb-5">
+                        <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase text-center">
                             Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
                         </span>
+                        <div className="w-12 h-[1px] bg-[#13F584]/30" />
                     </div>
 
                     {/* Stage Card */}
-                    <Card className="relative p-5 sm:p-6 transition-all duration-500">
-                        <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 sm:mb-8 tracking-tight px-1">
+                    <Card className="relative p-5 sm:p-6 transition-all duration-500 text-center">
+                        <h4 className="text-xl sm:text-2xl font-bold text-white mb-6 sm:mb-8 tracking-tight px-1 text-center mx-auto">
                             {layer.title}
                         </h4>
 

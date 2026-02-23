@@ -19,6 +19,7 @@ export interface ProductHeroProps {
 
 export interface ServiceHeroProps {
   title: string | ReactNode;
+  tagline?: string;
   subtitle: string[];
   description?: string;
   className?: string;
@@ -86,7 +87,7 @@ export interface SectionHeaderProps {
   badge?: string;
   badgeIcon?: LucideIcon;
   badgeVariant?: "primary" | "red";
-  align?: "center" | "left" | "right";
+  align?: "center" | "left" | "right" | "center-md-left" | "center-lg-left";
   className?: string;
   titleClassName?: string;
   subtitleClassName?: string;

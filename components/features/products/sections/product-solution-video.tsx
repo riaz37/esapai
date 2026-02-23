@@ -42,6 +42,29 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
             }
         });
 
+        // Proactive Mobile Header Animation
+        const header = containerRef.current?.querySelector('.mobile-section-header [data-testid="section-header"]');
+        if (header) {
+            const children = Array.from(header.children);
+            gsap.fromTo(
+                children,
+                { y: 30, opacity: 0, filter: "blur(10px)" },
+                {
+                    y: 0,
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    stagger: 0.1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: header,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    }
+                }
+            );
+        }
+
         // 1. Initial State: Deep in 3D Space
         gsap.set(videoWrapperRef.current, {
             z: -1800,
@@ -95,11 +118,11 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
             <Section
                 ref={containerRef}
                 withContainer={false}
-                className="relative w-full h-[85vh] md:h-screen perspective-[2500px] overflow-hidden md:-mt-20"
+                className="relative w-full h-[100svh] md:h-screen perspective-[2500px] overflow-hidden md:-mt-20"
                 padding="none"
             >
                 {/* Mobile-Only Pinned Header - Clears Navbar */}
-                <div className="block md:hidden container mx-auto px-6 pt-32 pb-0 relative z-20">
+                <div className="mobile-section-header block md:hidden absolute top-0 inset-x-0 w-full container mx-auto px-6 pt-24 pb-0 z-20 pointer-events-auto">
                     <SectionHeader
                         title={product?.content?.mission?.title ?? "Intelligence in Motion"}
                         subtitle="Experience the standard of enterprise autonomy."
@@ -107,14 +130,15 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                         badgeIcon={Play}
                         align="center"
                         className="mb-0"
+                        animate={false}
                     />
                 </div>
 
                 {/* The Kinetic 3D Stage - Tightened for mobile to reduce gaps */}
-                <div className="video-stage absolute inset-0 z-10 flex items-start justify-center pointer-events-none px-4 md:px-8 pt-64 md:pt-32">
+                <div className="video-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none px-4 md:px-8 pt-12 md:pt-20">
                     <div
                         ref={videoWrapperRef}
-                        className="relative w-[95vw] md:w-[90vw] max-w-[1400px] max-h-[40vh] md:max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 pointer-events-auto will-change-transform"
+                        className="relative w-[95vw] md:w-[90vw] max-w-[1400px] max-h-[55vh] md:max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 pointer-events-auto will-change-transform"
                         style={{ transformStyle: "preserve-3d" }}
                     >
                         {/* Video Content */}

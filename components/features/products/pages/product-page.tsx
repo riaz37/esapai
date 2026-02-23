@@ -66,26 +66,26 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
       </div>
 
       {/* 2. Cinematic Flow (Problem -> Solution) */}
-      <LazySection minHeight="600px" rootMargin="400px">
+      <LazySection minHeight="400px" rootMargin="400px">
         <div id="cinematic">
           <ProductCinematicFlow slug={slug} initialProduct={hydratedProduct} />
         </div>
       </LazySection>
 
       {/* 3. Product Solution Video (Demo) */}
-      <LazySection minHeight="600px" rootMargin="300px">
+      <LazySection minHeight="400px" rootMargin="300px">
         <div id="solution-video">
           <ProductSolutionVideo product={hydratedProduct} />
         </div>
       </LazySection>
 
       {/* 4. Cinematic Showcase (Infinite Zoom Reel) */}
-      <LazySection minHeight="600px" rootMargin="300px">
+      <LazySection minHeight="400px" rootMargin="300px">
         <ProductCinematicReelSection product={hydratedProduct} />
       </LazySection>
 
       {/* 5. User Journey Layer */}
-      <LazySection minHeight="600px" rootMargin="300px">
+      <LazySection minHeight="400px" rootMargin="300px">
         <UserJourney productSlug={hydratedProduct.slug} />
       </LazySection>
 

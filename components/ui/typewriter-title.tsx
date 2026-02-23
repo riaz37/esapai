@@ -36,7 +36,7 @@ interface TypewriterTitleProps {
     /** Whether to show glow effect behind highlighted text */
     showGlow?: boolean;
     /** Text alignment */
-    align?: "left" | "center" | "right";
+    align?: "left" | "center" | "right" | "center-md-left" | "center-lg-left";
 }
 
 function wordStartOffset(words: string[], wordIndex: number): number {
@@ -135,11 +135,12 @@ export function TypewriterTitle({
         };
     }, [title, splitMode, effectiveTagline, highlightPart]);
 
-    const alignmentClass = {
-        left: "text-left",
-        center: "text-center",
-        right: "text-right",
-    }[align];
+    const alignmentClass = align === "left" ? "text-left" :
+        align === "center" ? "text-center" :
+            align === "right" ? "text-right" :
+                align === "center-md-left" ? "text-center md:text-left" :
+                    align === "center-lg-left" ? "text-center lg:text-left" :
+                        "text-left";
 
     // Determine which part is highlighted
     const isPart1Highlighted = highlightIndex === 0;

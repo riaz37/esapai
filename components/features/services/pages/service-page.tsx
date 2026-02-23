@@ -59,7 +59,8 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
     <div className="relative">
       {/* 1. Hero */}
       <ServiceHero
-        title={content.hero?.heroTitle ?? hydratedService.name}
+        title={content.hero?.titleMain ?? hydratedService.name}
+        tagline={content.hero?.titleHighlight}
         subtitle={heroSubtitle}
       />
 
@@ -69,13 +70,13 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       </LazySection>
 
       {/* 2c. Before & after: comparison video */}
-      <LazySection minHeight="600px">
+      <LazySection minHeight="400px">
         <ServiceBeforeAfterSection />
       </LazySection>
 
       {/* 3. Solution: What we deliver */}
       <div id="solutions">
-        <LazySection minHeight="600px">
+        <LazySection minHeight="400px">
           <ServiceFeaturesSection
             title={featuresContent?.title}
             subtitle={featuresContent?.subtitle}
@@ -85,12 +86,12 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       </div>
 
 
-      <LazySection minHeight="600px">
+      <LazySection minHeight="400px">
         <ServiceProcessSection />
       </LazySection>
 
       {/* 2b. Showcase: Digital Powerhouse Video */}
-      <LazySection minHeight="600px">
+      <LazySection minHeight="400px">
         <ServiceVideoSection />
       </LazySection>
 
