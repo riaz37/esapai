@@ -141,7 +141,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
                 >
                   {metric.value}
                 </span>
-                <span className="text-white text-label-caps">
+                <span className="text-white/80 text-lg">
                   {metric.label}
                 </span>
               </div>

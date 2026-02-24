@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useSyncExternalStore } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,22 +14,40 @@ if (typeof window !== "undefined") {
 
 const SCROLL_DURATION = 400; // % of viewport for full story
 
+function subscribeReduceMotion(callback: () => void) {
+  if (typeof window === "undefined") return () => { };
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mediaQuery.addEventListener("change", callback);
+  return () => mediaQuery.removeEventListener("change", callback);
+}
+
+function getSnapshotReduceMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getServerSnapshotReduceMotion() {
+  return false;
+}
+
 export function FoundingStorySection() {
   const containerRef = useRef<HTMLElement>(null);
   const stageContainerRef = useRef<HTMLDivElement>(null);
   const hookRef = useRef<HTMLDivElement>(null);
+  const closingRef = useRef<HTMLDivElement>(null);
   const phaseRefs = useRef<(HTMLDivElement | null)[]>([]);
   const visionRef = useRef<HTMLDivElement>(null);
-  const closingRef = useRef<HTMLDivElement>(null);
-  const [reduceMotion, setReduceMotion] = useState(false);
 
-  useEffect(() => {
-    setReduceMotion(prefersReducedMotion());
-  }, []);
+  const reduceMotion = useSyncExternalStore(
+    subscribeReduceMotion,
+    getSnapshotReduceMotion,
+    getServerSnapshotReduceMotion
+  );
 
   useGSAP(
     () => {
-      if (!containerRef.current || reduceMotion) return;
+      const isReduced = prefersReducedMotion();
+      if (!containerRef.current || isReduced) return;
 
       const { hook, phases, visionTitle, visionBody, closing } = foundingStoryConfig;
       const allStageRefs = [
