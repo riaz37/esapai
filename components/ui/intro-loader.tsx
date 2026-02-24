@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 "use client";
 
 import { m, AnimatePresence } from "motion/react";
@@ -28,11 +29,18 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
     useEffect(() => {
         let frame = 0;
         const totalFrames = 30;
-        const timeout = setTimeout(() => {
-            const interval = setInterval(() => {
+        let animationFrameId: number;
+        let lastTimestamp = 0;
+
+        const animate = (timestamp: number) => {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const progress = timestamp - lastTimestamp;
+
+            // Update every ~40ms (similar to the interval before)
+            if (progress >= 40) {
+                lastTimestamp = timestamp;
                 if (frame >= totalFrames) {
                     setDisplayText(text);
-                    clearInterval(interval);
                     return;
                 }
 
@@ -47,11 +55,21 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 
                 setDisplayText(scrambled);
                 frame += 1;
-            }, 40);
-            return () => clearInterval(interval);
+            }
+
+            if (frame < totalFrames) {
+                animationFrameId = requestAnimationFrame(animate);
+            }
+        };
+
+        const timeout = setTimeout(() => {
+            animationFrameId = requestAnimationFrame(animate);
         }, delay * 1000);
 
-        return () => clearTimeout(timeout);
+        return () => {
+            clearTimeout(timeout);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        };
     }, [text, delay]);
 
     return <span>{displayText}</span>;
@@ -78,6 +96,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     return (
         <>
             {/* Preload the LCP image to make it discoverable in the initial HTML request */}
+            {/* @ts-ignore */}
             <link rel="preload" href="/logo/mainlogo.png" as="image" fetchPriority="high" />
             <AnimatePresence mode="wait">
                 {isLoading && (

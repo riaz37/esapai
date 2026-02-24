@@ -4,6 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { AboutHero } from "@/components/features/about/hero";
 import { LazySection } from "@/components/ui/lazy-section";
+import { CTASection } from "@/components/features/home/sections/cta";
 
 // --- Dynamic imports for below-fold sections (code-split + no SSR) ---
 const AboutNarrative = dynamic(() => import("@/components/features/about/narrative").then(mod => mod.AboutNarrative), {
@@ -25,6 +26,10 @@ export function AboutPageClient() {
 
             <LazySection minHeight="600px">
                 <AboutHistory />
+            </LazySection>
+
+            <LazySection minHeight="400px">
+                <CTASection />
             </LazySection>
         </div>
     );

@@ -11,25 +11,29 @@ const PAIN_POINTS = [
     icon: Clock,
     title: "Manual Bottlenecks",
     desc: "Hours lost to repetitive data entry and copy-pasting between tools.",
-    x: -30, y: -5, rotate: -6, delay: 0.1
+    x: -30, y: -5, rotate: -6, delay: 0.1,
+    drift: { duration: 4.8, y: 12, rotate: 1.5, delay: 0.2 }
   },
   {
     icon: Database,
     title: "Siloed Data",
     desc: "Critical information trapped in disconnected spreadsheets and emails.",
-    x: 35, y: -25, rotate: 5, delay: 0.2
+    x: 35, y: -25, rotate: 5, delay: 0.2,
+    drift: { duration: 6.2, y: 8, rotate: -1.2, delay: 0.8 }
   },
   {
     icon: ZapOff,
     title: "Slow Velocity",
     desc: "Projects stalled by waiting on manual approvals and handoffs.",
-    x: -15, y: 35, rotate: -4, delay: 0.3
+    x: -15, y: 35, rotate: -4, delay: 0.3,
+    drift: { duration: 5.5, y: 14, rotate: 0.8, delay: 1.5 }
   },
   {
     icon: FileX,
     title: "Human Error",
     desc: "Costly mistakes slipping through due to fatigue and complexity.",
-    x: 25, y: 25, rotate: 6, delay: 0.4
+    x: 25, y: 25, rotate: 6, delay: 0.4,
+    drift: { duration: 4.2, y: 10, rotate: -1.8, delay: 0.1 }
   }
 ];
 
@@ -48,8 +52,8 @@ export function ServiceProblemSection({
     >
       {/* Background Chaos Elements */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-[100px] animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px]" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-[64px] animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-[48px]" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full relative z-10">
@@ -104,11 +108,8 @@ export function ServiceProblemSection({
 }
 
 function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
-  // Stable random values for the "chaos" drift
-  const randomDuration = useMemo(() => 4 + Math.random() * 3, []); // 4-7s duration
-  const randomY = useMemo(() => 5 + Math.random() * 10, []); // 5-15px drift
-  const randomRotate = useMemo(() => -2 + Math.random() * 4, []); // -2 to +2 deg wobble
-  const randomDelay = useMemo(() => Math.random() * 2, []);
+  // Use deterministic drift values from the constant to satisfy React Compiler's purity requirements
+  const { duration, y, rotate, delay } = point.drift;
 
   return (
     <m.div
@@ -149,14 +150,14 @@ function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
       {/* Continuous Drift Wrapper - independent of entrance */}
       <m.div
         animate={{
-          y: [0, -randomY, randomY / 2, 0],
-          rotate: [0, randomRotate, -randomRotate, 0],
+          y: [0, -y, y / 2, 0],
+          rotate: [0, rotate, -rotate, 0],
         }}
         transition={{
-          duration: randomDuration,
+          duration: duration,
           repeat: Infinity,
           ease: "easeInOut",
-          delay: randomDelay
+          delay: delay
         }}
         className="w-full h-full"
       >

@@ -9,6 +9,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/section";
 import { Spotlight } from "@/components/ui/spotlight";
+import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -37,8 +38,20 @@ export function Achievement() {
     useGSAP(() => {
         if (!gridRef.current) return;
 
+        const reducedMotion = prefersReducedMotion();
         const items = gridRef.current.querySelectorAll(".stat-item");
         const numbers = gridRef.current.querySelectorAll(".stat-number");
+
+        if (reducedMotion) {
+            gsap.set(items, { opacity: 1, y: 0 });
+            // Also set numbers to their final state if reduced motion
+            numbers.forEach((num) => {
+                const targetStr = num.getAttribute("data-target") || "0";
+                const suffix = num.getAttribute("data-suffix") || "";
+                num.textContent = targetStr + suffix;
+            });
+            return;
+        }
 
         // Entrance animation for items
         gsap.fromTo(items,
@@ -57,46 +70,28 @@ export function Achievement() {
                 duration: 0.8,
                 stagger: 0.2,
                 ease: "power3.out",
+                onComplete: () => {
+                    // Number counting animation starts after items appear, similar to product page
+                    numbers.forEach((num) => {
+                        const targetStr = num.getAttribute("data-target") || "0";
+                        const target = targetStr.includes(".") ? parseFloat(targetStr) : parseInt(targetStr);
+                        const suffix = num.getAttribute("data-suffix") || "";
+                        const obj = { value: 0 };
+
+                        gsap.to(obj, {
+                            value: target,
+                            duration: 1.2,
+                            ease: "power2.out",
+                            onUpdate: () => {
+                                const val = targetStr.includes(".") ? obj.value.toFixed(1) : Math.floor(obj.value);
+                                num.textContent = val + suffix;
+                            }
+                        });
+                    });
+                }
             }
         );
 
-        // Number counting animation
-        numbers.forEach((num) => {
-            const targetStr = num.getAttribute("data-target") || "0";
-            const target = targetStr.includes(".") ? parseFloat(targetStr) : parseInt(targetStr);
-            const suffix = num.getAttribute("data-suffix") || "";
-            const obj = { value: 0 };
-
-            gsap.to(obj, {
-                value: target,
-                duration: 2,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: num,
-                    start: "top 90%",
-                },
-                onUpdate: () => {
-                    const val = targetStr.includes(".") ? obj.value.toFixed(1) : Math.floor(obj.value);
-                    num.textContent = val + suffix;
-                },
-                onComplete: () => {
-                    // Success pulse animation
-                    gsap.timeline()
-                        .to(num, {
-                            scale: 1.15,
-                            color: "#13F584",
-                            duration: 0.4,
-                            ease: "power2.out",
-                        })
-                        .to(num, {
-                            scale: 1,
-                            color: "white",
-                            duration: 0.6,
-                            ease: "power2.inOut",
-                        });
-                }
-            });
-        });
     }, { scope: sectionRef });
 
     return (
@@ -114,10 +109,10 @@ export function Achievement() {
                 className="relative w-full max-w-[1400px] mx-auto"
             >
                 {/* Horizontal Framing Lines - Contained within content width */}
-                <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
-                <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#13F584]/40 to-transparent z-20 pointer-events-none" />
+                <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
+                <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-[#13F584]/30">
                     {ACHIEVEMENTS.map((item, index) => (
                         <Spotlight
                             key={item.label}
@@ -127,18 +122,18 @@ export function Achievement() {
                         >
                             {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
                             {index < ACHIEVEMENTS.length - 1 && (
-                                <div className="absolute top-[-120px] bottom-[-200px] right-0 w-[2px] bg-gradient-to-b from-transparent via-[#13F584]/30 to-transparent hidden md:block z-50 pointer-events-none" />
+                                <div className="absolute top-0 bottom-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#13F584]/40 to-transparent hidden md:block z-50 pointer-events-none" />
                             )}
 
                             <div className="relative z-40 pointer-events-none">
                                 <span
-                                    className="stat-number block text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tighter mb-3"
+                                    className="stat-number block text-5xl sm:text-6xl md:text-7xl font-bold text-primary tracking-tighter mb-3"
                                     data-target={item.number.replace(/[^0-9]/g, "")}
                                     data-suffix={item.number.replace(/[0-9]/g, "")}
                                 >
                                     {item.number}
                                 </span>
-                                <span className="text-white text-label-caps">
+                                <span className="text-white/80 text-lg">
                                     {item.label}
                                 </span>
                             </div>

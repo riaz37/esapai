@@ -374,8 +374,7 @@ export function ServiceFeatures({
       {/* Desktop View - Interactive Graph */}
       <div className="hidden lg:block relative w-full h-[600px] lg:h-[700px] xl:h-[800px] max-w-[1400px] mx-auto service-features-flow">
         <ConnectionDotsMarkers />
-        <style dangerouslySetInnerHTML={{
-          __html: `
+        <style>{`
           .service-features-flow {
             touch-action: pan-y;
           }
@@ -428,7 +427,7 @@ export function ServiceFeatures({
           .service-features-flow .react-flow__controls {
             display: none !important;
           }
-        `}} />
+        `}</style>
         <ReactFlow
           nodes={nodes}
           edges={edges}

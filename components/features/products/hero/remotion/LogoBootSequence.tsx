@@ -1,3 +1,4 @@
+/* eslint-disable react-doctor/nextjs-no-img-element, react/no-unknown-property */
 import React from 'react';
 import { interpolate, useCurrentFrame, useVideoConfig, spring, random } from 'remotion';
 
@@ -52,6 +53,7 @@ export const LogoBootSequence = () => {
             <img
                 src={LOGO_PATH}
                 alt=""
+                // @ts-ignore
                 fetchPriority="high"
                 style={{
                     ...imageBaseStyle,
@@ -66,6 +68,7 @@ export const LogoBootSequence = () => {
             <img
                 src={LOGO_PATH}
                 alt=""
+                // @ts-ignore
                 fetchPriority="high"
                 style={{
                     ...imageBaseStyle,
@@ -80,6 +83,7 @@ export const LogoBootSequence = () => {
             <img
                 src={LOGO_PATH}
                 alt=""
+                // @ts-ignore
                 fetchPriority="high"
                 style={{
                     ...imageBaseStyle,

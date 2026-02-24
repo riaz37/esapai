@@ -80,7 +80,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         {/* Unified Content Container */}
         <div className="relative z-10 w-full">
           {/* Hero Content */}
-          <div className="text-left mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-40">
+          <div className="text-left mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
             <TypewriterTitle
               title="Creative Case"
               tagline="Study"

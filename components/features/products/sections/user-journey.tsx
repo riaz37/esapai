@@ -290,7 +290,8 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
 
     return (
         <Section className="relative w-full" padding="md">
-            <style jsx global>{`
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 @keyframes flow-pulse {
                     0% { stroke-dashoffset: 100; opacity: 0.2; }
                     50% { opacity: 0.8; }
@@ -298,7 +299,7 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
                 }
                 .animate-flow-pulse { animation: flow-pulse 3s linear infinite; }
                 .shadow-glow { filter: drop-shadow(0 0 8px #13F584); }
-            `}</style>
+            `}} />
 
             <div className="w-full mx-auto px-0">
                 <SectionHeader
