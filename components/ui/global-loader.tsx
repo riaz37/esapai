@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { AnimatedSVGLoader } from "@/components/ui/animated-svg-loader";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import type { GlobalLoaderProps } from "@/types/props";
 
 /**
@@ -12,11 +13,24 @@ import type { GlobalLoaderProps } from "@/types/props";
  * Combines subtle gradients, animated orbs, and the SVG loader.
  * Migrated from Motion to GSAP for better performance.
  */
+function useLoadingTranslations() {
+  try {
+    const t = useTranslations("Loading");
+    return { message: t("message"), subMessage: t("subMessage") };
+  } catch {
+    // Outside [locale] context (e.g. root loading.tsx) — use English defaults
+    return { message: "Preparing your experience", subMessage: "Loading intelligence" };
+  }
+}
+
 export function GlobalLoader({
   className,
-  message = "Preparing your experience",
-  subMessage = "Loading intelligence",
+  message,
+  subMessage,
 }: GlobalLoaderProps) {
+  const defaults = useLoadingTranslations();
+  const resolvedMessage = message ?? defaults.message;
+  const resolvedSubMessage = subMessage ?? defaults.subMessage;
   const containerRef = useRef<HTMLDivElement>(null);
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
@@ -117,10 +131,10 @@ export function GlobalLoader({
         <AnimatedSVGLoader size="lg" variant="primary" />
         <div ref={textRef} className="space-y-1">
           <p className="text-xs uppercase tracking-widest text-white/60">
-            {subMessage}
+            {resolvedSubMessage}
           </p>
           <p className="text-2xl font-semibold text-white md:text-3xl">
-            {message}
+            {resolvedMessage}
           </p>
         </div>
       </div>
