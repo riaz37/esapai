@@ -13,6 +13,7 @@ import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
+
 const World = dynamic(
   () => import("@/components/ui/globe").then((mod) => mod.World),
   {
@@ -108,7 +109,7 @@ const globeData = [
 import { Section } from "@/components/ui/section";
 
 export function ServiceHero({ title, tagline, subtitle, className }: ServiceHeroProps) {
-  const t = useTranslations("ServiceHero");
+  const t = useTranslations("Service.hero");
   return (
     <Section
       padding="none"

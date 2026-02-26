@@ -4,17 +4,22 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Play } from "lucide-react";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
+import { useTranslations } from "next-intl";
 
 
 export function ServiceVideoSection({
     videoSrc = "/servicesmax.mp4",
-    title = "See It In Action",
-    subtitle = "Watch how our integrated protocol transforms your workflow in real-time.",
+    title,
+    subtitle,
 }: {
     videoSrc?: string;
     title?: string;
     subtitle?: string;
 }) {
+    const t = useTranslations("Service.video");
+    const resolvedTitle = title ?? t("title");
+    const resolvedSubtitle = subtitle ?? t("subtitle");
+
     return (
         <Section
             id="service-video"
@@ -22,10 +27,10 @@ export function ServiceVideoSection({
             className="scroll-mt-20 md:scroll-mt-32"
         >
             <SectionHeader
-                badge="Demo"
+                badge={t("badge")}
                 badgeIcon={Play}
-                title={title}
-                subtitle={subtitle}
+                title={resolvedTitle}
+                subtitle={resolvedSubtitle}
                 align="center"
             />
 

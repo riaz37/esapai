@@ -1,6 +1,7 @@
 "use client";
 
 import { useServiceContent } from "@/lib/hooks/use-service-content";
+import { useTranslations } from "next-intl";
 import type { ServicePageClientProps } from "@/types/page";
 
 import dynamic from "next/dynamic";
@@ -34,12 +35,8 @@ import { Section } from "@/components/ui/section";
 
 import { LazySection } from "@/components/ui/lazy-section";
 
-const defaultHeroSubtitle = [
-  "Where Innovation Meets Productivity Driven by agents Powered by automation",
-  "Built for what's next",
-];
-
 export function ServicePage({ slug, initialService }: ServicePageClientProps) {
+  const t = useTranslations("Service");
   const { service } = useServiceContent(slug, {
     initialService,
   });
@@ -49,7 +46,8 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
 
   const heroSubtitle = content.hero?.subtitle ?? [
     hydratedService.description,
-    ...defaultHeroSubtitle,
+    t("defaultHeroSubtitle1"),
+    t("defaultHeroSubtitle2"),
   ];
   const featuresContent = content.features;
   const features = featuresContent?.items ?? [];
@@ -117,8 +115,8 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       <LazySection minHeight="400px">
         <ServicesCTASection
           title={ctaContent?.title}
-          text={ctaContent?.subtitle || "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."}
-          buttonText={ctaContent?.buttonText || "Initialize Project"}
+          text={ctaContent?.subtitle || t("cta.defaultText")}
+          buttonText={ctaContent?.buttonText || t("cta.defaultButton")}
           buttonHref={ctaContent?.buttonLink || "/contact"}
         />
       </LazySection>

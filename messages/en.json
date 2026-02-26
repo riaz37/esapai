@@ -75,9 +75,66 @@
       "error": "An unexpected error occurred. Please try again."
     }
   },
-  "ServiceHero": {
-    "getStarted": "Get Started",
-    "viewFeatures": "View Features"
+  "Service": {
+    "hero": {
+      "getStarted": "Get Started",
+      "viewFeatures": "View Features"
+    },
+    "problem": {
+      "defaultTitle": "The Manual Trap",
+      "defaultSubtitle": "Your team was hired to innovate, not to be glue between broken systems."
+    },
+    "features": {
+      "defaultTitle": "Protect your organization from any threat",
+      "defaultSubtitle": "Security AI Platform to Protect the Entire Enterprise. Break Down Security. Gain Enterprise-Wide Visibility. Action Your Data In Real-Time."
+    },
+    "video": {
+      "badge": "Demo",
+      "title": "See It In Action",
+      "subtitle": "Watch how our integrated protocol transforms your workflow in real-time."
+    },
+    "beforeAfter": {
+      "badge": "Before & after",
+      "defaultTitle": "See the difference"
+    },
+    "cta": {
+      "defaultTitle": "Ready to get started?",
+      "defaultText": "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.",
+      "defaultButton": "Initialize Project"
+    },
+    "metadata": {
+      "notFoundTitle": "Service Not Found",
+      "notFoundDescription": "The requested service could not be found."
+    },
+    "defaultHeroSubtitle1": "Where Innovation Meets Productivity Driven by agents Powered by automation",
+    "defaultHeroSubtitle2": "Built for what's next"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved to a different location.",
+    "goHome": "Go Home",
+    "contactUs": "Contact Us",
+    "quickLinks": "Quick Links"
+  },
+  "Error": {
+    "title": "Something Went Wrong",
+    "description": "We encountered an unexpected error. Our team has been notified and is working on a fix.",
+    "errorId": "Error ID",
+    "tryAgain": "Try Again",
+    "goHome": "Go Home",
+    "whatToDo": "What you can do:",
+    "tip1": "Refresh the page or try again in a few moments",
+    "tip2": "Check your internet connection",
+    "tip3": "Contact support if the problem persists",
+    "contactSupport": "Contact Support",
+    "criticalTitle": "Critical Error",
+    "criticalDescription": "A critical error occurred that prevented the application from loading. Please refresh the page or try again later.",
+    "reloadApp": "Reload Application",
+    "troubleshooting": "Troubleshooting Steps:",
+    "clearCache": "Clear your browser cache and cookies",
+    "tryBrowser": "Try using a different browser",
+    "checkJs": "Check if JavaScript is enabled",
+    "contactIfPersists": "Contact support if the issue persists"
   },
   "Product": {},
   "Footer": {

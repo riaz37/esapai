@@ -18,7 +18,7 @@ import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/str
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { IntroLoader } from "@/components/ui/intro-loader";
 import { MotionProvider } from "@/components/providers/motion-provider";
-import { getNavigation, getSanityServices } from "@/lib/sanity/queries";
+import { getSanityServices } from "@/lib/sanity/queries";
 
 // Inter font - similar to SF Pro, from Google Fonts
 const inter = Inter({
@@ -49,9 +49,6 @@ export default async function RootLayout(props: Readonly<{
   setRequestLocale(locale);
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
-  // Fetch navigation data from Sanity
-  const navData = await getNavigation(locale).catch(() => null);
-
   // Fetch services for the navbar
   const services = await getSanityServices(locale).catch(() => []);
 
@@ -81,16 +78,7 @@ export default async function RootLayout(props: Readonly<{
                         <IntroLoader>
                           <Navbar services={services} />
                           <main className="flex-1">{children}</main>
-                          <Footer
-                            navLinks={navData?.navLinks}
-                            legalLinks={navData?.footerLinks}
-                            ctaTitle={navData?.ctaTitle}
-                            ctaSubtitle={navData?.ctaSubtitle}
-                            ctaButtonText={navData?.ctaLabel}
-                            newsletterTitle={navData?.newsletterTitle}
-                            newsletterSubtitle={navData?.newsletterSubtitle}
-                            copyrightText={navData?.copyrightText}
-                          />
+                          <Footer />
                           <CookieConsentBanner />
                         </IntroLoader>
                       </ServiceMenuProvider>

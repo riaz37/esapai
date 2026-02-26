@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSanityServiceBySlug, getSanityServices } from "@/lib/sanity/queries";
+import { getSanityServiceBySlug, getSanityServices, getUITranslations } from "@/lib/sanity/queries";
 import { ServicePage } from "@/components/features/services/pages/service-page";
 import { generateServiceMetadata } from "@/lib/seo/metadata";
 import { generateServiceSchema } from "@/lib/seo/structured-data";
@@ -31,9 +31,11 @@ export async function generateMetadata({
   const service = await getSanityServiceBySlug(slug, locale);
 
   if (!service) {
+    const messages = await getUITranslations(locale).catch(() => null);
+    const meta = messages?.Service?.metadata;
     return {
-      title: "Service Not Found",
-      description: "The requested service could not be found.",
+      title: meta?.notFoundTitle ?? "Service Not Found",
+      description: meta?.notFoundDescription ?? "The requested service could not be found.",
     };
   }
 

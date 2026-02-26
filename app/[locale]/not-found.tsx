@@ -1,8 +1,11 @@
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function NotFound() {
+  const t = useTranslations("NotFound");
+  const nav = useTranslations("Navigation");
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
       {/* Background gradient effect */}
@@ -10,24 +13,12 @@ export default function NotFound() {
         <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-20">
-        <Image
-          src="/landing/circle.svg"
-          alt="Circle decoration"
-          width={200}
-          height={200}
-          className="w-auto h-auto"
-        />
+      {/* Decorative orbs */}
+      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-10">
+        <div className="w-48 h-48 rounded-full bg-primary blur-[100px]" />
       </div>
-      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-20">
-        <Image
-          src="/landing/box.svg"
-          alt="Box decoration"
-          width={150}
-          height={150}
-          className="w-auto h-auto"
-        />
+      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-10">
+        <div className="w-36 h-36 rounded-full bg-primary blur-[80px]" />
       </div>
 
       {/* Main Content */}
@@ -42,10 +33,10 @@ export default function NotFound() {
         {/* Error Message */}
         <div className="mb-6 sm:mb-8">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 text-gradient-primary">
-            Page Not Found
+            {t("title")}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-light-gray-90 max-w-2xl mx-auto px-2 sm:px-4">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved to a different location.
+            {t("description")}
           </p>
         </div>
 
@@ -57,7 +48,7 @@ export default function NotFound() {
             className="rounded-[32px] sm:rounded-[40px] px-10 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
             asChild
           >
-            <Link href="/">Go Home</Link>
+            <Link href="/">{t("goHome")}</Link>
           </Button>
           <Button
             variant="primary"
@@ -65,39 +56,39 @@ export default function NotFound() {
             className="rounded-[32px] sm:rounded-[40px] px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
             asChild
           >
-            <Link href="/contact">Contact Us</Link>
+            <Link href="/contact">{t("contactUs")}</Link>
           </Button>
         </div>
 
-        {/* Helpful Links */}
+        {/* Quick Links */}
         <div className="product-card p-4 sm:p-5 md:p-6 lg:p-8 max-w-md w-full">
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 text-gradient-radial-white">
-            Quick Links
+            {t("quickLinks")}
           </h3>
           <nav className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link
               href="/"
               className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
             >
-              Home
+              {nav("home")}
             </Link>
             <Link
               href="/about"
               className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
             >
-              About
+              {nav("about")}
             </Link>
             <Link
               href="/case-study"
               className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
             >
-              Case Study
+              {nav("case-study")}
             </Link>
             <Link
               href="/contact"
               className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
             >
-              Contact
+              {nav("contact")}
             </Link>
           </nav>
         </div>
@@ -105,4 +96,3 @@ export default function NotFound() {
     </section>
   );
 }
-

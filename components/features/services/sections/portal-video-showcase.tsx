@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { GitCompare } from "lucide-react";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +18,10 @@ interface PortalVideoShowcaseProps {
     badgeLabel?: string;
 }
 
-export function PortalVideoShowcase({ videoSrc, title = "See the difference", subtitle, badgeLabel }: PortalVideoShowcaseProps) {
+export function PortalVideoShowcase({ videoSrc, title, subtitle, badgeLabel }: PortalVideoShowcaseProps) {
+    const t = useTranslations("Service.beforeAfter");
+    const resolvedTitle = title ?? t("defaultTitle");
+    const resolvedBadge = badgeLabel ?? t("badge");
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
@@ -123,10 +126,10 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
                         className="w-full lg:w-[50%] ltr:ml-auto rtl:mr-auto pointer-events-auto ltr:pl-8 rtl:pr-8"
                     >
                         <div className="mb-6">
-                            <BadgeChip label={badgeLabel ?? "Before & after"} icon={GitCompare} />
+                            <BadgeChip label={resolvedBadge} icon={GitCompare} />
                         </div>
                         <h2 className="text-5xl md:text-6xl font-bold leading-tight text-white tracking-tight mb-6">
-                            {title}
+                            {resolvedTitle}
                         </h2>
                         {subtitle && (
                             <p className="text-lg text-white/70 leading-relaxed max-w-xl tracking-tight">
@@ -140,9 +143,9 @@ export function PortalVideoShowcase({ videoSrc, title = "See the difference", su
             {/* Mobile/Tablet Text (Visible only on small/medium screens) */}
             <div className="lg:hidden w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 mb-8 sm:mb-10 text-center relative z-10">
                 <div className="flex justify-center mb-6">
-                    <BadgeChip label={badgeLabel ?? "Before & after"} icon={GitCompare} />
+                    <BadgeChip label={resolvedBadge} icon={GitCompare} />
                 </div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-white tracking-tight mb-4">{title}</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-white tracking-tight mb-4">{resolvedTitle}</h2>
                 {subtitle && (
                     <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-2xl tracking-tight mx-auto">{subtitle}</p>
                 )}

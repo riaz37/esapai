@@ -1,58 +1,76 @@
 "use client";
 
 import { useEffect } from "react";
-import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type { GlobalErrorProps } from "@/types/page";
 
+function useErrorTranslations() {
+  try {
+    const t = useTranslations("Error");
+    return {
+      criticalTitle: t("criticalTitle"),
+      criticalDescription: t("criticalDescription"),
+      errorId: t("errorId"),
+      reloadApp: t("reloadApp"),
+      tryAgain: t("tryAgain"),
+      troubleshooting: t("troubleshooting"),
+      clearCache: t("clearCache"),
+      tryBrowser: t("tryBrowser"),
+      checkJs: t("checkJs"),
+      contactIfPersists: t("contactIfPersists"),
+      contactSupport: t("contactSupport"),
+    };
+  } catch {
+    return {
+      criticalTitle: "Critical Error",
+      criticalDescription: "A critical error occurred that prevented the application from loading. Please refresh the page or try again later.",
+      errorId: "Error ID",
+      reloadApp: "Reload Application",
+      tryAgain: "Try Again",
+      troubleshooting: "Troubleshooting Steps:",
+      clearCache: "Clear your browser cache and cookies",
+      tryBrowser: "Try using a different browser",
+      checkJs: "Check if JavaScript is enabled",
+      contactIfPersists: "Contact support if the issue persists",
+      contactSupport: "Contact Support",
+    };
+  }
+}
+
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  const t = useErrorTranslations();
+
   useEffect(() => {
-    // Log error to error reporting service
     if (process.env.NODE_ENV === "development") {
       console.error("Global application error:", error);
     }
-    // In production, send to error tracking service
-    // e.g., Sentry.captureException(error)
   }, [error]);
 
   return (
     <html lang="en">
       <body>
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] text-white">
           {/* Background gradient effect */}
           <div className="absolute inset-0 z-0 opacity-30">
-            <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[rgb(19,245,132)] opacity-10 blur-[120px] rounded-full" />
           </div>
 
-          {/* Decorative elements */}
-          <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-20">
-            <Image
-              src="/landing/circle.svg"
-              alt="Circle decoration"
-              width={200}
-              height={200}
-              className="w-auto h-auto"
-            />
+          {/* Decorative orbs */}
+          <div className="absolute top-[20%] left-[10%] z-0 pointer-events-none opacity-10">
+            <div className="w-48 h-48 rounded-full bg-[rgb(19,245,132)] blur-[100px]" />
           </div>
-          <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-20">
-            <Image
-              src="/landing/box.svg"
-              alt="Box decoration"
-              width={150}
-              height={150}
-              className="w-auto h-auto"
-            />
+          <div className="absolute bottom-[20%] right-[10%] z-0 pointer-events-none opacity-10">
+            <div className="w-36 h-36 rounded-full bg-[rgb(19,245,132)] blur-[80px]" />
           </div>
 
           {/* Main Content */}
-          <div className="relative z-10 container mx-auto px-4 py-16 flex flex-col items-center text-center max-w-4xl">
+          <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 flex flex-col items-center text-center">
             {/* Error Icon */}
             <div className="mb-8">
               <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-6">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="absolute rounded-full blur-3xl opacity-70 bg-glow-outer" />
-                  <div className="absolute rounded-full blur-xl opacity-80 bg-glow-inner" />
+                  <div className="absolute w-24 h-24 rounded-full blur-3xl opacity-70 bg-[rgba(19,245,132,0.3)]" />
                 </div>
                 <div className="relative w-full h-full flex items-center justify-center">
                   <svg
@@ -62,7 +80,6 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                     fill="none"
                     stroke="rgb(19, 245, 132)"
                     strokeWidth="2"
-                    className="filter-glow-primary"
                   >
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
                     <line x1="12" y1="9" x2="12" y2="13" />
@@ -74,15 +91,15 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
             {/* Error Message */}
             <div className="mb-8">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gradient-primary">
-                Critical Error
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-[rgb(19,245,132)] to-[rgb(19,245,132,0.6)] bg-clip-text text-transparent">
+                {t.criticalTitle}
               </h2>
-              <p className="text-lg md:text-xl text-light-gray-90 max-w-2xl mx-auto mb-4">
-                A critical error occurred that prevented the application from loading. Please refresh the page or try again later.
+              <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-4">
+                {t.criticalDescription}
               </p>
               {error.digest && (
-                <p className="text-sm text-white-opacity-70 mt-2">
-                  Error ID: {error.digest}
+                <p className="text-sm text-white/40 mt-2">
+                  {t.errorId}: {error.digest}
                 </p>
               )}
             </div>
@@ -97,7 +114,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                   window.location.href = "/";
                 }}
               >
-                Reload Application
+                {t.reloadApp}
               </Button>
               <Button
                 variant="outline"
@@ -105,40 +122,40 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 className="rounded-[40px] px-8 py-6 text-lg font-semibold min-w-[180px]"
                 onClick={reset}
               >
-                Try Again
+                {t.tryAgain}
               </Button>
             </div>
 
-            {/* Helpful Information */}
-            <div className="product-card p-6 md:p-8 max-w-md">
-              <h3 className="text-xl md:text-2xl font-bold mb-4 text-gradient-radial-white">
-                Troubleshooting Steps:
+            {/* Troubleshooting */}
+            <div className="border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm p-6 md:p-8 max-w-md">
+              <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
+                {t.troubleshooting}
               </h3>
-              <ul className="text-start space-y-2 text-light-gray-90">
+              <ul className="text-start space-y-2 text-white/60">
                 <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Clear your browser cache and cookies</span>
+                  <span className="text-[rgb(19,245,132)] mt-1">•</span>
+                  <span>{t.clearCache}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Try using a different browser</span>
+                  <span className="text-[rgb(19,245,132)] mt-1">•</span>
+                  <span>{t.tryBrowser}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Check if JavaScript is enabled</span>
+                  <span className="text-[rgb(19,245,132)] mt-1">•</span>
+                  <span>{t.checkJs}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Contact support if the issue persists</span>
+                  <span className="text-[rgb(19,245,132)] mt-1">•</span>
+                  <span>{t.contactIfPersists}</span>
                 </li>
               </ul>
               <div className="mt-6">
-                <Link
+                <a
                   href="/contact"
-                  className="text-primary hover:text-primary-opacity-90 transition-colors text-base font-semibold"
+                  className="text-[rgb(19,245,132)] hover:text-[rgba(19,245,132,0.8)] transition-colors text-base font-semibold"
                 >
-                  Contact Support →
-                </Link>
+                  {t.contactSupport} →
+                </a>
               </div>
             </div>
           </div>
@@ -147,4 +164,3 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
     </html>
   );
 }
-
