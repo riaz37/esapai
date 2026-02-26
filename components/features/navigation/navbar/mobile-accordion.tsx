@@ -35,7 +35,7 @@ export function MobileAccordion({
         onClick={onToggle}
         className={`nav-link-group relative group w-full px-4 py-3.5 rounded-xl transition-all duration-300 flex items-center justify-between ${isSectionActive || isOpen
           ? "is-active text-[#13F584]"
-          : "text-white/70 hover:text-[#13F584]"
+          : "text-white hover:text-[#13F584]"
           }`}
         aria-expanded={isOpen}
         aria-controls={id}

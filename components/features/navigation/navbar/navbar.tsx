@@ -254,7 +254,7 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
+              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white hover:text-[#13F584]"
                 }`}
             >
               <span className="relative z-10 text-base font-semibold">{t("home")}</span>
@@ -291,7 +291,7 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
             <Link
               href="/about"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/about") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
+              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/about") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white hover:text-[#13F584]"
                 }`}
             >
               <span className="relative z-10 text-base font-semibold">{t("about")}</span>
@@ -300,7 +300,7 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
             <Link
               href="/case-study"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/case-study") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
+              className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/case-study") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white hover:text-[#13F584]"
                 }`}
             >
               <span className="relative z-10 text-base font-semibold">Case Study</span>
@@ -310,7 +310,7 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
             <div className="h-px bg-white/5 mx-3 my-2" />
 
             <div className="px-4 py-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-white/50">Language</span>
+              <span className="text-sm font-medium text-white/70">Language</span>
               <LanguageSelector />
             </div>
 
