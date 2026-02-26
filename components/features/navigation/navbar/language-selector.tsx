@@ -62,7 +62,7 @@ export function LanguageSelector({ className, visible }: { className?: string, v
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className={cn(
-                            "absolute top-full mt-2 end-0 z-50 min-w-[140px]",
+                            "absolute bottom-full mb-2 end-0 z-50 min-w-[140px]",
                             "bg-zinc-950/95 backdrop-blur-xl border border-white/10 rounded-2xl p-1",
                             "shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
                         )}
