@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
 import { m, AnimatePresence } from "motion/react";
 import type { TimelineProps } from "@/types/props";
@@ -9,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { ProcessTimeline, type ProcessTimelineItem } from "@/components/ui/process-timeline";
 
 export function Timeline({ timeline }: TimelineProps) {
+  const locale = useLocale();
   const items = useMemo<ProcessTimelineItem[]>(() => {
     if (!timeline) return [];
 
@@ -17,7 +19,7 @@ export function Timeline({ timeline }: TimelineProps) {
         const date = new Date(dateString);
         return {
           day: date.getDate(),
-          monthYear: `${date.toLocaleDateString("en-US", { month: "long" })}, ${date.getFullYear()}`,
+          monthYear: `${date.toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", { month: "long" })}, ${date.getFullYear()}`,
         };
       };
 
@@ -30,7 +32,7 @@ export function Timeline({ timeline }: TimelineProps) {
             <span className="text-xl sm:text-2xl md:text-5xl font-bold text-white leading-none">
               {day}
             </span>
-            <span className="text-white/60 text-left md:text-right text-xs font-bold uppercase tracking-widest">
+            <span className="text-white/60 text-start md:text-end text-xs font-bold uppercase tracking-widest">
               {monthYear}
             </span>
           </div>
@@ -79,7 +81,7 @@ export function Timeline({ timeline }: TimelineProps) {
         ),
       };
     });
-  }, [timeline]);
+  }, [timeline, locale]);
 
   if (!timeline || timeline.length === 0) {
     return null;
@@ -89,6 +91,7 @@ export function Timeline({ timeline }: TimelineProps) {
 }
 
 function TimelineDescription({ text }: { text: string }) {
+  const t = useTranslations("CaseStudy.detail");
   const [isExpanded, setIsExpanded] = useState(false);
 
   const isLong = text.length > 250;
@@ -128,7 +131,7 @@ function TimelineDescription({ text }: { text: string }) {
           className="mt-2 inline-flex items-center gap-1 text-primary hover:text-primary transition-all duration-300 cursor-pointer select-none group/readmore text-sm font-semibold border-none bg-transparent p-0"
         >
           <span className="group-hover/readmore:underline underline-offset-4 decoration-primary/30">
-            {isExpanded ? "Show Less" : "Read More"}
+            {isExpanded ? t("showLess") : t("readMore")}
           </span>
           <m.span
             animate={{ rotate: isExpanded ? 180 : 0 }}

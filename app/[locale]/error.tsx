@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import type { ErrorProps } from "@/types/page";
@@ -20,11 +20,11 @@ export default function Error({ error, reset }: ErrorProps) {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
       {/* Background gradient effect */}
       <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute top-[20%] left-[10%] z-0 pointer-events-none opacity-20">
+      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-20">
         <Image
           src="/landing/circle.svg"
           alt="Circle decoration"
@@ -33,7 +33,7 @@ export default function Error({ error, reset }: ErrorProps) {
           className="w-auto h-auto"
         />
       </div>
-      <div className="absolute bottom-[20%] right-[10%] z-0 pointer-events-none opacity-20">
+      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-20">
         <Image
           src="/landing/box.svg"
           alt="Box decoration"
@@ -110,7 +110,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-gradient-radial-white">
             What you can do:
           </h3>
-          <ul className="text-left space-y-2 text-light-gray-90">
+          <ul className="text-start space-y-2 text-light-gray-90">
             <li className="flex items-start gap-2">
               <span className="text-primary mt-1">•</span>
               <span>Refresh the page or try again in a few moments</span>

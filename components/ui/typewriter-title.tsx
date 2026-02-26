@@ -3,6 +3,7 @@
 import React, { useMemo } from "react";
 import { m } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 interface TypewriterTitleProps {
     /** The full title text to animate (Part 1 in manual mode) */
@@ -103,6 +104,9 @@ export function TypewriterTitle({
     showGlow = true,
     align = "left",
 }: TypewriterTitleProps) {
+    const locale = useLocale();
+    const isRTL = locale === "ar";
+
     // Aliasing secondLine to tagline for backward compatibility
     const effectiveTagline = tagline || secondLine;
 
@@ -135,12 +139,12 @@ export function TypewriterTitle({
         };
     }, [title, splitMode, effectiveTagline, highlightPart]);
 
-    const alignmentClass = align === "left" ? "text-left" :
+    const alignmentClass = align === "left" ? "text-start" :
         align === "center" ? "text-center" :
-            align === "right" ? "text-right" :
-                align === "center-md-left" ? "text-center md:text-left" :
-                    align === "center-lg-left" ? "text-center lg:text-left" :
-                        "text-left";
+            align === "right" ? "text-end" :
+                align === "center-md-left" ? "text-center md:text-start" :
+                    align === "center-lg-left" ? "text-center lg:text-start" :
+                        "text-start";
 
     // Determine which part is highlighted
     const isPart1Highlighted = highlightIndex === 0;
@@ -169,22 +173,32 @@ export function TypewriterTitle({
                     />
                 )}
                 <span className="relative">
-                    {part1Words.map((word, wordIndex) => (
+                    {part1Words.map((word: string, wordIndex: number) => (
                         <span key={wordIndex} className="inline-block whitespace-nowrap">
-                            {word.split('').map((letter, letterIndex) => (
+                            {isRTL ? (
                                 <AnimatedLetter
-                                    key={letterIndex}
-                                    letter={letter}
-                                    index={wordStartOffset(part1Words, wordIndex) + letterIndex}
-                                    duration={letterDuration}
-                                    staggerDelay={staggerDelay}
+                                    letter={word}
+                                    index={wordIndex}
+                                    duration={letterDuration * 2}
+                                    staggerDelay={staggerDelay * 3}
                                     startDelay={startDelay}
                                 />
-                            ))}
+                            ) : (
+                                word.split('').map((letter, letterIndex) => (
+                                    <AnimatedLetter
+                                        key={letterIndex}
+                                        letter={letter}
+                                        index={wordStartOffset(part1Words, wordIndex) + letterIndex}
+                                        duration={letterDuration}
+                                        staggerDelay={staggerDelay}
+                                        startDelay={startDelay}
+                                    />
+                                ))
+                            )}
                             {wordIndex < part1Words.length - 1 && (
                                 <AnimatedLetter
                                     letter=" "
-                                    index={wordStartOffset(part1Words, wordIndex) + word.length}
+                                    index={isRTL ? wordIndex + 0.5 : wordStartOffset(part1Words, wordIndex) + word.length}
                                     duration={letterDuration}
                                     staggerDelay={staggerDelay}
                                     startDelay={startDelay}
@@ -208,22 +222,32 @@ export function TypewriterTitle({
                     />
                 )}
                 <span className="relative">
-                    {part2Words.map((word, wordIndex) => (
+                    {part2Words.map((word: string, wordIndex: number) => (
                         <span key={wordIndex} className="inline-block whitespace-nowrap">
-                            {word.split('').map((letter, letterIndex) => (
+                            {isRTL ? (
                                 <AnimatedLetter
-                                    key={letterIndex}
-                                    letter={letter}
-                                    index={part2Offset + wordStartOffset(part2Words, wordIndex) + letterIndex}
-                                    duration={letterDuration}
-                                    staggerDelay={staggerDelay}
+                                    letter={word}
+                                    index={part1Words.length + wordIndex}
+                                    duration={letterDuration * 2}
+                                    staggerDelay={staggerDelay * 3}
                                     startDelay={startDelay}
                                 />
-                            ))}
+                            ) : (
+                                word.split('').map((letter, letterIndex) => (
+                                    <AnimatedLetter
+                                        key={letterIndex}
+                                        letter={letter}
+                                        index={part2Offset + wordStartOffset(part2Words, wordIndex) + letterIndex}
+                                        duration={letterDuration}
+                                        staggerDelay={staggerDelay}
+                                        startDelay={startDelay}
+                                    />
+                                ))
+                            )}
                             {wordIndex < part2Words.length - 1 && (
                                 <AnimatedLetter
                                     letter=" "
-                                    index={part2Offset + wordStartOffset(part2Words, wordIndex) + word.length}
+                                    index={isRTL ? part1Words.length + wordIndex + 0.5 : part2Offset + wordStartOffset(part2Words, wordIndex) + word.length}
                                     duration={letterDuration}
                                     staggerDelay={staggerDelay}
                                     startDelay={startDelay}

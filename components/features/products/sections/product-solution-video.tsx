@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import { SectionHeader } from "@/components/ui/section-header";
 import { Section } from "@/components/ui/section";
 import { Play } from "lucide-react";
@@ -20,12 +21,14 @@ interface ProductSolutionVideoProps {
 }
 
 export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
+    const demoTitle = product?.content?.demo?.title ?? product?.content?.mission?.title ?? "";
+    const demoSubtitle = product?.content?.demo?.subtitle ?? "";
+    const demoBadge = product?.content?.demo?.badge ?? "";
     const containerRef = useRef<HTMLDivElement>(null);
     const videoWrapperRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    // Placeholder video
-    const demoVideo = "/fasih-demo.mp4";
+    const demoVideo = product?.content?.hero?.demoVideo ?? "/fasih-demo.mp4";
 
     useGSAP(() => {
         if (!containerRef.current || !videoWrapperRef.current) return;
@@ -107,9 +110,9 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
             {/* Desktop/Tablet Header - Unpinned */}
             <div className="hidden md:block container mx-auto px-6 pt-20 pb-0 relative z-20">
                 <SectionHeader
-                    title={product?.content?.mission?.title ?? "Intelligence in Motion"}
-                    subtitle="Experience the standard of enterprise autonomy."
-                    badge="Demo"
+                    title={demoTitle}
+                    subtitle={demoSubtitle}
+                    badge={demoBadge}
                     badgeIcon={Play}
                     align="center"
                 />
@@ -124,9 +127,9 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                 {/* Mobile-Only Pinned Header - Clears Navbar */}
                 <div className="mobile-section-header block md:hidden absolute top-0 inset-x-0 w-full container mx-auto px-6 pt-24 pb-0 z-20 pointer-events-auto">
                     <SectionHeader
-                        title={product?.content?.mission?.title ?? "Intelligence in Motion"}
-                        subtitle="Experience the standard of enterprise autonomy."
-                        badge="Demo"
+                        title={demoTitle}
+                        subtitle={demoSubtitle}
+                        badge={demoBadge}
                         badgeIcon={Play}
                         align="center"
                         className="mb-0"

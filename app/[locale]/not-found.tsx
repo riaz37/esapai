@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -7,11 +7,11 @@ export default function NotFound() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
       {/* Background gradient effect */}
       <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute top-[20%] left-[10%] z-0 pointer-events-none opacity-20">
+      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-20">
         <Image
           src="/landing/circle.svg"
           alt="Circle decoration"
@@ -20,7 +20,7 @@ export default function NotFound() {
           className="w-auto h-auto"
         />
       </div>
-      <div className="absolute bottom-[20%] right-[10%] z-0 pointer-events-none opacity-20">
+      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-20">
         <Image
           src="/landing/box.svg"
           alt="Box decoration"

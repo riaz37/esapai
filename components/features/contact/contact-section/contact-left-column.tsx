@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { forwardRef, useRef } from "react";
+import { useTranslations } from "next-intl";
 import gsap from "gsap";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { BadgeChip } from "@/components/ui/badge-chip";
@@ -13,6 +14,7 @@ export const ContactLeftColumn = forwardRef<
     socialLinks: ReadonlyArray<{ name: string; iconPath: string; href: string }>;
   }
 >(function ContactLeftColumn({ socialLinks }, ref) {
+  const t = useTranslations("Contact");
   const socialIconRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // Hover effect for social icons - scale, rotation, and background
@@ -47,7 +49,7 @@ export const ContactLeftColumn = forwardRef<
     <div ref={ref} className="lg:col-span-1 space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-8">
       {/* Badge Indicator */}
       <div data-gsap="contact-left-item" className="mb-2">
-        <BadgeChip label="Get in touch" icon={MessageSquare} />
+        <BadgeChip label={t("badge")} icon={MessageSquare} />
       </div>
 
       {/* Main Heading */}
@@ -56,11 +58,11 @@ export const ContactLeftColumn = forwardRef<
           data-gsap="contact-left-item"
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-none tracking-tighter pb-2"
         >
-          <span className="text-white">Contact us today.</span>
+          <span className="text-white">{t("title.part1")}</span>
           <br />
-          <span className="text-white">We&apos;re ready</span>
+          <span className="text-white">{t("title.part2")}</span>
           <br />
-          <span className="text-primary">to assist you.</span>
+          <span className="text-primary">{t("title.part3")}</span>
         </h1>
 
         {/* Accent Line */}
@@ -75,8 +77,7 @@ export const ContactLeftColumn = forwardRef<
         data-gsap="contact-left-item"
         className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl"
       >
-        Whether you have a question, a comment, or just want to say hello, please
-        don&apos;t hesitate to get in touch.
+        {t("description")}
       </p>
 
       {/* Social Media Section */}
@@ -85,7 +86,7 @@ export const ContactLeftColumn = forwardRef<
           data-gsap="contact-left-item"
           className="text-gradient-primary text-lg sm:text-xl md:text-2xl font-semibold"
         >
-          Get in touch On social media
+          {t("social")}
         </h2>
         <div className="flex flex-wrap items-center gap-4 sm:gap-5 md:gap-6">
           {socialLinks.map((social, index) => (

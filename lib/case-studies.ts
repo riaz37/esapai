@@ -8,7 +8,7 @@ import type {
 } from "@/types/case-study";
 import type { SanityImage } from "@/types/sanity";
 
-const CASE_STUDY_QUERY = `*[_type == "caseStudy"] | order(publishedAt desc) {
+const CASE_STUDY_QUERY = `*[_type == "caseStudy" && language == $locale] | order(publishedAt desc) {
   _id,
   title,
   slug,
@@ -21,7 +21,7 @@ const CASE_STUDY_QUERY = `*[_type == "caseStudy"] | order(publishedAt desc) {
   featured
 }`;
 
-const CASE_STUDY_BY_SLUG_QUERY = `*[_type == "caseStudy" && slug.current == $slug][0] {
+const CASE_STUDY_BY_SLUG_QUERY = `*[_type == "caseStudy" && slug.current == $slug && language == $locale][0] {
   _id,
   title,
   slug,
@@ -131,9 +131,9 @@ function transformCaseStudy(caseStudy: CaseStudy): CaseStudyWithUrls {
 /**
  * Fetch all case studies from Sanity
  */
-export async function getCaseStudies(): Promise<CaseStudyWithUrls[]> {
+export async function getCaseStudies(locale: string = "en"): Promise<CaseStudyWithUrls[]> {
   try {
-    const caseStudies = await client.fetch<CaseStudy[]>(CASE_STUDY_QUERY);
+    const caseStudies = await client.fetch<CaseStudy[]>(CASE_STUDY_QUERY, { locale });
     return caseStudies.map(transformCaseStudy);
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
@@ -147,11 +147,13 @@ export async function getCaseStudies(): Promise<CaseStudyWithUrls[]> {
  * Fetch a single case study by slug
  */
 export async function getCaseStudyBySlug(
-  slug: string
+  slug: string,
+  locale: string = "en"
 ): Promise<CaseStudyWithUrls | null> {
   try {
     const caseStudy = await client.fetch<CaseStudy | null>(CASE_STUDY_BY_SLUG_QUERY, {
       slug,
+      locale,
     });
 
     if (!caseStudy) {

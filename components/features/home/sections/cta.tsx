@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,21 +16,13 @@ if (typeof window !== "undefined") {
 }
 
 interface CTASectionProps {
-    title?: React.ReactNode;
+    title?: string;
     subtitle?: string;
     /** When provided (e.g. on product page), title/subtitle are derived from product. */
     product?: Product | null;
     primaryButtonText?: string;
     primaryButtonHref?: string;
 }
-
-const defaultTitle = (
-    <>
-        <span className="text-white">Ready to Transform </span>
-        <span className="text-primary">Your Business?</span>
-    </>
-);
-const defaultSubtitle = "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.";
 
 export function CTASection({
     title: titleProp,
@@ -38,20 +31,18 @@ export function CTASection({
     primaryButtonText,
     primaryButtonHref = "/contact",
 }: CTASectionProps) {
+    const t = useTranslations("CTA");
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const primaryButtonRef = useRef<HTMLAnchorElement>(null);
 
-    const title = titleProp ?? (product
-        ? (
-            <>
-                <span className="text-white">Ready to try </span>
-                <span className="text-primary">{product.name}</span>
-                <span className="text-white">?</span>
-            </>
-        )
-        : defaultTitle);
-    const subtitle = subtitleProp ?? (product?.content?.mission?.subtitle ?? defaultSubtitle);
+    const title = titleProp ?? (product?.content?.cta?.title
+        ?? (product ? t("productFallbackTitle", { name: product.name }) : t("title")));
+    const subtitle = subtitleProp ?? (product?.content?.cta?.subtitle
+        ?? product?.content?.mission?.subtitle ?? t("subtitle"));
+    const displayPrimaryButtonText = primaryButtonText
+        || product?.content?.cta?.buttonText
+        || (product ? t("productFallbackButton") : t("button"));
 
     // Star Warp Animation
     useEffect(() => {
@@ -229,7 +220,7 @@ export function CTASection({
                             asChild
                         >
                             <Link href={primaryButtonHref} className="inline-flex items-center gap-2 group">
-                                <span>{primaryButtonText ?? (product ? "Get Started" : "Start Building Now")}</span>
+                                <span>{displayPrimaryButtonText}</span>
                                 <ButtonArrow size="default" />
                             </Link>
                         </Button>

@@ -9,6 +9,7 @@ import type {
 
 export function useCaseStudyContent(
   slug: string,
+  locale: string = "en",
   {
     enabled = true,
     initialCaseStudy = null,
@@ -44,7 +45,7 @@ export function useCaseStudyContent(
       setIsFetching(true);
 
       try {
-        const response = await fetch(`/api/case-studies/${slug}`, {
+        const response = await fetch(`/api/case-studies/${slug}?locale=${locale}`, {
           cache: "no-store",
         });
 
@@ -76,7 +77,7 @@ export function useCaseStudyContent(
     return () => {
       cancelled = true;
     };
-  }, [slug, enabled, initialCaseStudy, revalidateOnMount]);
+  }, [slug, locale, enabled, initialCaseStudy, revalidateOnMount]);
 
   return useMemo(
     () => ({

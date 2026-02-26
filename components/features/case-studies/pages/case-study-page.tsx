@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import type { CaseStudyWithUrls } from "@/types/case-study";
 import { CaseStudyHero } from "../hero";
@@ -13,20 +14,22 @@ import type { CaseStudyPageClientProps } from "@/types/page";
 
 export function CaseStudyPage({
   slug,
+  locale,
   initialCaseStudy,
 }: CaseStudyPageClientProps) {
-  const { caseStudy, loading, isFetching, error } = useCaseStudyContent(slug, {
+  const t = useTranslations("CaseStudy.detail");
+  const { caseStudy, loading, isFetching, error } = useCaseStudyContent(slug, locale, {
     initialCaseStudy,
   });
 
   const sectionRef = useRef<HTMLElement>(null);
 
   if (loading && !caseStudy) {
-    return <GlobalLoader message="Loading case study" subMessage="Fetching case study details" />;
+    return <GlobalLoader message={t("loading")} subMessage={t("loadingSubtitle")} />;
   }
 
   if (error && !caseStudy) {
-    return <ErrorState message={error} />;
+    return <ErrorState message={error} errorLabel={t("error")} />;
   }
 
   const hydratedCaseStudy = caseStudy ?? initialCaseStudy;
@@ -36,7 +39,7 @@ export function CaseStudyPage({
       {isFetching && (
         <div className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center">
           <span className="mt-4 rounded-full bg-dark px-4 py-1 text-white/60 text-label-caps animate-pulse-slow">
-            Updating content…
+            {t("updating")}
           </span>
         </div>
       )}
@@ -62,11 +65,11 @@ export function CaseStudyPage({
   );
 }
 
-function ErrorState({ message }: { message: string }) {
+function ErrorState({ message, errorLabel }: { message: string; errorLabel: string }) {
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
       <p className="text-white/60 text-label-caps">
-        Unable to load case study
+        {errorLabel}
       </p>
       <p className="text-lg text-white/70">{message}</p>
     </section>

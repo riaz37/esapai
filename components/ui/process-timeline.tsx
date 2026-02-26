@@ -180,7 +180,7 @@ export function ProcessTimeline({ items, className }: ProcessTimelineProps) {
                         // - SM: 112 + 24 + 18 = 154px (9.625rem)
                         // - MD: 128 + 32 + 20 = 180px (11.25rem) 
                         // - LG: 160 + 48 + 20 = 228px (14.25rem)
-                        className="absolute left-[8rem] sm:left-[9.625rem] md:left-[11.25rem] lg:left-[14.25rem] top-0 overflow-hidden w-[2px] -translate-x-1/2 hidden md:block bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-primary/20 to-transparent to-[99%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
+                        className="absolute start-[8rem] sm:start-[9.625rem] md:start-[11.25rem] lg:start-[14.25rem] top-0 overflow-hidden w-[2px] -translate-x-1/2 hidden md:block bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-primary/20 to-transparent to-[99%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
                     >
                         <m.div
                             style={{

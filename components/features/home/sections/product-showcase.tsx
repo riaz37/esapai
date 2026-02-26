@@ -10,12 +10,14 @@ import { Section } from "@/components/ui/section";
 import { ProductCard } from "@/components/ui/product-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Rocket } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 export function ProductShowcase() {
+  const t = useTranslations("Home.showcase");
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -95,9 +97,9 @@ export function ProductShowcase() {
       className="relative w-full bg-transparent overflow-visible"
     >
       <SectionHeader
-        title="Product Discovery"
-        subtitle="Experience our ecosystem of intelligent tools."
-        badge="Product Showcase"
+        title={t("title")}
+        subtitle={t("subtitle")}
+        badge={t("badge")}
         badgeIcon={Rocket}
       />
 

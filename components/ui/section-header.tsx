@@ -101,22 +101,22 @@ export function SectionHeader({
     align === "center"
       ? "text-center items-center"
       : align === "left"
-        ? "text-left items-start"
+        ? "text-start items-start"
         : align === "right"
-          ? "text-right items-end"
+          ? "text-end items-end"
           : align === "center-md-left"
-            ? "text-center items-center md:text-left md:items-start"
+            ? "text-center items-center md:text-start md:items-start"
             : align === "center-lg-left"
-              ? "text-center items-center lg:text-left lg:items-start"
+              ? "text-center items-center lg:text-start lg:items-start"
               : "text-center items-center";
 
   const mxClass =
     align === "center"
       ? "mx-auto"
       : align === "center-md-left"
-        ? "mx-auto md:mr-auto md:ml-0"
+        ? "mx-auto md:me-auto md:ms-0"
         : align === "center-lg-left"
-          ? "mx-auto lg:mr-auto lg:ml-0"
+          ? "mx-auto lg:me-auto lg:ms-0"
           : "";
 
   return (
@@ -151,7 +151,7 @@ export function SectionHeader({
           ref={accentLineRef}
           className={cn(
             "mt-2 h-[2px] w-24 sm:w-32 md:w-40 origin-center bg-primary/80",
-            align === "center" ? "mx-auto" : align === "left" ? "mr-auto" : "ml-auto"
+            align === "center" ? "mx-auto" : align === "left" ? "me-auto" : "ms-auto"
           )}
         />
       </div>

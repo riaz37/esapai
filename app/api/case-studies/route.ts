@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { getCaseStudies } from "@/lib/case-studies";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const caseStudies = await getCaseStudies();
+    const { searchParams } = new URL(request.url);
+    const locale = searchParams.get("locale") || "en";
+    const caseStudies = await getCaseStudies(locale);
 
     return NextResponse.json({ caseStudies });
   } catch (error) {

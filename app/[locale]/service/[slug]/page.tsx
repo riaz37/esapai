@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getServiceBySlug, services } from "@/lib/services";
+import { getSanityServiceBySlug, getSanityServices } from "@/lib/sanity/queries";
 import { ServicePage } from "@/components/features/services/pages/service-page";
 import { generateServiceMetadata } from "@/lib/seo/metadata";
 import { generateServiceSchema } from "@/lib/seo/structured-data";
@@ -8,7 +8,17 @@ import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import type { ServiceSlugPageProps } from "@/types/page";
 
-export async function generateStaticParams() {
+interface Props extends ServiceSlugPageProps {
+  params: Promise<{
+    slug: string;
+    locale: string;
+  }>;
+}
+
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  const { locale } = params;
+  const services = await getSanityServices(locale || "en");
+
   return services.map((service) => ({
     slug: service.slug,
   }));
@@ -16,9 +26,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: ServiceSlugPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+}: Props): Promise<Metadata> {
+  const { slug, locale } = await params;
+  const service = await getSanityServiceBySlug(slug, locale);
 
   if (!service) {
     return {
@@ -30,9 +40,9 @@ export async function generateMetadata({
   return generateServiceMetadata(service.name, service.description, slug);
 }
 
-export default async function ServiceSlugPage({ params }: ServiceSlugPageProps) {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+export default async function ServiceSlugPage({ params }: Props) {
+  const { slug, locale } = await params;
+  const service = await getSanityServiceBySlug(slug, locale);
 
   if (!service) {
     notFound();

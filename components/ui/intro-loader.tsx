@@ -177,7 +177,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 initial={{ opacity: 0, y: 20, letterSpacing: "0.2em" }}
                                 animate={{ opacity: 1, y: 0, letterSpacing: "1em" }}
                                 transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-                                className="text-xl md:text-2xl font-semibold uppercase text-white/90 text-center ml-[1em]"
+                                className="text-xl md:text-2xl font-semibold uppercase text-white/90 text-center ms-[1em]"
                             >
                                 <ScrambleText text="ESAP AI" delay={1} />
                             </m.h1>
@@ -188,7 +188,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 transition={{ duration: 1.2, delay: 1.8 }}
                                 className="flex flex-col items-center gap-3"
                             >
-                                <div className="text-xs uppercase tracking-widest text-white/30 ml-2">
+                                <div className="text-xs uppercase tracking-widest text-white/30 ms-2">
                                     <ScrambleText text="The Vanguard of Intelligence" delay={2} />
                                 </div>
 

@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
+
 
 import { ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
@@ -36,8 +37,9 @@ const getProductIconPath = (slug?: string, centerIcon?: string): string | null =
   return null;
 };
 
-export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug, tagline }: ProductHeroProps) {
+export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug, tagline, exploreButton }: ProductHeroProps) {
   const iconPath = getProductIconPath(productSlug, centerIcon);
+  const exploreLabel = exploreButton ?? "";
   const iconAlt = centerIconAlt || `${title} Icon`;
 
   return (
@@ -50,7 +52,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* Left Content */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left max-w-2xl mx-auto lg:mx-0">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-start max-w-2xl mx-auto lg:mx-0">
 
             <div className="flex flex-col mb-6 items-center lg:items-start">
               <TypewriterTitle
@@ -81,10 +83,10 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                 variant="primary"
                 size="default"
                 asChild
-                className="pr-1.5"
+                className="pe-1.5"
               >
                 <Link href="#explore" className="inline-flex items-center gap-2 group">
-                  <span>Explore Solution</span>
+                  <span>{exploreLabel}</span>
                   <ButtonArrow />
                 </Link>
               </Button>

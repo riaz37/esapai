@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { forwardRef } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import type { ContactFormData, SubmissionState } from "@/types/contact";
@@ -44,6 +45,7 @@ export const ContactFormCard = forwardRef<
   },
   ref
 ) {
+  const t = useTranslations("Contact");
   return (
     <div className="lg:col-span-1 w-full">
       <Card
@@ -57,7 +59,7 @@ export const ContactFormCard = forwardRef<
               htmlFor="fullName"
               className="text-white text-xs sm:text-sm font-semibold tracking-wide block"
             >
-              Full Name
+              {t("form.fullName")}
             </label>
             <input
               type="text"
@@ -65,7 +67,7 @@ export const ContactFormCard = forwardRef<
               name="fullName"
               value={formData.fullName}
               onChange={onInputChange}
-              placeholder="John Doe"
+              placeholder={t("form.fullNamePlaceholder")}
               required
               className="contact-input w-full px-3 sm:px-4 py-2.5 sm:py-3 md:py-3.5 text-sm sm:text-base text-light-gray min-h-[44px]"
             />
@@ -77,7 +79,7 @@ export const ContactFormCard = forwardRef<
               htmlFor="email"
               className="text-white text-xs sm:text-sm font-semibold tracking-wide block"
             >
-              Email
+              {t("form.email")}
             </label>
             <input
               type="email"
@@ -85,7 +87,7 @@ export const ContactFormCard = forwardRef<
               name="email"
               value={formData.email}
               onChange={onInputChange}
-              placeholder="name@company.com"
+              placeholder={t("form.emailPlaceholder")}
               required
               className="contact-input w-full px-3 sm:px-4 py-2.5 sm:py-3 md:py-3.5 text-sm sm:text-base text-light-gray min-h-[44px]"
             />
@@ -97,14 +99,14 @@ export const ContactFormCard = forwardRef<
               htmlFor="message"
               className="text-white text-xs sm:text-sm font-semibold tracking-wide block"
             >
-              Message
+              {t("form.message")}
             </label>
             <textarea
               id="message"
               name="message"
               value={formData.message}
               onChange={onInputChange}
-              placeholder="How can we help you?"
+              placeholder={t("form.messagePlaceholder")}
               required
               rows={5}
               className="contact-input w-full px-3 sm:px-4 py-2.5 sm:py-3 md:py-3.5 text-sm sm:text-base text-light-gray resize-none"
@@ -120,7 +122,7 @@ export const ContactFormCard = forwardRef<
               disabled={!agreedToTerms || isSubmitting}
               className="w-fit"
             >
-              {isSubmitting ? "Submitting..." : "Submit"}
+              {isSubmitting ? t("form.submitting") : t("form.submit")}
             </Button>
           </div>
 

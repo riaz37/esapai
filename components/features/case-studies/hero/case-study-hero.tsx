@@ -60,7 +60,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
                     title={caseStudy.title}
                     splitMode="lastWord"
                     highlightPart="last"
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 pl-2"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 ps-2"
                     align="left"
                     staggerDelay={0.02}
                     letterDuration={0.4}

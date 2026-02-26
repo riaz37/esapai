@@ -2,11 +2,14 @@
 
 import React, { useRef, useMemo, useState, useEffect } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { Workflow, ArrowDown, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import { PRODUCT_JOURNEYS } from "@/config/user-journeys";
+import type { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Section } from "@/components/ui/section";
@@ -64,15 +67,17 @@ const CinematicEdge = ({
     );
 };
 
-const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean }) => {
+const JourneyNode = ({ node, isMobile = false, isRTL = false }: { node: any, isMobile?: boolean, isRTL?: boolean }) => {
     return (
         <div
             className={cn(
                 "group/node",
-                isMobile ? "relative" : "absolute -translate-x-1/2 -translate-y-1/2"
+                isMobile
+                    ? "relative"
+                    : cn("absolute -translate-y-1/2", isRTL ? "translate-x-1/2" : "-translate-x-1/2")
             )}
             style={isMobile ? {} : {
-                left: node.position.x,
+                insetInlineStart: node.position.x,
                 top: node.position.y,
             }}
         >
@@ -109,8 +114,8 @@ const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean
                             })}
                         </div>
                     )}
-                    <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#13F584]/40" />
-                    <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#13F584]/40" />
+                    <div className="absolute top-0 start-0 w-2 h-2 border-t border-s border-[#13F584]/40" />
+                    <div className="absolute bottom-0 end-0 w-2 h-2 border-b border-e border-[#13F584]/40" />
                 </div>
 
                 <h3 className="relative text-white/90 text-center leading-tight text-xs tracking-widest uppercase">
@@ -126,7 +131,7 @@ const JourneyNode = ({ node, isMobile = false }: { node: any, isMobile?: boolean
 /**
  * MOBILE VIEW: Vertical Timeline/Card Layout
  */
-const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
+const MobileJourneyFlow = ({ layers, stages, isRTL }: { layers: any[], stages: string[], isRTL: boolean }) => {
     return (
         <div className="flex flex-col gap-12 px-4">
             {layers.map((layer, index) => (
@@ -134,7 +139,7 @@ const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
                     {/* Stage Label */}
                     <div className="flex flex-col items-center justify-center gap-2 mb-5">
                         <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase text-center">
-                            Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                            {stages[index] ?? `Stage ${index + 1}`}
                         </span>
                         <div className="w-12 h-[1px] bg-[#13F584]/30" />
                     </div>
@@ -148,12 +153,15 @@ const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
                         {/* Nodes Grid */}
                         <div className="grid grid-cols-2 gap-3 sm:gap-4">
                             {layer.nodes.map((node: any) => (
-                                <JourneyNode key={node.id} node={node} isMobile={true} />
+                                <JourneyNode key={node.id} node={node} isMobile={true} isRTL={isRTL} />
                             ))}
                         </div>
 
                         {/* Edge Visualizer for Mobile (Simplified) */}
-                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-30 group-last:hidden">
+                        <div className={cn(
+                            "absolute -bottom-10 start-1/2 opacity-30 group-last:hidden",
+                            isRTL ? "translate-x-1/2" : "-translate-x-1/2"
+                        )}>
                             <ArrowDown size={32} className="text-[#13F584] animate-bounce" />
                         </div>
                     </Card>
@@ -166,7 +174,7 @@ const MobileJourneyFlow = ({ layers }: { layers: any[] }) => {
 /**
  * DESKTOP VIEW: Layered Pinning Layout (Fixed Coordinates)
  */
-const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
+const DesktopJourneyFlow = ({ layers, stages, isRTL }: { layers: any[], stages: string[], isRTL: boolean }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const layersRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -199,7 +207,6 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
             // Elements Entrance
             const surface = layer.querySelector(".architecture-surface");
             const nodes = layer.querySelectorAll(".group\\/node");
-            const edges = layer.querySelectorAll(".cinematic-edge");
 
             if (i > 0) {
                 if (surface) {
@@ -236,7 +243,10 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
                         <Card className="relative w-full h-[70vh] min-h-[600px] architecture-surface" spotlight={true}>
 
                             {/* SVG Edges */}
-                            <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                            <svg
+                                className="absolute inset-0 w-full h-full pointer-events-none"
+                                style={isRTL ? { transform: "scaleX(-1)" } : undefined}
+                            >
                                 {layer.edges.map((edge: any) => {
                                     const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
                                     const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
@@ -256,14 +266,14 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
                             {/* Nodes */}
                             <div className="absolute inset-0">
                                 {layer.nodes.map((node: any) => (
-                                    <JourneyNode key={node.id} node={node} />
+                                    <JourneyNode key={node.id} node={node} isRTL={isRTL} />
                                 ))}
                             </div>
 
                             {/* Title Component inside the surface */}
-                            <div className="absolute top-8 left-8 md:top-12 md:left-12">
+                            <div className="absolute top-8 start-8 md:top-12 md:start-12">
                                 <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase mb-2 block">
-                                    Stage {['One', 'Two', 'Three', 'Four', 'Five'][index] || index + 1}
+                                    {stages[index] ?? `Stage ${index + 1}`}
                                 </span>
                                 <h4 className="text-3xl md:text-5xl font-bold text-white tracking-tighter">
                                     {layer.title}
@@ -277,8 +287,51 @@ const DesktopJourneyFlow = ({ layers }: { layers: any[] }) => {
     );
 };
 
-export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: string }) => {
-    const journeyData = useMemo(() => PRODUCT_JOURNEYS[productSlug] || PRODUCT_JOURNEYS["ai-framework"], [productSlug]);
+interface RawJourneyLayer {
+    title: string;
+    nodes: string[];
+}
+
+interface RawJourneyData {
+    title: string;
+    subtitle: string;
+    layers: RawJourneyLayer[];
+}
+
+export const UserJourney = ({ productSlug = "ai-framework", initialProduct }: { productSlug?: string; initialProduct?: Product | null }) => {
+    const locale = useLocale();
+    const isRTL = locale === "ar";
+
+    const sanityJourney = initialProduct?.content?.journey;
+    const stages = sanityJourney?.stages ?? [];
+    const journeyBadge = sanityJourney?.badge ?? "";
+
+    const journeyConfig = useMemo(() => PRODUCT_JOURNEYS[productSlug] || PRODUCT_JOURNEYS["ai-framework"], [productSlug]);
+
+    const journeyData = useMemo(() => {
+        // Sanity journey layers take priority over i18n
+        if (sanityJourney?.layers && sanityJourney.layers.length > 0) {
+            return {
+                ...journeyConfig,
+                journeyTitle: sanityJourney.title ?? journeyConfig.journeyTitle,
+                journeySubtitle: sanityJourney.subtitle ?? journeyConfig.journeySubtitle,
+                layers: journeyConfig.layers.map((layer, li) => ({
+                    ...layer,
+                    title: sanityJourney.layers![li]?.title ?? layer.title,
+                    nodes: layer.nodes.map((node, ni) => ({
+                        ...node,
+                        data: {
+                            ...node.data,
+                            title: sanityJourney.layers![li]?.nodes[ni] ?? (node.data.title as string),
+                        },
+                    })),
+                })),
+            };
+        }
+        return journeyConfig;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [journeyConfig, productSlug, locale, sanityJourney]);
+
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -303,9 +356,9 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
 
             <div className="w-full mx-auto px-0">
                 <SectionHeader
-                    title={journeyData.journeyTitle || "System Architecture"}
+                    title={journeyData.journeyTitle || (sanityJourney?.title ?? "")}
                     subtitle={journeyData.journeySubtitle}
-                    badge="Architecture"
+                    badge={journeyBadge}
                     badgeIcon={Workflow}
                     animate={true}
                     titleClassName="text-4xl md:text-5xl lg:text-7xl"
@@ -314,9 +367,9 @@ export const UserJourney = ({ productSlug = "ai-framework" }: { productSlug?: st
             </div>
 
             {isMobile ? (
-                <MobileJourneyFlow layers={journeyData.layers} />
+                <MobileJourneyFlow layers={journeyData.layers} stages={stages} isRTL={isRTL} />
             ) : (
-                <DesktopJourneyFlow layers={journeyData.layers} />
+                <DesktopJourneyFlow layers={journeyData.layers} stages={stages} isRTL={isRTL} />
             )}
         </Section>
     );

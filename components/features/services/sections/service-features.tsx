@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useId, useEffect } from "react";
+import React from "react";
+
 import ReactFlow, {
   Node,
   Edge,
@@ -12,7 +14,7 @@ import "reactflow/dist/style.css";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Layers } from "lucide-react";
-import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 
 import type { ServiceFeaturesProps, FeatureBlockProps } from "@/types/props";
 
@@ -53,7 +55,6 @@ function CentralNode({ data }: { data: { label: string } }) {
 }
 
 // Custom Feature Node Component
-// Custom FeatureNode with slightly expanded dimensions
 function FeatureNode({ data }: { data: FeatureBlockProps }) {
   return (
     <Card className="min-w-[240px] sm:min-w-[260px] max-w-[300px] sm:max-w-[320px] p-5 sm:p-6 md:p-7 lg:p-8">
@@ -88,8 +89,6 @@ function FeatureNode({ data }: { data: FeatureBlockProps }) {
     </Card>
   );
 }
-
-// ... (keep CentralNodeIcon and nodeTypes as is) ...
 
 function CentralNodeIcon() {
   const uniqueId = useId();
@@ -160,15 +159,11 @@ const nodeTypes = {
   feature: FeatureNode,
 };
 
-// Component to add SVG markers for connection dots
 function ConnectionDotsMarkers() {
   useEffect(() => {
-    // Find the React Flow SVG and add marker definitions
     const addMarkers = () => {
       const svg = document.querySelector('.service-features-flow svg');
       if (!svg) return;
-
-      // Check if markers already exist
       if (svg.querySelector('#connection-dot-start')) return;
 
       const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
@@ -212,10 +207,8 @@ function ConnectionDotsMarkers() {
       svg.insertBefore(defs, svg.firstChild);
     };
 
-    // Try to add markers immediately and also after a short delay
     addMarkers();
     const timeout = setTimeout(addMarkers, 100);
-
     return () => clearTimeout(timeout);
   }, []);
 
@@ -225,44 +218,38 @@ function ConnectionDotsMarkers() {
 export function ServiceFeatures({
   title = "Protect your organization from any threat",
   subtitle = "Security AI Platform to Protect the Entire Enterprise. Break Down Security. Gain Enterprise-Wide Visibility. Action Your Data In Real-Time.",
-  features,
+  badge,
+  centralNode,
+  features = [],
 }: ServiceFeaturesProps) {
   const displayFeatures = features.slice(0, 5);
 
-  // Calculate positions for network/web structure
   const { nodes, edges } = useMemo(() => {
     const nodesList: Node[] = [];
     const edgesList: Edge[] = [];
 
-    // Central node at the center - responsive positioning
     const centerX = typeof window !== 'undefined' && window.innerWidth >= 1280 ? 600 : 500;
-    const centerY = typeof window !== 'undefined' && window.innerWidth >= 1280 ? 450 : 400; // Moved down as container is taller
+    const centerY = typeof window !== 'undefined' && window.innerWidth >= 1280 ? 450 : 400;
 
     nodesList.push({
       id: "central",
       type: "central",
       position: { x: centerX - 100, y: centerY - 100 },
-      data: { label: "Core Service" },
+      data: { label: centralNode ?? "Core Service" },
       draggable: false,
     });
 
-    // Create an organic, dynamic layout - expanded for better breathing room
     const positions = [
-      // Top-left area
       { x: centerX - 420, y: centerY - 320, angle: -Math.PI / 4 },
-      // Top-right area  
       { x: centerX + 280, y: centerY - 340, angle: Math.PI / 4 },
-      // Right area
       { x: centerX + 450, y: centerY + 40, angle: 0 },
-      // Bottom-right area
       { x: centerX + 220, y: centerY + 350, angle: Math.PI / 3 },
-      // Bottom-left area
       { x: centerX - 380, y: centerY + 300, angle: -Math.PI / 2 },
     ];
 
     displayFeatures.forEach((feature, index) => {
       const pos = positions[index] || {
-        x: centerX + 420 * Math.cos((index * 2 * Math.PI) / displayFeatures.length), // Increased radius
+        x: centerX + 420 * Math.cos((index * 2 * Math.PI) / displayFeatures.length),
         y: centerY + 420 * Math.sin((index * 2 * Math.PI) / displayFeatures.length),
         angle: (index * 2 * Math.PI) / displayFeatures.length,
       };
@@ -277,7 +264,6 @@ export function ServiceFeatures({
         draggable: false,
       });
 
-      // Connect central node to each feature with curved bezier edges (web-like)
       edgesList.push({
         id: `edge-central-${index}`,
         source: "central",
@@ -290,10 +276,7 @@ export function ServiceFeatures({
         },
       });
 
-      // Create interconnections between features (web/network effect)
-      // Connect each feature to the next one, and some to non-adjacent ones
       if (index < displayFeatures.length - 1) {
-        // Connect to next feature
         edgesList.push({
           id: `edge-${index}-${index + 1}`,
           source: nodeId,
@@ -307,7 +290,6 @@ export function ServiceFeatures({
         });
       }
 
-      // Connect first to last (closing the web)
       if (index === 0 && displayFeatures.length > 2) {
         edgesList.push({
           id: `edge-0-${displayFeatures.length - 1}`,
@@ -322,7 +304,6 @@ export function ServiceFeatures({
         });
       }
 
-      // Add some cross-connections for more complexity (skip one)
       if (index < displayFeatures.length - 2) {
         edgesList.push({
           id: `edge-${index}-${index + 2}`,
@@ -340,12 +321,12 @@ export function ServiceFeatures({
     });
 
     return { nodes: nodesList, edges: edgesList };
-  }, [displayFeatures]);
+  }, [features]);
 
   return (
     <Section padding="md" className="scroll-mt-20 md:scroll-mt-32">
       <SectionHeader
-        badge="What we deliver"
+        badge={badge ?? ""}
         badgeIcon={Layers}
         title={title}
         subtitle={subtitle}
@@ -355,7 +336,7 @@ export function ServiceFeatures({
       {/* Mobile/Tablet View - Vertically Stacked Cards */}
       <div className="block lg:hidden max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="flex flex-col gap-4">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <Card
               key={feature.title}
               className="p-4 sm:p-5 md:p-6"
@@ -375,15 +356,9 @@ export function ServiceFeatures({
       <div className="hidden lg:block relative w-full h-[600px] lg:h-[700px] xl:h-[800px] max-w-[1400px] mx-auto service-features-flow">
         <ConnectionDotsMarkers />
         <style>{`
-          .service-features-flow {
-            touch-action: pan-y;
-          }
-          .service-features-flow .react-flow__viewport {
-            pointer-events: none;
-          }
-          .service-features-flow .react-flow__pane {
-            cursor: default;
-          }
+          .service-features-flow { touch-action: pan-y; }
+          .service-features-flow .react-flow__viewport { pointer-events: none; }
+          .service-features-flow .react-flow__pane { cursor: default; }
           .service-features-flow .react-flow__edge-path {
             stroke: rgba(19, 245, 132, 0.6);
             stroke-width: 2;
@@ -404,27 +379,12 @@ export function ServiceFeatures({
             marker-start: url(#connection-dot-start);
             marker-end: url(#connection-dot-end);
           }
-          .service-features-flow .react-flow__node {
-            pointer-events: auto;
-          }
+          .service-features-flow .react-flow__node { pointer-events: auto; }
           .service-features-flow .react-flow__controls {
-            background: rgba(1, 1, 1, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-          }
-          .service-features-flow .react-flow__controls-button {
-            background: rgba(19, 245, 132, 0.1);
-            border: 1px solid rgba(19, 245, 132, 0.3);
-            color: rgba(19, 245, 132, 0.8);
-            transition: all 0.2s;
-          }
-          .service-features-flow .react-flow__controls-button:hover {
-            background: rgba(19, 245, 132, 0.2);
-            color: rgba(19, 245, 132, 1);
+            display: none !important;
           }
           .service-features-flow .react-flow__minimap,
-          .service-features-flow .react-flow__attribution,
-          .service-features-flow .react-flow__controls {
+          .service-features-flow .react-flow__attribution {
             display: none !important;
           }
         `}</style>
@@ -454,4 +414,3 @@ export function ServiceFeatures({
     </Section>
   );
 }
-

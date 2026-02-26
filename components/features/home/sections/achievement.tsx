@@ -15,23 +15,28 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const ACHIEVEMENTS = [
-    {
-        number: "99.9%",
-        label: "System Reliability",
-    },
-    {
-        number: "50k+",
-        label: "Active AI Agents",
-        isHighlighted: true,
-    },
-    {
-        number: "10x",
-        label: "Efficiency Gain",
-    },
-];
+export interface AchievementItemData {
+    number: string;
+    label: string;
+    isHighlighted?: boolean;
+}
 
-export function Achievement() {
+export interface AchievementProps {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    achievements?: AchievementItemData[];
+}
+
+export function Achievement({
+    title,
+    subtitle,
+    badge,
+    achievements,
+}: AchievementProps = {}) {
+    const displayAchievements = achievements || [];
+    const displayTitle = title || "";
+    const displaySubtitle = subtitle || "";
     const sectionRef = useRef<HTMLElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
@@ -97,10 +102,10 @@ export function Achievement() {
     return (
         <Section ref={sectionRef} padding="md" className="w-full bg-transparent overflow-hidden">
             <SectionHeader
-                badge="Our Achievement"
+                badge={badge ?? ""}
                 badgeIcon={Cpu}
-                title="Innovation & Future Focus"
-                subtitle="Quantifying the impact of our intelligent ecosystem on global enterprise operations."
+                title={displayTitle}
+                subtitle={displaySubtitle}
                 align="center"
             />
 
@@ -113,7 +118,7 @@ export function Achievement() {
                 <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-[#13F584]/30">
-                    {ACHIEVEMENTS.map((item, index) => (
+                    {displayAchievements.map((item: AchievementItemData, index: number) => (
                         <Spotlight
                             key={item.label}
                             className="stat-item relative flex flex-col items-center justify-center py-12 sm:py-16 px-6 text-center w-full h-full"
@@ -121,8 +126,8 @@ export function Achievement() {
                             radius={400}
                         >
                             {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
-                            {index < ACHIEVEMENTS.length - 1 && (
-                                <div className="absolute top-0 bottom-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-[#13F584]/40 to-transparent hidden md:block z-50 pointer-events-none" />
+                            {index < displayAchievements.length - 1 && (
+                                <div className="absolute top-0 bottom-0 end-0 w-[1px] bg-gradient-to-b from-transparent via-[#13F584]/40 to-transparent hidden md:block z-50 pointer-events-none" />
                             )}
 
                             <div className="relative z-40 pointer-events-none">

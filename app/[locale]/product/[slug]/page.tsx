@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductBySlug, products } from "@/lib/products";
+import { getSanityProductBySlug, getSanityProducts } from "@/lib/sanity/queries";
 import { ProductPage } from "@/components/features/products/pages/product-page";
 import { generateProductMetadata } from "@/lib/seo/metadata";
 import { generateProductSchema } from "@/lib/seo/structured-data";
@@ -30,9 +31,12 @@ export async function generateMetadata({
   return generateProductMetadata(product.name, product.description, slug);
 }
 
-export default async function ProductSlugPage({ params }: ProductSlugPageProps) {
-  const { slug } = await params;
-  const productData = getProductBySlug(slug);
+export default async function ProductSlugPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { slug, locale } = await params;
+
+  // Try Sanity first, fall back to hardcoded data
+  const sanityProduct = await getSanityProductBySlug(slug, locale || "en").catch(() => null);
+  const productData = sanityProduct || getProductBySlug(slug);
 
   if (!productData) {
     notFound();
@@ -69,3 +73,4 @@ export default async function ProductSlugPage({ params }: ProductSlugPageProps) 
     </>
   );
 }
+

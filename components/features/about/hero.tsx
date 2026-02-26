@@ -3,11 +3,43 @@
 import React from "react";
 import { m } from "motion/react";
 import { Badge } from "@/components/ui/badge";
-import { SectionHeader } from "@/components/ui/section-header";
+
 
 import { Section } from "@/components/ui/section";
 
-export const AboutHero: React.FC = () => {
+export interface AboutHeroProps {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    titlePart1?: string;
+    titlePart2?: string;
+}
+
+export const AboutHero: React.FC<AboutHeroProps> = ({
+    title,
+    subtitle,
+    badge,
+    titlePart1,
+    titlePart2,
+}) => {
+    const displayBadge = badge ?? "";
+    const displaySubtitle = subtitle ?? "";
+
+    // Title rendering: if Sanity parts provided, use them; else fallback to full title
+    const renderTitle = () => {
+        if (titlePart1 !== undefined && titlePart2 !== undefined) {
+            return (
+                <>
+                    {titlePart1}<span className="text-primary">{titlePart2}</span>
+                </>
+            );
+        }
+        if (title) {
+            return title;
+        }
+        return "";
+    };
+
     return (
         <Section
             padding="none"
@@ -21,7 +53,7 @@ export const AboutHero: React.FC = () => {
                 className="mb-8"
             >
                 <Badge variant="outline" className="px-4 py-1.5 text-xs sm:text-xs border-white/10 text-primary bg-white/5 backdrop-blur-sm rounded-full">
-                    Legacy & Vision
+                    {displayBadge}
                 </Badge>
             </m.div>
 
@@ -31,7 +63,7 @@ export const AboutHero: React.FC = () => {
                 transition={{ duration: 1, delay: 0.2 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-8 leading-none text-white"
             >
-                Our <span className="text-primary">Legacy</span>
+                {renderTitle()}
             </m.h1>
 
             <m.p
@@ -40,7 +72,7 @@ export const AboutHero: React.FC = () => {
                 transition={{ duration: 1, delay: 0.4 }}
                 className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed"
             >
-                Building the foundation for enterprise intelligence. From humble beginnings to global infrastructure — this is our story.
+                {displaySubtitle}
             </m.p>
         </Section>
     );

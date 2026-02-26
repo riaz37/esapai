@@ -104,13 +104,13 @@ export function GlobalLoader({
       <div
         ref={orb2Ref}
         aria-hidden
-        className="absolute right-20 top-20 h-24 w-24 rounded-full bg-white/10 blur-3xl opacity-0"
+        className="absolute end-20 top-20 h-24 w-24 rounded-full bg-white/10 blur-3xl opacity-0"
       />
 
       <div
         ref={orb3Ref}
         aria-hidden
-        className="absolute bottom-28 left-24 h-32 w-32 rounded-full bg-[rgba(19,245,132,0.3)] blur-3xl opacity-0"
+        className="absolute bottom-28 start-24 h-32 w-32 rounded-full bg-[rgba(19,245,132,0.3)] blur-3xl opacity-0"
       />
 
       <div className="relative z-10 flex flex-col items-center gap-4 text-center">

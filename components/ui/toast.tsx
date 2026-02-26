@@ -25,7 +25,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const showToast = useCallback((message: string, type: ToastType = "info") => {
     const id = Math.random().toString(36).substring(7);
     const newToast: Toast = { id, message, type };
-    
+
     setToasts((prev) => [...prev, newToast]);
 
     // Auto remove after 5 seconds
@@ -52,7 +52,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-3 max-w-md w-full sm:w-auto pointer-events-none">
+      <div className="fixed bottom-4 end-4 z-[100] flex flex-col gap-3 max-w-md w-full sm:w-auto pointer-events-none">
         {toasts.map((toast) => (
           <div
             key={toast.id}
@@ -69,11 +69,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             {/* Background gradient effect for success/info */}
             {(toast.type === "success" || toast.type === "info") && (
               <div className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary opacity-10 blur-[60px] rounded-full" />
+                <div className="absolute top-0 end-0 w-32 h-32 bg-primary opacity-10 blur-[60px] rounded-full" />
               </div>
             )}
 
-            <div className="relative z-10 flex items-start gap-3 sm:gap-4 pr-8 sm:pr-10">
+            <div className="relative z-10 flex items-start gap-3 sm:gap-4 pe-8 sm:pe-10">
               {/* Icon */}
               <div className="mt-0.5">{getIcon(toast.type)}</div>
 
@@ -94,7 +94,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <button
               onClick={() => removeToast(toast.id)}
               className={cn(
-                "absolute top-3 right-3 sm:top-4 sm:right-4 rounded-md p-1.5 opacity-70 hover:opacity-100 transition-all hover:bg-white-opacity-10 z-20",
+                "absolute top-3 end-3 sm:top-4 sm:end-4 rounded-md p-1.5 opacity-70 hover:opacity-100 transition-all hover:bg-white-opacity-10 z-20",
                 {
                   "text-light-gray-90 hover:text-light-gray":
                     toast.type === "success" || toast.type === "info",

@@ -3,7 +3,7 @@ import { getCaseStudyBySlug } from "@/lib/case-studies";
 import type { Params } from "@/types/api";
 
 export async function GET(
-  _request: Request,
+  request: Request,
   context: { params: Promise<Params> }
 ) {
   const params = await context.params;
@@ -13,8 +13,11 @@ export async function GET(
     return NextResponse.json({ caseStudy: null }, { status: 400 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const locale = searchParams.get("locale") || "en";
+
   try {
-    const caseStudy = await getCaseStudyBySlug(slug);
+    const caseStudy = await getCaseStudyBySlug(slug, locale);
 
     if (!caseStudy) {
       return NextResponse.json({ caseStudy: null }, { status: 404 });

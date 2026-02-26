@@ -12,7 +12,27 @@ import { OptimizedVideo } from "@/components/ui/optimized-video";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function TechnologyExcellence() {
+export interface TechnologyCardData {
+    title: string;
+    description: string;
+    image?: string; // We'll map videoSrc or image here
+}
+
+export interface TechnologyExcellenceProps {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    cards?: TechnologyCardData[];
+}
+
+export function TechnologyExcellence({
+    title,
+    subtitle,
+    badge,
+    cards = []
+}: TechnologyExcellenceProps = {}) {
+    const displayTitle = title || "";
+    const displaySubtitle = subtitle || "";
     const sectionRef = useRef<HTMLElement>(null);
     const card1Ref = useRef<HTMLDivElement>(null);
     const card2Ref = useRef<HTMLDivElement>(null);
@@ -71,31 +91,46 @@ export function TechnologyExcellence() {
     return (
         <Section ref={sectionRef} padding="md" className="relative z-10">
             <SectionHeader
-                title="Our Technology Excellence"
-                subtitle="Experience the dual power of autonomous execution and deep analytical insight, engineered for the future of enterprise."
-                badge="Core Tech"
+                title={displayTitle}
+                subtitle={displaySubtitle}
+                badge={badge ?? ""}
                 badgeIcon={Cpu}
                 align="left"
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Card 1: Autonomous Agents */}
-                <TechCard
-                    ref={card1Ref}
-                    title="Autonomous Agents"
-                    description="Deploy intelligent workers that handle complex workflows 24/7 without supervision."
-                    videoSrc="/technology1.mp4"
-                    delay={0}
-                />
+                {cards.length > 0 ? (
+                    cards.map((card, index) => (
+                        <TechCard
+                            key={index}
+                            ref={index === 0 ? card1Ref : index === 1 ? card2Ref : undefined}
+                            title={card.title}
+                            description={card.description}
+                            videoSrc={card.image || (index === 0 ? "/technology1.mp4" : "/technology2.mp4")}
+                            delay={index * 0.2}
+                        />
+                    ))
+                ) : (
+                    <>
+                        {/* Card 1: Autonomous Agents (Fallback) */}
+                        <TechCard
+                            ref={card1Ref}
+                            title={""}
+                            description={""}
+                            videoSrc="/technology1.mp4"
+                            delay={0}
+                        />
 
-                {/* Card 2: Neural Processing */}
-                <TechCard
-                    ref={card2Ref}
-                    title="Neural Processing"
-                    description="Transform raw data into actionable foresight with our advanced neural models."
-                    videoSrc="/technology2.mp4"
-                    delay={0.2}
-                />
+                        {/* Card 2: Neural Processing (Fallback) */}
+                        <TechCard
+                            ref={card2Ref}
+                            title={""}
+                            description={""}
+                            videoSrc="/technology2.mp4"
+                            delay={0.2}
+                        />
+                    </>
+                )}
             </div>
         </Section>
     );
@@ -239,7 +274,7 @@ const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({ title, descr
                 {/* Content */}
                 <div
                     ref={contentRef}
-                    className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-10 transform z-30 group-hover:-translate-y-2 transition-all duration-500 ease-out"
+                    className="absolute bottom-0 start-0 w-full p-6 sm:p-8 md:p-10 transform z-30 group-hover:-translate-y-2 transition-all duration-500 ease-out"
                 >
                     <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-primary transition-colors duration-500">
                         {title}

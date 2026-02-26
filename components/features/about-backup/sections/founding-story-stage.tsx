@@ -25,7 +25,7 @@ export function FoundingStoryStage({ phase, className }: FoundingStoryStageProps
         ))}
       </div>
       {phase.quote && (
-        <blockquote className="mt-6 text-lg italic text-white/70 border-l-2 border-primary/50 pl-6">
+        <blockquote className="mt-6 text-lg italic text-white/70 border-s-2 border-primary/50 ps-6">
           &ldquo;{phase.quote}&rdquo;
         </blockquote>
       )}

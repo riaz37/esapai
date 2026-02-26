@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import { Link } from "@/i18n/routing";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 
 
@@ -38,7 +39,7 @@ const socialIcons = [
   },
 ];
 
-const navigationLinks = [
+const DEFAULT_NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
   { label: "Service", href: "/services" },
@@ -46,7 +47,44 @@ const navigationLinks = [
   { label: "Contact us", href: "/contact" },
 ];
 
-export function Footer() {
+export interface FooterProps {
+  navLinks?: { label: string; href: string }[];
+  legalLinks?: { label: string; href: string }[];
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  ctaButtonText?: string;
+  newsletterTitle?: string;
+  newsletterSubtitle?: string;
+  copyrightText?: string;
+}
+
+export function Footer({
+  navLinks,
+  legalLinks,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonText,
+  newsletterTitle,
+  newsletterSubtitle,
+  copyrightText,
+}: FooterProps = {}) {
+  const t = useTranslations("Footer");
+  const navT = useTranslations("Navigation");
+
+  const effectiveNavLinks = navLinks || [
+    { label: navT("home"), href: "/" },
+    { label: navT("product"), href: "/product" },
+    { label: navT("service"), href: "/service" },
+    { label: navT("about"), href: "/about" },
+    { label: navT("contact"), href: "/contact" },
+  ];
+
+  const effectiveCtaTitle = ctaTitle || t("cta.title");
+  const effectiveCtaSubtitle = ctaSubtitle || t("cta.subtitle");
+  const effectiveCtaButtonText = ctaButtonText || t("cta.button");
+  const effectiveNewsletterTitle = newsletterTitle || t("newsletter.title");
+  const effectiveNewsletterSubtitle = newsletterSubtitle || t("newsletter.subtitle");
+  const effectiveCopyrightText = copyrightText || `© ${new Date().getFullYear()} Esap. ${t("rights")}`;
   const footerRef = useRef<HTMLElement>(null);
 
   // Shared Card Styles
@@ -68,16 +106,16 @@ export function Footer() {
               <FooterBg2 className="w-full h-full object-cover opacity-30" />
             </div>
             <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">Get in touch</h3>
+              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">{effectiveCtaTitle}</h3>
               <p className="text-gray-400 text-lg mb-8 max-w-sm">
-                Have a question or want to partner us? Reach out
+                {effectiveCtaSubtitle}
               </p>
               <Button variant="primary" size="default" asChild>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 group w-fit"
                 >
-                  <span>Get Started</span>
+                  <span>{effectiveCtaButtonText}</span>
                   <ButtonArrow size="default" />
                 </Link>
               </Button>
@@ -90,12 +128,12 @@ export function Footer() {
               <FooterBg3 className="w-full h-full object-cover opacity-30" />
             </div>
             <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-6">Social media</h3>
+              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-6">{t("social.title")}</h3>
               <p className="text-gray-400 text-lg mb-12 max-w-sm">
-                Join our community to stay updated on our latest news and AI developments
+                {t("social.description")}
               </p>
               <div className="space-y-4">
-                <p className="text-gray-500 text-xs tracking-widest">Connect with us</p>
+                <p className="text-gray-500 text-xs tracking-widest">{t("social.connect")}</p>
                 <div className="flex items-center gap-4">
                   {socialIcons.map((icon) => (
                     <Link
@@ -131,10 +169,10 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 flex-1">
 
               {/* Menu Section */}
-              <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                <h2 className="text-4xl md:text-5xl font-semibold text-white mb-12">Menu</h2>
+              <div className="flex flex-col items-center md:items-start text-center md:text-start">
+                <h2 className="text-4xl md:text-5xl font-semibold text-white mb-12">{t("menu.title")}</h2>
                 <nav className="flex flex-col gap-6 items-center md:items-start">
-                  {navigationLinks.map((link) => (
+                  {effectiveNavLinks.map((link) => (
                     <Link
                       key={link.label}
                       href={link.href}
@@ -147,30 +185,40 @@ export function Footer() {
               </div>
 
               {/* Newsletter Section */}
-              <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                <h2 className="text-4xl md:text-5xl font-semibold text-white mb-12">Newsletter</h2>
+              <div className="flex flex-col items-center md:items-start text-center md:text-start">
+                <h2 className="text-4xl md:text-5xl font-semibold text-white mb-12">{effectiveNewsletterTitle}</h2>
                 <p className="text-gray-400 text-lg mb-8">
-                  Subscribe to stay updated with our latest AI innovations and news.
+                  {effectiveNewsletterSubtitle}
                 </p>
                 <form className="w-full max-w-md space-y-4" onSubmit={(e) => e.preventDefault()}>
                   <input
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t("newsletter.placeholder")}
                     required
                     className="contact-input w-full px-4 py-3.5 text-base text-light-gray"
                   />
                   <Button variant="primary" size="default" className="w-fit">
-                    Subscribe
+                    {t("newsletter.button")}
                   </Button>
                 </form>
               </div>
             </div>
 
             <div className="mt-auto pt-10 w-full flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm gap-4">
-              <p>© {new Date().getFullYear()} Esap. All rights reserved.</p>
+              <p>{effectiveCopyrightText}</p>
               <div className="flex gap-6">
-                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                <Link href="/terms" className="hover:text-white transition-colors">Terms of service</Link>
+                {legalLinks ? (
+                  legalLinks.map((link) => (
+                    <Link key={link.label} href={link.href} className="hover:text-white transition-colors">
+                      {link.label}
+                    </Link>
+                  ))
+                ) : (
+                  <>
+                    <Link href="/privacy" className="hover:text-white transition-colors">{t("legal.privacy")}</Link>
+                    <Link href="/terms" className="hover:text-white transition-colors">{t("legal.terms")}</Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
