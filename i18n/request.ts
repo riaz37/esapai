@@ -1,5 +1,6 @@
 import { getRequestConfig } from "next-intl/server";
 import { routing } from "./routing";
+import { getUITranslations } from "@/lib/sanity/queries";
 
 export default getRequestConfig(async ({ requestLocale }) => {
     // This typically loads the locales dict requested
@@ -10,8 +11,14 @@ export default getRequestConfig(async ({ requestLocale }) => {
         locale = routing.defaultLocale;
     }
 
+    // Fetch UI translations from Sanity CMS, fall back to local JSON
+    let messages = await getUITranslations(locale).catch(() => null);
+    if (!messages) {
+        messages = (await import(`../messages/${locale}.json`)).default;
+    }
+
     return {
         locale,
-        messages: (await import(`../messages/${locale}.json`)).default,
+        messages,
     };
 });

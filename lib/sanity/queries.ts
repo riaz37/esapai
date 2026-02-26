@@ -1,5 +1,134 @@
 import { client } from "./client";
 
+// ── UI Translations ──
+export const uiTranslationsQuery = `*[_type == "uiTranslations" && language == $locale][0]`;
+
+export async function getUITranslations(locale: string) {
+    const doc = await client.fetch(uiTranslationsQuery, { locale }, { next: { revalidate: 3600 } });
+    if (!doc) return null;
+    return mapSanityTranslationsToMessages(doc);
+}
+
+/**
+ * Converts camelCase Sanity field names back to the original JSON key structure
+ * that next-intl components expect (e.g. caseStudy → "case-study", aiFramework → "ai-framework",
+ * timeSavings → "Time Savings").
+ */
+function mapSanityTranslationsToMessages(doc: any): Record<string, any> {
+    const nav = doc.navigation || {};
+    const load = doc.loading || {};
+    const home = doc.home || {};
+    const about = doc.about || {};
+    const contact = doc.contact || {};
+    const footer = doc.footer || {};
+    const menus = doc.menus || {};
+    const products = doc.products || {};
+    const serviceHero = doc.serviceHero || {};
+    const cta = doc.cta || {};
+    const cs = doc.caseStudy || {};
+    const metrics = doc.metrics || {};
+
+    return {
+        Navigation: {
+            home: nav.home,
+            about: nav.about,
+            product: nav.product,
+            service: nav.service,
+            "case-study": nav.caseStudy,
+            contact: nav.contact,
+            getStarted: nav.getStarted,
+        },
+        Loading: {
+            message: load.message,
+            subMessage: load.subMessage,
+        },
+        Home: {
+            reveal: { text: home.reveal?.text },
+            showcase: {
+                badge: home.showcase?.badge,
+                title: home.showcase?.title,
+                subtitle: home.showcase?.subtitle,
+                explore: home.showcase?.explore,
+                products: {
+                    erp: home.showcase?.products?.erp,
+                    "ai-framework": home.showcase?.products?.aiFramework,
+                    zakra: home.showcase?.products?.zakra,
+                    jawib: home.showcase?.products?.jawib,
+                    fasih: home.showcase?.products?.fasih,
+                },
+            },
+        },
+        About: {
+            team: about.team || {},
+        },
+        Contact: {
+            badge: contact.badge,
+            title: contact.title,
+            description: contact.description,
+            social: contact.social,
+            form: contact.form,
+            toasts: contact.toasts,
+        },
+        ServiceHero: {
+            getStarted: serviceHero.getStarted,
+            viewFeatures: serviceHero.viewFeatures,
+        },
+        Product: {},
+        Footer: {
+            cta: footer.cta,
+            social: footer.social,
+            menu: footer.menu,
+            newsletter: footer.newsletter,
+            rights: footer.rights,
+            legal: footer.legal,
+        },
+        Menus: {
+            ourServices: menus.ourServices,
+            ourProducts: menus.ourProducts,
+            impactAnalysis: menus.impactAnalysis,
+            serviceDescription: menus.serviceDescription,
+            productDescription: menus.productDescription,
+            telemetryPending: menus.telemetryPending,
+        },
+        Products: {
+            erp: products.erp,
+            "ai-framework": products.aiFramework,
+            zakra: products.zakra,
+            jawib: products.jawib,
+            fasih: products.fasih,
+        },
+        CTA: {
+            title: cta.title,
+            subtitle: cta.subtitle,
+            button: cta.button,
+            productFallbackTitle: cta.productFallbackTitle,
+            productFallbackButton: cta.productFallbackButton,
+        },
+        CaseStudy: {
+            list: cs.list,
+            detail: cs.detail,
+            metadata: cs.metadata,
+        },
+        Metrics: {
+            "Time Savings": metrics.timeSavings,
+            "User Satisfaction": metrics.userSatisfaction,
+            "Productivity Increase": metrics.productivityIncrease,
+            "Developer Satisfaction": metrics.developerSatisfaction,
+            "Faster Development": metrics.fasterDevelopment,
+            Uptime: metrics.uptime,
+            "Faster Information Retrieval": metrics.fasterInformationRetrieval,
+            "Answer Accuracy": metrics.answerAccuracy,
+            "Time Saved": metrics.timeSaved,
+            "First Contact Resolution": metrics.firstContactResolution,
+            "Average Response Time": metrics.averageResponseTime,
+            "Customer Satisfaction": metrics.customerSatisfaction,
+            "Arabic Text Accuracy": metrics.arabicTextAccuracy,
+            "Dialects Supported": metrics.dialectsSupported,
+            "Arabic Tokens Trained": metrics.arabicTokensTrained,
+        },
+    };
+}
+
 // ── Home Page ──
 export const homePageQuery = `*[_type == "homePage" && language == $locale][0] {
   heroTitle,

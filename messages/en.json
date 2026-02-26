@@ -75,6 +75,10 @@
       "error": "An unexpected error occurred. Please try again."
     }
   },
+  "ServiceHero": {
+    "getStarted": "Get Started",
+    "viewFeatures": "View Features"
+  },
   "Product": {},
   "Footer": {
     "cta": {
@@ -131,6 +135,13 @@
       "name": "Fasih",
       "menuDescription": "Native Arabic LLM with dialect support."
     }
+  },
+  "CTA": {
+    "title": "Ready to Transform Your Business?",
+    "subtitle": "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.",
+    "button": "Start Building Now",
+    "productFallbackTitle": "Ready to try {name}?",
+    "productFallbackButton": "Get Started"
   },
   "CaseStudy": {
     "list": {

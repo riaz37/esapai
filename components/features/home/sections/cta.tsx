@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -23,8 +24,6 @@ interface CTASectionProps {
     primaryButtonHref?: string;
 }
 
-const defaultSubtitle = "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation.";
-
 export function CTASection({
     title: titleProp,
     subtitle: subtitleProp,
@@ -32,17 +31,18 @@ export function CTASection({
     primaryButtonText,
     primaryButtonHref = "/contact",
 }: CTASectionProps) {
+    const t = useTranslations("CTA");
     const sectionRef = useRef<HTMLElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const primaryButtonRef = useRef<HTMLAnchorElement>(null);
 
     const title = titleProp ?? (product?.content?.cta?.title
-        ?? (product ? `Ready to try ${product.name}?` : "Ready to Transform Your Business?"));
+        ?? (product ? t("productFallbackTitle", { name: product.name }) : t("title")));
     const subtitle = subtitleProp ?? (product?.content?.cta?.subtitle
-        ?? product?.content?.mission?.subtitle ?? defaultSubtitle);
+        ?? product?.content?.mission?.subtitle ?? t("subtitle"));
     const displayPrimaryButtonText = primaryButtonText
         || product?.content?.cta?.buttonText
-        || (product ? "Get Started" : "Start Building Now");
+        || (product ? t("productFallbackButton") : t("button"));
 
     // Star Warp Animation
     useEffect(() => {

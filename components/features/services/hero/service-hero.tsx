@@ -11,6 +11,7 @@ import type { GlobeConfig } from "@/components/ui/globe";
 import type { ServiceHeroProps } from "@/types/props";
 import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((mod) => mod.World),
@@ -107,6 +108,7 @@ const globeData = [
 import { Section } from "@/components/ui/section";
 
 export function ServiceHero({ title, tagline, subtitle, className }: ServiceHeroProps) {
+  const t = useTranslations("ServiceHero");
   return (
     <Section
       padding="none"
@@ -160,7 +162,7 @@ export function ServiceHero({ title, tagline, subtitle, className }: ServiceHero
               asChild
             >
               <Link href="#solutions" className="inline-flex items-center gap-2 group">
-                <span>Get Started</span>
+                <span>{t("getStarted")}</span>
                 <ButtonArrow size="default" />
               </Link>
             </Button>
@@ -170,7 +172,7 @@ export function ServiceHero({ title, tagline, subtitle, className }: ServiceHero
               asChild
             >
               <Link href="#how-it-works" className="flex items-center gap-2">
-                View Features
+                {t("viewFeatures")}
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </Button>
