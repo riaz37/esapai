@@ -23,7 +23,9 @@ function mapSanityTranslationsToMessages(doc: any): Record<string, any> {
     const footer = doc.footer || {};
     const menus = doc.menus || {};
     const products = doc.products || {};
-    const serviceHero = doc.serviceHero || {};
+    const service = doc.service || {};
+    const notFound = doc.notFound || {};
+    const errorPage = doc.error || {};
     const cta = doc.cta || {};
     const cs = doc.caseStudy || {};
     const metrics = doc.metrics || {};
@@ -69,9 +71,43 @@ function mapSanityTranslationsToMessages(doc: any): Record<string, any> {
             form: contact.form,
             toasts: contact.toasts,
         },
-        ServiceHero: {
-            getStarted: serviceHero.getStarted,
-            viewFeatures: serviceHero.viewFeatures,
+        Service: {
+            hero: service.hero,
+            problem: service.problem,
+            features: service.features,
+            video: service.video,
+            beforeAfter: service.beforeAfter,
+            cta: service.cta,
+            metadata: service.metadata,
+            defaultHeroSubtitle1: service.defaultHeroSubtitle1,
+            defaultHeroSubtitle2: service.defaultHeroSubtitle2,
+        },
+        NotFound: {
+            title: notFound.title,
+            description: notFound.description,
+            goHome: notFound.goHome,
+            contactUs: notFound.contactUs,
+            quickLinks: notFound.quickLinks,
+        },
+        Error: {
+            title: errorPage.title,
+            description: errorPage.description,
+            errorId: errorPage.errorId,
+            tryAgain: errorPage.tryAgain,
+            goHome: errorPage.goHome,
+            whatToDo: errorPage.whatToDo,
+            tip1: errorPage.tip1,
+            tip2: errorPage.tip2,
+            tip3: errorPage.tip3,
+            contactSupport: errorPage.contactSupport,
+            criticalTitle: errorPage.criticalTitle,
+            criticalDescription: errorPage.criticalDescription,
+            reloadApp: errorPage.reloadApp,
+            troubleshooting: errorPage.troubleshooting,
+            clearCache: errorPage.clearCache,
+            tryBrowser: errorPage.tryBrowser,
+            checkJs: errorPage.checkJs,
+            contactIfPersists: errorPage.contactIfPersists,
         },
         Product: {},
         Footer: {
@@ -318,20 +354,6 @@ export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current 
   ctaButtonText,
   ctaButtonLink
 }`;
-
-// ── Contact Page ──
-export const contactPageQuery = `*[_type == "contactPage" && language == $locale][0]`;
-
-export async function getContactPage(locale: string) {
-    return client.fetch(contactPageQuery, { locale });
-}
-
-// ── Navigation ──
-export const navigationQuery = `*[_type == "navigation" && language == $locale][0]`;
-
-export async function getNavigation(locale: string) {
-    return client.fetch(navigationQuery, { locale });
-}
 
 // ── Product Mapper ──
 // Maps flat Sanity productDocument to the nested Product type used by client components

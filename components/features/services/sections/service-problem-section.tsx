@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { AlertTriangle, Clock, Database, FileX, ZapOff } from "lucide-react";
 import { useMemo, useId } from "react";
+import { useTranslations } from "next-intl";
 
 
 const PAIN_POINTS = [
@@ -39,8 +40,8 @@ const PAIN_POINTS = [
 ];
 
 export function ServiceProblemSection({
-  title = "The Manual Trap",
-  subtitle = "Your team was hired to innovate, not to be glue between broken systems.",
+  title,
+  subtitle,
   badge,
   items = [],
 }: {
@@ -49,6 +50,9 @@ export function ServiceProblemSection({
   badge?: string;
   items?: Array<{ title: string; description: string }>;
 }) {
+  const t = useTranslations("Service.problem");
+  const resolvedTitle = title ?? t("defaultTitle");
+  const resolvedSubtitle = subtitle ?? t("defaultSubtitle");
   const displayItems = items.length > 0 ? items.slice(0, 4) : [];
 
   const painPointsWithIcons = useMemo(() => {
@@ -89,8 +93,8 @@ export function ServiceProblemSection({
           <SectionHeader
             badge={badge ?? ""}
             badgeIcon={AlertTriangle}
-            title={title}
-            subtitle={subtitle}
+            title={resolvedTitle}
+            subtitle={resolvedSubtitle}
             align="left"
             titleClassName="text-5xl md:text-6xl font-bold tracking-tight"
           />

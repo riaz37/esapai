@@ -2,6 +2,7 @@
 
 import { useMemo, useId, useEffect } from "react";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 import ReactFlow, {
   Node,
@@ -216,12 +217,15 @@ function ConnectionDotsMarkers() {
 }
 
 export function ServiceFeatures({
-  title = "Protect your organization from any threat",
-  subtitle = "Security AI Platform to Protect the Entire Enterprise. Break Down Security. Gain Enterprise-Wide Visibility. Action Your Data In Real-Time.",
+  title,
+  subtitle,
   badge,
   centralNode,
   features = [],
 }: ServiceFeaturesProps) {
+  const t = useTranslations("Service.features");
+  const resolvedTitle = title ?? t("defaultTitle");
+  const resolvedSubtitle = subtitle ?? t("defaultSubtitle");
   const displayFeatures = features.slice(0, 5);
 
   const { nodes, edges } = useMemo(() => {
@@ -328,8 +332,8 @@ export function ServiceFeatures({
       <SectionHeader
         badge={badge ?? ""}
         badgeIcon={Layers}
-        title={title}
-        subtitle={subtitle}
+        title={resolvedTitle}
+        subtitle={resolvedSubtitle}
         subtitleClassName="text-base md:text-lg lg:text-xl text-light-gray-90 max-w-5xl mx-auto px-4"
       />
 

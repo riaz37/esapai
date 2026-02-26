@@ -3,17 +3,16 @@
 import { useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type { ErrorProps } from "@/types/page";
 
 export default function Error({ error, reset }: ErrorProps) {
+  const t = useTranslations("Error");
+
   useEffect(() => {
-    // Log error to error reporting service
     if (process.env.NODE_ENV === "development") {
       console.error("Application error:", error);
     }
-    // In production, send to error tracking service
-    // e.g., Sentry.captureException(error)
   }, [error]);
 
   return (
@@ -23,29 +22,17 @@ export default function Error({ error, reset }: ErrorProps) {
         <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-20">
-        <Image
-          src="/landing/circle.svg"
-          alt="Circle decoration"
-          width={200}
-          height={200}
-          className="w-auto h-auto"
-        />
+      {/* Decorative orbs */}
+      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-10">
+        <div className="w-48 h-48 rounded-full bg-primary blur-[100px]" />
       </div>
-      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-20">
-        <Image
-          src="/landing/box.svg"
-          alt="Box decoration"
-          width={150}
-          height={150}
-          className="w-auto h-auto"
-        />
+      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-10">
+        <div className="w-36 h-36 rounded-full bg-primary blur-[80px]" />
       </div>
 
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-16 flex flex-col items-center text-center max-w-4xl">
-        {/* Error Icon/Code */}
+        {/* Error Icon */}
         <div className="mb-8">
           <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-6">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -73,14 +60,14 @@ export default function Error({ error, reset }: ErrorProps) {
         {/* Error Message */}
         <div className="mb-8">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gradient-primary">
-            Something Went Wrong
+            {t("title")}
           </h2>
           <p className="text-lg md:text-xl text-light-gray-90 max-w-2xl mx-auto mb-4">
-            We encountered an unexpected error. Our team has been notified and is working on a fix.
+            {t("description")}
           </p>
           {error.digest && (
             <p className="text-sm text-white-opacity-70 mt-2">
-              Error ID: {error.digest}
+              {t("errorId")}: {error.digest}
             </p>
           )}
         </div>
@@ -93,7 +80,7 @@ export default function Error({ error, reset }: ErrorProps) {
             className="rounded-[40px] px-12 py-6 text-lg font-semibold min-w-[180px]"
             onClick={reset}
           >
-            Try Again
+            {t("tryAgain")}
           </Button>
           <Button
             variant="outline"
@@ -101,27 +88,27 @@ export default function Error({ error, reset }: ErrorProps) {
             className="rounded-[40px] px-8 py-6 text-lg font-semibold min-w-[180px]"
             asChild
           >
-            <Link href="/">Go Home</Link>
+            <Link href="/">{t("goHome")}</Link>
           </Button>
         </div>
 
         {/* Helpful Information */}
         <div className="product-card p-6 md:p-8 max-w-md">
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-gradient-radial-white">
-            What you can do:
+            {t("whatToDo")}
           </h3>
           <ul className="text-start space-y-2 text-light-gray-90">
             <li className="flex items-start gap-2">
               <span className="text-primary mt-1">•</span>
-              <span>Refresh the page or try again in a few moments</span>
+              <span>{t("tip1")}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary mt-1">•</span>
-              <span>Check your internet connection</span>
+              <span>{t("tip2")}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary mt-1">•</span>
-              <span>Contact support if the problem persists</span>
+              <span>{t("tip3")}</span>
             </li>
           </ul>
           <div className="mt-6">
@@ -129,7 +116,7 @@ export default function Error({ error, reset }: ErrorProps) {
               href="/contact"
               className="text-primary hover:text-primary-opacity-90 transition-colors text-base font-semibold"
             >
-              Contact Support →
+              {t("contactSupport")} →
             </Link>
           </div>
         </div>
@@ -137,4 +124,3 @@ export default function Error({ error, reset }: ErrorProps) {
     </section>
   );
 }
-
