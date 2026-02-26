@@ -54,6 +54,9 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
   const featuresContent = content.features;
   const features = featuresContent?.items ?? [];
   const youtubeVideoContent = content.youtubeVideo;
+  const problemContent = content.problem;
+  const processContent = content.process;
+  const ctaContent = content.cta;
 
   return (
     <div className="relative">
@@ -66,12 +69,20 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
 
       {/* 2. Problem: Why this service (placeholder) */}
       <LazySection minHeight="400px">
-        <ServiceProblemSection />
+        <ServiceProblemSection
+          title={problemContent?.title}
+          subtitle={problemContent?.subtitle}
+          badge={problemContent?.badge}
+          items={problemContent?.items}
+        />
       </LazySection>
 
       {/* 2c. Before & after: comparison video */}
       <LazySection minHeight="400px">
-        <ServiceBeforeAfterSection />
+        <ServiceBeforeAfterSection
+          title={content.beforeAfter?.title}
+          badgeLabel={content.beforeAfter?.label}
+        />
       </LazySection>
 
       {/* 3. Solution: What we deliver */}
@@ -80,6 +91,8 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
           <ServiceFeaturesSection
             title={featuresContent?.title}
             subtitle={featuresContent?.subtitle}
+            badge={featuresContent?.badge}
+            centralNode={featuresContent?.centralNode}
             features={features}
           />
         </LazySection>
@@ -87,7 +100,12 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
 
 
       <LazySection minHeight="400px">
-        <ServiceProcessSection />
+        <ServiceProcessSection
+          title={processContent?.title}
+          subtitle={processContent?.subtitle}
+          badge={processContent?.badge}
+          steps={processContent?.steps}
+        />
       </LazySection>
 
       {/* 2b. Showcase: Digital Powerhouse Video */}
@@ -98,9 +116,10 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       {/* 7. CTA */}
       <LazySection minHeight="400px">
         <ServicesCTASection
-          text="Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."
-          buttonText="Initialize Project"
-          buttonHref="/contact"
+          title={ctaContent?.title}
+          text={ctaContent?.subtitle || "Join hundreds of enterprises leveraging AI-powered automation to drive growth, efficiency, and innovation."}
+          buttonText={ctaContent?.buttonText || "Initialize Project"}
+          buttonHref={ctaContent?.buttonLink || "/contact"}
         />
       </LazySection>
     </div>

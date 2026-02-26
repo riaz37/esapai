@@ -1,16 +1,22 @@
 "use client";
 
-import { services } from "@/lib/services";
+import type { Service } from "@/types/service";
 import { DropdownMenu } from "./dropdown-menu";
 import { useServiceMenu } from "./service-menu-context";
+import { useTranslations } from "next-intl";
 
-export function ServiceDropdownMenu() {
+interface Props {
+  services: Service[];
+}
+
+export function ServiceDropdownMenu({ services }: Props) {
   const { isServiceOpen, setIsServiceOpen } = useServiceMenu();
+  const t = useTranslations("Menus");
 
   return (
     <DropdownMenu
-      title="Our Services"
-      description="Stay ahead with AI-powered tools that track environmental data in real-time."
+      title={t("ourServices")}
+      description={t("serviceDescription")}
       items={services}
       basePath="/service"
       dropdownClass="service-dropdown"

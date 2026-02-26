@@ -64,11 +64,11 @@ export function ServiceCard({
             <Card
                 ref={contentRef}
                 className={cn(
-                    "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transition-all duration-300",
+                    "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transition-all duration-300 border-none bg-zinc-950",
                 )}
             >
                 {/* Visual/Illustration Area */}
-                <div className="relative flex-1 min-h-[160px] z-0 flex items-center justify-center p-8 overflow-hidden">
+                <div className="relative flex-1 min-h-[160px] z-0 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-primary/2 blur-[80px] rounded-full opacity-50" />
 
                     {/* Light Sweep/Shimmer Effect */}

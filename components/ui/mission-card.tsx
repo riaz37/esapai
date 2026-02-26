@@ -70,11 +70,11 @@ export function MissionCard({
                 }}
             />
             {/* Masked Background Images */}
-            <div className="absolute left-[-17px] top-[4px] pointer-events-none opacity-80">
-                <div className="absolute left-[-16px] top-[5px]">
-                    <div className="absolute left-[16px] top-[3px]">
+            <div className="absolute start-[-17px] top-[4px] pointer-events-none opacity-80">
+                <div className="absolute start-[-16px] top-[5px]">
+                    <div className="absolute start-[16px] top-[3px]">
                         <div
-                            className="absolute h-[281px] left-0 top-[38px] w-[405px]"
+                            className="absolute h-[281px] start-0 top-[38px] w-[405px]"
                             style={{
                                 WebkitMaskImage: `url('${cardMask}')`,
                                 maskImage: `url('${cardMask}')`,
@@ -90,7 +90,7 @@ export function MissionCard({
                                 <Image alt="" className="block max-w-none w-full h-full" src={cardPattern1} width={405} height={281} unoptimized />
                             </div>
                         </div>
-                        <div className="absolute flex h-[357px] items-center justify-center left-[62px] top-0 w-[281px]">
+                        <div className="absolute flex h-[357px] items-center justify-center start-[62px] top-0 w-[281px]">
                             <div className="flex-none rotate-[270deg]">
                                 <div
                                     className="h-[281px] relative w-[357px]"
@@ -118,12 +118,12 @@ export function MissionCard({
             {/* Green Glow Effect */}
             {showGlow && (
                 <>
-                    <div className="absolute h-[145px] left-[1.67px] top-[-80.17px] w-[403px] pointer-events-none z-10">
+                    <div className="absolute h-[145px] start-[1.67px] top-[-80.17px] w-[403px] pointer-events-none z-10">
                         <div className="absolute" style={{ inset: '-107.59% -38.71%' }}>
                             <Image alt="" className="block max-w-none w-full h-full" src={cardGlow} width={403} height={145} unoptimized />
                         </div>
                     </div>
-                    <div className="absolute h-[2px] left-[27.67px] right-[25.67px] top-[-0.17px] pointer-events-none z-20">
+                    <div className="absolute h-[2px] start-[27.67px] end-[25.67px] top-[-0.17px] pointer-events-none z-20">
                         <div className="absolute" style={{ inset: '-1px 0' }}>
                             <Image alt="" className="block max-w-none w-full h-full" src={cardShine} width={100} height={2} unoptimized />
                         </div>
@@ -133,7 +133,7 @@ export function MissionCard({
 
             {/* Image Area */}
             {image && (
-                <div className="absolute inset-x-0 top-0 z-0 flex items-start justify-start pt-6 pl-4 sm:pl-6 pointer-events-none transform-style-3d">
+                <div className="absolute inset-x-0 top-0 z-0 flex items-start justify-start pt-6 ps-4 sm:ps-6 pointer-events-none transform-style-3d">
                     <div className="w-[65%] relative aspect-square flex items-center justify-center opacity-85 transition-transform duration-500"
                         style={{
                             transform: isHovered ? "translateZ(30px) translateY(-10px)" : "translateZ(0) translateY(0)"

@@ -82,9 +82,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size, className }),
-          variant === "primary" && showArrow && size === "sm" && "pl-3 pr-1",
-          variant === "primary" && showArrow && size === "default" && "pl-4 pr-1.5",
-          variant === "primary" && showArrow && size === "lg" && "pl-5 pr-2"
+          variant === "primary" && showArrow && size === "sm" && "ps-3 pe-1",
+          variant === "primary" && showArrow && size === "default" && "ps-4 pe-1.5",
+          variant === "primary" && showArrow && size === "lg" && "ps-5 pe-2"
         )}
         ref={ref}
         {...props}

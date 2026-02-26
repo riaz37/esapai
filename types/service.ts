@@ -11,18 +11,41 @@ interface ServiceContent {
     titleMain?: string;
     /** Highlighted part of the title */
     titleHighlight?: string;
-    heroTitle?: React.ReactNode; // Keeping for compatibility temporarily
+    heroTitle?: React.ReactNode;
   };
   features?: {
     title?: string;
     subtitle?: string;
+    badge?: string;
+    centralNode?: string;
     items?: { title: string; description: string }[];
   };
   youtubeVideo?: {
     videoId?: string;
     title?: string;
   };
-  processSteps?: { duration?: string; title: string; description: string }[];
+  problem?: {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    items?: { title: string; description: string }[];
+  };
+  process?: {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    steps?: { title: string; description: string }[];
+  };
+  beforeAfter?: {
+    label?: string;
+    title?: string;
+  };
+  cta?: {
+    title?: string;
+    subtitle?: string;
+    buttonText?: string;
+    buttonLink?: string;
+  };
 }
 
 export interface Service {

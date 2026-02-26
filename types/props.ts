@@ -15,6 +15,7 @@ export interface ProductHeroProps {
   centerIconAlt?: string;
   productSlug?: string;
   tagline?: string;
+  exploreButton?: string;
 }
 
 export interface ServiceHeroProps {
@@ -33,6 +34,8 @@ export interface CaseStudyHeroProps {
 export interface ServiceFeaturesProps {
   title?: string;
   subtitle?: string;
+  badge?: string;
+  centralNode?: string;
   features: FeatureBlockProps[];
 }
 

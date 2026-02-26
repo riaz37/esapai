@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { getCaseStudies } from "@/lib/case-studies";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import {
@@ -8,15 +9,28 @@ import {
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { CaseStudyListAnimated } from "@/components/features/case-studies/pages/case-study-list-animated";
 
-export const metadata: Metadata = generatePageMetadata({
-  title: "Case Study",
-  description:
-    "Explore real-world implementations of ESAP AI solutions. Discover how we transform businesses through innovative AI solutions and intelligent automation.",
-  path: "/case-study",
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "CaseStudy.metadata" });
 
-export default async function CaseStudiesPage() {
-  const caseStudies = await getCaseStudies();
+  return generatePageMetadata({
+    title: t("listTitle"),
+    description: t("listDescription"),
+    path: "/case-study",
+  });
+}
+
+export default async function CaseStudiesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const caseStudies = await getCaseStudies(locale);
 
   const structuredData = [
     generateBreadcrumbSchema([

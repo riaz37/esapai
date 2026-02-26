@@ -1,12 +1,73 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useScroll, m, useSpring, AnimatePresence } from "motion/react";
 import { ABOUT_V2_DATA } from "@/lib/about-v2-data";
 import { NarrativeItem } from "./narrative-item";
 import { SidebarNavigator } from "./sidebar-navigator";
+import { useTranslations, useLocale } from "next-intl";
 
-export const AboutNarrative: React.FC = () => {
+export interface AboutNarrativeProps {
+    data?: typeof ABOUT_V2_DATA;
+    teamMembers?: any[];
+    designation?: string;
+    categoryLabel?: string;
+    leadershipLabel?: string;
+    innovationLabel?: string;
+}
+
+export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
+    data,
+    teamMembers,
+    designation,
+    categoryLabel,
+    leadershipLabel,
+    innovationLabel,
+}) => {
+    const locale = useLocale();
+    const t = useTranslations("About");
+
+    interface TeamTranslation { role: string; bio: string; }
+    const teamTranslations = t.raw("team") as Record<string, TeamTranslation>;
+
+    // Resolved labels: prefer Sanity props, fall back to i18n
+    const resolvedCategory = categoryLabel ?? "";
+    const resolvedLeadership = leadershipLabel ?? "";
+    const resolvedInnovation = innovationLabel ?? "";
+    const resolvedDesignation = designation ?? "";
+
+    const translatedData = useMemo(() => {
+        const base = data && data.length > 0 ? data : ABOUT_V2_DATA;
+        // If Sanity teamMembers provided, merge them with ABOUT_V2_DATA (photo/id structure)
+        const mergedBase = teamMembers && teamMembers.length > 0
+            ? teamMembers.map((member: any, index: number) => {
+                const v2Item = base[index] ?? base[0];
+                return {
+                    ...v2Item,
+                    name: member.name ?? v2Item.name,
+                    price: member.role ?? v2Item.price,
+                    description: member.bio ?? v2Item.description,
+                    image: member.image ?? v2Item.image,
+                };
+            })
+            : base;
+
+        return mergedBase.map((item, index) => {
+            // Fall back to i18n team translations if not using Sanity members
+            const memberT = (!teamMembers || teamMembers.length === 0) ? teamTranslations[item.id] : null;
+            const colorName = index % 2 === 0 ? resolvedLeadership : resolvedInnovation;
+            return {
+                ...item,
+                category: resolvedCategory,
+                colorName,
+                description: memberT?.bio ?? item.description,
+                price: memberT?.role ?? item.price,
+            };
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, teamMembers, locale, resolvedCategory, resolvedLeadership, resolvedInnovation]);
+
+    const items = translatedData;
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(0);
@@ -19,8 +80,8 @@ export const AboutNarrative: React.FC = () => {
     useEffect(() => {
         const unsubscribe = scrollYProgress.on("change", (latest: number) => {
             const index = Math.min(
-                Math.floor(latest * ABOUT_V2_DATA.length),
-                ABOUT_V2_DATA.length - 1
+                Math.floor(latest * items.length),
+                items.length - 1
             );
             if (index !== activeIndex) {
                 setDirection(index > activeIndex ? 1 : -1);
@@ -34,7 +95,7 @@ export const AboutNarrative: React.FC = () => {
     const scrollToSection = (index: number) => {
         if (!containerRef.current) return;
         const totalHeight = containerRef.current.offsetHeight;
-        const targetScroll = (index / ABOUT_V2_DATA.length) * totalHeight;
+        const targetScroll = (index / items.length) * totalHeight;
         const absoluteTarget = containerRef.current.offsetTop + targetScroll;
 
         window.scrollTo({
@@ -72,9 +133,9 @@ export const AboutNarrative: React.FC = () => {
 
 
                 {/* Sidebar Navigator - Right Side */}
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
+                <div className="absolute end-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
                     <SidebarNavigator
-                        items={ABOUT_V2_DATA}
+                        items={items}
                         activeIndex={activeIndex}
                         onItemClick={scrollToSection}
                     />
@@ -99,9 +160,10 @@ export const AboutNarrative: React.FC = () => {
                             className="absolute inset-0 w-full h-full"
                         >
                             <NarrativeItem
-                                item={ABOUT_V2_DATA[activeIndex]}
+                                item={items[activeIndex]}
                                 isActive={true}
                                 isFlipped={activeIndex % 2 !== 0}
+                                designation={resolvedDesignation}
                             />
                         </m.div>
                     </AnimatePresence>

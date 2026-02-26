@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCookieConsent } from "@/components/providers/cookie-consent-context";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export function CookieConsentBanner() {
   const { consentStatus, acceptCookies, rejectCookies } = useCookieConsent();
@@ -24,14 +24,14 @@ export function CookieConsentBanner() {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+      className={`fixed bottom-0 start-0 end-0 z-50 transition-all duration-500 ease-in-out ${isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
         }`}
     >
       <div className="container mx-auto px-3 sm:px-4 pb-3 sm:pb-4 md:pb-6">
         <div className="relative rounded-xl sm:rounded-2xl border border-white-opacity-20 bg-white-opacity-10 backdrop-blur-lg p-4 sm:p-5 md:p-6 lg:p-8 shadow-2xl max-w-3xl mx-auto">
           {/* Background gradient effect */}
           <div className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] sm:w-[500px] md:w-[600px] h-[400px] sm:h-[500px] md:h-[600px] bg-primary opacity-10 blur-[100px] rounded-full" />
+            <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[400px] sm:w-[500px] md:w-[600px] h-[400px] sm:h-[500px] md:h-[600px] bg-primary opacity-10 blur-[100px] rounded-full" />
           </div>
 
           <div className="relative z-10">
@@ -52,7 +52,7 @@ export function CookieConsentBanner() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:ml-6 shrink-0">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:ms-6 shrink-0">
                 <Button
                   onClick={rejectCookies}
                   variant="outline"

@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mic2, Rocket, Layers, Target } from "lucide-react";
 import { MissionCard } from "@/components/ui/mission-card";
+import { useLocale } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,10 +39,15 @@ const defaultCards: MissionCardType[] = [
 ];
 
 export function Mission({
-  title = defaultTitle,
-  subtitle = defaultSubtitle,
+  title,
+  subtitle,
+  badge,
   cards = defaultCards,
-}: MissionProps = {}) {
+}: MissionProps & { badge?: string } = {}) {
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
+  const displayTitle = title || "";
+  const displaySubtitle = subtitle || "";
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -76,8 +82,12 @@ export function Mission({
         tl.fromTo(
           cardsElements,
           {
-            x: isMobile ? "20%" : (isTablet ? "80%" : "150%"),
-            rotationY: isMobile ? -10 : -60,
+            x: isRTL
+              ? (isMobile ? "-20%" : (isTablet ? "-80%" : "-150%"))
+              : (isMobile ? "20%" : (isTablet ? "80%" : "150%")),
+            rotationY: isRTL
+              ? (isMobile ? 10 : 60)
+              : (isMobile ? -10 : -60),
             rotationX: isMobile ? 5 : 15,
             scale: isMobile ? 0.9 : 0.5,
             z: isMobile ? -100 : -800,
@@ -149,9 +159,9 @@ export function Mission({
       containerMaxWidth="full"
     >
       <SectionHeader
-        title={title}
-        subtitle={subtitle}
-        badge="Our Mission"
+        title={displayTitle}
+        subtitle={displaySubtitle}
+        badge={badge ?? ""}
         badgeIcon={Target}
         animate={false}
         className="mission-header pt-16 md:pt-0"

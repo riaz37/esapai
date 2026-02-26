@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import { SectionHeader } from "@/components/ui/section-header";
 import { Section } from "@/components/ui/section";
 import { Layers } from "lucide-react";
@@ -14,7 +15,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const REEL_IMAGES = [
+const DEFAULT_REEL_IMAGES = [
     '/productimages/Slide-22.png',
     '/productimages/Slide-23.png',
     '/productimages/Slide-24.png',
@@ -27,11 +28,15 @@ interface ProductCinematicReelSectionProps {
 }
 
 export function ProductCinematicReelSection({ product }: ProductCinematicReelSectionProps) {
+    const archTitle = product?.content?.architecture?.title ?? "";
+    const archBadge = product?.content?.architecture?.badge ?? "";
     const containerRef = useRef<HTMLDivElement>(null);
     const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
 
+    const reelImages = product?.content?.architecture?.reelImages ?? DEFAULT_REEL_IMAGES;
     const productLabel = product?.name ?? "ESAP";
-    const architectureSubtitle = `Architecture — ${productLabel}. Detailed visualization of the ESAP engine components.`;
+    const architectureSubtitle = product?.content?.architecture?.subtitle
+        ?? `Architecture — ${productLabel}. Detailed visualization of the ESAP engine components.`;
 
 
 
@@ -78,7 +83,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 );
             }
 
-            REEL_IMAGES.forEach((_, index) => {
+            reelImages.forEach((_, index) => {
                 const el = imagesRef.current[index];
                 if (!el) return;
 
@@ -106,7 +111,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             });
 
             // 2. The Deck Orchestration
-            REEL_IMAGES.forEach((_, index) => {
+            reelImages.forEach((_, index) => {
                 // Tighter timing calculation
                 const startTime = index * 3; // Shifted start time
                 const holdDuration = 1.5;
@@ -139,7 +144,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 }, startTime + transitionDuration);
 
                 // STEP C: The Discard - Elegant exit
-                if (index < REEL_IMAGES.length - 1) {
+                if (index < reelImages.length - 1) {
                     tl.to(el, {
                         xPercent: index % 2 === 0 ? -150 : 150,
                         rotationY: index % 2 === 0 ? -45 : 45,
@@ -177,9 +182,9 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
             {/* Desktop Header - Outside pinned Section */}
             <div className="hidden md:block container mx-auto px-6 pt-20 pb-0 relative z-20">
                 <SectionHeader
-                    title="Architecture Deck"
+                    title={archTitle}
                     subtitle={architectureSubtitle}
-                    badge="Visual Index"
+                    badge={archBadge}
                     badgeIcon={Layers}
                     align="center"
                     animate={true}
@@ -198,9 +203,9 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 {/* Mobile Header - Inside pinned Section to avoid scrolling out of view */}
                 <div className="mobile-section-header block md:hidden absolute top-0 inset-x-0 w-full container mx-auto px-6 pt-24 pb-0 z-50 pointer-events-auto">
                     <SectionHeader
-                        title="Architecture Deck"
+                        title={archTitle}
                         subtitle={architectureSubtitle}
-                        badge="Visual Index"
+                        badge={archBadge}
                         badgeIcon={Layers}
                         align="center"
                         className="mb-0"
@@ -212,7 +217,7 @@ export function ProductCinematicReelSection({ product }: ProductCinematicReelSec
                 <div className="relative w-full h-[100svh] md:h-[110vh] overflow-hidden">
                     <div className="deck-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none transform-gpu pt-20 md:pt-0" style={{ transformStyle: 'preserve-3d' }}>
                         <div className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
-                            {REEL_IMAGES.map((src, idx) => (
+                            {reelImages.map((src, idx) => (
                                 <div
                                     key={src}
                                     ref={(el) => { imagesRef.current[idx] = el; }}

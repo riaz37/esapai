@@ -37,7 +37,7 @@ export const SidebarNavigator: React.FC<SidebarNavigatorProps> = ({
             >
                 {items.map((item, idx) => (
                     <m.button
-                        key={item.id}
+                        key={idx}
                         whileHover={{ x: 8, scale: 1.05 }}
                         onClick={() => onItemClick(idx)}
                         className={`relative group transition-all duration-700 ${activeIndex === idx ? "opacity-100 scale-110" : "opacity-30 grayscale hover:opacity-100 hover:grayscale-0"

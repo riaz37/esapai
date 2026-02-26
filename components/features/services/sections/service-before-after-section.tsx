@@ -1,18 +1,21 @@
 "use client";
 
 import React from "react";
+
 import { PortalVideoShowcase } from "./portal-video-showcase";
 import { Section } from "@/components/ui/section";
 
 const DEFAULT_VIDEO_SRC = "/compare.mp4";
 
 export function ServiceBeforeAfterSection({
-  title = "See the difference",
-  subtitle = "From the old way to integrated, efficient workflows—watch the before and after.",
+  title,
+  subtitle,
+  badgeLabel,
   videoSrc = DEFAULT_VIDEO_SRC,
 }: {
   title?: string;
   subtitle?: string;
+  badgeLabel?: string;
   videoSrc?: string;
 }) {
   return (
@@ -24,8 +27,9 @@ export function ServiceBeforeAfterSection({
     >
       <PortalVideoShowcase
         videoSrc={videoSrc}
-        title={title}
+        title={title || ""}
         subtitle={subtitle}
+        badgeLabel={badgeLabel}
       />
     </Section>
   );

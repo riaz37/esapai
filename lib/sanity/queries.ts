@@ -1,0 +1,392 @@
+import { client } from "./client";
+
+// ── Home Page ──
+export const homePageQuery = `*[_type == "homePage" && language == $locale][0] {
+  heroTitle,
+  heroSubtitle,
+  heroBadgePill,
+  heroBadgeDescription,
+  servicesTitle,
+  servicesSubtitle,
+  servicesBadge,
+  services,
+  achievementsTitle,
+  achievementsSubtitle,
+  achievementsBadge,
+  achievements,
+  missionTitle,
+  missionSubtitle,
+  missionBadge,
+  missionCards,
+  technologyTitle,
+  technologySubtitle,
+  technologyBadge,
+  technologyCards,
+  partners,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonText,
+  ctaButtonHref,
+  textRevealContent
+}`;
+
+export async function getHomePage(locale: string) {
+    return client.fetch(homePageQuery, { locale });
+}
+
+// ── About Page ──
+export const aboutPageQuery = `*[_type == "aboutPage" && language == $locale][0] {
+  _id,
+  language,
+  heroTitle,
+  heroSubtitle,
+  heroBadge,
+  heroTitlePart1,
+  heroTitlePart2,
+  teamMembers,
+  narrativeDesignation,
+  teamCategoryLabel,
+  teamLeadershipLabel,
+  teamInnovationLabel,
+  historyTitle,
+  historyBadge,
+  historySubtitle,
+  historyHook,
+  historyPhases[]{ year, title, description, phaseLabel, highlight },
+  visionTitle,
+  visionBody
+}`;
+
+export async function getAboutPage(locale: string) {
+    return client.fetch(aboutPageQuery, { locale });
+}
+
+// ── Products ──
+const PRODUCT_FIELDS = `
+  _id,
+  name,
+  "slug": slug.current,
+  description,
+  menuDescription,
+  icon,
+  orderRank,
+  heroSubtitle,
+  heroCenterIcon,
+  heroCenterIconAlt,
+  heroDemoVideo,
+  heroTagline,
+  missionTitle,
+  missionSubtitle,
+  missionCards,
+  automationTitle,
+  automationSubtitle,
+  automationFeatures,
+  youtubeVideoId,
+  youtubeVideoTitle,
+  performanceMetrics,
+  aceternityTitle,
+  aceternitySubtitle,
+  aceternityFeatures,
+  exploreButton,
+  outcomesTitle,
+  outcomesBadge,
+  demoTitle,
+  demoSubtitle,
+  demoBadge,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonText,
+  architectureTitle,
+  architectureBadge,
+  architectureSubtitle,
+  architectureReelImages,
+  challengesBadge,
+  challengesTitlePart1,
+  challengesTitlePart2,
+  challengesSubtitle,
+  cinematicNarrative,
+  cinematicProblems,
+  journeyTitle,
+  journeySubtitle,
+  journeyBadge,
+  journeyStages,
+  journeyLayers
+`;
+
+export const productsListQuery = `*[_type == "productDocument" && language == $locale] | order(orderRank asc) {${PRODUCT_FIELDS}}`;
+
+export async function getProducts(locale: string) {
+    return client.fetch(productsListQuery, { locale });
+}
+
+export const productBySlugQuery = `*[_type == "productDocument" && slug.current == $slug && language == $locale][0] {${PRODUCT_FIELDS}}`;
+
+export async function getProductBySlug(slug: string, locale: string) {
+    return client.fetch(productBySlugQuery, { slug, locale });
+}
+
+// ── Service Page ──
+export const servicesListQuery = `*[_type == "serviceDocument" && language == $locale] | order(_createdAt asc) {
+  _id,
+  name,
+  "slug": slug.current,
+  heroTitle,
+  heroSubtitle,
+  heroTagline,
+  heroVideoId,
+  heroVideoTitle,
+  problemTitle,
+  problemSubtitle,
+  problemBadge,
+  problemItems,
+  featuresTitle,
+  featuresSubtitle,
+  featuresBadge,
+  featuresCentralNode,
+  features,
+  processTitle,
+  processSubtitle,
+  processBadge,
+  processSteps,
+  portalVideoTitle,
+  portalVideoDescription,
+  beforeAfterLabel,
+  beforeAfterTitle,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonText,
+  ctaButtonLink
+}`;
+
+export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current == $slug && language == $locale][0] {
+  _id,
+  name,
+  "slug": slug.current,
+  heroTitle,
+  heroSubtitle,
+  heroTagline,
+  heroVideoId,
+  heroVideoTitle,
+  problemTitle,
+  problemSubtitle,
+  problemBadge,
+  problemItems,
+  featuresTitle,
+  featuresSubtitle,
+  featuresBadge,
+  featuresCentralNode,
+  features,
+  processTitle,
+  processSubtitle,
+  processBadge,
+  processSteps,
+  portalVideoTitle,
+  portalVideoDescription,
+  beforeAfterLabel,
+  beforeAfterTitle,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonText,
+  ctaButtonLink
+}`;
+
+// ── Contact Page ──
+export const contactPageQuery = `*[_type == "contactPage" && language == $locale][0]`;
+
+export async function getContactPage(locale: string) {
+    return client.fetch(contactPageQuery, { locale });
+}
+
+// ── Navigation ──
+export const navigationQuery = `*[_type == "navigation" && language == $locale][0]`;
+
+export async function getNavigation(locale: string) {
+    return client.fetch(navigationQuery, { locale });
+}
+
+// ── Product Mapper ──
+// Maps flat Sanity productDocument to the nested Product type used by client components
+import type { Product } from "@/types/product";
+
+export function mapSanityProduct(doc: any): Product {
+    return {
+        id: doc.slug || doc._id,
+        name: doc.name,
+        description: doc.description,
+        menuDescription: doc.menuDescription,
+        slug: doc.slug,
+        icon: doc.icon,
+        content: {
+            hero: {
+                subtitle: doc.heroSubtitle,
+                centerIcon: doc.heroCenterIcon,
+                centerIconAlt: doc.heroCenterIconAlt,
+                demoVideo: doc.heroDemoVideo,
+                tagline: doc.heroTagline,
+            },
+            mission: {
+                title: doc.missionTitle,
+                subtitle: doc.missionSubtitle,
+                cards: doc.missionCards?.map((c: any) => ({
+                    title: c.title,
+                    description: c.description,
+                })),
+            },
+            automationHub: {
+                title: doc.automationTitle,
+                subtitle: doc.automationSubtitle,
+                features: doc.automationFeatures?.map((f: any) => ({
+                    title: f.title,
+                    description: f.description,
+                })),
+            },
+            youtubeVideo: {
+                videoId: doc.youtubeVideoId,
+                title: doc.youtubeVideoTitle,
+            },
+            performance: {
+                metrics: doc.performanceMetrics?.map((m: any) => ({
+                    value: m.value,
+                    label: m.label,
+                })),
+            },
+            aceternityFeatures: {
+                title: doc.aceternityTitle,
+                subtitle: doc.aceternitySubtitle,
+                features: doc.aceternityFeatures?.map((f: any) => ({
+                    title: f.title,
+                    description: f.description,
+                    className: f.className,
+                })),
+            },
+            exploreButton: doc.exploreButton,
+            outcomes: doc.outcomesTitle || doc.outcomesBadge ? {
+                title: doc.outcomesTitle,
+                badge: doc.outcomesBadge,
+            } : undefined,
+            demo: doc.demoTitle || doc.demoBadge || doc.demoSubtitle ? {
+                title: doc.demoTitle,
+                subtitle: doc.demoSubtitle,
+                badge: doc.demoBadge,
+            } : undefined,
+            cta: doc.ctaTitle || doc.ctaSubtitle || doc.ctaButtonText ? {
+                title: doc.ctaTitle,
+                subtitle: doc.ctaSubtitle,
+                buttonText: doc.ctaButtonText,
+            } : undefined,
+            architecture: doc.architectureTitle || doc.architectureBadge ? {
+                title: doc.architectureTitle,
+                badge: doc.architectureBadge,
+                subtitle: doc.architectureSubtitle,
+                reelImages: doc.architectureReelImages,
+            } : undefined,
+            cinematic: (doc.challengesBadge || doc.cinematicNarrative || doc.cinematicProblems) ? {
+                challenges: (doc.challengesBadge || doc.challengesTitlePart1 || doc.challengesTitlePart2 || doc.challengesSubtitle) ? {
+                    badge: doc.challengesBadge,
+                    titlePart1: doc.challengesTitlePart1,
+                    titlePart2: doc.challengesTitlePart2,
+                    subtitle: doc.challengesSubtitle,
+                } : undefined,
+                narrative: doc.cinematicNarrative || undefined,
+                problems: doc.cinematicProblems?.map((p: any) => ({
+                    title: p.title,
+                    description: p.description,
+                    solTitle: p.solTitle,
+                    solDesc: p.solDesc,
+                    solImpact: p.solImpact,
+                })),
+            } : undefined,
+            journey: (doc.journeyTitle || doc.journeyBadge || doc.journeyStages || doc.journeyLayers) ? {
+                title: doc.journeyTitle,
+                subtitle: doc.journeySubtitle,
+                badge: doc.journeyBadge,
+                stages: doc.journeyStages,
+                layers: doc.journeyLayers?.map((l: any) => ({
+                    title: l.title,
+                    nodes: l.nodes,
+                })),
+            } : undefined,
+        },
+    };
+}
+
+export async function getSanityProducts(locale: string): Promise<Product[]> {
+    const docs = await client.fetch(productsListQuery, { locale });
+    return (docs || []).map(mapSanityProduct);
+}
+
+export async function getSanityProductBySlug(slug: string, locale: string): Promise<Product | null> {
+    const doc = await client.fetch(productBySlugQuery, { slug, locale });
+    return doc ? mapSanityProduct(doc) : null;
+}
+
+// ── Service Mapper ──
+import type { Service } from "@/types/service";
+
+export function mapSanityService(doc: any): Service {
+    return {
+        id: doc.slug || doc._id,
+        name: doc.name,
+        slug: doc.slug,
+        description: doc.heroSubtitle?.[0] || doc.problemSubtitle || "",
+        content: {
+            hero: {
+                titleMain: doc.heroTitle,
+                titleHighlight: doc.heroTagline,
+                subtitle: doc.heroSubtitle || [],
+            },
+            features: {
+                title: doc.featuresTitle,
+                subtitle: doc.featuresSubtitle,
+                badge: doc.featuresBadge,
+                centralNode: doc.featuresCentralNode,
+                items: doc.features?.map((item: any) => ({
+                    title: item.title,
+                    description: item.description,
+                })),
+            },
+            youtubeVideo: doc.heroVideoId ? {
+                videoId: doc.heroVideoId,
+                title: doc.heroVideoTitle,
+            } : undefined,
+            problem: doc.problemTitle ? {
+                title: doc.problemTitle,
+                subtitle: doc.problemSubtitle,
+                badge: doc.problemBadge,
+                items: doc.problemItems?.map((item: any) => ({
+                    title: item.title,
+                    description: item.description,
+                })),
+            } : undefined,
+            process: doc.processTitle ? {
+                title: doc.processTitle,
+                subtitle: doc.processSubtitle,
+                badge: doc.processBadge,
+                steps: doc.processSteps?.map((step: any) => ({
+                    title: step.title,
+                    description: step.description,
+                })),
+            } : undefined,
+            beforeAfter: (doc.beforeAfterLabel || doc.beforeAfterTitle) ? {
+                label: doc.beforeAfterLabel,
+                title: doc.beforeAfterTitle,
+            } : undefined,
+            cta: doc.ctaTitle ? {
+                title: doc.ctaTitle,
+                subtitle: doc.ctaSubtitle,
+                buttonText: doc.ctaButtonText,
+                buttonLink: doc.ctaButtonLink,
+            } : undefined,
+        },
+    };
+}
+
+export async function getSanityServices(locale: string): Promise<Service[]> {
+    const docs = await client.fetch(servicesListQuery, { locale });
+    return (docs || []).map(mapSanityService);
+}
+
+export async function getSanityServiceBySlug(slug: string, locale: string): Promise<Service | null> {
+    const doc = await client.fetch(serviceBySlugQuery, { slug, locale });
+    return doc ? mapSanityService(doc) : null;
+}

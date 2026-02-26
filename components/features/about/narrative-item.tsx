@@ -3,17 +3,18 @@
 import React from "react";
 import { m, AnimatePresence } from "motion/react";
 import { AboutNarrativeItem } from "@/lib/about-v2-data";
-import { Button } from "@/components/ui/button";
 
 interface NarrativeItemProps {
     item: AboutNarrativeItem;
     isActive: boolean;
     isFlipped: boolean;
+    designation?: string;
 }
 
 export const NarrativeItem: React.FC<NarrativeItemProps> = ({
     item,
     isFlipped,
+    designation = "Designation",
 }) => {
     return (
         <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
@@ -21,7 +22,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
             <div className={`container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col ${isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"} items-center justify-center lg:justify-between relative h-full gap-4 lg:gap-8 z-10 max-w-[1400px] pt-20 sm:pt-32 lg:pt-40`}>
 
                 {/* Details Block */}
-                <div className={`w-full lg:w-1/2 flex flex-col justify-center pointer-events-auto items-start text-left`}>
+                <div className={`w-full lg:w-1/2 flex flex-col justify-center pointer-events-auto items-start text-start`}>
                     <m.div
                         initial={{ opacity: 0, x: isFlipped ? 30 : -30 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -51,7 +52,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
 
                             <div className="flex items-center gap-6 lg:gap-10 flex-row">
                                 <div className="flex flex-col">
-                                    <span className="text-xs lg:text-sm text-white/40 mb-1">Designation</span>
+                                    <span className="text-xs lg:text-sm text-white/40 mb-1">{designation}</span>
                                     <span className="text-base lg:text-lg text-white">{item.price}</span>
                                 </div>
 

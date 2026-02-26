@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import {
   m,
@@ -74,14 +74,14 @@ export const Navbar = ({ children, className }: NavbarProps) => {
       // Added horizontal padding to match Section.tsx geometry
       className={cn("fixed inset-x-0 top-2 z-40 w-full px-4 sm:px-6 md:px-8 lg:px-12", className)}
     >
-      {React.Children.map(children, (child) =>
-        React.isValidElement(child)
-          ? React.cloneElement(
-            child as React.ReactElement<{ visible?: boolean }>,
-            { visible },
-          )
-          : child,
-      )}
+      {React.Children.map(children, (child) => {
+        if (!React.isValidElement(child)) return child;
+        if (typeof child.type === 'string') return child;
+        return React.cloneElement(
+          child as React.ReactElement<{ visible?: boolean }>,
+          { visible },
+        );
+      })}
     </m.div>
   );
 };
@@ -96,7 +96,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "40%" : "100%",
+        width: visible ? "60%" : "100%",
         paddingLeft: visible ? "12px" : "0px",
         paddingRight: visible ? "12px" : "0px",
         y: visible ? 20 : 0,
@@ -108,15 +108,22 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         mass: 1,
       }}
       style={{
-        minWidth: visible ? "950px" : "auto",
+        minWidth: visible ? "1100px" : "auto",
       }}
       className={cn(
         "relative z-[60] mx-auto hidden flex-row items-center justify-between self-start rounded-full bg-transparent border border-transparent py-2 lg:flex max-w-[1400px]",
         className,
       )}
     >
-      {children}
-    </m.div >
+      {React.Children.map(children, (child) => {
+        if (!React.isValidElement(child)) return child;
+        if (typeof child.type === 'string') return child;
+        return React.cloneElement(
+          child as React.ReactElement<{ visible?: boolean }>,
+          { visible },
+        );
+      })}
+    </m.div>
   );
 };
 
@@ -245,11 +252,11 @@ export const MobileNavToggle = ({
   );
 };
 
-export const NavbarLogo = () => {
+export const NavbarLogo = ({ visible }: { visible?: boolean }) => {
   return (
     <Link
       href="/"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal"
+      className="relative z-20 me-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal"
     >
       <div className="flex items-center gap-2">
         <Image

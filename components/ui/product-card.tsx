@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { Card } from "@/components/ui/card";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
 
 
@@ -22,6 +23,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index, videoRef, className }: ProductCardProps) {
+    const t = useTranslations("Home.showcase");
     const cardRef = React.useRef<HTMLDivElement>(null);
     const buttonRef = React.useRef<HTMLDivElement>(null);
 
@@ -74,22 +76,22 @@ export function ProductCard({ product, index, videoRef, className }: ProductCard
                 <div className="relative h-full flex flex-col md:flex-row items-center p-6 sm:p-8 md:p-12 gap-6 md:gap-12 z-10">
 
                     {/* Left Side: Content */}
-                    <div className="flex-1 text-left space-y-4 z-10">
+                    <div className="flex-1 text-start space-y-4 z-10">
                         <div className="space-y-2">
                             <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-tight">
-                                {product.name}
+                                {t(`products.${product.id}.name`)}
                             </h3>
                         </div>
 
                         <p className="text-base md:text-lg text-gray-400 font-normal leading-relaxed max-w-lg">
-                            {product.description}
+                            {t(`products.${product.id}.description`)}
                         </p>
 
                         <div ref={buttonRef} className="inline-block mt-2 md:mt-8">
                             <Button variant="primary" size="default" asChild>
                                 <Link href={`/product/${product.slug}`} className="inline-flex items-center gap-2 group/link">
-                                    <span>Explore</span>
-                                    <ButtonArrow className="ml-0" />
+                                    <span>{t("explore")}</span>
+                                    <ButtonArrow className="ms-0" />
                                 </Link>
                             </Button>
                         </div>

@@ -1,12 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { Link } from "@/i18n/routing";
+import { usePathname } from "@/i18n/routing";
 import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { products } from "@/lib/products";
-import { services } from "@/lib/services";
+import type { Service } from "@/types/service";
 import { useBodyScrollLock } from "@/lib/hooks/use-body-scroll-lock";
 
 import { ProductDropdownMenu } from "../menus/product-dropdown-menu";
@@ -14,6 +17,7 @@ import { ServiceDropdownMenu } from "../menus/service-dropdown-menu";
 import { useProductMenu } from "../menus/product-menu-context";
 import { useServiceMenu } from "../menus/service-menu-context";
 import { MobileAccordion, type MobileMenuItem } from "./mobile-accordion";
+import { LanguageSelector } from "./language-selector";
 
 import {
   Navbar as ResizableUiNavbar,
@@ -31,17 +35,20 @@ function NavLinkItem({
   isActive,
   onClick,
   className = "",
+  visible,
 }: {
   href: string;
   label: string;
   isActive: boolean;
   onClick?: () => void;
   className?: string;
+  visible?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={`nav-link-group relative group whitespace-nowrap cursor-pointer px-4 py-2 text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
+      className={`nav-link-group relative group whitespace-nowrap cursor-pointer ${visible ? "px-2 py-1.5" : "px-4 py-2"
+        } text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
         } ${className}`}
       onClick={onClick}
     >
@@ -56,16 +63,19 @@ function NavDropdownTrigger({
   isActive,
   isOpen,
   onClick,
+  visible,
 }: {
   label: string;
   isActive: boolean;
   isOpen: boolean;
   onClick: () => void;
+  visible?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer px-4 py-2 text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
+      className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer ${visible ? "px-2 py-1.5" : "px-4 py-2"
+        } text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
         }`}
       aria-expanded={isOpen}
     >
@@ -79,7 +89,8 @@ function NavDropdownTrigger({
   );
 }
 
-export function Navbar() {
+export function Navbar({ visible, services }: { visible?: boolean; services: Service[] }) {
+  const t = useTranslations("Navigation");
   const pathname = usePathname();
   const { isProductOpen, setIsProductOpen } = useProductMenu();
   const { isServiceOpen, setIsServiceOpen } = useServiceMenu();
@@ -157,25 +168,32 @@ export function Navbar() {
   return (
     <ResizableUiNavbar className="fixed inset-x-0 top-2 z-50">
       {/* Desktop Navbar */}
-      <NavBody>
+      <NavBody visible={visible}>
         {/* Logo */}
-        <NavbarLogo />
+        <div className="flex flex-1 justify-start">
+          <NavbarLogo visible={visible} />
+        </div>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-2 justify-center absolute left-1/2 -translate-x-1/2">
+        <div className={cn(
+          "hidden lg:flex flex-none items-center justify-center transition-all duration-300",
+          visible ? "gap-0.5" : "gap-2"
+        )}>
           <NavLinkItem
             href="/"
-            label="Home"
+            label={t("home")}
             isActive={isActive("/")}
+            visible={visible}
           />
 
           {/* Product Dropdown */}
           <div className="relative" ref={productDropdownRef}>
             <NavDropdownTrigger
-              label="Product"
+              label={t("product")}
               isActive={productActive}
               isOpen={isProductOpen}
               onClick={() => setIsProductOpen(!isProductOpen)}
+              visible={visible}
             />
             <ProductDropdownMenu />
           </div>
@@ -183,30 +201,39 @@ export function Navbar() {
           {/* Service Dropdown */}
           <div className="relative" ref={serviceDropdownRef}>
             <NavDropdownTrigger
-              label="Service"
+              label={t("service")}
               isActive={serviceActive}
               isOpen={isServiceOpen}
               onClick={() => setIsServiceOpen(!isServiceOpen)}
+              visible={visible}
             />
-            <ServiceDropdownMenu />
+            <ServiceDropdownMenu services={services} />
           </div>
 
           <NavLinkItem
             href="/about"
-            label="About Us"
+            label={t("about")}
             isActive={isActive("/about")}
+            visible={visible}
           />
           <NavLinkItem
             href="/case-study"
-            label="Case Study"
+            label={t("case-study")}
             isActive={isActive("/case-study")}
+            visible={visible}
           />
         </div>
 
-        {/* Contact Button */}
-        <NavbarButton href="/contact" variant="primary">
-          Contact Us
-        </NavbarButton>
+        {/* Nav Actions */}
+        <div className={cn(
+          "flex flex-1 justify-end items-center transition-all duration-300",
+          visible ? "gap-2" : "gap-4"
+        )}>
+          <LanguageSelector className="hidden lg:block" visible={visible} />
+          <NavbarButton href="/contact" variant="primary" size={visible ? "sm" : "default"}>
+            {t("contact")}
+          </NavbarButton>
+        </div>
       </NavBody>
 
       {/* Mobile Navbar */}
@@ -230,12 +257,12 @@ export function Navbar() {
               className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
                 }`}
             >
-              <span className="relative z-10 text-base font-semibold">Home</span>
+              <span className="relative z-10 text-base font-semibold">{t("home")}</span>
             </Link>
 
             <MobileAccordion
               id="mobile-products"
-              title="Product"
+              title={t("product")}
               isOpen={isMobileProductsOpen}
               onToggle={() => {
                 setIsMobileProductsOpen((prev) => !prev);
@@ -249,7 +276,7 @@ export function Navbar() {
 
             <MobileAccordion
               id="mobile-services"
-              title="Service"
+              title={t("service")}
               isOpen={isMobileServicesOpen}
               onToggle={() => {
                 setIsMobileServicesOpen((prev) => !prev);
@@ -267,7 +294,7 @@ export function Navbar() {
               className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/about") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white/70 hover:text-[#13F584]"
                 }`}
             >
-              <span className="relative z-10 text-base font-semibold">About Us</span>
+              <span className="relative z-10 text-base font-semibold">{t("about")}</span>
             </Link>
 
             <Link
@@ -282,13 +309,21 @@ export function Navbar() {
             {/* Separator */}
             <div className="h-px bg-white/5 mx-3 my-2" />
 
+            <div className="px-4 py-2 flex items-center justify-between">
+              <span className="text-sm font-medium text-white/50">Language</span>
+              <LanguageSelector />
+            </div>
+
+            {/* Separator */}
+            <div className="h-px bg-white/5 mx-3 my-2" />
+
             <div className="px-2">
               <NavbarButton
                 href="/contact"
                 variant="primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Contact Us
+                {t("contact")}
               </NavbarButton>
             </div>
           </div>

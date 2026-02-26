@@ -4,7 +4,8 @@ import { m } from "motion/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { AlertTriangle, Clock, Database, FileX, ZapOff } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useId } from "react";
+
 
 const PAIN_POINTS = [
   {
@@ -40,10 +41,35 @@ const PAIN_POINTS = [
 export function ServiceProblemSection({
   title = "The Manual Trap",
   subtitle = "Your team was hired to innovate, not to be glue between broken systems.",
+  badge,
+  items = [],
 }: {
   title?: string;
   subtitle?: string;
+  badge?: string;
+  items?: Array<{ title: string; description: string }>;
 }) {
+  const displayItems = items.length > 0 ? items.slice(0, 4) : [];
+
+  const painPointsWithIcons = useMemo(() => {
+    const icons = [Clock, Database, ZapOff, FileX];
+    return displayItems.map((item, i) => ({
+      ...item,
+      icon: icons[i % icons.length],
+      desc: item.description,
+      x: i === 0 ? -30 : i === 1 ? 35 : i === 2 ? -15 : 25,
+      y: i === 0 ? -5 : i === 1 ? -25 : i === 2 ? 35 : 25,
+      rotate: i === 0 ? -6 : i === 1 ? 5 : i === 2 ? -4 : 6,
+      delay: (i + 1) * 0.1,
+      drift: {
+        duration: 4 + Math.random() * 2,
+        y: 8 + Math.random() * 8,
+        rotate: -2 + Math.random() * 4,
+        delay: Math.random() * 2
+      }
+    }));
+  }, [displayItems]);
+
   return (
     <Section
       id="why-this-service"
@@ -52,8 +78,8 @@ export function ServiceProblemSection({
     >
       {/* Background Chaos Elements */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-[64px] animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-[48px]" />
+        <div className="absolute top-1/4 start-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-[64px] animate-pulse-slow" />
+        <div className="absolute bottom-1/4 end-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-[48px]" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full relative z-10">
@@ -61,25 +87,13 @@ export function ServiceProblemSection({
         {/* Text Content */}
         <div className="max-w-xl">
           <SectionHeader
-            badge="The Challenge"
+            badge={badge ?? ""}
             badgeIcon={AlertTriangle}
             title={title}
             subtitle={subtitle}
             align="left"
             titleClassName="text-5xl md:text-6xl font-bold tracking-tight"
           />
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-white/60 leading-relaxed"
-          >
-            <p className="mb-6">
-              Every growing enterprise hits a wall where complexity outpaces capacity.
-              When your brightest minds are stuck moving data instead of making decisions, growth stalls.
-            </p>
-          </m.div>
         </div>
 
         {/* Floating Cards Visual */}
@@ -97,7 +111,7 @@ export function ServiceProblemSection({
           }}
           className="relative min-h-[400px] lg:h-[600px] w-full flex flex-col lg:block items-center justify-center perspective-[1000px] gap-6 lg:gap-0"
         >
-          {PAIN_POINTS.map((point) => (
+          {painPointsWithIcons.map((point) => (
             <PainCard key={point.title} point={point} />
           ))}
         </m.div>
@@ -107,7 +121,7 @@ export function ServiceProblemSection({
   );
 }
 
-function PainCard({ point }: { point: typeof PAIN_POINTS[0] }) {
+function PainCard({ point }: { point: any }) {
   // Use deterministic drift values from the constant to satisfy React Compiler's purity requirements
   const { duration, y, rotate, delay } = point.drift;
 

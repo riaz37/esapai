@@ -38,7 +38,7 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
                 </div>
 
                 {/* Right: Text */}
-                <div className="relative z-10 flex items-center px-2 py-0.5 sm:px-4 sm:py-1 ml-1">
+                <div className="relative z-10 flex items-center px-2 py-0.5 sm:px-4 sm:py-1 ms-1">
                     <span className="text-sm font-medium tracking-tight text-[#13F584] leading-none">
                         {description}
                     </span>

@@ -62,6 +62,7 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
           centerIconAlt={content.hero?.centerIconAlt}
           productSlug={slug}
           tagline={content.hero?.tagline}
+          exploreButton={content.exploreButton}
         />
       </div>
 
@@ -86,7 +87,7 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
 
       {/* 5. User Journey Layer */}
       <LazySection minHeight="400px" rootMargin="300px">
-        <UserJourney productSlug={hydratedProduct.slug} />
+        <UserJourney productSlug={hydratedProduct.slug} initialProduct={hydratedProduct} />
       </LazySection>
 
       {/* 6. Business Impact (Outcomes) */}

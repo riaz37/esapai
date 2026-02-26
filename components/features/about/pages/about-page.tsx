@@ -15,17 +15,82 @@ const AboutHistory = dynamic(() => import("@/components/features/about/history")
     ssr: false,
 });
 
-export function AboutPageClient() {
+interface SanityPhase {
+    phaseLabel?: string;
+    title: string;
+    description?: string;
+    highlight?: string;
+}
+
+export interface AboutPageClientProps {
+    heroTitle?: string;
+    heroSubtitle?: string;
+    heroBadge?: string;
+    heroTitlePart1?: string;
+    heroTitlePart2?: string;
+    teamMembers?: any[];
+    narrativeDesignation?: string;
+    teamCategoryLabel?: string;
+    teamLeadershipLabel?: string;
+    teamInnovationLabel?: string;
+    historyTitle?: string;
+    historyBadge?: string;
+    historySubtitle?: string;
+    historyHook?: string;
+    historyPhases?: SanityPhase[];
+    visionTitle?: string;
+    visionBody?: string;
+}
+
+export function AboutPageClient({
+    heroTitle,
+    heroSubtitle,
+    heroBadge,
+    heroTitlePart1,
+    heroTitlePart2,
+    teamMembers,
+    narrativeDesignation,
+    teamCategoryLabel,
+    teamLeadershipLabel,
+    teamInnovationLabel,
+    historyTitle,
+    historyBadge,
+    historySubtitle,
+    historyHook,
+    historyPhases,
+    visionTitle,
+    visionBody,
+}: AboutPageClientProps = {}) {
     return (
         <div className="relative">
-            <AboutHero />
+            <AboutHero
+                title={heroTitle}
+                subtitle={heroSubtitle}
+                badge={heroBadge}
+                titlePart1={heroTitlePart1}
+                titlePart2={heroTitlePart2}
+            />
 
             <LazySection minHeight="800px">
-                <AboutNarrative />
+                <AboutNarrative
+                    teamMembers={teamMembers}
+                    designation={narrativeDesignation}
+                    categoryLabel={teamCategoryLabel}
+                    leadershipLabel={teamLeadershipLabel}
+                    innovationLabel={teamInnovationLabel}
+                />
             </LazySection>
 
             <LazySection minHeight="600px">
-                <AboutHistory />
+                <AboutHistory
+                    title={historyTitle}
+                    badge={historyBadge}
+                    subtitle={historySubtitle}
+                    hook={historyHook}
+                    phases={historyPhases}
+                    visionTitle={visionTitle}
+                    visionBody={visionBody}
+                />
             </LazySection>
 
             <LazySection minHeight="400px">

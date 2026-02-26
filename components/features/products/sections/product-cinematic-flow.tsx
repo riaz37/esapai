@@ -1,24 +1,36 @@
 /* eslint-disable react-doctor/no-giant-component */
 "use client";
 
-import React, { useRef, useMemo, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { useProductContent } from "@/lib/hooks/use-product-content";
-import { getProductCinematicProblems } from "@/config/product-cinematic-problems";
+import { getProductCinematicItems } from "@/config/product-cinematic-problems";
+import type { CinematicProblemConfig } from "@/config/product-cinematic-problems";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { AlertCircle } from "lucide-react";
 import type { Product } from "@/types/product";
-import type { CinematicProblemItem } from "@/config/product-cinematic-problems";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
+
+interface CinematicProblemText {
+    title: string;
+    description: string;
+    solTitle: string;
+    solDesc: string;
+    solImpact: string;
+}
+
+type CinematicProblemItem = CinematicProblemConfig & CinematicProblemText;
 
 const MARCO_FRAMES = {
     problem: [
@@ -98,7 +110,7 @@ function CinematicAssistant({ state, className, reducedMotion }: CinematicAssist
             </div>
 
             {/* Sub-components for futuristic look */}
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-white/5 blur-xl rounded-full" />
+            <div className="absolute -bottom-4 start-1/2 -translate-x-1/2 w-3/4 h-2 bg-white/5 blur-xl rounded-full" />
 
             <style>{`
                 @keyframes scanline {
@@ -126,7 +138,7 @@ function ProblemSceneCard({
     return (
         <Card
             spotlight={false}
-            className={`w-full max-w-lg border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col justify-between ${side === "left" ? "mr-auto" : "ml-auto"
+            className={`w-full max-w-lg border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col justify-between ${side === "left" ? "me-auto" : "ms-auto"
                 }`}
         >
             <CardHeader className="pb-4 px-6 pt-6">
@@ -215,7 +227,6 @@ const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicProblemI
 
 export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; initialProduct: Product | null }) {
     const { product } = useProductContent(slug, { initialProduct });
-    const problems = useMemo(() => getProductCinematicProblems(slug), [slug]);
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -224,6 +235,20 @@ export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; i
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+    const sanityChallenge = product?.content?.cinematic?.challenges;
+    const challengesTitlePart1 = sanityChallenge?.titlePart1 ?? "";
+    const challengesTitlePart2 = sanityChallenge?.titlePart2 ?? "";
+    const challengesSubtitle = sanityChallenge?.subtitle ?? "";
+    const challengesBadge = sanityChallenge?.badge ?? "";
+
+    const sanityProblems = product?.content?.cinematic?.problems;
+    const iconItems = getProductCinematicItems(slug);
+    const problems: CinematicProblemItem[] = useMemo(() => {
+        const defaultText: CinematicProblemText = { title: "", description: "", solTitle: "", solDesc: "", solImpact: "" };
+        return iconItems.map((item, i) => ({ ...item, ...defaultText, ...(sanityProblems?.[i] ?? {}) }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [slug, sanityProblems]);
 
     return (
         <Section
@@ -235,11 +260,11 @@ export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; i
                 <SectionHeader
                     title={
                         <>
-                            Current Market <span className="text-red-500">Challenges</span>
+                            {challengesTitlePart1} <span className="text-red-500">{challengesTitlePart2}</span>
                         </>
                     }
-                    subtitle="Identifying the friction points and systemic inefficiencies that currently throttle growth and AI adoption in established industries."
-                    badge="Pain Points"
+                    subtitle={challengesSubtitle}
+                    badge={challengesBadge}
                     badgeIcon={AlertCircle}
                     badgeVariant="red"
                     animate={true}
@@ -261,6 +286,9 @@ export function ProductCinematicFlow({ slug, initialProduct }: { slug: string; i
  * DESKTOP VIEW: Cinematic Storytelling Flow (restored from working version)
  */
 function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: CinematicProblemItem[] }) {
+    const locale = useLocale();
+    const dir = locale === "ar" ? -1 : 1;
+
     const containerRef = useRef<HTMLDivElement>(null);
     const bgRef = useRef<HTMLDivElement>(null);
     const problemSceneRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -297,7 +325,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
             solTitleRefs.current.forEach((r) => r && gsap.set(r, { opacity: 1, y: 0 }));
             solDescRefs.current.forEach((r) => r && gsap.set(r, { opacity: 1, y: 0 }));
             if (wipeRef.current) gsap.set(wipeRef.current, { clipPath: "inset(0 0 100% 0)" });
-            if (assistantRef.current) gsap.set(assistantRef.current, { opacity: 0.6, left: "auto", right: "10%", yPercent: 0 });
+            if (assistantRef.current) gsap.set(assistantRef.current, { opacity: 0.6, insetInlineEnd: "10%", insetInlineStart: "auto", yPercent: 0 });
             setAssistantState("solution");
             return;
         }
@@ -305,7 +333,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
         // Initial state
         gsap.set(assistantRef.current, { opacity: 0, top: "45%", left: "50%", xPercent: -50, yPercent: -150, scale: 1 });
         problemSceneRefs.current.forEach((s, i) => {
-            if (s) gsap.set(s, { opacity: 0, x: i === 1 ? 80 : -80 });
+            if (s) gsap.set(s, { opacity: 0, x: i === 1 ? dir * 80 : dir * -80 });
             if (problemTitleRefs.current[i]) gsap.set(problemTitleRefs.current[i], { opacity: 0, y: 8 });
             if (problemDescRefs.current[i]) gsap.set(problemDescRefs.current[i], { opacity: 0, y: 8 });
         });
@@ -330,7 +358,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
         tl.to(assistantRef.current, {
             opacity: 0.7,
             xPercent: -50,
-            x: "20vw",
+            x: `${dir * 20}vw`,
             yPercent: 0,
             duration: 1.2,
             ease: "back.out(1.2)",
@@ -366,9 +394,9 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
 
         // Transition to Problem 2
         tl.addLabel("problem2");
-        tl.to(assistantRef.current, { x: "-20vw", duration: 1.2, ease: "power3.inOut" }, "problem2");
+        tl.to(assistantRef.current, { x: `${dir * -20}vw`, duration: 1.2, ease: "power3.inOut" }, "problem2");
         if (problemSceneRefs.current[0]) {
-            tl.to(problemSceneRefs.current[0], { opacity: 0, x: -60, duration: 0.6, ease: "power3.in" }, "problem2");
+            tl.to(problemSceneRefs.current[0], { opacity: 0, x: dir * -60, duration: 0.6, ease: "power3.in" }, "problem2");
         }
         if (problemSceneRefs.current[1]) {
             tl.to(problemSceneRefs.current[1], { opacity: 1, x: 0, duration: 0.8, ease: "power4.out" }, "problem2+=0.4");
@@ -384,9 +412,9 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
 
         // Transition to Problem 3
         tl.addLabel("problem3");
-        tl.to(assistantRef.current, { x: "20vw", scale: 1.2, duration: 1.2, ease: "power3.inOut" }, "problem3");
+        tl.to(assistantRef.current, { x: `${dir * 20}vw`, scale: 1.2, duration: 1.2, ease: "power3.inOut" }, "problem3");
         if (problemSceneRefs.current[1]) {
-            tl.to(problemSceneRefs.current[1], { opacity: 0, x: 60, duration: 0.6, ease: "power3.in" }, "problem3");
+            tl.to(problemSceneRefs.current[1], { opacity: 0, x: dir * 60, duration: 0.6, ease: "power3.in" }, "problem3");
         }
         if (problemSceneRefs.current[2]) {
             tl.to(problemSceneRefs.current[2], { opacity: 1, x: 0, duration: 0.8, ease: "power4.out" }, "problem3+=0.4");
@@ -403,7 +431,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
         // Direct transition to Solution
         tl.addLabel("solution");
         if (problemSceneRefs.current[2]) {
-            tl.to(problemSceneRefs.current[2], { opacity: 0, x: -60, duration: 0.7, ease: "power3.in" }, "solution");
+            tl.to(problemSceneRefs.current[2], { opacity: 0, x: dir * -60, duration: 0.7, ease: "power3.in" }, "solution");
         }
 
         // Marco transforms and moves to final position (shifted down)
@@ -469,7 +497,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
             { clipPath: "inset(0 0 100% 0)", duration: 1.5, ease: "power3.inOut" },
             "exit+=0.5"
         );
-    }, { scope: containerRef, dependencies: [slug] });
+    }, { scope: containerRef, dependencies: [slug, dir] });
 
     return (
         <Section
@@ -505,8 +533,8 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
                             className="absolute inset-0 flex items-center justify-center opacity-0"
                             style={{
                                 justifyContent: i === 1 ? "flex-end" : "flex-start",
-                                paddingLeft: i === 1 ? 0 : "10%",
-                                paddingRight: i === 1 ? "10%" : 0,
+                                paddingInlineStart: i === 1 ? 0 : "10%",
+                                paddingInlineEnd: i === 1 ? "10%" : 0,
                             }}
                         >
                             <div className="w-full max-w-md">
@@ -611,7 +639,7 @@ function CinematicDesktopFlow({ slug, problems }: { slug: string; problems: Cine
 
             <div
                 ref={wipeRef}
-                className="pointer-events-none fixed left-0 right-0 z-[100] h-screen bg-[#09090b]"
+                className="pointer-events-none fixed start-0 end-0 z-[100] h-screen bg-[#09090b]"
                 style={{ top: "100vh", clipPath: "inset(0 0 0% 0)" }}
                 aria-hidden
             />

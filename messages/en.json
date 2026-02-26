@@ -1,0 +1,177 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "product": "Product",
+    "service": "Service",
+    "case-study": "Case Study",
+    "contact": "Contact Us",
+    "getStarted": "Get Started"
+  },
+  "Loading": {
+    "message": "Preparing your experience",
+    "subMessage": "Loading intelligence"
+  },
+  "Home": {
+    "reveal": {
+      "text": "Forging the intelligence layer of tomorrow. Unlocking limitless potential."
+    },
+    "showcase": {
+      "badge": "Product Showcase",
+      "title": "Product Discovery",
+      "subtitle": "Experience our ecosystem of intelligent tools.",
+      "explore": "Explore",
+      "products": {
+        "erp": {
+          "name": "ERP",
+          "description": "Voice-Activated AI ERP for SMEs. Manage your entire business operation through natural voice commands."
+        },
+        "ai-framework": {
+          "name": "AI Framework",
+          "description": "A comprehensive AI Agent & Automation Framework designed to build, deploy, and scale intelligent enterprise solutions."
+        },
+        "zakra": {
+          "name": "Zakra",
+          "description": "Smart Knowledge Agent that delivers instant, context-aware answers from your entire knowledge base."
+        },
+        "jawib": {
+          "name": "Jawib",
+          "description": "Intelligent Customer Service Agent providing 24/7 personalized support. Transform your customer experience."
+        },
+        "fasih": {
+          "name": "Fasih",
+          "description": "The native Arabic LLM bridging the gap with deep understanding of dialects and cultural nuances."
+        }
+      }
+    }
+  },
+  "About": {
+    "team": {}
+  },
+  "Contact": {
+    "badge": "Get in touch",
+    "title": {
+      "part1": "Contact us today.",
+      "part2": "We're ready",
+      "part3": "to assist you."
+    },
+    "description": "Whether you have a question, a comment, or just want to say hello, please don't hesitate to get in touch.",
+    "social": "Get in touch On social media",
+    "form": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "name@company.com",
+      "message": "Message",
+      "messagePlaceholder": "How can we help you?",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "termsPrefix": "By submitting, I agree to the ",
+      "termsLink": "ESAP Terms of Conditions"
+    },
+    "toasts": {
+      "acceptTerms": "Please accept the terms to continue.",
+      "success": "Your message has been sent successfully!",
+      "error": "An unexpected error occurred. Please try again."
+    }
+  },
+  "Product": {},
+  "Footer": {
+    "cta": {
+      "title": "Get in touch",
+      "subtitle": "Have a question or want to partner us? Reach out",
+      "button": "Get Started"
+    },
+    "social": {
+      "title": "Social media",
+      "description": "Join our community to stay updated on our latest news and AI developments",
+      "connect": "Connect with us"
+    },
+    "menu": {
+      "title": "Menu"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "subtitle": "Subscribe to stay updated with our latest AI innovations and news.",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    },
+    "rights": "All rights reserved.",
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of service"
+    }
+  },
+  "Menus": {
+    "ourServices": "Our Services",
+    "ourProducts": "Our Products",
+    "impactAnalysis": "Impact Analysis",
+    "serviceDescription": "Stay ahead with AI-powered tools that track environmental data in real-time.",
+    "productDescription": "Stay ahead with AI-powered tools that track environmental data in real-time.",
+    "telemetryPending": "Telemetry data is being collected..."
+  },
+  "Products": {
+    "erp": {
+      "name": "ERP",
+      "menuDescription": "Voice-activated ERP for SMEs with AI-powered automation."
+    },
+    "ai-framework": {
+      "name": "AI Framework",
+      "menuDescription": "Build and deploy AI agents at enterprise scale."
+    },
+    "zakra": {
+      "name": "Zakra",
+      "menuDescription": "Smart knowledge agent for instant answers."
+    },
+    "jawib": {
+      "name": "Jawib",
+      "menuDescription": "24/7 AI customer service agent."
+    },
+    "fasih": {
+      "name": "Fasih",
+      "menuDescription": "Native Arabic LLM with dialect support."
+    }
+  },
+  "CaseStudy": {
+    "list": {
+      "heroTitle": "Creative Case",
+      "heroTagline": "Study",
+      "subtitle": "Where Innovation Meets Productivity Driven by agents Powered by automation Built for what's next",
+      "empty": "No case studies available yet.",
+      "featured": "Featured",
+      "viewDetails": "View Details",
+      "ariaLabel": "Case studies"
+    },
+    "detail": {
+      "loading": "Loading case study",
+      "loadingSubtitle": "Fetching case study details",
+      "updating": "Updating content…",
+      "error": "Unable to load case study",
+      "readMore": "Read More",
+      "showLess": "Show Less"
+    },
+    "metadata": {
+      "listTitle": "Case Study",
+      "listDescription": "Explore real-world implementations of ESAP AI solutions. Discover how we transform businesses through innovative AI solutions and intelligent automation.",
+      "notFoundTitle": "Case Study Not Found",
+      "notFoundDescription": "The requested case study could not be found."
+    }
+  },
+  "Metrics": {
+    "Time Savings": "Time Savings",
+    "User Satisfaction": "User Satisfaction",
+    "Productivity Increase": "Productivity Increase",
+    "Developer Satisfaction": "Developer Satisfaction",
+    "Faster Development": "Faster Development",
+    "Uptime": "Uptime",
+    "Faster Information Retrieval": "Faster Information Retrieval",
+    "Answer Accuracy": "Answer Accuracy",
+    "Time Saved": "Time Saved",
+    "First Contact Resolution": "First Contact Resolution",
+    "Average Response Time": "Average Response Time",
+    "Customer Satisfaction": "Customer Satisfaction",
+    "Arabic Text Accuracy": "Arabic Text Accuracy",
+    "Dialects Supported": "Dialects Supported",
+    "Arabic Tokens Trained": "Arabic Tokens Trained"
+  }
+}

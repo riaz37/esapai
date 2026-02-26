@@ -9,7 +9,13 @@ import { Section } from "@/components/ui/section";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function TextRevealSection() {
+export interface TextRevealSectionProps {
+    text?: string;
+}
+
+export function TextRevealSection({
+    text = "Forging the intelligence layer of tomorrow. Unlocking limitless potential."
+}: TextRevealSectionProps = {}) {
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLHeadingElement>(null);
 
@@ -97,8 +103,6 @@ export function TextRevealSection() {
         { scope: containerRef }
     );
 
-    const text =
-        "Forging the intelligence layer of tomorrow. Unlocking limitless potential.";
     const wordsArray = text.split(" ");
     const highlightIndices = [2, 3, 7, 8];
     const wordsWithKeys = wordsArray.map((word, pos) => ({
@@ -123,7 +127,7 @@ export function TextRevealSection() {
                         <span
                             key={item.key}
                             className={cn(
-                                "word inline-block mr-[0.2em] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white/10",
+                                "word inline-block me-[0.2em] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white/10",
                                 item.isHighlight && "highlight"
                             )}
                         >

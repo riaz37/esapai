@@ -11,17 +11,34 @@ import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import Box from "@/components/shared/box";
 import { SectionMask } from "@/components/ui/section-mask";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { HeroBadge } from "@/components/ui/hero-badge";
-
-
+export interface HeroProps {
+    title?: string;
+    subtitle?: string;
+    badgePill?: string;
+    badgeDescription?: string;
+    ctaButtonText?: string;
+    ctaButtonHref?: string;
+}
 
 const Circle = dynamic(() => import("./circle"), {
     ssr: false,
-    loading: () => <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+    loading: () => <div className="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2" />
 });
 
-export function Hero() {
+export function Hero({
+    title,
+    subtitle,
+    badgePill,
+    badgeDescription,
+    ctaButtonText,
+    ctaButtonHref = "/contact"
+}: HeroProps) {
+    const displayTitle = title || "";
+    const displaySubtitle = subtitle || "";
+    const displayCtaText = ctaButtonText || "";
+
     const sectionRef = useRef<HTMLElement>(null);
     // backdropRef removed
     const circleContainerRef = useRef<HTMLDivElement>(null);
@@ -231,14 +248,18 @@ export function Hero() {
                 {/* Main Content Wrapper - Targets Scroll Fade Out */}
                 <div ref={contentScrollRef} className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-8 md:py-12 lg:py-16 flex flex-col items-center text-center">
                     {/* Tagline Badge */}
-                    <HeroBadge ref={badgeRef} />
+                    <HeroBadge
+                        ref={badgeRef}
+                        pillText={badgePill ?? ""}
+                        description={badgeDescription ?? ""}
+                    />
 
                     {/* Main Title - Kinetic Typography */}
                     <div className="hero-main-title w-full max-w-[1400px] mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 overflow-hidden">
                         <TypewriterTitle
-                            title="AI-Powered Solutions"
+                            title={displayTitle.split(" / ")[0] || displayTitle}
                             splitMode="secondLine"
-                            secondLine="For Modern Enterprises"
+                            secondLine={displayTitle.split(" / ")[1]}
                             className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 sm:mb-3 md:mb-4 leading-none w-full"
                             align="center"
                             mainTextClassName="mt-1 sm:mt-2"
@@ -252,11 +273,11 @@ export function Hero() {
                         ref={subtitleRef}
                         className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/70 max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized"
                     >
-                        <p>
-                            Transform your business with intelligent automation, voice-activated
-                            systems,
-                        </p>
-                        <p>and AI agents that drive productivity and innovation</p>
+                        {displaySubtitle.includes("\n") ? (
+                            displaySubtitle.split("\n").map((line, i) => <p key={i}>{line}</p>)
+                        ) : (
+                            <p>{displaySubtitle}</p>
+                        )}
                     </div>
 
                     {/* CTA Button */}
@@ -267,8 +288,8 @@ export function Hero() {
                         className="gsap-scale-in-optimized"
                         asChild
                     >
-                        <Link href="/contact" className="inline-flex items-center gap-2 group">
-                            <span>Get Started</span>
+                        <Link href={ctaButtonHref} className="inline-flex items-center gap-2 group">
+                            <span>{displayCtaText}</span>
                             <ButtonArrow size="default" />
                         </Link>
                     </Button>

@@ -3,6 +3,7 @@ import { LazySection } from "@/components/ui/lazy-section";
 import { SectionMask } from "@/components/ui/section-mask";
 import { Hero } from "@/components/features/home/hero";
 import { generateHomeMetadata } from "@/lib/seo/metadata";
+import { getHomePage } from "@/lib/sanity/queries";
 import dynamic from "next/dynamic";
 
 export const metadata: Metadata = generateHomeMetadata();
@@ -42,29 +43,56 @@ const TechnologyExcellenceSection = dynamic(
   () => import("@/components/features/home/sections/technology-excellence").then((mod) => ({ default: mod.TechnologyExcellence })),
 );
 
-export default function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+
+  // Fetch CMS data — falls back to component defaults if null
+  const data = await getHomePage(locale).catch(() => null);
+
   return (
     <main className="relative">
 
-      <Hero />
+      <Hero
+        title={data?.heroTitle}
+        subtitle={data?.heroSubtitle}
+        badgePill={data?.heroBadgePill}
+        badgeDescription={data?.heroBadgeDescription}
+        ctaButtonText={data?.ctaButtonText}
+        ctaButtonHref={data?.ctaButtonHref}
+      />
 
 
 
       {/* Portal Reveal Target: Technology Excellence */}
       <LazySection minHeight="400px">
-        <TechnologyExcellenceSection />
+        <TechnologyExcellenceSection
+          title={data?.technologyTitle}
+          subtitle={data?.technologySubtitle}
+          badge={data?.technologyBadge}
+          cards={data?.technologyCards}
+        />
       </LazySection>
 
       {/* Trusted Partners Ticker */}
-      <TrustedPartnersSection />
+      <TrustedPartnersSection partners={data?.partners} />
 
       {/* Mission Section - Now with proper scroll room */}
       <LazySection minHeight="400px">
-        <MissionSection />
+        <MissionSection
+          title={data?.missionTitle}
+          subtitle={data?.missionSubtitle}
+          badge={data?.missionBadge}
+          cards={data?.missionCards}
+        />
       </LazySection>
 
       <LazySection minHeight="600px">
-        <ServiceSection />
+        <ServiceSection
+          title={data?.servicesTitle}
+          subtitle={data?.servicesSubtitle}
+          badge={data?.servicesBadge}
+          services={data?.services}
+        />
       </LazySection>
 
       <LazySection minHeight="600px">
@@ -72,18 +100,27 @@ export default function Home() {
       </LazySection>
 
       <LazySection minHeight="120vh">
-        <TextRevealSection />
+        <TextRevealSection text={data?.textRevealContent} />
       </LazySection>
 
 
 
       <LazySection minHeight="400px">
-        <AchievementSection />
+        <AchievementSection
+          title={data?.achievementsTitle}
+          subtitle={data?.achievementsSubtitle}
+          badge={data?.achievementsBadge}
+          achievements={data?.achievements}
+        />
       </LazySection>
 
       <LazySection minHeight="600px">
-        <CTASection />
+        <CTASection
+          title={data?.ctaTitle}
+          subtitle={data?.ctaSubtitle}
+        />
       </LazySection>
     </main>
   );
 }
+

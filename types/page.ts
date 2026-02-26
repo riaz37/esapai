@@ -19,6 +19,7 @@ export interface ServiceSlugPageProps {
 export interface CaseStudySlugPageProps {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 }
 
@@ -34,6 +35,7 @@ export interface ServicePageClientProps {
 
 export interface CaseStudyPageClientProps {
   slug: string;
+  locale: string;
   initialCaseStudy: import("./case-study").CaseStudyWithUrls;
 }
 

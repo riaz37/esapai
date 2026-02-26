@@ -14,8 +14,8 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
       {/* Hero Section */}
       <section className="relative min-h-[40vh] sm:min-h-[45vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden bg-dark pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pb-20">
         {/* Subtle gradient overlay */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[800px] bg-gradient-to-b from-primary via-primary/10 to-transparent opacity-20 blur-3xl" />
+        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-full h-full max-w-4xl pointer-events-none">
+          <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[600px] h-[800px] bg-gradient-to-b from-primary via-primary/10 to-transparent opacity-20 blur-3xl" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8">
@@ -35,8 +35,8 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
       <section className="relative bg-dark pb-20 md:pb-32">
         {/* Subtle background gradient */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-5xl">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[1200px] bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-30 blur-3xl" />
+          <div className="absolute top-0 start-1/2 -translate-x-1/2 w-full h-full max-w-5xl">
+            <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[1200px] bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-30 blur-3xl" />
           </div>
         </div>
 
@@ -56,8 +56,8 @@ export function LegalSection({ title, children }: LegalSectionProps) {
   return (
     <div className="space-y-4 sm:space-y-5 md:space-y-6 relative">
       {/* Section divider line */}
-      <div className="absolute -top-4 sm:-top-5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      
+      <div className="absolute -top-4 sm:-top-5 start-0 end-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
       <div className="space-y-4 sm:space-y-5">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 sm:mb-5 md:mb-6 leading-tight">
           {title}
@@ -81,9 +81,9 @@ export function LegalParagraph({ children }: LegalParagraphProps) {
 export function LegalList({ items, ordered = false }: LegalListProps) {
   const ListTag = ordered ? "ol" : "ul";
   return (
-    <ListTag className={`${ordered ? "list-decimal" : "list-disc"} ml-5 sm:ml-6 md:ml-8 space-y-2 sm:space-y-3 text-sm sm:text-base text-light-gray-90 leading-relaxed`}>
+    <ListTag className={`${ordered ? "list-decimal" : "list-disc"} ms-5 sm:ms-6 md:ms-8 space-y-2 sm:space-y-3 text-sm sm:text-base text-light-gray-90 leading-relaxed`}>
       {items.map((item) => (
-        <li key={item} className="pl-1.5 sm:pl-2 md:pl-3 relative">
+        <li key={item} className="ps-1.5 sm:ps-2 md:ps-3 relative">
           <span className="relative z-10">{item}</span>
         </li>
       ))}

@@ -19,6 +19,19 @@ export interface PerformanceMetric {
   label: string;
 }
 
+export interface CinematicProblemText {
+  title: string;
+  description: string;
+  solTitle: string;
+  solDesc: string;
+  solImpact: string;
+}
+
+export interface JourneyLayer {
+  title: string;
+  nodes: string[];
+}
+
 export interface ProductContent {
   hero?: {
     subtitle?: string[];
@@ -51,6 +64,50 @@ export interface ProductContent {
     subtitle?: string;
     features?: { title: string; description: string; className?: string }[];
     className?: string;
+  };
+  exploreButton?: string;
+  outcomes?: {
+    title?: string;
+    badge?: string;
+  };
+  demo?: {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+  };
+  cta?: {
+    title?: string;
+    subtitle?: string;
+    buttonText?: string;
+  };
+  architecture?: {
+    title?: string;
+    badge?: string;
+    subtitle?: string;
+    reelImages?: string[];
+  };
+  cinematic?: {
+    challenges?: {
+      badge?: string;
+      titlePart1?: string;
+      titlePart2?: string;
+      subtitle?: string;
+    };
+    narrative?: {
+      introLine?: string;
+      problemsIntroLine?: string;
+      epiphanyPreLine?: string;
+      solutionIntroLine?: string;
+      recapLine?: string;
+    };
+    problems?: CinematicProblemText[];
+  };
+  journey?: {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    stages?: string[];
+    layers?: JourneyLayer[];
   };
 }
 

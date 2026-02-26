@@ -4,7 +4,7 @@ import React from "react";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { BadgeChip } from "@/components/ui/badge-chip";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import dynamic from "next/dynamic";
 import { m } from "motion/react";
 import type { GlobeConfig } from "@/components/ui/globe";
@@ -120,7 +120,7 @@ export function ServiceHero({ title, tagline, subtitle, className }: ServiceHero
       <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
 
         {/* Left Side: Content */}
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left max-w-2xl relative z-20">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-start max-w-2xl relative z-20">
           {typeof title === "string" ? (
             <TypewriterTitle
               title={title}
@@ -133,7 +133,7 @@ export function ServiceHero({ title, tagline, subtitle, className }: ServiceHero
               letterDuration={0.3}
             />
           ) : (
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-center lg:text-left leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 text-center lg:text-start leading-none">
               {title}
             </h1>
           )}
@@ -183,7 +183,7 @@ export function ServiceHero({ title, tagline, subtitle, className }: ServiceHero
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.4 }}
-            className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] md:-mr-20 lg:-mr-32"
+            className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] md:-me-20 lg:-me-32"
           >
 
 

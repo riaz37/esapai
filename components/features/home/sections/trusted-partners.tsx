@@ -5,12 +5,13 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const PARTNERS = [
+const DEFAULT_PARTNERS = [
     { logo: "/partners/EMp.svg", alt: "Partner 1" },
     { logo: "/partners/EMp-1.svg", alt: "Partner 2" },
     { logo: "/partners/EMp-2-1.svg", alt: "Partner 3" },
@@ -19,12 +20,21 @@ const PARTNERS = [
     { logo: "/partners/EMp-5.svg", alt: "Partner 6" },
 ];
 
-const MARQUEE_PARTNERS = [
-    ...PARTNERS.map((p) => ({ ...p, id: `a-${p.logo}` })),
-    ...PARTNERS.map((p) => ({ ...p, id: `b-${p.logo}` })),
-];
+export interface PartnerData {
+    logo: string;
+    alt?: string;
+}
 
-export function TrustedPartners() {
+export interface TrustedPartnersProps {
+    partners?: PartnerData[];
+}
+
+export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartnersProps) {
+    const t = useTranslations("Common"); // I'll add a 'Common' key for 'Partner' if needed, or just use it.
+    const MARQUEE_PARTNERS = [
+        ...partners.map((p, i) => ({ ...p, id: `a-${p.logo}`, alt: p.alt || `Partner ${i + 1}` })),
+        ...partners.map((p, i) => ({ ...p, id: `b-${p.logo}`, alt: p.alt || `Partner ${i + 1}` })),
+    ];
     const sectionRef = useRef<HTMLElement>(null);
     const marqueeRef = useRef<HTMLDivElement>(null);
 
@@ -106,7 +116,7 @@ export function TrustedPartners() {
 
                                 <Image
                                     src={partner.logo}
-                                    alt={partner.alt}
+                                    alt={partner.alt || ""}
                                     fill
                                     className="object-contain opacity-40 brightness-0 invert group-hover/partner:opacity-100 group-hover/partner:brightness-100 group-hover/partner:scale-110 transition-all duration-500 ease-out"
                                     sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"

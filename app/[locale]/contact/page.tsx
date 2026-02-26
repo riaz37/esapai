@@ -3,6 +3,7 @@ import { ContactSection } from "@/components/features/contact/contact-section";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
+import { getContactPage } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = generatePageMetadata({
   title: "Contact Us",
@@ -11,7 +12,10 @@ export const metadata: Metadata = generatePageMetadata({
   path: "/contact",
 });
 
-export default function ContactPage() {
+export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const data = await getContactPage(locale).catch(() => null);
+
   const structuredData = [
     generateBreadcrumbSchema([
       { name: "Home", url: "/" },
@@ -28,4 +32,3 @@ export default function ContactPage() {
     </>
   );
 }
-

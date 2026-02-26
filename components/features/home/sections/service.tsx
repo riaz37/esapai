@@ -15,48 +15,30 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+export interface ServiceItemData {
+  id?: string;
+  title: string;
+  description: string;
+  image?: string;
+}
 
-// --- Data ---
-const SERVICES = [
-  {
-    id: "agentic",
-    title: "Agentic AI Integration",
-    description: "Seamlessly integrate autonomous agents into your workflow to automate complex decision-making processes.",
-    image: "/bentogird/agenticai.svg",
-  },
-  {
-    id: "strategy",
-    title: "Enterprise Strategy",
-    description: "Tailored AI roadmaps designed to align with your business goals and drive long-term digital transformation.",
-    image: "/bentogird/enterprise.svg",
-  },
-  {
-    id: "faas",
-    title: "FaaS Infrastructure",
-    description: "Managed infrastructure for AI Agent Framework-as-a-Service, ensuring scalability and peak performance.",
-    image: "/bentogird/faas.svg",
-  },
-  {
-    id: "tailored",
-    title: "Tailored Solutions",
-    description: "Bespoke AI systems built from the ground up to solve your unique operational challenges and industry needs.",
-    image: "/bentogird/aisolution.svg",
-  },
-  {
-    id: "industry",
-    title: "Industry Excellence",
-    description: "Leveraging domain-specific expertise to deploy AI solutions that exceed industry standards for security and reliability.",
-    image: "/bentogird/industry.svg",
-  },
-  {
-    id: "lab",
-    title: "Innovation Lab",
-    description: "Continuous research and rapid prototyping of cutting-edge AI technologies to keep your enterprise ahead of the curve.",
-    image: "/bentogird/ailab.svg",
-  },
-];
+export interface ServiceProps {
+  title?: string;
+  subtitle?: string;
+  badge?: string;
+  services?: ServiceItemData[];
+}
 
-export function Service() {
+export function Service({
+  title,
+  subtitle,
+  badge,
+  services,
+}: ServiceProps = {}) {
+  const displayServices = services || [];
+  const displayTitle = title || "";
+  const displaySubtitle = subtitle || "";
+  const displayBadge = badge || "";
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -128,9 +110,9 @@ export function Service() {
       className={cn("relative w-full bg-transparent z-20 overflow-hidden")}
     >
       <SectionHeader
-        title="Focus on Growth"
-        subtitle="Explore our comprehensive suite of AI solutions designed to transform your enterprise."
-        badge="Our Solutions"
+        title={displayTitle}
+        subtitle={displaySubtitle}
+        badge={displayBadge}
         badgeIcon={Cpu}
         align="center"
       />
@@ -141,8 +123,8 @@ export function Service() {
           {/* Big Card on the Left (Spans 2 rows) */}
           <div className="service-card-wrapper md:row-span-2 h-full">
             <ServiceCard
-              title={SERVICES[0].title}
-              description={SERVICES[0].description}
+              title={displayServices[0]?.title || ""}
+              description={displayServices[0]?.description || ""}
               className="h-full min-h-[400px] md:min-h-[740px]"
             />
           </div>
@@ -150,8 +132,8 @@ export function Service() {
           {/* Right Column - Top Left (Split) */}
           <div className="service-card-wrapper h-full">
             <ServiceCard
-              title={SERVICES[1].title}
-              description={SERVICES[1].description}
+              title={displayServices[1]?.title || ""}
+              description={displayServices[1]?.description || ""}
               className="h-full min-h-[360px]"
             />
           </div>
@@ -159,8 +141,8 @@ export function Service() {
           {/* Right Column - Top Right (Split) */}
           <div className="service-card-wrapper h-full">
             <ServiceCard
-              title={SERVICES[2].title}
-              description={SERVICES[2].description}
+              title={displayServices[2]?.title || ""}
+              description={displayServices[2]?.description || ""}
               className="h-full min-h-[360px]"
             />
           </div>
@@ -168,8 +150,8 @@ export function Service() {
           {/* Right Column - Bottom Card (Spans 2 columns of the right side) */}
           <div className="service-card-wrapper md:col-span-2 h-full">
             <ServiceCard
-              title={SERVICES[3].title}
-              description={SERVICES[3].description}
+              title={displayServices[3]?.title || ""}
+              description={displayServices[3]?.description || ""}
               className="h-full min-h-[360px]"
             />
           </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getCaseStudyBySlug, getCaseStudies } from "@/lib/case-studies";
 import { CaseStudyPage } from "@/components/features/case-studies/pages/case-study-page";
 import { generateCaseStudyMetadata } from "@/lib/seo/metadata";
@@ -9,7 +10,7 @@ import { StructuredDataComponent } from "@/components/seo/structured-data";
 import type { CaseStudySlugPageProps } from "@/types/page";
 
 export async function generateStaticParams() {
-  const caseStudies = await getCaseStudies();
+  const caseStudies = await getCaseStudies("en");
   return caseStudies.map((caseStudy) => ({
     slug: caseStudy.slug,
   }));
@@ -18,13 +19,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: CaseStudySlugPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const caseStudy = await getCaseStudyBySlug(slug);
+  const { slug, locale } = await params;
+  const caseStudy = await getCaseStudyBySlug(slug, locale);
 
   if (!caseStudy) {
+    const t = await getTranslations({ locale, namespace: "CaseStudy.metadata" });
     return {
-      title: "Case Study Not Found",
-      description: "The requested case study could not be found.",
+      title: t("notFoundTitle"),
+      description: t("notFoundDescription"),
     };
   }
 
@@ -42,8 +44,8 @@ export async function generateMetadata({
 }
 
 export default async function CaseStudySlugPage({ params }: CaseStudySlugPageProps) {
-  const { slug } = await params;
-  const caseStudy = await getCaseStudyBySlug(slug);
+  const { slug, locale } = await params;
+  const caseStudy = await getCaseStudyBySlug(slug, locale);
 
   if (!caseStudy) {
     notFound();
@@ -77,7 +79,7 @@ export default async function CaseStudySlugPage({ params }: CaseStudySlugPagePro
     <>
       <StructuredDataComponent data={structuredData} />
       <main className="relative">
-        <CaseStudyPage slug={slug} initialCaseStudy={caseStudy} />
+        <CaseStudyPage slug={slug} locale={locale} initialCaseStudy={caseStudy} />
       </main>
     </>
   );

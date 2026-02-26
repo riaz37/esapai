@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, memo } from "react";
-import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
+import { Link, useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { m } from "motion/react";
@@ -30,6 +31,7 @@ interface CaseStudyCardProps {
 }
 
 export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProps) {
+  const t = useTranslations("CaseStudy.list");
   const sectionRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -80,13 +82,13 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         {/* Unified Content Container */}
         <div className="relative z-10 w-full">
           {/* Hero Content */}
-          <div className="text-left mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
+          <div className="text-start mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
             <TypewriterTitle
-              title="Creative Case"
-              tagline="Study"
+              title={t("heroTitle")}
+              tagline={t("heroTagline")}
               splitMode="manual"
               highlightPart="last"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 pl-2"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 ps-2"
               align="left"
               staggerDelay={0.02}
               letterDuration={0.4}
@@ -98,8 +100,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
               transition={{ duration: 0.7, delay: 0.5 }}
               className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl font-normal leading-relaxed"
             >
-              Where Innovation Meets Productivity Driven by agents Powered by
-              automation Built for what&apos;s next
+              {t("subtitle")}
             </m.p>
           </div>
 
@@ -110,7 +111,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
                 ref={cardsContainerRef}
                 className="w-full"
                 role="list"
-                aria-label="Case studies"
+                aria-label={t("ariaLabel")}
               >
                 {caseStudies.map((caseStudy, index) => (
                   <CaseStudyCard
@@ -127,10 +128,9 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
                 className="text-center py-16"
                 role="status"
                 aria-live="polite"
-                aria-label="No case studies available"
               >
                 <p className="text-lg text-light-gray-90 mb-6">
-                  No case studies available yet.
+                  {t("empty")}
                 </p>
               </div>
             )}
@@ -148,6 +148,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
  */
 const CaseStudyCard = memo(
   ({ caseStudy, index, onImageError, imageErrors }: CaseStudyCardProps) => {
+    const t = useTranslations("CaseStudy.list");
     const thumbnail = caseStudy.thumbnail ?? caseStudy.heroImages?.[0];
     const displayTags = (caseStudy.tags ?? []).slice(0, 3);
     const excerpt =
@@ -190,7 +191,7 @@ const CaseStudyCard = memo(
                 WebkitBackdropFilter: "blur(8px)",
               }}
             >
-              Featured
+              {t("featured")}
             </span>
           </div>
         )}
@@ -250,12 +251,12 @@ const CaseStudyCard = memo(
               {excerpt}
             </p>
 
-            <Button variant="primary" asChild className="pl-4 pr-1.5">
+            <Button variant="primary" asChild className="ps-4 pe-1.5">
               <Link
                 href={`/case-study/${caseStudy.slug}`}
                 className="inline-flex items-center gap-2 group w-fit"
               >
-                <span>View Details</span>
+                <span>{t("viewDetails")}</span>
                 <ButtonArrow size="default" />
               </Link>
             </Button>
