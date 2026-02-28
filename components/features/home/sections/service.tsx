@@ -153,6 +153,8 @@ export function Service({
               title={displayServices[3]?.title || ""}
               description={displayServices[3]?.description || ""}
               className="h-full min-h-[360px]"
+              videoSrc="/testing.mp4"
+              imageSrc="/tetsing.png"
             />
           </div>
         </div>

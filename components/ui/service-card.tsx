@@ -9,15 +9,21 @@ interface ServiceCardProps {
     title: string;
     description: string;
     className?: string;
+    videoSrc?: string;
+    imageSrc?: string;
 }
 
 export function ServiceCard({
     title,
     description,
     className,
+    videoSrc,
+    imageSrc,
 }: ServiceCardProps) {
     const cardRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+    const [isHovered, setIsHovered] = React.useState(false);
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = cardRef.current;
@@ -43,7 +49,22 @@ export function ServiceCard({
         });
     };
 
-    const onMouseLeave = () => {
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => {
+                // Ignore auto-play errors
+            });
+        }
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+        }
+
         if (!cardRef.current) return;
         gsap.to(cardRef.current, {
             rotateX: 0,
@@ -59,7 +80,8 @@ export function ServiceCard({
             ref={cardRef}
             className={cn("perspective-[1000px] h-full", className)}
             onMouseMove={onMouseMove}
-            onMouseLeave={onMouseLeave}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <Card
                 ref={contentRef}
@@ -67,9 +89,38 @@ export function ServiceCard({
                     "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transition-all duration-300 border-none bg-zinc-950",
                 )}
             >
+                {/* Background Media */}
+                <div className="absolute inset-0 z-0">
+                    {/* Fallback/Default Image */}
+                    {imageSrc && (
+                        <div
+                            className={cn(
+                                "absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-500",
+                                isHovered && videoSrc ? "opacity-0" : "opacity-100"
+                            )}
+                            style={{ backgroundImage: `url(${imageSrc})` }}
+                        />
+                    )}
+
+                    {/* Hover Video */}
+                    {videoSrc && (
+                        <video
+                            ref={videoRef}
+                            src={videoSrc}
+                            loop
+                            muted
+                            playsInline
+                            className={cn(
+                                "absolute inset-0 w-full h-full object-cover mix-blend-screen transition-opacity duration-500",
+                                isHovered ? "opacity-90" : "opacity-0"
+                            )}
+                        />
+                    )}
+                </div>
+
                 {/* Visual/Illustration Area */}
-                <div className="relative flex-1 min-h-[160px] z-0 flex items-center justify-center overflow-hidden">
-                    <div className="absolute inset-0 bg-primary/2 blur-[80px] rounded-full opacity-50" />
+                <div className="relative flex-1 min-h-[160px] z-10 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/2 blur-[80px] rounded-full opacity-50 z-0" />
 
                     {/* Light Sweep/Shimmer Effect */}
                     <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
@@ -78,11 +129,11 @@ export function ServiceCard({
                 </div>
 
                 {/* Content Area */}
-                <div className="p-6 pt-4 relative z-40 pointer-events-none">
-                    <h3 className="text-xl md:text-2xl font-semibold text-white mb-2">
+                <div className="p-6 pt-4 relative z-40 pointer-events-none bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent">
+                    <h3 className="text-xl md:text-2xl font-semibold text-white mb-2 relative z-10">
                         {title}
                     </h3>
-                    <p className="text-base text-white/60 leading-relaxed">
+                    <p className="text-base text-white/60 leading-relaxed relative z-10">
                         {description}
                     </p>
                 </div>
