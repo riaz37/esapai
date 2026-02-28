@@ -19,7 +19,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
     return (
         <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
             {/* Main Content Grid - Refined for mobile balance */}
-            <div className={`container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col ${isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"} items-center justify-center lg:justify-between relative h-full gap-4 lg:gap-8 z-10 max-w-[1400px] pt-20 sm:pt-32 lg:pt-40`}>
+            <div className={`container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col ${isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"} items-center justify-center lg:justify-between relative h-full gap-4 lg:gap-8 z-10 max-w-[1400px] pt-20 md:pt-32`}>
 
                 {/* Details Block */}
                 <div className={`w-full lg:w-1/2 flex flex-col justify-center pointer-events-auto items-start text-start`}>

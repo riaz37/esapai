@@ -45,8 +45,8 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
   return (
     <Section
       withContainer={false}
-      padding="md"
-      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      padding="none"
+      className="relative min-h-[90vh] flex items-center pt-28 pb-16 md:pt-32 md:pb-24 overflow-hidden"
     >
       <div className="relative z-10 w-full max-w-[1400px] mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
