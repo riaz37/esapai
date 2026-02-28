@@ -43,65 +43,101 @@ export function Service({
   const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (!gridRef.current) return;
+
     const mm = gsap.matchMedia();
 
+    // Sync GSAP breakpoints with Tailwind (md: 768px)
     mm.add({
-      isDesktop: "(min-width: 1024px)",
-      isMobile: "(max-width: 1023px)",
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)",
     }, (context) => {
-      const { isMobile } = context.conditions as any;
+      const { isDesktop } = context.conditions as any;
       const cards = gsap.utils.toArray(gridRef.current!.querySelectorAll(".service-card-wrapper"));
 
       cards.forEach((card: any, i) => {
         let entryX = 0;
-        let entryY = 30;
+        let entryY = 80; // Default rise from below
         let rotateY = 0;
 
-        if (!isMobile) {
-          // Large card on left
+        if (isDesktop) {
+          // Large card on left: Come from further left
           if (i === 0) {
-            entryX = -40;
-            rotateY = 15;
+            entryX = -100;
+            entryY = 0;
+            rotateY = 20;
           }
-          // Top cards
+          // Top right split cards: Rise slightly and tilt
           else if (i === 1 || i === 2) {
-            entryY = -20;
-            rotateY = i === 1 ? -5 : 5;
+            entryY = 100;
+            rotateY = i === 1 ? -15 : 15;
           }
-          // Bottom wide card
+          // Bottom wide card: Consistent rise
           else if (i === 3) {
-            entryY = 40;
-            rotateY = -10;
+            entryY = 120;
+            rotateY = -8;
           }
         }
 
         gsap.fromTo(card,
           {
             opacity: 0,
-            x: isMobile ? 0 : entryX,
-            y: isMobile ? 40 : entryY,
-            rotateY: isMobile ? 0 : rotateY,
-            scale: 0.9,
+            x: isDesktop ? entryX : 0,
+            y: isDesktop ? entryY : 60,
+            rotateY: isDesktop ? rotateY : 0,
+            scale: 0.85,
           },
           {
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
-              end: "top 55%",
-              scrub: 1,
+              // For top cards, wait until they are deeper in screen (away from header)
+              // For bottom "perfect" card (3), keep entering as it crosses the bottom fold
+              start: i < 3 ? "top 75%" : "top 95%",
+              end: i < 3 ? "top 25%" : "top 45%",
+              scrub: 2.5, // High damping for weighted, deliberate motion
               invalidateOnRefresh: true,
+              toggleActions: "play none none reverse",
             },
             opacity: 1,
             x: 0,
             y: 0,
             rotateY: 0,
             scale: 1,
-            ease: "power2.out",
+            ease: "expo.out",
           }
         );
       });
     });
-  }, { scope: sectionRef });
+
+    return () => mm.revert();
+  }, { scope: sectionRef, dependencies: [displayServices] });
+
+  // Helper to get grid classes based on index
+  const getGridClasses = (index: number) => {
+    switch (index) {
+      case 0:
+        return "md:row-span-2 h-full";
+      case 1:
+      case 2:
+        return "h-full";
+      case 3:
+        return "md:col-span-2 h-full";
+      default:
+        return "h-full";
+    }
+  };
+
+  // Helper to get specific card styles/props
+  const getCardProps = (index: number, service: ServiceItemData) => {
+    const isTailored = service.title.toLowerCase().includes("tailored") || index === 3;
+    if (isTailored) {
+      return {
+        videoSrc: "/testing.mp4",
+        imageSrc: "/tetsing.png",
+      };
+    }
+    return {};
+  };
 
   return (
     <Section
@@ -117,48 +153,28 @@ export function Service({
         align="center"
       />
 
-      {/* Bento Grid with synced wireframe */}
+      {/* Bento Grid with dynamic mapping */}
       <div ref={gridRef} className="relative w-full">
-        <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(360px,auto)]">
-          {/* Big Card on the Left (Spans 2 rows) */}
-          <div className="service-card-wrapper md:row-span-2 h-full">
-            <ServiceCard
-              title={displayServices[0]?.title || ""}
-              description={displayServices[0]?.description || ""}
-              className="h-full min-h-[400px] md:min-h-[740px]"
-            />
-          </div>
-
-          {/* Right Column - Top Left (Split) */}
-          <div className="service-card-wrapper h-full">
-            <ServiceCard
-              title={displayServices[1]?.title || ""}
-              description={displayServices[1]?.description || ""}
-              className="h-full min-h-[360px]"
-            />
-          </div>
-
-          {/* Right Column - Top Right (Split) */}
-          <div className="service-card-wrapper h-full">
-            <ServiceCard
-              title={displayServices[2]?.title || ""}
-              description={displayServices[2]?.description || ""}
-              className="h-full min-h-[360px]"
-            />
-          </div>
-
-          {/* Right Column - Bottom Card (Spans 2 columns of the right side) */}
-          <div className="service-card-wrapper md:col-span-2 h-full">
-            <ServiceCard
-              title={displayServices[3]?.title || ""}
-              description={displayServices[3]?.description || ""}
-              className="h-full min-h-[360px]"
-              videoSrc="/testing.mp4"
-              imageSrc="/tetsing.png"
-            />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(330px,auto)] md:auto-rows-[minmax(360px,auto)]">
+          {displayServices.slice(0, 4).map((service, index) => (
+            <div
+              key={service.id || service.title}
+              className={cn("service-card-wrapper", getGridClasses(index))}
+            >
+              <ServiceCard
+                title={service.title}
+                description={service.description}
+                className={cn(
+                  "h-full min-h-[330px]",
+                  index === 0 && "md:min-h-[740px]"
+                )}
+                {...getCardProps(index, service)}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </Section>
   );
 }
+
