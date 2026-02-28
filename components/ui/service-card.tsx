@@ -89,6 +89,7 @@ export function ServiceCard({
                     "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transition-all duration-300 border-none bg-zinc-950",
                 )}
             >
+
                 {/* Background Media */}
                 <div className="absolute inset-0 z-0">
                     {/* Fallback/Default Image */}
@@ -129,7 +130,7 @@ export function ServiceCard({
                 </div>
 
                 {/* Content Area */}
-                <div className="p-6 pt-4 relative z-40 pointer-events-none bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent">
+                <div className="p-6 pt-12 relative z-40 pointer-events-none mt-auto">
                     <h3 className="text-xl md:text-2xl font-semibold text-white mb-2 relative z-10">
                         {title}
                     </h3>
@@ -137,6 +138,14 @@ export function ServiceCard({
                         {description}
                     </p>
                 </div>
+
+                {/* Shadow Overlay - Restores the inset shadow from base Card on top of everything */}
+                <div
+                    className="pointer-events-none absolute inset-0 z-50 rounded-[32px] transition-opacity duration-300"
+                    style={{
+                        boxShadow: "0px 4px 60px 15px rgba(255, 255, 255, 0.1) inset, 0px 1px 1px 0px rgba(255, 255, 255, 0.1) inset",
+                    }}
+                />
             </Card>
         </div>
     );
