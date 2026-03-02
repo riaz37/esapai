@@ -35,14 +35,13 @@ export const LogoBootSequence = () => {
         position: 'relative',
         width: '100%',
         height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: 'grid',
+        placeItems: 'center',
     };
 
     const imageBaseStyle: React.CSSProperties = {
-        position: 'absolute',
-        width: '200px', // Adjust size as needed
+        gridArea: '1 / 1',
+        width: '200px',
         height: 'auto',
         objectFit: 'contain',
     };

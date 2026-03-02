@@ -3,8 +3,10 @@
 
 import { m, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/routing";
 import dynamic from "next/dynamic";
+
+import { useTranslations } from "next-intl";
 
 // Dynamically import Remotion Player wrapper to defer ~608KB from initial bundle
 const RemotionPlayerWrapper = dynamic(
@@ -76,6 +78,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 export function IntroLoader({ children }: IntroLoaderProps) {
+    const t = useTranslations("Loading");
     const pathname = usePathname();
     const isHomePage = pathname === "/";
     const [isLoading, setIsLoading] = useState(isHomePage);
@@ -112,6 +115,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                             }
                         }}
                         className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-[#050505]"
+                        dir="ltr"
                     >
                         {/* Cinematic Grain Overlay - Static noise for better color accuracy */}
                         {/* Inline SVG grain — no external network request */}
@@ -179,7 +183,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
                                 className="text-xl md:text-2xl font-semibold uppercase text-white/90 text-center ms-[1em]"
                             >
-                                <ScrambleText text="ESAP AI" delay={1} />
+                                <ScrambleText text={t("introTitle")} delay={1} />
                             </m.h1>
 
                             <m.div
@@ -189,7 +193,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 className="flex flex-col items-center gap-3"
                             >
                                 <div className="text-xs uppercase tracking-widest text-white/30 ms-2">
-                                    <ScrambleText text="The Vanguard of Intelligence" delay={2} />
+                                    <ScrambleText text={t("introTagline")} delay={2} />
                                 </div>
 
                                 {/* Performance-neutral breathing indicator */}

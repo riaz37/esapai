@@ -6,11 +6,14 @@
     "service": "الخدمات",
     "case-study": "دراسات الحالة",
     "contact": "اتصل بنا",
-    "getStarted": "ابدأ الآن"
+    "getStarted": "ابدأ الآن",
+    "language": "اللغة"
   },
   "Loading": {
     "message": "نجهز تجربتك",
-    "subMessage": "تحميل الذكاء"
+    "subMessage": "تحميل الذكاء",
+    "introTitle": "إساب للذكاء الاصطناعي",
+    "introTagline": "طليعة الذكاء"
   },
   "Home": {
     "reveal": {

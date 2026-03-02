@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { products } from "@/lib/products";
+import type { Product } from "@/types/product";
 import type { Service } from "@/types/service";
 import { useBodyScrollLock } from "@/lib/hooks/use-body-scroll-lock";
 
@@ -27,69 +27,12 @@ import {
   NavbarButton,
   MobileNavToggle,
   MobileNavMenu,
-} from "@/components/ui/resizable-navbar";
+} from "@/components/ui/navbar/index";
+import { NavLinkItem } from "./components/nav-link-item";
+import { NavDropdownTrigger } from "./components/nav-dropdown-trigger";
 
-function NavLinkItem({
-  href,
-  label,
-  isActive,
-  onClick,
-  className = "",
-  visible,
-}: {
-  href: string;
-  label: string;
-  isActive: boolean;
-  onClick?: () => void;
-  className?: string;
-  visible?: boolean;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`nav-link-group relative group whitespace-nowrap cursor-pointer ${visible ? "px-2 py-1.5" : "px-4 py-2"
-        } text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
-        } ${className}`}
-      onClick={onClick}
-    >
-      <span className="nav-glow" aria-hidden="true" />
-      <span className="relative z-10">{label}</span>
-    </Link>
-  );
-}
 
-function NavDropdownTrigger({
-  label,
-  isActive,
-  isOpen,
-  onClick,
-  visible,
-}: {
-  label: string;
-  isActive: boolean;
-  isOpen: boolean;
-  onClick: () => void;
-  visible?: boolean;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer ${visible ? "px-2 py-1.5" : "px-4 py-2"
-        } text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
-        }`}
-      aria-expanded={isOpen}
-    >
-      <span className="nav-glow" aria-hidden="true" />
-      <span className="relative z-10">{label}</span>
-      <ChevronDown
-        className={`size-4 transition-transform duration-200 relative z-10 ${isOpen ? "rotate-180" : ""
-          }`}
-      />
-    </button>
-  );
-}
-
-export function Navbar({ visible, services }: { visible?: boolean; services: Service[] }) {
+export function Navbar({ visible, services, products }: { visible?: boolean; services: Service[]; products: Product[] }) {
   const t = useTranslations("Navigation");
   const pathname = usePathname();
   const { isProductOpen, setIsProductOpen } = useProductMenu();
@@ -155,7 +98,7 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
   const mobileProducts = products.map((p) => ({
     id: p.id,
     name: p.name,
-    description: p.description,
+    description: p.menuDescription || p.description,
     slug: p.slug,
   })) satisfies MobileMenuItem[];
   const mobileServices = services.map((s) => ({
@@ -195,7 +138,7 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
               onClick={() => setIsProductOpen(!isProductOpen)}
               visible={visible}
             />
-            <ProductDropdownMenu />
+            <ProductDropdownMenu products={products} />
           </div>
 
           {/* Service Dropdown */}
@@ -303,14 +246,14 @@ export function Navbar({ visible, services }: { visible?: boolean; services: Ser
               className={`nav-link-group relative group px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive("/case-study") ? "is-active bg-[#13F584]/5 text-[#13F584]" : "text-white hover:text-[#13F584]"
                 }`}
             >
-              <span className="relative z-10 text-base font-semibold">Case Study</span>
+              <span className="relative z-10 text-base font-semibold">{t("case-study")}</span>
             </Link>
 
             {/* Separator */}
             <div className="h-px bg-white/5 mx-3 my-2" />
 
             <div className="px-4 py-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-white/70">Language</span>
+              <span className="text-sm font-medium text-white/70">{t("language")}</span>
               <LanguageSelector />
             </div>
 

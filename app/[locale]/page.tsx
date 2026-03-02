@@ -11,36 +11,35 @@ export const metadata: Metadata = generateHomeMetadata();
 
 // Below-the-fold sections - lazy loaded with code splitting
 const MissionSection = dynamic(
-  () => import("@/components/features/home/sections/mission").then((mod) => ({ default: mod.Mission })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.MissionSection })),
 );
 
 const ServiceSection = dynamic(
-  () => import("@/components/features/home/sections/service").then((mod) => ({ default: mod.Service })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.ServiceSection })),
 );
 
-
 const ProductShowcaseSection = dynamic(
-  () => import("@/components/features/home/sections/product-showcase").then((mod) => ({ default: mod.ProductShowcase })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.ProductShowcaseSection })),
 );
 
 const TrustedPartnersSection = dynamic(
-  () => import("@/components/features/home/sections/trusted-partners").then((mod) => ({ default: mod.TrustedPartners })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.TrustedPartnersSection })),
 );
 
 const CTASection = dynamic(
-  () => import("@/components/features/home/sections/cta").then((mod) => ({ default: mod.CTASection })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.CTASection })),
 );
 
 const TextRevealSection = dynamic(
-  () => import("@/components/features/home/sections/text-reveal").then((mod) => ({ default: mod.TextRevealSection })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.TextRevealSection })),
 );
 
 const AchievementSection = dynamic(
-  () => import("@/components/features/home/sections/achievement").then((mod) => ({ default: mod.Achievement })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.AchievementSection })),
 );
 
 const TechnologyExcellenceSection = dynamic(
-  () => import("@/components/features/home/sections/technology-excellence").then((mod) => ({ default: mod.TechnologyExcellence })),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.TechnologyExcellenceSection })),
 );
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {

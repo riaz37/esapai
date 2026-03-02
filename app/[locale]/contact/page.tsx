@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContactSection } from "@/components/features/contact/contact-section";
+import { ContactSection } from "@/components/features/contact/sections";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";

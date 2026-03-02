@@ -6,11 +6,14 @@
     "service": "Service",
     "case-study": "Case Study",
     "contact": "Contact Us",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "language": "Language"
   },
   "Loading": {
     "message": "Preparing your experience",
-    "subMessage": "Loading intelligence"
+    "subMessage": "Loading intelligence",
+    "introTitle": "ESAP AI",
+    "introTagline": "The Vanguard of Intelligence"
   },
   "Home": {
     "reveal": {

@@ -18,7 +18,7 @@ import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/str
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { IntroLoader } from "@/components/ui/intro-loader";
 import { MotionProvider } from "@/components/providers/motion-provider";
-import { getSanityServices } from "@/lib/sanity/queries";
+import { getSanityServices, getSanityProducts } from "@/lib/sanity/queries";
 
 // Inter font - similar to SF Pro, from Google Fonts
 const inter = Inter({
@@ -49,8 +49,11 @@ export default async function RootLayout(props: Readonly<{
   setRequestLocale(locale);
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
-  // Fetch services for the navbar
-  const services = await getSanityServices(locale).catch(() => []);
+  // Fetch services and products for the navbar
+  const [services, products] = await Promise.all([
+    getSanityServices(locale).catch(() => []),
+    getSanityProducts(locale).catch(() => []),
+  ]);
 
   // Generate structured data for Organization and Website
   const structuredData = [
@@ -76,7 +79,7 @@ export default async function RootLayout(props: Readonly<{
                     <ProductMenuProvider>
                       <ServiceMenuProvider>
                         <IntroLoader>
-                          <Navbar services={services} />
+                          <Navbar services={services} products={products} />
                           <main className="flex-1">{children}</main>
                           <Footer />
                           <CookieConsentBanner />
