@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useToast } from "@/components/ui/toast";
-import type { ContactFormData, SubmissionState } from "../sections/contact-main/contact-form-card";
+import type { ContactFormData, SubmissionState } from "../sections/contact-form-card";
 
 export function useContactForm() {
     const [formData, setFormData] = useState<ContactFormData>({

@@ -96,7 +96,7 @@ export function ServiceProcessSection({
         ref={stickyWrapperRef}
         className="md:h-screen w-full flex flex-col justify-between overflow-hidden relative bg-transparent"
       >
-        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-20 md:pt-20 flex-none z-10 pointer-events-none">
+        <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8 pt-32 md:pt-44 lg:pt-28 flex-none z-10 pointer-events-none">
           <SectionHeader
             badge={badge ?? ""}
             badgeIcon={Workflow}
@@ -107,7 +107,7 @@ export function ServiceProcessSection({
           />
         </div>
 
-        <div className="flex-1 w-full flex items-start pt-8 md:pt-12 overflow-hidden no-scrollbar relative z-0">
+        <div className="flex-1 w-full flex items-start pt-8 md:pt-12 lg:pt-6 overflow-hidden no-scrollbar relative z-0">
           <div
             ref={trackRef}
             className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 md:ps-[max(2rem,calc((100vw-1400px)/2+2rem))] md:pe-[5vw] pb-16 sm:pb-20 md:pb-0 w-full md:w-max"
@@ -124,16 +124,16 @@ export function ServiceProcessSection({
 
 function ProcessCard({ step, index }: { step: { id: string; title: string; description: string; icon: React.ComponentType<{ className?: string }> }; index: number }) {
   return (
-    <div className="relative group w-full md:w-[500px] flex-shrink-0">
+    <div className="relative group w-full md:w-[400px] lg:w-[500px] flex-shrink-0">
       <Card
         className={cn(
           "relative min-h-[400px] p-8 flex flex-col",
           "bg-white/[0.02] backdrop-blur-md border-white/10",
           "hover:border-primary/30 hover:bg-white/[0.05] transition-all duration-500",
-          "group cursor-default"
+          "group cursor-default overflow-hidden"
         )}
       >
-        <span className="absolute top-4 end-6 text-8xl font-bold text-white/5 select-none transition-colors group-hover:text-primary/10">
+        <span className="absolute bottom-0 end-4 text-7xl md:text-8xl font-bold text-white/5 select-none transition-colors group-hover:text-primary/10">
           {step.id}
         </span>
 

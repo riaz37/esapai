@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { GitCompare } from "lucide-react";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
 import { useLocale, useTranslations } from "next-intl";
+import { usePortalVideoAnimation } from "@/lib/hooks/use-portal-video-animation";
 
-gsap.registerPlugin(ScrollTrigger);
 
 interface ServicePortalVideoSectionProps {
     videoSrc: string;
@@ -29,87 +29,16 @@ export function ServicePortalVideoSection({ videoSrc, title, subtitle, badgeLabe
     const locale = useLocale();
     const isRTL = locale === "ar";
 
-    useGSAP(
-        () => {
-            const container = containerRef.current;
-            const videoContainer = videoRef.current;
-            if (!container || !videoContainer) return;
+    usePortalVideoAnimation({
+        videoRef,
+        textRef,
+        overlayRef,
+        isRTL
+    });
 
-            const mm = gsap.matchMedia();
-            const videoElement = videoContainer.querySelector("video");
-
-            mm.add("(min-width: 1024px)", () => {
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: container,
-                        start: "top top",
-                        end: "+=200%", // 200vh scroll distance
-                        scrub: 1, // Smooth scrubbing
-                        pin: true,
-                        anticipatePin: 1,
-                        invalidateOnRefresh: true,
-                    }
-                });
-
-                // Initial State
-                if (isRTL) {
-                    gsap.set(videoContainer, {
-                        width: "40%",
-                        right: "5%",
-                        xPercent: 0,
-                        top: "25%",
-                        yPercent: 0,
-                        borderRadius: "48px",
-                        position: "absolute"
-                    });
-                } else {
-                    gsap.set(videoContainer, {
-                        width: "40%",
-                        left: "5%",
-                        xPercent: 0,
-                        top: "25%",
-                        yPercent: 0,
-                        borderRadius: "48px",
-                        position: "absolute"
-                    });
-                }
-
-                // Animation Sequence
-                tl
-                    // 1. Expand Video & Center
-                    .to(videoContainer, {
-                        width: "70%",
-                        ...(isRTL ? { right: "50%", xPercent: 50 } : { left: "50%", xPercent: -50 }),
-                        top: "50%",
-                        yPercent: -50,
-                        borderRadius: "32px",
-                        duration: 1,
-                        ease: "power1.inOut"
-                    }, 0)
-                    // 2. Fade out Text
-                    .to(textRef.current, {
-                        opacity: 0,
-                        y: -50,
-                        duration: 0.3,
-                        ease: "power1.out"
-                    }, 0)
-                    // 3. Adjust Video Filters
-                    .fromTo(videoElement,
-                        { filter: "brightness(1.3) saturate(1.2)" },
-                        { filter: "brightness(1) saturate(1)", duration: 0.8 },
-                        0
-                    )
-                    // 4. Fade out overlay tint
-                    .to(overlayRef.current, {
-                        opacity: 0,
-                        duration: 0.3
-                    }, 0);
-            });
-
-            return () => mm.revert();
-        },
-        { scope: containerRef }
-    );
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+    }, { scope: containerRef });
 
     return (
         <div ref={containerRef} className="relative w-full h-auto lg:h-screen lg:overflow-hidden flex flex-col py-20 sm:py-24 lg:py-0 lg:block">

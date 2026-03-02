@@ -15,20 +15,22 @@ export async function getUITranslations(locale: string) {
  * timeSavings → "Time Savings").
  */
 function mapSanityTranslationsToMessages(doc: any): Record<string, any> {
-    const nav = doc.navigation || {};
-    const load = doc.loading || {};
-    const home = doc.home || {};
-    const about = doc.about || {};
-    const contact = doc.contact || {};
-    const footer = doc.footer || {};
-    const menus = doc.menus || {};
-    const products = doc.products || {};
-    const service = doc.service || {};
-    const notFound = doc.notFound || {};
-    const errorPage = doc.error || {};
-    const cta = doc.cta || {};
-    const cs = doc.caseStudy || {};
-    const metrics = doc.metrics || {};
+    const {
+        navigation: nav = {},
+        loading: load = {},
+        home = {},
+        about = {},
+        contact = {},
+        footer = {},
+        menus = {},
+        products = {},
+        service = {},
+        notFound = {},
+        error: errorPage = {},
+        cta = {},
+        caseStudy: cs = {},
+        metrics = {},
+    } = doc;
 
     return {
         Navigation: {
@@ -294,7 +296,7 @@ export async function getProductBySlug(slug: string, locale: string) {
 }
 
 // ── Service Page ──
-export const servicesListQuery = `*[_type == "serviceDocument" && language == $locale] | order(_createdAt asc) {
+const SERVICE_FIELDS = `
   _id,
   name,
   "slug": slug.current,
@@ -324,39 +326,11 @@ export const servicesListQuery = `*[_type == "serviceDocument" && language == $l
   ctaSubtitle,
   ctaButtonText,
   ctaButtonLink
-}`;
+`;
 
-export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current == $slug && language == $locale][0] {
-  _id,
-  name,
-  "slug": slug.current,
-  heroTitle,
-  heroSubtitle,
-  heroTagline,
-  heroVideoId,
-  heroVideoTitle,
-  problemTitle,
-  problemSubtitle,
-  problemBadge,
-  problemItems,
-  featuresTitle,
-  featuresSubtitle,
-  featuresBadge,
-  featuresCentralNode,
-  features,
-  processTitle,
-  processSubtitle,
-  processBadge,
-  processSteps,
-  portalVideoTitle,
-  portalVideoDescription,
-  beforeAfterLabel,
-  beforeAfterTitle,
-  ctaTitle,
-  ctaSubtitle,
-  ctaButtonText,
-  ctaButtonLink
-}`;
+export const servicesListQuery = `*[_type == "serviceDocument" && language == $locale] | order(_createdAt asc) {${SERVICE_FIELDS}}`;
+
+export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current == $slug && language == $locale][0] {${SERVICE_FIELDS}}`;
 
 // ── Product Mapper ──
 // Maps flat Sanity productDocument to the nested Product type used by client components

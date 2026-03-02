@@ -135,7 +135,10 @@ export function DropdownMenu({
                         {activeItem.content?.performance?.metrics?.map((m: any, idx: number) => (
                           <div key={m.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
                             <div className="text-2xl font-bold text-[#13F584] leading-none">{m.value}</div>
-                            <div className="text-white/40 text-xs font-bold mt-2">{tMetrics(m.label)}</div>
+                            <div className="text-white/40 text-xs font-bold mt-2">
+                              {/* Use the label as is if it's already translated or not a key */}
+                              {m.label}
+                            </div>
                           </div>
                         ))}
                       </div>

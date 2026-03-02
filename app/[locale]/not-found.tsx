@@ -7,19 +7,12 @@ export default function NotFound() {
   const nav = useTranslations("Navigation");
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient effect */}
       <div className="absolute inset-0 z-0 opacity-30">
         <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
-      {/* Decorative orbs */}
-      <div className="absolute top-[20%] start-[10%] z-0 pointer-events-none opacity-10">
-        <div className="w-48 h-48 rounded-full bg-primary blur-[100px]" />
-      </div>
-      <div className="absolute bottom-[20%] end-[10%] z-0 pointer-events-none opacity-10">
-        <div className="w-36 h-36 rounded-full bg-primary blur-[80px]" />
-      </div>
 
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-14 md:py-16 flex flex-col items-center text-center max-w-4xl">
