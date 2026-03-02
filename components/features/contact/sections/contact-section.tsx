@@ -8,8 +8,8 @@ import { ContactBackdrop } from "./contact-backdrop";
 import { ContactLeftColumn } from "./contact-left-column";
 import { ContactFormCard } from "./contact-form-card";
 
-import { useContactForm } from "../../hooks/use-contact-form";
-import { useContactAnimations } from "../../hooks/use-contact-animations";
+import { useContactForm } from "../hooks/use-contact-form";
+import { useContactAnimations } from "../hooks/use-contact-animations";
 
 export function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);

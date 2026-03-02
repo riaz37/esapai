@@ -181,12 +181,12 @@ export function ServiceHero({ title, tagline, subtitle, className }: ServiceHero
           </div>
 
           {/* Right Side: Globe Visual */}
-          <div className="relative flex justify-center md:justify-end items-center py-10 md:py-0 overflow-visible">
+          <div className="relative flex justify-center lg:justify-end items-center py-10 lg:py-0 overflow-visible">
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.2, delay: 0.4 }}
-              className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] lg:w-[650px] lg:h-[650px] md:-me-20 lg:-me-24"
+              className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] xl:w-[650px] xl:h-[650px]"
             >
               <World globeConfig={globeConfig} data={globeData} />
             </m.div>

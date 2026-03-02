@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cpu } from "lucide-react";
+import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -41,6 +42,14 @@ export function Service({
   const displayBadge = badge || "";
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  useScrollReveal(sectionRef, {
+    selector: '[data-testid="section-header"] > *',
+    y: 30,
+    filter: "blur(10px)",
+    stagger: 0.1,
+    ease: "power2.out",
+  });
 
   useGSAP(() => {
     if (!gridRef.current) return;

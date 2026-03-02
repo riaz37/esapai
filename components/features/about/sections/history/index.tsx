@@ -7,6 +7,8 @@ import { Timeline } from "@/components/features/case-studies/sections/timeline";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { History } from "lucide-react";
+import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
+import { useRef } from "react";
 
 
 interface SanityPhase {
@@ -36,10 +38,12 @@ export function AboutHistory({
     visionBody,
 }: AboutHistoryProps = {}) {
     const t = useTranslations("About.history");
-
+    const sectionRef = useRef<HTMLElement>(null);
     const displayTitle = title ?? "";
     const displaySubtitle = subtitle ?? "";
     const displayBadge = badge ?? "";
+
+    useScrollReveal(sectionRef);
 
     // Map phases: prefer Sanity phases if provided, else fall back to i18n
     const rawI18nPhases = phases ?? (t.raw("phases") as SanityPhase[]);
@@ -61,7 +65,7 @@ export function AboutHistory({
     const resolvedVisionBody = visionBody ?? ((t.raw("vision") as any)?.body);
 
     return (
-        <Section className="scroll-mt-20 md:scroll-mt-32">
+        <Section ref={sectionRef} className="scroll-mt-20 md:scroll-mt-32">
             <SectionHeader
                 badge={displayBadge}
                 badgeIcon={History}

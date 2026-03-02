@@ -6,11 +6,8 @@ import { Link, useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { m } from "motion/react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
-import { useIntersectionAnimation } from "@/lib/hooks/use-intersection-animation";
 import { useSharedCardObserver } from "@/lib/hooks/use-case-study-card-animation";
+import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { sanitizeText } from "@/lib/utils/sanitize";
 import { Section } from "@/components/ui/section";
@@ -35,28 +32,14 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
   const sectionRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
 
-  const anim = useGSAPAnimations(sectionRef);
-  const { setRef: setIntersectionRef, isInView } = useIntersectionAnimation({
-    threshold: 0.1,
-    rootMargin: "100px",
+  useScrollReveal(sectionRef, {
+    selector: ".case-study-hero-content > *",
+    y: 30,
+    stagger: 0.15,
+    duration: 0.8
   });
-
-  // Hero section animations
-  useGSAP(
-    () => {
-      if (prefersReducedMotion()) return;
-
-      const tl = anim.createTimeline();
-
-      // Title/Subtitle animations are now handled by TypewriterTitle and Motion
-
-      // Subtitle animation handled via initial/animate props on the element
-    },
-    { scope: sectionRef }
-  );
 
   // Track image loading errors
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
@@ -66,14 +49,11 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
   };
 
   // Case study cards animations - using shared observer for better performance
-  useSharedCardObserver(cardsContainerRef, isInView && !prefersReducedMotion());
+  useSharedCardObserver(cardsContainerRef, !prefersReducedMotion());
 
   return (
     <main className="relative" ref={sectionRef}>
       <Section
-        ref={(el: HTMLElement | null) => {
-          setIntersectionRef(el);
-        }}
         padding="lg"
         containerMaxWidth="wide"
         className="relative overflow-hidden"
@@ -82,7 +62,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         {/* Unified Content Container */}
         <div className="relative z-10 w-full">
           {/* Hero Content */}
-          <div className="text-start mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
+          <div className="case-study-hero-content text-start mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
             <TypewriterTitle
               title={t("heroTitle")}
               tagline={t("heroTagline")}
@@ -93,15 +73,11 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
               staggerDelay={0.02}
               letterDuration={0.4}
             />
-            <m.p
-              ref={subtitleRef}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
+            <p
               className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl font-normal leading-relaxed"
             >
               {t("subtitle")}
-            </m.p>
+            </p>
           </div>
 
           {/* Grid Content */}

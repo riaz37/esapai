@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mic2, Rocket, Layers, Target } from "lucide-react";
 import { MissionCard } from "@/components/ui/mission-card";
@@ -50,6 +51,14 @@ export function Mission({
   const displaySubtitle = subtitle || "";
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  useScrollReveal(sectionRef, {
+    selector: '[data-testid="section-header"] > *',
+    y: 30,
+    filter: "blur(10px)",
+    stagger: 0.1,
+    ease: "power3.out",
+  });
 
   useGSAP(
     () => {
@@ -124,28 +133,6 @@ export function Mission({
         });
       });
 
-      // Proactive Header Animation (outside matchMedia since it's simpler)
-      const header = sectionRef.current?.querySelector('[data-testid="section-header"]');
-      if (header) {
-        const children = Array.from(header.children);
-        gsap.fromTo(
-          children,
-          { y: 30, opacity: 0, filter: "blur(10px)" },
-          {
-            y: 0,
-            opacity: 1,
-            filter: "blur(0px)",
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: header,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            }
-          }
-        );
-      }
     },
     { scope: sectionRef, dependencies: [cards] }
   );

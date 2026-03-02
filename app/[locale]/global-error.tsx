@@ -50,19 +50,12 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
   return (
     <html lang="en">
       <body>
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] text-white">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden text-white">
           {/* Background gradient effect */}
           <div className="absolute inset-0 z-0 opacity-30">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[rgb(19,245,132)] opacity-10 blur-[120px] rounded-full" />
           </div>
 
-          {/* Decorative orbs */}
-          <div className="absolute top-[20%] left-[10%] z-0 pointer-events-none opacity-10">
-            <div className="w-48 h-48 rounded-full bg-[rgb(19,245,132)] blur-[100px]" />
-          </div>
-          <div className="absolute bottom-[20%] right-[10%] z-0 pointer-events-none opacity-10">
-            <div className="w-36 h-36 rounded-full bg-[rgb(19,245,132)] blur-[80px]" />
-          </div>
 
           {/* Main Content */}
           <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 flex flex-col items-center text-center">

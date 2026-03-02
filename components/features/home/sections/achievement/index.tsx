@@ -3,8 +3,8 @@
 import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cpu } from "lucide-react";
+import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 import { SectionHeader } from "@/components/ui/section-header";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/section";
@@ -12,9 +12,6 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { Counter } from "@/components/ui/counter";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
 
 export interface AchievementItemData {
     number: string;
@@ -41,37 +38,20 @@ export function Achievement({
     const sectionRef = useRef<HTMLElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
-    useGSAP(() => {
-        if (!gridRef.current) return;
+    useScrollReveal(sectionRef, {
+        selector: '[data-testid="section-header"] > *',
+        y: 30,
+        filter: "blur(10px)",
+        stagger: 0.1,
+        ease: "power2.out",
+    });
 
-        const reducedMotion = prefersReducedMotion();
-        const items = gridRef.current.querySelectorAll(".stat-item");
-        if (reducedMotion) {
-            gsap.set(items, { opacity: 1, y: 0 });
-            return;
-        }
-
-        // Entrance animation for items - now only handles the staggered fade-in
-        gsap.fromTo(items,
-            {
-                opacity: 0,
-                y: 20,
-            },
-            {
-                scrollTrigger: {
-                    trigger: gridRef.current,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse",
-                },
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: "power3.out",
-            }
-        );
-
-    }, { scope: sectionRef });
+    useScrollReveal(sectionRef, {
+        selector: ".stat-item",
+        y: 20,
+        stagger: 0.2,
+        dependencies: [displayAchievements],
+    });
 
     return (
         <Section ref={sectionRef} padding="md" className="w-full bg-transparent overflow-hidden">

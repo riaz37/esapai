@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 
 import { products } from "@/lib/products";
 import { Section } from "@/components/ui/section";
@@ -21,6 +22,14 @@ export function ProductShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  useScrollReveal(containerRef, {
+    selector: '[data-testid="section-header"] > *',
+    y: 30,
+    filter: "blur(10px)",
+    stagger: 0.1,
+    ease: "power2.out",
+  });
 
   useGSAP(
     () => {
