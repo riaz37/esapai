@@ -7,7 +7,7 @@ import type { CaseStudyWithUrls } from "@/types/case-study";
 import { CaseStudyHero } from "../hero";
 import { useCaseStudyContent } from "@/lib/hooks/use-case-study-content";
 import { Section } from "@/components/ui/section";
-import { Timeline } from "../sections/timeline";
+import { Timeline } from "../sections";
 
 import { GlobalLoader } from "@/components/ui/global-loader";
 import type { CaseStudyPageClientProps } from "@/types/page";

@@ -30,7 +30,7 @@ const ServicesCTASection = dynamic(
   () => import("@/components/features/services/sections").then((mod) => ({ default: mod.ServicesCTASection })),
 );
 
-import { ServiceHero } from "@/components/features/services/hero/service-hero";
+import { ServiceHero } from "@/components/features/services/hero";
 import { Section } from "@/components/ui/section";
 
 import { LazySection } from "@/components/ui/lazy-section";

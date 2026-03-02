@@ -2,16 +2,16 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { AboutHero } from "@/components/features/about/hero";
+import { AboutHero } from "@/components/features/about/sections";
 import { LazySection } from "@/components/ui/lazy-section";
-import { CTASection } from "@/components/features/home/sections/cta";
+import { CTASection } from "@/components/features/home/sections";
 
 // --- Dynamic imports for below-fold sections (code-split + no SSR) ---
-const AboutNarrative = dynamic(() => import("@/components/features/about/narrative").then(mod => mod.AboutNarrative), {
+const AboutNarrative = dynamic(() => import("@/components/features/about/sections").then(mod => ({ default: mod.AboutNarrative })), {
     ssr: false,
 });
 
-const AboutHistory = dynamic(() => import("@/components/features/about/history").then(mod => mod.AboutHistory), {
+const AboutHistory = dynamic(() => import("@/components/features/about/sections").then(mod => ({ default: mod.AboutHistory })), {
     ssr: false,
 });
 

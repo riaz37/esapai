@@ -8,32 +8,32 @@ import { ProductHero } from "../hero";
 
 // --- Dynamic imports for below-fold sections (code-split + no SSR) ---
 const ProductCinematicFlow = dynamic(
-  () => import("../sections/product-cinematic-flow").then((mod) => mod.ProductCinematicFlow),
+  () => import("../sections").then((mod) => ({ default: mod.ProductCinematicFlow })),
   { ssr: false }
 );
 
 const ProductSolutionVideo = dynamic(
-  () => import("../sections/product-solution-video").then((mod) => mod.ProductSolutionVideo),
+  () => import("../sections").then((mod) => ({ default: mod.ProductSolutionVideo })),
   { ssr: false }
 );
 
 const ProductCinematicReelSection = dynamic(
-  () => import("../sections/product-cinematic-reel-section").then((mod) => mod.ProductCinematicReelSection),
+  () => import("../sections").then((mod) => ({ default: mod.ProductCinematicReelSection })),
   { ssr: false }
 );
 
 const UserJourney = dynamic(
-  () => import("../sections/user-journey").then((mod) => mod.UserJourney),
+  () => import("../sections").then((mod) => ({ default: mod.UserJourney })),
   { ssr: false }
 );
 
 const BusinessImpact = dynamic(
-  () => import("../sections/business-impact").then((mod) => mod.BusinessImpact),
+  () => import("../sections").then((mod) => ({ default: mod.BusinessImpact })),
   { ssr: false }
 );
 
 const CTASection = dynamic(
-  () => import("@/components/features/home/sections/cta").then((mod) => mod.CTASection),
+  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.CTASection })),
   { ssr: false }
 );
 

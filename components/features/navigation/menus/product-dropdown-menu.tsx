@@ -1,11 +1,11 @@
 "use client";
 
-import { products } from "@/lib/products";
+import type { Product } from "@/types/product";
 import { DropdownMenu } from "./dropdown-menu";
 import { useProductMenu } from "./product-menu-context";
 import { useTranslations } from "next-intl";
 
-export function ProductDropdownMenu() {
+export function ProductDropdownMenu({ products }: { products: Product[] }) {
   const { isProductOpen, setIsProductOpen } = useProductMenu();
   const t = useTranslations("Menus");
 

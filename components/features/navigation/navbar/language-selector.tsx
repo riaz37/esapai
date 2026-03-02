@@ -37,21 +37,23 @@ export function LanguageSelector({ className, visible }: { className?: string, v
     };
 
     return (
-        <div className={cn("relative", className)} ref={containerRef}>
+        <div className={cn("relative flex items-center", className)} ref={containerRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-300",
+                    "flex items-center gap-2 px-4 rounded-full transition-all duration-300",
                     "bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20",
-                    "text-sm font-medium text-white/70 hover:text-white group",
-                    isOpen && "bg-white/10 border-white/20 text-white"
+                    "text-sm font-semibold text-white/70 hover:text-white group",
+                    isOpen && "bg-white/10 border-white/20 text-white",
+                    // Match NavbarButton heights exactly
+                    visible ? "h-9" : "h-11"
                 )}
                 aria-label="Select language"
             >
-                <Languages className="size-4 text-[#13F584]" />
-                <span className="hidden sm:inline-block">{currentLocale.label}</span>
+                <Languages className="size-4 text-[#13F584] shrink-0" />
+                <span className="hidden sm:inline-block whitespace-nowrap">{currentLocale.label}</span>
                 <span className="sm:hidden">{currentLocale.code.toUpperCase()}</span>
-                <ChevronDown className={cn("size-3 transition-transform duration-300", isOpen ? "rotate-180" : "")} />
+                <ChevronDown className={cn("size-4 transition-transform duration-300 opacity-50", isOpen ? "rotate-180" : "")} />
             </button>
 
             <AnimatePresence>
@@ -62,7 +64,7 @@ export function LanguageSelector({ className, visible }: { className?: string, v
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className={cn(
-                            "absolute bottom-full mb-2 end-0 z-50 min-w-[140px]",
+                            "absolute top-full mt-2 end-0 z-50 min-w-[140px]",
                             "bg-zinc-950/95 backdrop-blur-xl border border-white/10 rounded-2xl p-1",
                             "shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
                         )}

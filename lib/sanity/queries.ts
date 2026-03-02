@@ -4,7 +4,7 @@ import { client } from "./client";
 export const uiTranslationsQuery = `*[_type == "uiTranslations" && language == $locale][0]`;
 
 export async function getUITranslations(locale: string) {
-    const doc = await client.fetch(uiTranslationsQuery, { locale }, { next: { revalidate: 3600 } });
+    const doc = await client.fetch(uiTranslationsQuery, { locale }, { next: { revalidate: 0 } });
     if (!doc) return null;
     return mapSanityTranslationsToMessages(doc);
 }
@@ -39,10 +39,13 @@ function mapSanityTranslationsToMessages(doc: any): Record<string, any> {
             "case-study": nav.caseStudy,
             contact: nav.contact,
             getStarted: nav.getStarted,
+            language: nav.language,
         },
         Loading: {
             message: load.message,
             subMessage: load.subMessage,
+            introTitle: load.introTitle,
+            introTagline: load.introTagline,
         },
         Home: {
             reveal: { text: home.reveal?.text },
