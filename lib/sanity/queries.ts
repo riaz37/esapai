@@ -4,7 +4,12 @@ import { client } from "./client";
 export const uiTranslationsQuery = `*[_type == "uiTranslations" && language == $locale][0]`;
 
 export async function getUITranslations(locale: string) {
-    const doc = await client.fetch(uiTranslationsQuery, { locale }, { next: { revalidate: 0 } });
+    const doc = await client.fetch(uiTranslationsQuery, { locale }, {
+        next: {
+            revalidate: 86400, // 24 hours (translations rarely change)
+            tags: ["translations", `translations-${locale}`]
+        }
+    });
     if (!doc) return null;
     return mapSanityTranslationsToMessages(doc);
 }
@@ -201,7 +206,12 @@ export const homePageQuery = `*[_type == "homePage" && language == $locale][0] {
 }`;
 
 export async function getHomePage(locale: string) {
-    return client.fetch(homePageQuery, { locale });
+    return client.fetch(homePageQuery, { locale }, {
+        next: {
+            revalidate: 3600, // 1 hour
+            tags: ["home", `home-${locale}`]
+        }
+    });
 }
 
 // ── About Page ──
@@ -228,7 +238,12 @@ export const aboutPageQuery = `*[_type == "aboutPage" && language == $locale][0]
 }`;
 
 export async function getAboutPage(locale: string) {
-    return client.fetch(aboutPageQuery, { locale });
+    return client.fetch(aboutPageQuery, { locale }, {
+        next: {
+            revalidate: 3600, // 1 hour
+            tags: ["about", `about-${locale}`]
+        }
+    });
 }
 
 // ── Products ──
@@ -286,13 +301,23 @@ const PRODUCT_FIELDS = `
 export const productsListQuery = `*[_type == "productDocument" && language == $locale] | order(orderRank asc) {${PRODUCT_FIELDS}}`;
 
 export async function getProducts(locale: string) {
-    return client.fetch(productsListQuery, { locale });
+    return client.fetch(productsListQuery, { locale }, {
+        next: {
+            revalidate: 3600,
+            tags: ["products", `products-${locale}`]
+        }
+    });
 }
 
 export const productBySlugQuery = `*[_type == "productDocument" && slug.current == $slug && language == $locale][0] {${PRODUCT_FIELDS}}`;
 
 export async function getProductBySlug(slug: string, locale: string) {
-    return client.fetch(productBySlugQuery, { slug, locale });
+    return client.fetch(productBySlugQuery, { slug, locale }, {
+        next: {
+            revalidate: 3600,
+            tags: ["products", `product-${slug}-${locale}`]
+        }
+    });
 }
 
 // ── Service Page ──
@@ -510,11 +535,21 @@ export function mapSanityService(doc: any): Service {
 }
 
 export async function getSanityServices(locale: string): Promise<Service[]> {
-    const docs = await client.fetch(servicesListQuery, { locale });
+    const docs = await client.fetch(servicesListQuery, { locale }, {
+        next: {
+            revalidate: 3600,
+            tags: ["services", `services-${locale}`]
+        }
+    });
     return (docs || []).map(mapSanityService);
 }
 
 export async function getSanityServiceBySlug(slug: string, locale: string): Promise<Service | null> {
-    const doc = await client.fetch(serviceBySlugQuery, { slug, locale });
+    const doc = await client.fetch(serviceBySlugQuery, { slug, locale }, {
+        next: {
+            revalidate: 3600,
+            tags: ["services", `service-${slug}-${locale}`]
+        }
+    });
     return doc ? mapSanityService(doc) : null;
 }

@@ -82,20 +82,20 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
         // Infinite seamless marquee animation
         if (marqueeRef.current) {
             const marquee = marqueeRef.current;
-            const marqueeWidth = marquee.offsetWidth / 2; // Half width since we duplicate
+
+            // Detect text direction for RTL support
+            const isRTL = document.documentElement.dir === "rtl";
 
             // Set initial position
-            gsap.set(marquee, { x: 0 });
+            gsap.set(marquee, { xPercent: 0 });
 
-            // Create infinite loop
+            // In RTL, flex-row renders items right-to-left, so we move +50%
+            // In LTR, we move -50% to scroll left
             gsap.to(marquee, {
-                x: -marqueeWidth,
+                xPercent: isRTL ? 50 : -50,
                 duration: 30,
                 ease: "none",
                 repeat: -1,
-                modifiers: {
-                    x: gsap.utils.unitize((x) => parseFloat(x) % marqueeWidth)
-                }
             });
         }
     }, { scope: sectionRef });

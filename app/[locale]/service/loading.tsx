@@ -3,6 +3,5 @@
 import { GlobalLoader } from "@/components/ui/global-loader";
 
 export default function ServicesLoading() {
-  return <GlobalLoader message="Loading service suite" subMessage="Configuring automations" />;
+  return <GlobalLoader />;
 }
-
