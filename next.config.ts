@@ -39,10 +39,6 @@ const nextConfig: NextConfig = {
   // pnpm add -D babel-plugin-react-compiler
   // reactCompiler: true,
 
-  // Output file tracing (moved to top level in Next.js 16)
-  outputFileTracingIncludes: {
-    "/": ["./public/**/*"],
-  },
 
   // Enable experimental features
   experimental: {
