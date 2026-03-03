@@ -252,8 +252,7 @@ export function Navbar({ visible, services, products }: { visible?: boolean; ser
             {/* Separator */}
             <div className="h-px bg-white/5 mx-3 my-2" />
 
-            <div className="px-4 py-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-white/70">{t("language")}</span>
+            <div className="px-4 py-2 flex items-center justify-center">
               <LanguageSelector />
             </div>
 
