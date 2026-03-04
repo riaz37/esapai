@@ -65,7 +65,7 @@ export const HeroContent = forwardRef<HTMLDivElement, HeroContentProps>(
                     className="mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/70 max-w-3xl mx-auto px-2 sm:px-4 gsap-fade-in-optimized"
                 >
                     {subtitle.includes("\n") ? (
-                        subtitle.split("\n").map((line, i) => <p key={i}>{line}</p>)
+                        subtitle.split("\n").map((line) => <p key={line}>{line}</p>)
                     ) : (
                         <p>{subtitle}</p>
                     )}

@@ -12,12 +12,19 @@ import type { ServiceFeaturesProps } from "@/types/props";
 import { useServiceFeaturesFlow } from "./use-service-features-flow";
 import { FlowContainer } from "./flow-container";
 
+interface ServiceFeatureItem {
+    title: string;
+    description: string;
+}
+
+const EMPTY_FEATURES: ServiceFeatureItem[] = [];
+
 export function ServiceFeatures({
     title,
     subtitle,
     badge,
     centralNode,
-    features = [],
+    features = EMPTY_FEATURES,
 }: ServiceFeaturesProps) {
     const t = useTranslations("Service.features");
     const resolvedTitle = title ?? t("defaultTitle");

@@ -3,11 +3,10 @@ import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { m, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 const locales = [
-    { code: "en", flag: "/language/eng.png" },
-    { code: "ar", flag: "/language/arabic.png" },
+    { code: "en", flag: "🇺🇸" },
+    { code: "ar", flag: "🇸🇦" },
 ] as const;
 
 export function LanguageSelector({ className, visible }: { className?: string, visible?: boolean }) {
@@ -35,7 +34,7 @@ export function LanguageSelector({ className, visible }: { className?: string, v
                 aria-label={`Switch to ${targetLocale.code === "en" ? "English" : "Arabic"}`}
             >
                 <AnimatePresence mode="wait" initial={false}>
-                    <m.div
+                    <m.span
                         key={targetLocale.code}
                         initial={{ y: 20, opacity: 0, rotate: -10 }}
                         animate={{ y: 0, opacity: 1, rotate: 0 }}
@@ -46,15 +45,10 @@ export function LanguageSelector({ className, visible }: { className?: string, v
                             damping: 25,
                             duration: 0.3
                         }}
-                        className="relative select-none leading-none w-6 h-6 md:w-7 md:h-7"
+                        className="select-none leading-none text-xl md:text-2xl"
                     >
-                        <Image
-                            src={targetLocale.flag}
-                            alt={targetLocale.code === "en" ? "English" : "Arabic"}
-                            fill
-                            className="object-contain"
-                        />
-                    </m.div>
+                        {targetLocale.flag}
+                    </m.span>
                 </AnimatePresence>
             </button>
         </div>

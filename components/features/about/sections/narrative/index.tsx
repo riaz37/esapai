@@ -65,8 +65,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
                 price: memberT?.role ?? item.price,
             };
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, teamMembers, locale, resolvedCategory, resolvedLeadership, resolvedInnovation]);
+    }, [data, teamMembers, resolvedCategory, resolvedLeadership, resolvedInnovation, teamTranslations]);
 
     const items = translatedData;
     const containerRef = useRef<HTMLDivElement>(null);

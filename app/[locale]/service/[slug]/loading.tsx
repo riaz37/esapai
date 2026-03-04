@@ -1,7 +1,7 @@
 "use client";
 
-import { GlobalLoader } from "@/components/ui/global-loader";
+import { LocalizedGlobalLoader } from "@/components/ui/global-loader";
 
 export default function ServiceDetailLoading() {
-  return <GlobalLoader />;
+  return <LocalizedGlobalLoader />;
 }

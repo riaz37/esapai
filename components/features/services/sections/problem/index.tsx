@@ -39,11 +39,13 @@ const PAIN_POINTS = [
   }
 ];
 
+const EMPTY_ITEMS: Array<{ title: string; description: string }> = [];
+
 export function ServiceProblemSection({
   title,
   subtitle,
   badge,
-  items = [],
+  items = EMPTY_ITEMS,
 }: {
   title?: string;
   subtitle?: string;
@@ -57,6 +59,13 @@ export function ServiceProblemSection({
 
   const painPointsWithIcons = useMemo(() => {
     const icons = [Clock, Database, ZapOff, FileX];
+    // Deterministic drift values per index to avoid Math.random in render
+    const driftPresets = [
+      { duration: 4.8, y: 12, rotate: 1.5, delay: 0.2 },
+      { duration: 6.2, y: 8, rotate: -1.2, delay: 0.8 },
+      { duration: 5.5, y: 14, rotate: 0.8, delay: 1.5 },
+      { duration: 4.2, y: 10, rotate: -1.8, delay: 0.1 },
+    ];
     return displayItems.map((item, i) => ({
       ...item,
       icon: icons[i % icons.length],
@@ -65,12 +74,7 @@ export function ServiceProblemSection({
       y: i === 0 ? -5 : i === 1 ? -25 : i === 2 ? 35 : 25,
       rotate: i === 0 ? -6 : i === 1 ? 5 : i === 2 ? -4 : 6,
       delay: (i + 1) * 0.1,
-      drift: {
-        duration: 4 + Math.random() * 2,
-        y: 8 + Math.random() * 8,
-        rotate: -2 + Math.random() * 4,
-        delay: Math.random() * 2
-      }
+      drift: driftPresets[i % driftPresets.length],
     }));
   }, [displayItems]);
 
