@@ -45,6 +45,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
                 const v2Item = base[index] ?? base[0];
                 return {
                     ...v2Item,
+                    id: String(member?.id ?? member?._key ?? `${v2Item.id}-${index}`),
                     name: member.name ?? v2Item.name,
                     price: member.role ?? v2Item.price,
                     description: member.bio ?? v2Item.description,
