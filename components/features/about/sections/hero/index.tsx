@@ -15,6 +15,20 @@ export interface AboutHeroProps {
     titlePart2?: string;
 }
 
+function TitleDisplay({ title, titlePart1, titlePart2 }: Pick<AboutHeroProps, "title" | "titlePart1" | "titlePart2">) {
+    if (titlePart1 !== undefined && titlePart2 !== undefined) {
+        return (
+            <>
+                {titlePart1}<span className="text-primary">{titlePart2}</span>
+            </>
+        );
+    }
+    if (title) {
+        return <>{title}</>;
+    }
+    return null;
+}
+
 export const AboutHero: React.FC<AboutHeroProps> = ({
     title,
     subtitle,
@@ -24,21 +38,6 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
 }) => {
     const displayBadge = badge ?? "";
     const displaySubtitle = subtitle ?? "";
-
-    // Title rendering: if Sanity parts provided, use them; else fallback to full title
-    const renderTitle = () => {
-        if (titlePart1 !== undefined && titlePart2 !== undefined) {
-            return (
-                <>
-                    {titlePart1}<span className="text-primary">{titlePart2}</span>
-                </>
-            );
-        }
-        if (title) {
-            return title;
-        }
-        return "";
-    };
 
     return (
         <Section
@@ -63,7 +62,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
                 transition={{ duration: 1, delay: 0.2 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-8 leading-none text-white"
             >
-                {renderTitle()}
+                <TitleDisplay title={title} titlePart1={titlePart1} titlePart2={titlePart2} />
             </m.h1>
 
             <m.p

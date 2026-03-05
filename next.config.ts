@@ -34,10 +34,8 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2592000, // 30 days — images rarely change
   },
 
-  // React Compiler (requires babel-plugin-react-compiler)
-  // Disabled for now - can be enabled later by installing:
-  // pnpm add -D babel-plugin-react-compiler
-  // reactCompiler: true,
+  // React Compiler — auto-memoizes components & hooks
+  reactCompiler: true,
 
 
   // Enable experimental features

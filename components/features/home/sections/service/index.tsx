@@ -138,14 +138,30 @@ export function Service({
 
   // Helper to get specific card styles/props
   const getCardProps = (index: number, service: ServiceItemData) => {
-    const isTailored = service.title.toLowerCase().includes("tailored") || index === 3;
-    if (isTailored) {
-      return {
-        videoSrc: "/testing.mp4",
-        imageSrc: "/tetsing.png",
-      };
+    switch (index) {
+      case 0:
+        return {
+          videoSrc: "/services/girdvideo.mp4",
+          imageSrc: "/services/grid1.png",
+        };
+      case 1:
+        return {
+          videoSrc: "/services/gird2.mp4",
+          imageSrc: "/services/gridvideo2.png",
+        };
+      case 2:
+        return {
+          videoSrc: "/services/gridvideo3.mp4",
+          imageSrc: "/services/grid3.png",
+        };
+      case 3:
+        return {
+          videoSrc: "/services/gridvideo4.mp4",
+          imageSrc: "/services/grid4.png",
+        };
+      default:
+        return {};
     }
-    return {};
   };
 
   return (

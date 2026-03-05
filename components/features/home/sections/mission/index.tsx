@@ -141,7 +141,7 @@ export function Mission({
     <Section
       ref={sectionRef}
       padding="md"
-      containerClassName="flex flex-col"
+      containerClassName="flex flex-col h-full"
       className="relative overflow-hidden z-20 bg-transparent"
       containerMaxWidth="full"
     >
@@ -151,10 +151,9 @@ export function Mission({
         badge={badge ?? ""}
         badgeIcon={Target}
         animate={false}
-        className="mission-header pt-16 md:pt-20"
+        className="mission-header pt-12 md:pt-16 mb-4 md:mb-6"
       />
-
-      <div className="flex-grow flex items-center justify-center w-full relative z-10 pb-6">
+      <div className="flex-grow flex items-start justify-center w-full relative z-10 pt-2 md:pt-4 pb-10">
         <div
           ref={trackRef}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 sm:px-6 w-full max-w-[1400px] mx-auto"

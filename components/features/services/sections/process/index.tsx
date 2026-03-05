@@ -28,11 +28,13 @@ interface ServiceProcessSectionProps {
 
 const STEP_ICONS = [Search, FileText, Code2, Plug, Rocket, Headphones];
 
+const EMPTY_STEPS: ProcessStepData[] = [];
+
 export function ServiceProcessSection({
   title,
   subtitle,
   badge,
-  steps = [],
+  steps = EMPTY_STEPS,
 }: ServiceProcessSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const stickyWrapperRef = useRef<HTMLDivElement>(null);

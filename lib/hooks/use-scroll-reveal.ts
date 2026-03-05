@@ -24,6 +24,7 @@ interface ScrollRevealOptions {
     toggleActions?: string;
     dependencies?: any[];
 }
+const EMPTY_DEPENDENCIES: any[] = [];
 
 /**
  * Reusable hook for scroll-triggered staggered entrance animations using GSAP
@@ -44,7 +45,7 @@ export function useScrollReveal(
         delay = 0,
         ease = "power3.out",
         toggleActions = "play none none reverse",
-        dependencies = [],
+        dependencies = EMPTY_DEPENDENCIES,
     } = options;
 
     useGSAP(

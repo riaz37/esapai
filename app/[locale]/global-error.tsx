@@ -2,44 +2,25 @@
 
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
 import type { GlobalErrorProps } from "@/types/page";
 
-function useErrorTranslations() {
-  try {
-    const t = useTranslations("Error");
-    return {
-      criticalTitle: t("criticalTitle"),
-      criticalDescription: t("criticalDescription"),
-      errorId: t("errorId"),
-      reloadApp: t("reloadApp"),
-      tryAgain: t("tryAgain"),
-      troubleshooting: t("troubleshooting"),
-      clearCache: t("clearCache"),
-      tryBrowser: t("tryBrowser"),
-      checkJs: t("checkJs"),
-      contactIfPersists: t("contactIfPersists"),
-      contactSupport: t("contactSupport"),
-    };
-  } catch {
-    return {
-      criticalTitle: "Critical Error",
-      criticalDescription: "A critical error occurred that prevented the application from loading. Please refresh the page or try again later.",
-      errorId: "Error ID",
-      reloadApp: "Reload Application",
-      tryAgain: "Try Again",
-      troubleshooting: "Troubleshooting Steps:",
-      clearCache: "Clear your browser cache and cookies",
-      tryBrowser: "Try using a different browser",
-      checkJs: "Check if JavaScript is enabled",
-      contactIfPersists: "Contact support if the issue persists",
-      contactSupport: "Contact Support",
-    };
-  }
-}
+const errorStrings = {
+  criticalTitle: "Critical Error",
+  criticalDescription: "A critical error occurred that prevented the application from loading. Please refresh the page or try again later.",
+  errorId: "Error ID",
+  reloadApp: "Reload Application",
+  tryAgain: "Try Again",
+  troubleshooting: "Troubleshooting Steps:",
+  clearCache: "Clear your browser cache and cookies",
+  tryBrowser: "Try using a different browser",
+  checkJs: "Check if JavaScript is enabled",
+  contactIfPersists: "Contact support if the issue persists",
+  contactSupport: "Contact Support",
+};
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
-  const t = useErrorTranslations();
+  const t = errorStrings;
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
@@ -143,12 +124,12 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 </li>
               </ul>
               <div className="mt-6">
-                <a
+                <Link
                   href="/contact"
                   className="text-[rgb(19,245,132)] hover:text-[rgba(19,245,132,0.8)] transition-colors text-base font-semibold"
                 >
                   {t.contactSupport} →
-                </a>
+                </Link>
               </div>
             </div>
           </div>

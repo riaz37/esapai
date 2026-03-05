@@ -64,16 +64,6 @@ export const UserJourney = ({
 
     return (
         <Section className="relative w-full" padding="md">
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                @keyframes flow-pulse {
-                    0% { stroke-dashoffset: 100; opacity: 0.2; }
-                    50% { opacity: 0.8; }
-                    100% { stroke-dashoffset: 0; opacity: 0.2; }
-                }
-                .animate-flow-pulse { animation: flow-pulse 3s linear infinite; }
-                .shadow-glow { filter: drop-shadow(0 0 8px #13F584); }
-            `}} />
 
             <div className="w-full mx-auto px-0">
                 <SectionHeader

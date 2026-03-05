@@ -13,6 +13,8 @@ import { ExpandableText } from "@/components/ui/expandable-text";
 export function Timeline({ timeline }: TimelineProps) {
   const locale = useLocale();
   const t = useTranslations("CaseStudy.detail");
+  const readMoreLabel = t("readMore");
+  const showLessLabel = t("showLess");
   const items = useMemo<ProcessTimelineItem[]>(() => {
     if (!timeline) return [];
 
@@ -59,8 +61,8 @@ export function Timeline({ timeline }: TimelineProps) {
               </h3>
               <ExpandableText
                 text={entry.description}
-                readMoreLabel={t("readMore")}
-                showLessLabel={t("showLess")}
+                readMoreLabel={readMoreLabel}
+                showLessLabel={showLessLabel}
               />
 
               {/* Images Grid */}
@@ -87,7 +89,7 @@ export function Timeline({ timeline }: TimelineProps) {
         ),
       };
     });
-  }, [timeline, locale]);
+  }, [timeline, locale, readMoreLabel, showLessLabel]);
 
   if (!timeline || timeline.length === 0) {
     return null;

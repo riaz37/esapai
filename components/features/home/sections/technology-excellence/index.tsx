@@ -25,11 +25,13 @@ export interface TechnologyExcellenceProps {
     cards?: TechnologyCardData[];
 }
 
+const EMPTY_CARDS: TechnologyCardData[] = [];
+
 export function TechnologyExcellence({
     title,
     subtitle,
     badge,
-    cards = []
+    cards = EMPTY_CARDS
 }: TechnologyExcellenceProps = {}) {
     const displayTitle = title || "";
     const displaySubtitle = subtitle || "";
@@ -68,7 +70,7 @@ export function TechnologyExcellence({
                 {cards.length > 0 ? (
                     cards.map((card, index) => (
                         <TechCard
-                            key={index}
+                            key={card.title || `tech-card-${index}`}
                             className="tech-card-item"
                             title={card.title}
                             description={card.description}

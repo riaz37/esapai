@@ -1028,6 +1028,21 @@
   .animate-shimmer-slow {
     animation: shimmer-slow 3s ease-in-out infinite;
   }
+
+  /* User Journey Flow Animations */
+  @keyframes flow-pulse {
+    0% { stroke-dashoffset: 100; opacity: 0.2; }
+    50% { opacity: 0.8; }
+    100% { stroke-dashoffset: 0; opacity: 0.2; }
+  }
+
+  .animate-flow-pulse {
+    animation: flow-pulse 3s linear infinite;
+  }
+
+  .shadow-glow {
+    filter: drop-shadow(0 0 8px #13F584);
+  }
 }
 
 /* Database Component Animations */

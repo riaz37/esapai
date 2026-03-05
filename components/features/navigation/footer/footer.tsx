@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonArrow } from "@/components/ui/button";
@@ -52,6 +52,8 @@ export function Footer() {
   ];
 
   const footerRef = useRef<HTMLElement>(null);
+  const socialVideoRef = useRef<HTMLVideoElement>(null);
+  const [socialCardHovered, setSocialCardHovered] = useState(false);
 
   // Shared Card Styles
   const cardClasses = "relative overflow-hidden flex flex-col p-8 sm:p-10 h-full gap-0";
@@ -89,9 +91,31 @@ export function Footer() {
           </Card>
 
           {/* Bottom Card: Socials */}
-          <Card className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}>
+          <Card
+            className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}
+            onMouseEnter={() => {
+              setSocialCardHovered(true);
+              socialVideoRef.current?.play();
+            }}
+            onMouseLeave={() => {
+              setSocialCardHovered(false);
+              socialVideoRef.current?.pause();
+            }}
+          >
             <div className="absolute inset-0 z-0">
-              <FooterBg3 className="w-full h-full object-cover opacity-30" />
+              <FooterBg3
+                preserveAspectRatio="xMaxYMid slice"
+                className={cn("w-full h-full transition-opacity duration-500", socialCardHovered ? "opacity-0" : "opacity-30")}
+              />
+              <video
+                ref={socialVideoRef}
+                src="/footer3.mp4"
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover object-right transition-opacity duration-500"
+                style={{ opacity: socialCardHovered ? 0.3 : 0 }}
+              />
             </div>
             <div className="relative z-10">
               <h3 className="text-3xl md:text-4xl font-semibold text-white mb-6">{t("social.title")}</h3>
@@ -156,14 +180,14 @@ export function Footer() {
                 <p className="text-gray-400 text-lg mb-8">
                   {t("newsletter.subtitle")}
                 </p>
-                <form className="w-full max-w-md space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <form className="w-full max-w-md space-y-4">
                   <input
                     type="email"
                     placeholder={t("newsletter.placeholder")}
                     required
                     className="contact-input w-full px-4 py-3.5 text-base text-light-gray"
                   />
-                  <Button variant="primary" size="default" className="w-fit">
+                  <Button variant="primary" size="default" type="button" className="w-fit">
                     {t("newsletter.button")}
                   </Button>
                 </form>

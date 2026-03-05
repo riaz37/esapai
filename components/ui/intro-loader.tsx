@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 "use client";
 
 import { m, AnimatePresence } from "motion/react";
@@ -99,7 +98,6 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     return (
         <>
             {/* Preload the LCP image to make it discoverable in the initial HTML request */}
-            {/* @ts-ignore */}
             <link rel="preload" href="/logo/mainlogo.png" as="image" fetchPriority="high" />
             <AnimatePresence mode="wait">
                 {isLoading && (

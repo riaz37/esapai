@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface OptimizedVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
     src: string;
@@ -28,7 +29,6 @@ export function OptimizedVideo({
 }: OptimizedVideoProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [shouldLoad, setShouldLoad] = useState(priority);
 
     // Use rootMargin to start loading before it's actually visible
     const isInView = useInView(containerRef, {
@@ -37,11 +37,8 @@ export function OptimizedVideo({
         amount: threshold,
     });
 
-    useEffect(() => {
-        if (isInView && !shouldLoad) {
-            setShouldLoad(true);
-        }
-    }, [isInView, shouldLoad]);
+    // Derive shouldLoad from props and viewport state — no useState/useEffect cascade
+    const shouldLoad = priority || isInView;
 
     return (
         <div ref={containerRef} className={cn("relative overflow-hidden w-full h-full", className)}>
@@ -58,10 +55,12 @@ export function OptimizedVideo({
             ) : (
                 <div className="w-full h-full bg-neutral-900/50 flex items-center justify-center">
                     {poster && (
-                        <img
+                        <Image
                             src={poster}
                             alt="Video thumbnail"
-                            className="w-full h-full object-cover opacity-50"
+                            fill
+                            sizes="100vw"
+                            className="object-cover opacity-50"
                         />
                     )}
                 </div>
