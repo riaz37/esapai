@@ -93,7 +93,7 @@ export function Hero({
     return (
         <section
             ref={sectionRef}
-            className="relative w-full z-30 min-h-screen overflow-hidden"
+            className="relative w-full z-0 min-h-screen overflow-hidden"
         >
             <SectionMask
                 fadeTop={false}
