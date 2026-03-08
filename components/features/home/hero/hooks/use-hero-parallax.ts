@@ -113,14 +113,15 @@ export function useHeroParallax({
             );
 
             // FINAL REVEAL: Fade out the entire Hero Section by the end of the scroll
+            // Adjusted: Fade out slightly later and more gradually to prevent "blank" gap during reverse scroll
             mainTl.to(
                 sectionRef.current,
                 {
-                    autoAlpha: 0,
-                    duration: 0.4,
-                    ease: "power1.in",
+                    opacity: 0, // Changed from autoAlpha for cleaner transition
+                    duration: 0.3,
+                    ease: "power1.inOut",
                 },
-                0.6
+                0.7 // Delayed from 0.6
             );
 
             return () => {

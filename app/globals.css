@@ -233,6 +233,16 @@
 
 
 
+  @keyframes scan {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(200%);
+    }
+  }
+
   /* Standardized Text Styles (Removing static gradients) */
   .text-premium-body {
     color: rgba(255, 255, 255, 0.9);
@@ -1031,9 +1041,19 @@
 
   /* User Journey Flow Animations */
   @keyframes flow-pulse {
-    0% { stroke-dashoffset: 100; opacity: 0.2; }
-    50% { opacity: 0.8; }
-    100% { stroke-dashoffset: 0; opacity: 0.2; }
+    0% {
+      stroke-dashoffset: 100;
+      opacity: 0.2;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0.2;
+    }
   }
 
   .animate-flow-pulse {
