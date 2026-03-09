@@ -53,6 +53,7 @@ export function TechnologyExcellence({
             padding="none"
             withContainer={false}
             className="relative z-10 w-full min-h-screen overflow-hidden flex items-center justify-center pointer-events-none -mt-[60vh] md:-mt-[80vh]"
+            style={{ contentVisibility: "auto", containIntrinsicSize: "100vh" }}
         >
             {/* 3D Portal Stage */}
             <div className="absolute inset-0 flex items-center justify-center [perspective:2500px] pointer-events-none z-10">
@@ -60,7 +61,7 @@ export function TechnologyExcellence({
                     {/* Left Shutter Pane */}
                     <div
                         ref={leftShutterRef}
-                        className="shutter-pane absolute left-0 top-0 w-1/2 h-full overflow-hidden will-change-transform z-10"
+                        className="shutter-pane absolute left-0 top-0 w-1/2 h-full overflow-hidden z-10"
                         style={{ backfaceVisibility: "hidden" }}
                     >
                         <ShutterCanvas
@@ -74,7 +75,7 @@ export function TechnologyExcellence({
                     {/* Right Shutter Pane */}
                     <div
                         ref={rightShutterRef}
-                        className="shutter-pane absolute right-0 top-0 w-1/2 h-full overflow-hidden will-change-transform z-10"
+                        className="shutter-pane absolute right-0 top-0 w-1/2 h-full overflow-hidden z-10"
                         style={{ backfaceVisibility: "hidden" }}
                     >
                         <ShutterCanvas

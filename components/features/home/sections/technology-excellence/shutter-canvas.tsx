@@ -27,7 +27,7 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         return Array.from({ length: frameCount }, (_, i) => {
             const frameNum = (i + 1).toString().padStart(3, "0");
             // Support both png and webp (assuming they might be converted)
-            return `/assets/shutter/${side}/frame_${frameNum}.png`;
+            return `/assets/shutter/${side}/frame_${frameNum}.webp`;
         });
     }, [side, frameCount]);
 
@@ -37,25 +37,59 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         isLoadingRef.current = true;
 
         const loadImages = async () => {
-            const bitmaps = await Promise.all(
-                framePaths.map(async (path) => {
+            // Pre-allocate array
+            const bitmaps: (ImageBitmap | null)[] = new Array(frameCount).fill(null);
+
+            // 1. Load the first 20 frames immediately for the initial visible sequence
+            const initialCount = Math.min(20, frameCount);
+            const initialPromises = framePaths.slice(0, initialCount).map(async (path, i) => {
+                try {
+                    const response = await fetch(path);
+                    const blob = await response.blob();
+                    bitmaps[i] = await createImageBitmap(blob);
+                } catch (e) {
+                    console.error(`Failed to load frame: ${path}`, e);
+                }
+            });
+            await Promise.all(initialPromises);
+
+            if (!isMounted) return;
+            bitmapsRef.current = bitmaps;
+            isLoadingRef.current = false;
+            drawFrame(0);
+
+            // 2. Load the rest progressively so we don't block the main thread
+            let currentIndex = initialCount;
+            const chunkSize = 20;
+
+            const loadNextChunk = async () => {
+                if (!isMounted || currentIndex >= frameCount) return;
+
+                const end = Math.min(currentIndex + chunkSize, frameCount);
+                const chunkPromises = framePaths.slice(currentIndex, end).map(async (path, i) => {
+                    const absIndex = currentIndex + i;
                     try {
                         const response = await fetch(path);
                         const blob = await response.blob();
-                        return await createImageBitmap(blob);
+                        bitmaps[absIndex] = await createImageBitmap(blob);
                     } catch (e) {
                         console.error(`Failed to load frame: ${path}`, e);
-                        return null;
                     }
-                })
-            );
+                });
 
-            if (isMounted) {
-                bitmapsRef.current = bitmaps;
-                isLoadingRef.current = false;
-                // Draw initial frame
-                drawFrame(0);
-            }
+                await Promise.all(chunkPromises);
+                currentIndex = end;
+
+                // Schedule the next chunk
+                if (typeof window.requestIdleCallback === "function") {
+                    window.requestIdleCallback(() => loadNextChunk());
+                } else {
+                    setTimeout(loadNextChunk, 50);
+                }
+            };
+
+            // Start background loading
+            loadNextChunk();
         };
 
         loadImages();
@@ -81,13 +115,13 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         const bitmap = bitmapsRef.current[frameIndex];
         if (!bitmap) return;
 
-        // Handle DPI scaling
-        const dpr = window.devicePixelRatio || 1;
+        // Handle DPI scaling (optimized: cap at 1.5 for performance)
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const rect = canvas.getBoundingClientRect();
 
-        if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
+        if (canvas.width !== Math.round(rect.width * dpr) || canvas.height !== Math.round(rect.height * dpr)) {
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
         }
 
         // Draw image with cover behavior

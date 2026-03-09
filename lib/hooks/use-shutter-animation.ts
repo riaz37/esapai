@@ -52,6 +52,22 @@ export function useShutterAnimation({
                         anticipatePin: 1,
                         invalidateOnRefresh: true,
                         refreshPriority: 0, // Standard priority, Hero is 1
+                        onEnter: () => {
+                            leftShutter.style.willChange = "transform, opacity";
+                            rightShutter.style.willChange = "transform, opacity";
+                        },
+                        onLeave: () => {
+                            leftShutter.style.willChange = "auto";
+                            rightShutter.style.willChange = "auto";
+                        },
+                        onEnterBack: () => {
+                            leftShutter.style.willChange = "transform, opacity";
+                            rightShutter.style.willChange = "transform, opacity";
+                        },
+                        onLeaveBack: () => {
+                            leftShutter.style.willChange = "auto";
+                            rightShutter.style.willChange = "auto";
+                        },
                     }
                 });
 
