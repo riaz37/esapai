@@ -10,6 +10,7 @@ export interface TechCardProps {
     description: string;
     videoSrc?: string;
     className?: string;
+    wrapperClassName?: string;
     delay?: number;
     variant?: "default" | "glass-ar";
 }
@@ -19,6 +20,7 @@ export const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({
     description,
     videoSrc,
     className,
+    wrapperClassName,
     variant = "default"
 }, ref) => {
     const cardRef = useRef<HTMLDivElement>(null);
@@ -97,7 +99,7 @@ export const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({
     };
 
     return (
-        <div className="relative group p-px h-[280px] sm:h-[340px] lg:h-[400px] perspective-1000 rounded-[32px]">
+        <div className={cn("relative group p-px h-[280px] sm:h-[340px] lg:h-[400px] perspective-1000 rounded-[32px]", wrapperClassName)}>
             <div
                 ref={(el) => {
                     cardRef.current = el;

@@ -4,14 +4,16 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { RefObject } from "react";
+import { ShutterCanvasHandle } from "@/components/features/home/sections/technology-excellence/shutter-canvas";
 
 interface ShutterAnimationOptions {
     containerRef: RefObject<HTMLElement | null>;
     leftShutterRef: RefObject<HTMLDivElement | null>;
     rightShutterRef: RefObject<HTMLDivElement | null>;
+    leftCanvasRef: RefObject<ShutterCanvasHandle | null>;
+    rightCanvasRef: RefObject<ShutterCanvasHandle | null>;
     contentRef: RefObject<HTMLDivElement | null>;
     isRTL: boolean;
-    onProgress?: (progress: number) => void;
 }
 
 /**
@@ -21,9 +23,10 @@ export function useShutterAnimation({
     containerRef,
     leftShutterRef,
     rightShutterRef,
+    leftCanvasRef,
+    rightCanvasRef,
     contentRef,
     isRTL,
-    onProgress
 }: ShutterAnimationOptions) {
     useGSAP(
         () => {
@@ -90,7 +93,8 @@ export function useShutterAnimation({
                         duration: 2.5,
                         ease: "power2.inOut",
                         onUpdate: () => {
-                            if (onProgress) onProgress(frameProgress.value);
+                            if (leftCanvasRef.current) leftCanvasRef.current.setFrame(frameProgress.value);
+                            if (rightCanvasRef.current) rightCanvasRef.current.setFrame(frameProgress.value);
                         }
                     }, 0)
                     // Meet in middle and then reveal content with a dramatic fade

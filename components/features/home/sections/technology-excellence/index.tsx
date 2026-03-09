@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Cpu } from "lucide-react";
-import { ShutterCanvas } from "./shutter-canvas";
+import { ShutterCanvas, ShutterCanvasHandle } from "./shutter-canvas";
 import { TechCard } from "@/components/ui/tech-card";
 import { useShutterAnimation } from "@/lib/hooks/use-shutter-animation";
 import { useLocale } from "next-intl";
@@ -14,13 +14,15 @@ export interface TechnologyExcellenceProps {
     subtitle?: string;
     badge?: string;
     videoSrc?: string;
+    cards?: any[];
 }
 
 export function TechnologyExcellence({
     title,
     subtitle,
     badge,
-    videoSrc
+    videoSrc,
+    cards
 }: TechnologyExcellenceProps = {}) {
     const displayTitle = title || "";
     const displaySubtitle = subtitle || "";
@@ -28,20 +30,21 @@ export function TechnologyExcellence({
     const containerRef = useRef<HTMLElement>(null);
     const leftShutterRef = useRef<HTMLDivElement>(null);
     const rightShutterRef = useRef<HTMLDivElement>(null);
+    const leftCanvasRef = useRef<ShutterCanvasHandle>(null);
+    const rightCanvasRef = useRef<ShutterCanvasHandle>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
     const locale = useLocale();
     const isRTL = locale === "ar";
 
-    const [shutterProgress, setShutterProgress] = useState(0);
-
     useShutterAnimation({
         containerRef,
         leftShutterRef,
         rightShutterRef,
+        leftCanvasRef,
+        rightCanvasRef,
         contentRef,
         isRTL,
-        onProgress: setShutterProgress
     });
 
     return (
@@ -49,7 +52,7 @@ export function TechnologyExcellence({
             ref={containerRef}
             padding="none"
             withContainer={false}
-            className="relative z-10 w-full min-h-screen overflow-hidden flex items-end justify-center pointer-events-none -mt-[60vh] md:-mt-[80vh] mb-[20vh]"
+            className="relative z-10 w-full min-h-screen overflow-hidden flex items-center justify-center pointer-events-none -mt-[60vh] md:-mt-[80vh]"
         >
             {/* 3D Portal Stage */}
             <div className="absolute inset-0 flex items-center justify-center [perspective:2500px] pointer-events-none z-10">
@@ -61,8 +64,8 @@ export function TechnologyExcellence({
                         style={{ backfaceVisibility: "hidden" }}
                     >
                         <ShutterCanvas
+                            ref={leftCanvasRef}
                             side="left"
-                            progress={shutterProgress}
                             className="absolute top-0 right-0 w-[100vw] max-w-none h-full opacity-80"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
@@ -75,8 +78,8 @@ export function TechnologyExcellence({
                         style={{ backfaceVisibility: "hidden" }}
                     >
                         <ShutterCanvas
+                            ref={rightCanvasRef}
                             side="right"
-                            progress={shutterProgress}
                             className="absolute top-0 left-0 w-[100vw] max-w-none h-full opacity-80"
                         />
                         <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-transparent to-transparent" />
@@ -84,19 +87,41 @@ export function TechnologyExcellence({
                 </div>
             </div>
 
+            {/* Content Layer — header centered, cards at bottom */}
             <div
                 ref={contentRef}
-                className="relative z-20 w-full flex flex-col items-center pb-32 md:pb-48 px-6 sm:px-8 xl:px-12 opacity-0 pointer-events-auto"
+                className="absolute inset-0 z-20 flex flex-col items-center opacity-0 pointer-events-auto"
             >
-                <div className="max-w-4xl w-full text-center">
-                    <SectionHeader
-                        title={displayTitle}
-                        subtitle={displaySubtitle}
-                        badge={badge ?? ""}
-                        badgeIcon={Cpu}
-                        align="center"
-                        className="mb-0"
-                    />
+                {/* Center: Header */}
+                <div className="flex-1 flex items-center justify-center w-full translate-y-[20%]">
+                    <div className="w-full max-w-4xl text-center px-6">
+                        <SectionHeader
+                            title={displayTitle}
+                            subtitle={displaySubtitle}
+                            badge={badge ?? ""}
+                            badgeIcon={Cpu}
+                            align="center"
+                            className="mb-0"
+                        />
+                    </div>
+                </div>
+
+                {/* Bottom: Cards */}
+                <div className="w-full pb-6 md:pb-10 px-4">
+                    <div className="flex flex-wrap justify-center items-end gap-4 md:gap-6 max-w-4xl mx-auto">
+                        <TechCard
+                            title="Autonomous Agents"
+                            description="Deploy intelligent workers that handle complex workflows 24/7."
+                            videoSrc="/technology1.mp4"
+                            wrapperClassName="!h-[180px] sm:!h-[200px] w-[260px] sm:w-[300px]"
+                        />
+                        <TechCard
+                            title="Neural Processing"
+                            description="Transform raw data into actionable foresight with neural models."
+                            videoSrc="/technology2.mp4"
+                            wrapperClassName="!h-[180px] sm:!h-[200px] w-[260px] sm:w-[300px]"
+                        />
+                    </div>
                 </div>
             </div>
 
