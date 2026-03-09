@@ -49,7 +49,7 @@ export function TechnologyExcellence({
             ref={containerRef}
             padding="none"
             withContainer={false}
-            className="relative z-10 w-full min-h-screen overflow-hidden flex items-center justify-center pointer-events-none -mt-[60vh] md:-mt-[80vh] mb-[20vh]"
+            className="relative z-10 w-full min-h-screen overflow-hidden flex items-end justify-center pointer-events-none -mt-[60vh] md:-mt-[80vh] mb-[20vh]"
         >
             {/* 3D Portal Stage */}
             <div className="absolute inset-0 flex items-center justify-center [perspective:2500px] pointer-events-none z-10">
@@ -86,7 +86,7 @@ export function TechnologyExcellence({
 
             <div
                 ref={contentRef}
-                className="relative z-20 w-full flex flex-col items-center justify-center py-20 px-6 sm:px-8 xl:px-12 opacity-0 pointer-events-auto"
+                className="relative z-20 w-full flex flex-col items-center pb-32 md:pb-48 px-6 sm:px-8 xl:px-12 opacity-0 pointer-events-auto"
             >
                 <div className="max-w-4xl w-full text-center">
                     <SectionHeader
