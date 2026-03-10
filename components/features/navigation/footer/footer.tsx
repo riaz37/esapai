@@ -3,13 +3,10 @@
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
-
-
 
 import FooterBg1 from "./components/footer-bg-1";
 import FooterBg2 from "./components/footer-bg-2";
@@ -52,8 +49,12 @@ export function Footer() {
   ];
 
   const footerRef = useRef<HTMLElement>(null);
+  const ctaVideoRef = useRef<HTMLVideoElement>(null);
   const socialVideoRef = useRef<HTMLVideoElement>(null);
+  const menuVideoRef = useRef<HTMLVideoElement>(null);
+  const [ctaCardHovered, setCtaCardHovered] = useState(false);
   const [socialCardHovered, setSocialCardHovered] = useState(false);
+  const [menuCardHovered, setMenuCardHovered] = useState(false);
 
   // Shared Card Styles
   const cardClasses = "relative overflow-hidden flex flex-col p-8 sm:p-10 h-full gap-0";
@@ -69,9 +70,31 @@ export function Footer() {
         <div className="flex flex-col gap-4 h-full">
 
           {/* Top Card: Connect / CTA */}
-          <Card className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}>
+          <Card
+            className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}
+            onMouseEnter={() => {
+              setCtaCardHovered(true);
+              ctaVideoRef.current?.play();
+            }}
+            onMouseLeave={() => {
+              setCtaCardHovered(false);
+              ctaVideoRef.current?.pause();
+            }}
+          >
             <div className="absolute inset-0 z-0">
-              <FooterBg2 className="w-full h-full object-cover opacity-30" />
+              <FooterBg2
+                preserveAspectRatio="xMinYMin slice"
+                className={cn("w-full h-full transition-opacity duration-500", ctaCardHovered ? "opacity-0" : "opacity-30")}
+              />
+              <video
+                ref={ctaVideoRef}
+                src="/footer2.mp4"
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover object-left-top transition-opacity duration-500"
+                style={{ opacity: ctaCardHovered ? 0.3 : 0 }}
+              />
             </div>
             <div className="relative z-10">
               <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">{t("cta.title")}</h3>
@@ -149,10 +172,32 @@ export function Footer() {
         </div>
 
         {/* RIGHT COLUMN: COMBINED MENU & NEWSLETTER */}
-        <Card className={cn(cardClasses, "h-auto min-h-[624px] relative border-white/10 bg-white/5 backdrop-blur-sm")}>
+        <Card
+          className={cn(cardClasses, "h-auto min-h-[624px] relative border-white/10 bg-white/5 backdrop-blur-sm")}
+          onMouseEnter={() => {
+            setMenuCardHovered(true);
+            menuVideoRef.current?.play();
+          }}
+          onMouseLeave={() => {
+            setMenuCardHovered(false);
+            menuVideoRef.current?.pause();
+          }}
+        >
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <FooterBg1 className="w-full h-full object-cover opacity-20" />
+            <FooterBg1
+              preserveAspectRatio="xMaxYMid slice"
+              className={cn("w-full h-full transition-opacity duration-500", menuCardHovered ? "opacity-0" : "opacity-20")}
+            />
+            <video
+              ref={menuVideoRef}
+              src="/footer1.mp4"
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover object-right transition-opacity duration-500"
+              style={{ opacity: menuCardHovered ? 0.2 : 0 }}
+            />
           </div>
 
           <div className="relative z-10 flex flex-col h-full w-full">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useMemo } from "react";
+import React, { useRef, useEffect, useMemo, useCallback } from "react";
 
 interface ShutterCanvasProps {
     side: "left" | "right";
@@ -20,6 +20,7 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const bitmapsRef = useRef<(ImageBitmap | null)[]>([]);
     const lastFrameIndexRef = useRef<number>(-1);
+    const desiredProgressRef = useRef<number>(0);
     const isLoadingRef = useRef<boolean>(true);
 
     // Generate frame paths
@@ -31,100 +32,83 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         });
     }, [side, frameCount]);
 
-    // Preload images as Bitmaps for faster drawing
-    useEffect(() => {
-        let isMounted = true;
-        isLoadingRef.current = true;
+    const priorityFrameIndices = useMemo(() => {
+        const openingFrameCount = Math.min(12, frameCount);
+        const spreadFrameCount = Math.min(8, frameCount);
+        const indices = new Set<number>();
 
-        const loadImages = async () => {
-            // Pre-allocate array
-            const bitmaps: (ImageBitmap | null)[] = new Array(frameCount).fill(null);
+        for (let index = 0; index < openingFrameCount; index += 1) {
+            indices.add(index);
+        }
 
-            // 1. Load the first 20 frames immediately for the initial visible sequence
-            const initialCount = Math.min(20, frameCount);
-            const initialPromises = framePaths.slice(0, initialCount).map(async (path, i) => {
-                try {
-                    const response = await fetch(path);
-                    const blob = await response.blob();
-                    bitmaps[i] = await createImageBitmap(blob);
-                } catch (e) {
-                    console.error(`Failed to load frame: ${path}`, e);
-                }
-            });
-            await Promise.all(initialPromises);
+        for (let index = 0; index < spreadFrameCount; index += 1) {
+            const spreadIndex = Math.round((index / Math.max(1, spreadFrameCount - 1)) * (frameCount - 1));
+            indices.add(spreadIndex);
+        }
 
-            if (!isMounted) return;
-            bitmapsRef.current = bitmaps;
-            isLoadingRef.current = false;
-            drawFrame(0);
+        return Array.from(indices).sort((a, b) => a - b);
+    }, [frameCount]);
 
-            // 2. Load the rest progressively so we don't block the main thread
-            let currentIndex = initialCount;
-            const chunkSize = 20;
+    const resolveFrameIndex = useCallback((targetFrameIndex: number) => {
+        const bitmaps = bitmapsRef.current;
 
-            const loadNextChunk = async () => {
-                if (!isMounted || currentIndex >= frameCount) return;
+        if (bitmaps[targetFrameIndex]) {
+            return targetFrameIndex;
+        }
 
-                const end = Math.min(currentIndex + chunkSize, frameCount);
-                const chunkPromises = framePaths.slice(currentIndex, end).map(async (path, i) => {
-                    const absIndex = currentIndex + i;
-                    try {
-                        const response = await fetch(path);
-                        const blob = await response.blob();
-                        bitmaps[absIndex] = await createImageBitmap(blob);
-                    } catch (e) {
-                        console.error(`Failed to load frame: ${path}`, e);
-                    }
-                });
+        for (let offset = 1; offset < frameCount; offset += 1) {
+            const previousIndex = targetFrameIndex - offset;
+            if (previousIndex >= 0 && bitmaps[previousIndex]) {
+                return previousIndex;
+            }
 
-                await Promise.all(chunkPromises);
-                currentIndex = end;
+            const nextIndex = targetFrameIndex + offset;
+            if (nextIndex < frameCount && bitmaps[nextIndex]) {
+                return nextIndex;
+            }
+        }
 
-                // Schedule the next chunk
-                if (typeof window.requestIdleCallback === "function") {
-                    window.requestIdleCallback(() => loadNextChunk());
-                } else {
-                    setTimeout(loadNextChunk, 50);
-                }
-            };
+        if (lastFrameIndexRef.current >= 0 && bitmaps[lastFrameIndexRef.current]) {
+            return lastFrameIndexRef.current;
+        }
 
-            // Start background loading
-            loadNextChunk();
-        };
+        return -1;
+    }, [frameCount]);
 
-        loadImages();
-        return () => { isMounted = false; };
-    }, [framePaths]);
+    const drawFrame = useCallback((progress: number) => {
+        desiredProgressRef.current = progress;
 
-    const drawFrame = (progress: number) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        const ctx = canvas.getContext("2d", { alpha: false }); // Optimization: disable alpha if possible
+        const ctx = canvas.getContext("2d", { alpha: false });
         if (!ctx) return;
 
-        // Calculate which frame to show
-        const frameIndex = Math.min(
+        const targetFrameIndex = Math.min(
             frameCount - 1,
             Math.max(0, Math.floor(progress * frameCount))
         );
-
-        // Avoid redundant draws
-        if (frameIndex === lastFrameIndexRef.current) return;
-
-        const bitmap = bitmapsRef.current[frameIndex];
-        if (!bitmap) return;
+        const resolvedFrameIndex = resolveFrameIndex(targetFrameIndex);
+        if (resolvedFrameIndex < 0) return;
 
         // Handle DPI scaling (optimized: cap at 1.5 for performance)
         const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const rect = canvas.getBoundingClientRect();
 
-        if (canvas.width !== Math.round(rect.width * dpr) || canvas.height !== Math.round(rect.height * dpr)) {
-            canvas.width = Math.round(rect.width * dpr);
-            canvas.height = Math.round(rect.height * dpr);
+        const newWidth = Math.round(rect.width * dpr);
+        const newHeight = Math.round(rect.height * dpr);
+
+        if (canvas.width !== newWidth || canvas.height !== newHeight) {
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            lastFrameIndexRef.current = -1;
         }
 
-        // Draw image with cover behavior
+        if (resolvedFrameIndex === lastFrameIndexRef.current) return;
+
+        const bitmap = bitmapsRef.current[resolvedFrameIndex];
+        if (!bitmap) return;
+
         const imgAspect = bitmap.width / bitmap.height;
         const canvasAspect = canvas.width / canvas.height;
 
@@ -141,10 +125,91 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
             offsetX = (canvas.width - drawWidth) / 2;
         }
 
-        // Round coordinates for performance
         ctx.drawImage(bitmap, Math.round(offsetX), Math.round(offsetY), Math.round(drawWidth), Math.round(drawHeight));
-        lastFrameIndexRef.current = frameIndex;
-    };
+        lastFrameIndexRef.current = resolvedFrameIndex;
+    }, [frameCount, resolveFrameIndex]);
+
+    // Preload images as Bitmaps for faster drawing
+    useEffect(() => {
+        let isMounted = true;
+        isLoadingRef.current = true;
+
+        const loadImages = async () => {
+            const bitmaps: (ImageBitmap | null)[] = new Array(frameCount).fill(null);
+            const loadFrame = async (frameIndex: number) => {
+                if (bitmaps[frameIndex]) return;
+
+                const path = framePaths[frameIndex];
+
+                try {
+                    const response = await fetch(path);
+                    const blob = await response.blob();
+                    bitmaps[frameIndex] = await createImageBitmap(blob);
+                } catch (e) {
+                    console.error(`Failed to load frame: ${path}`, e);
+                }
+            };
+
+            // Prime both the opening motion and later pinned states with representative frames.
+            await Promise.all(priorityFrameIndices.map((frameIndex) => loadFrame(frameIndex)));
+
+            if (!isMounted) return;
+            bitmapsRef.current = bitmaps;
+            isLoadingRef.current = false;
+
+            // Draw initial frame after a short delay to ensure canvas dimensions are settled
+            setTimeout(() => {
+                if (isMounted) drawFrame(0);
+            }, 100);
+
+            // 2. Load the rest progressively so we don't block the main thread
+            const remainingFrameIndices = Array.from({ length: frameCount }, (_, index) => index)
+                .filter((index) => !priorityFrameIndices.includes(index));
+            let currentIndex = 0;
+            const chunkSize = 20;
+
+            const loadNextChunk = async () => {
+                if (!isMounted || currentIndex >= remainingFrameIndices.length) return;
+
+                const end = Math.min(currentIndex + chunkSize, remainingFrameIndices.length);
+                const chunkPromises = remainingFrameIndices
+                    .slice(currentIndex, end)
+                    .map((frameIndex) => loadFrame(frameIndex));
+
+                await Promise.all(chunkPromises);
+                currentIndex = end;
+
+                if (!isMounted) return;
+                drawFrame(desiredProgressRef.current);
+
+                // Schedule the next chunk
+                if (typeof window.requestIdleCallback === "function") {
+                    window.requestIdleCallback(() => loadNextChunk());
+                } else {
+                    setTimeout(loadNextChunk, 50);
+                }
+            };
+
+            // Start background loading
+            loadNextChunk();
+        };
+
+        loadImages();
+        return () => { isMounted = false; };
+    }, [drawFrame, frameCount, framePaths, priorityFrameIndices]);
+
+    // Auto-redraw on resize
+    useEffect(() => {
+        const handleResize = () => {
+            if (!isLoadingRef.current && bitmapsRef.current.length > 0) {
+                lastFrameIndexRef.current = -1;
+                drawFrame(desiredProgressRef.current);
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, [drawFrame, frameCount]);
 
     // Expose imperative API
     React.useImperativeHandle(ref, () => ({

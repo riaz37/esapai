@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Cpu } from "lucide-react";
@@ -52,11 +52,10 @@ export function TechnologyExcellence({
             ref={containerRef}
             padding="none"
             withContainer={false}
-            className="relative z-10 w-full min-h-screen overflow-hidden flex items-center justify-center pointer-events-none -mt-[60vh] md:-mt-[80vh]"
-            style={{ contentVisibility: "auto", containIntrinsicSize: "100vh" }}
+            className="relative z-10 w-full min-h-screen overflow-hidden flex items-center justify-center pointer-events-none mt-0 lg:-mt-[60vh] xl:-mt-[80vh]"
         >
             {/* 3D Portal Stage */}
-            <div className="absolute inset-0 flex items-center justify-center [perspective:2500px] pointer-events-none z-10">
+            <div className="absolute inset-0 hidden lg:flex items-center justify-center [perspective:2500px] pointer-events-none z-10">
                 <div className="relative w-full h-full [transform-style:preserve-3d]">
                     {/* Left Shutter Pane */}
                     <div
@@ -91,10 +90,10 @@ export function TechnologyExcellence({
             {/* Content Layer — header centered, cards at bottom */}
             <div
                 ref={contentRef}
-                className="absolute inset-0 z-20 flex flex-col items-center opacity-0 pointer-events-auto"
+                className="absolute inset-0 z-20 flex flex-col items-center opacity-100 lg:opacity-0 pointer-events-auto"
             >
                 {/* Center: Header */}
-                <div className="flex-1 flex items-center justify-center w-full translate-y-[20%]">
+                <div className="flex-1 flex items-center justify-center w-full translate-y-0 lg:translate-y-[20%] pt-24 lg:pt-0">
                     <div className="w-full max-w-4xl text-center px-6">
                         <SectionHeader
                             title={displayTitle}
@@ -108,7 +107,7 @@ export function TechnologyExcellence({
                 </div>
 
                 {/* Bottom: Cards */}
-                <div className="w-full pb-6 md:pb-10 px-4">
+                <div className="w-full pb-2 md:pb-4 px-4">
                     <div className="flex flex-wrap justify-center items-end gap-4 md:gap-6 max-w-4xl mx-auto">
                         <TechCard
                             title="Autonomous Agents"
