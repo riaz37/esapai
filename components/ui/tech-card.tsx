@@ -161,20 +161,20 @@ export const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({
                 {/* Content */}
                 <div
                     ref={contentRef}
-                    className="absolute bottom-0 start-0 w-full p-6 sm:p-8 md:p-10 transform z-30 group-hover:-translate-y-2 transition-all duration-500 ease-out"
+                    className="absolute bottom-0 start-0 w-full p-4 sm:p-6 md:p-8 transform z-30 group-hover:-translate-y-1 transition-all duration-500 ease-out"
                 >
-                    <div className="mb-4">
-                        <div className="h-px w-12 bg-primary/50 group-hover:w-20 transition-all duration-700" />
+                    <div className="mb-3">
+                        <div className="h-[2px] w-8 bg-primary/50 group-hover:w-16 transition-all duration-700" />
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-semibold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-primary transition-colors duration-500">
+                    <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2 tracking-tight group-hover:text-primary transition-colors duration-500 line-clamp-1">
                         {title}
                     </h3>
-                    <p className="text-sm sm:text-base text-neutral-300 max-w-sm leading-relaxed opacity-90 group-hover:text-white group-hover:opacity-100 transition-all duration-500">
+                    <p className="text-xs sm:text-sm text-neutral-300 max-w-sm leading-relaxed opacity-90 group-hover:text-white group-hover:opacity-100 transition-all duration-500 line-clamp-2">
                         {description}
                     </p>
 
                     {isGlassAR && (
-                        <div className="mt-6 flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-primary/60 font-mono">
+                        <div className="mt-4 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-primary/60 font-mono">
                             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                             Live Telemetry Active
                         </div>

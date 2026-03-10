@@ -42,6 +42,11 @@ export function useShutterAnimation({
             const mm = gsap.matchMedia();
 
             mm.add("(min-width: 1024px)", () => {
+                const syncCanvasFrame = (progress: number) => {
+                    if (leftCanvasRef.current) leftCanvasRef.current.setFrame(progress);
+                    if (rightCanvasRef.current) rightCanvasRef.current.setFrame(progress);
+                };
+                const frameProgress = { value: 0 };
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: container,
@@ -50,45 +55,41 @@ export function useShutterAnimation({
                         scrub: 1,
                         pin: true,
                         anticipatePin: 1,
-                        invalidateOnRefresh: true,
                         refreshPriority: 0, // Standard priority, Hero is 1
                         onEnter: () => {
                             leftShutter.style.willChange = "transform, opacity";
                             rightShutter.style.willChange = "transform, opacity";
                         },
-                        onLeave: () => {
-                            leftShutter.style.willChange = "auto";
-                            rightShutter.style.willChange = "auto";
-                        },
                         onEnterBack: () => {
                             leftShutter.style.willChange = "transform, opacity";
                             rightShutter.style.willChange = "transform, opacity";
                         },
-                        onLeaveBack: () => {
-                            leftShutter.style.willChange = "auto";
-                            rightShutter.style.willChange = "auto";
+                        onRefresh: () => {
+                            requestAnimationFrame(() => {
+                                syncCanvasFrame(frameProgress.value);
+                            });
                         },
                     }
                 });
 
                 // Initial State Setup (Immediate)
+                gsap.set([leftShutter, rightShutter], {
+                    opacity: 0,
+                    willChange: "transform, opacity"
+                });
                 gsap.set(leftShutter, {
                     rotateY: 90,
                     xPercent: -50,
-                    opacity: 0,
                     transformOrigin: "left center",
                 });
                 gsap.set(rightShutter, {
                     rotateY: -90,
                     xPercent: 50,
-                    opacity: 0,
                     transformOrigin: "right center",
                 });
                 gsap.set(content, { opacity: 0, scale: 0.9, y: 30 });
 
                 // Cinematic Shutter Closing Sequence
-                const frameProgress = { value: 0 };
-
                 tl.to(leftShutter, {
                     rotateY: 0,
                     xPercent: 0,
@@ -109,8 +110,7 @@ export function useShutterAnimation({
                         duration: 2.5,
                         ease: "power2.inOut",
                         onUpdate: () => {
-                            if (leftCanvasRef.current) leftCanvasRef.current.setFrame(frameProgress.value);
-                            if (rightCanvasRef.current) rightCanvasRef.current.setFrame(frameProgress.value);
+                            syncCanvasFrame(frameProgress.value);
                         }
                     }, 0)
                     // Meet in middle and then reveal content with a dramatic fade
@@ -121,31 +121,13 @@ export function useShutterAnimation({
                         duration: 2,
                         ease: "expo.out",
                     }, "-=0.8");
+
+                // Force refresh to ensure pinning is calculated correctly
+                ScrollTrigger.refresh();
             });
 
-            // Mobile fallback
-            mm.add("(max-width: 1023px)", () => {
-                gsap.from([leftShutter, rightShutter], {
-                    opacity: 0,
-                    y: 30,
-                    stagger: 0.1,
-                    duration: 0.8,
-                    scrollTrigger: {
-                        trigger: container,
-                        start: "top 85%",
-                    }
-                });
-                gsap.from(content, {
-                    opacity: 0,
-                    y: 20,
-                    delay: 0.3,
-                    duration: 0.8,
-                    scrollTrigger: {
-                        trigger: container,
-                        start: "top 85%",
-                    }
-                });
-            });
+            // Final refresh call for globally ensuring layout is synced
+            ScrollTrigger.refresh();
 
             return () => mm.revert();
         },
