@@ -1,23 +1,28 @@
 "use client";
 
-import { useRef, useState, memo } from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { Link, useRouter } from "@/i18n/routing";
+import { memo, type ReactNode, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { m } from "motion/react";
+import { Link } from "@/i18n/routing";
+import { buildCaseStudyListingPath } from "@/lib/case-studies";
 import { useSharedCardObserver } from "@/lib/hooks/use-case-study-card-animation";
 import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
+import { cn } from "@/lib/utils";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { sanitizeText } from "@/lib/utils/sanitize";
 import { Section } from "@/components/ui/section";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { Button, ButtonArrow } from "@/components/ui/button";
-import { LazySection } from "@/components/ui/lazy-section";
 import type { CaseStudyWithUrls } from "@/types/case-study";
 
 interface CaseStudyListAnimatedProps {
   caseStudies: CaseStudyWithUrls[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  activeTag: string | null;
+  availableTags: string[];
 }
 
 interface CaseStudyCardProps {
@@ -27,29 +32,43 @@ interface CaseStudyCardProps {
   imageErrors: Set<string>;
 }
 
-export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProps) {
+function buildPageNumbers(totalPages: number): number[] {
+  return Array.from({ length: totalPages }, (_, index) => index + 1);
+}
+
+export function CaseStudyListAnimated({
+  caseStudies,
+  totalCount,
+  totalPages,
+  currentPage,
+  pageSize,
+  activeTag,
+  availableTags,
+}: CaseStudyListAnimatedProps) {
   const t = useTranslations("CaseStudy.list");
   const sectionRef = useRef<HTMLElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
   useScrollReveal(sectionRef, {
     selector: ".case-study-hero-content > *",
     y: 30,
     stagger: 0.15,
-    duration: 0.8
+    duration: 0.8,
   });
 
-  // Track image loading errors
-  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  useSharedCardObserver(cardsContainerRef, !prefersReducedMotion());
 
   const handleImageError = (id: string) => {
     setImageErrors((prev) => new Set(prev).add(id));
   };
 
-  // Case study cards animations - using shared observer for better performance
-  useSharedCardObserver(cardsContainerRef, !prefersReducedMotion());
+  const hasResults = caseStudies.length > 0;
+  const shouldShowFilters = availableTags.length > 0;
+  const shouldShowPagination = totalPages > 1 && totalCount > 0;
+  const pageNumbers = buildPageNumbers(totalPages);
+  const rangeStart = totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const rangeEnd = totalCount === 0 ? 0 : rangeStart + caseStudies.length - 1;
 
   return (
     <main className="relative" ref={sectionRef}>
@@ -58,10 +77,7 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
         containerMaxWidth="wide"
         className="relative overflow-hidden"
       >
-
-        {/* Unified Content Container */}
         <div className="relative z-10 w-full">
-          {/* Hero Content */}
           <div className="case-study-hero-content text-start mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
             <TypewriterTitle
               title={t("heroTitle")}
@@ -73,16 +89,64 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
               staggerDelay={0.02}
               letterDuration={0.4}
             />
-            <p
-              className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl font-normal leading-relaxed"
-            >
+            <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl font-normal leading-relaxed">
               {t("subtitle")}
             </p>
           </div>
 
-          {/* Grid Content */}
+          <div className="mb-10 sm:mb-12 md:mb-14 space-y-5">
+            {shouldShowFilters && (
+              <div className="space-y-3">
+                <p className="text-sm font-medium tracking-wide text-white/65">
+                  {t("filterLabel")}
+                </p>
+                <nav
+                  className="flex flex-wrap gap-2"
+                  aria-label={t("filtersAriaLabel")}
+                >
+                  <Link
+                    href={buildCaseStudyListingPath()}
+                    className={cn(
+                      "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#13F584]/50",
+                      !activeTag
+                        ? "border-[#13F584]/40 bg-[#13F584]/10 text-[#13F584]"
+                        : "border-white/10 text-light-gray-90 hover:border-[#13F584]/30 hover:text-[#13F584]"
+                    )}
+                  >
+                    {t("allTags")}
+                  </Link>
+                  {availableTags.map((tag) => {
+                    const isActive = activeTag === tag;
+
+                    return (
+                      <Link
+                        key={tag}
+                        href={buildCaseStudyListingPath({ tag })}
+                        className={cn(
+                          "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#13F584]/50",
+                          isActive
+                            ? "border-[#13F584]/40 bg-[#13F584]/10 text-[#13F584]"
+                            : "border-white/10 text-light-gray-90 hover:border-[#13F584]/30 hover:text-[#13F584]"
+                        )}
+                      >
+                        {tag}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+            )}
+
+            <p className="text-sm text-white/60">
+              {t("resultsSummary", {
+                start: rangeStart,
+                end: rangeEnd,
+              })}
+            </p>
+          </div>
+
           <div className="case-studies-glow">
-            {caseStudies.length > 0 ? (
+            {hasResults ? (
               <div
                 ref={cardsContainerRef}
                 className="w-full"
@@ -101,17 +165,67 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
               </div>
             ) : (
               <div
-                className="text-center py-16"
+                className="rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-12 text-center"
                 role="status"
                 aria-live="polite"
               >
                 <p className="text-lg text-light-gray-90 mb-6">
-                  {t("empty")}
+                  {activeTag
+                    ? t("filteredEmpty", { tag: activeTag })
+                    : t("empty")}
                 </p>
+                {activeTag && (
+                  <Button variant="outline" showArrow={false} asChild>
+                    <Link href={buildCaseStudyListingPath()}>
+                      {t("clearFilter")}
+                    </Link>
+                  </Button>
+                )}
               </div>
             )}
 
-            {/* CTA Section Removed */}
+            {shouldShowPagination && (
+              <nav
+                className="mt-12 flex flex-wrap items-center gap-3"
+                aria-label={t("paginationLabel")}
+              >
+                <PaginationLink
+                  href={buildCaseStudyListingPath({
+                    page: currentPage - 1,
+                    tag: activeTag,
+                  })}
+                  disabled={currentPage <= 1}
+                >
+                  {t("previousPage")}
+                </PaginationLink>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {pageNumbers.map((pageNumber) => (
+                    <PaginationLink
+                      key={pageNumber}
+                      href={buildCaseStudyListingPath({
+                        page: pageNumber,
+                        tag: activeTag,
+                      })}
+                      active={pageNumber === currentPage}
+                      ariaCurrent={pageNumber === currentPage ? "page" : undefined}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  ))}
+                </div>
+
+                <PaginationLink
+                  href={buildCaseStudyListingPath({
+                    page: currentPage + 1,
+                    tag: activeTag,
+                  })}
+                  disabled={currentPage >= totalPages}
+                >
+                  {t("nextPage")}
+                </PaginationLink>
+              </nav>
+            )}
           </div>
         </div>
       </Section>
@@ -119,9 +233,43 @@ export function CaseStudyListAnimated({ caseStudies }: CaseStudyListAnimatedProp
   );
 }
 
-/**
- * Memoized case study card component to prevent unnecessary re-renders
- */
+function PaginationLink({
+  href,
+  children,
+  active = false,
+  disabled = false,
+  ariaCurrent,
+}: {
+  href: string;
+  children: ReactNode;
+  active?: boolean;
+  disabled?: boolean;
+  ariaCurrent?: "page";
+}) {
+  const className = cn(
+    "inline-flex min-h-10 items-center justify-center rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300",
+    active
+      ? "border-[#13F584]/40 bg-[#13F584]/10 text-[#13F584]"
+      : "border-white/10 text-light-gray-90",
+    !active && !disabled && "hover:border-[#13F584]/30 hover:text-[#13F584]",
+    disabled && "cursor-not-allowed opacity-40"
+  );
+
+  if (disabled) {
+    return (
+      <span className={className} aria-disabled="true">
+        {children}
+      </span>
+    );
+  }
+
+  return (
+    <Link href={href} className={className} aria-current={ariaCurrent}>
+      {children}
+    </Link>
+  );
+}
+
 const CaseStudyCard = memo(
   ({ caseStudy, index, onImageError, imageErrors }: CaseStudyCardProps) => {
     const t = useTranslations("CaseStudy.list");
@@ -129,7 +277,7 @@ const CaseStudyCard = memo(
     const displayTags = (caseStudy.tags ?? []).slice(0, 3);
     const excerpt =
       caseStudy.subtitle.length > 140
-        ? `${caseStudy.subtitle.slice(0, 140)}…`
+        ? `${caseStudy.subtitle.slice(0, 140)}...`
         : caseStudy.subtitle;
 
     const hasImageError = imageErrors.has(caseStudy._id);
@@ -146,7 +294,6 @@ const CaseStudyCard = memo(
             : "relative isolate mt-10 sm:mt-12 md:mt-14 pt-10 sm:pt-12 md:pt-14 border-t border-white/10"
         }
       >
-        {/* Glow background to highlight each case study (visual only) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-28 top-10 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl opacity-70"
@@ -177,7 +324,6 @@ const CaseStudyCard = memo(
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-14 items-center">
-          {/* Left: image + tags */}
           <div>
             <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden case-study-image">
               {imageUrl ? (
@@ -201,7 +347,11 @@ const CaseStudyCard = memo(
             </div>
 
             {displayTags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3 sm:mt-4" role="list" aria-label="Case study tags">
+              <div
+                className="flex flex-wrap gap-2 mt-3 sm:mt-4"
+                role="list"
+                aria-label="Case study tags"
+              >
                 {displayTags.map((tag) => (
                   <span
                     key={tag}
@@ -221,7 +371,6 @@ const CaseStudyCard = memo(
             )}
           </div>
 
-          {/* Right: excerpt + button */}
           <div className="max-w-xl">
             <p className="text-light-gray-90 text-sm sm:text-base md:text-lg leading-relaxed mb-5 sm:mb-6">
               {excerpt}
@@ -242,7 +391,6 @@ const CaseStudyCard = memo(
     );
   },
   (prevProps, nextProps) => {
-    // Only re-render if the case study data actually changed
     return (
       prevProps.caseStudy._id === nextProps.caseStudy._id &&
       prevProps.index === nextProps.index &&

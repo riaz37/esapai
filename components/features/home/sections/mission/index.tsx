@@ -79,7 +79,7 @@ export function Mission({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: isMobile ? "+=80%" : "+=120%",
+            end: isMobile ? "+=150%" : "+=120%",
             scrub: 1,
             pin: true,
             anticipatePin: 1,
@@ -141,8 +141,8 @@ export function Mission({
     <Section
       ref={sectionRef}
       padding="none"
-      containerClassName="flex flex-col h-screen min-h-screen"
-      className="relative overflow-hidden z-20 bg-transparent flex flex-col justify-center"
+      containerClassName="flex flex-col min-h-screen md:h-screen"
+      className="relative overflow-hidden z-20 bg-transparent flex flex-col justify-center py-10 md:py-0"
       containerMaxWidth="full"
     >
       <SectionHeader

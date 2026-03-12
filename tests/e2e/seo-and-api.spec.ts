@@ -30,12 +30,74 @@ test.describe("SEO and API smoke", () => {
     expect(Array.isArray(body.features)).toBeTruthy();
   });
 
-  test("case study list API responds with array shape", async ({ request }) => {
-    const response = await request.get("/api/case-studies?locale=en");
+  test("case study list API responds with pagination metadata", async ({ request }) => {
+    const response = await request.get("/api/case-studies?locale=en&page=1&pageSize=6");
     expect(response.status()).toBe(200);
 
-    const body = (await response.json()) as { caseStudies?: unknown[] };
+    const body = (await response.json()) as {
+      caseStudies?: unknown[];
+      totalCount?: number;
+      totalPages?: number;
+      currentPage?: number;
+      pageSize?: number;
+      availableTags?: string[];
+    };
     expect(Array.isArray(body.caseStudies)).toBeTruthy();
+    expect(typeof body.totalCount).toBe("number");
+    expect(typeof body.totalPages).toBe("number");
+    expect(body.currentPage).toBe(1);
+    expect(body.pageSize).toBe(6);
+    expect(Array.isArray(body.availableTags)).toBeTruthy();
+  });
+
+  test("case study list API supports pagination and tag filtering", async ({ request }) => {
+    const firstPageResponse = await request.get("/api/case-studies?locale=en&page=1&pageSize=1");
+    expect(firstPageResponse.status()).toBe(200);
+
+    const firstPageBody = (await firstPageResponse.json()) as {
+      caseStudies?: Array<{ tags?: string[] }>;
+      totalCount?: number;
+      totalPages?: number;
+      currentPage?: number;
+      availableTags?: string[];
+      activeTag?: string | null;
+    };
+
+    expect(firstPageBody.currentPage).toBe(1);
+    expect(firstPageBody.totalCount).toBeGreaterThanOrEqual(0);
+    expect(firstPageBody.totalPages).toBeGreaterThanOrEqual(1);
+
+    const secondPageResponse = await request.get("/api/case-studies?locale=en&page=2&pageSize=1");
+    expect(secondPageResponse.status()).toBe(200);
+
+    const secondPageBody = (await secondPageResponse.json()) as {
+      caseStudies?: unknown[];
+      currentPage?: number;
+      pageSize?: number;
+    };
+
+    expect(secondPageBody.pageSize).toBe(1);
+    expect(secondPageBody.currentPage).toBeGreaterThanOrEqual(1);
+
+    const firstTag = firstPageBody.availableTags?.[0];
+    test.skip(!firstTag, "No case study tag available in API response");
+
+    const filteredResponse = await request.get(
+      `/api/case-studies?locale=en&tag=${encodeURIComponent(firstTag!)}`
+    );
+    expect(filteredResponse.status()).toBe(200);
+
+    const filteredBody = (await filteredResponse.json()) as {
+      caseStudies?: Array<{ tags?: string[] }>;
+      activeTag?: string | null;
+    };
+
+    expect(filteredBody.activeTag).toBe(firstTag);
+    expect(
+      filteredBody.caseStudies?.every((caseStudy) =>
+        Array.isArray(caseStudy.tags) ? caseStudy.tags.includes(firstTag!) : false
+      )
+    ).toBeTruthy();
   });
 
   test("unknown case study slug returns not found payload", async ({ request }) => {
