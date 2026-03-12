@@ -1,3 +1,4 @@
+import type { QueryParams } from "@sanity/client";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { validateImageUrl } from "@/lib/security/url-validator";
@@ -5,10 +6,12 @@ import type {
   TimelineEntry,
   CaseStudy,
   CaseStudyWithUrls,
+  CaseStudyListingParams,
+  PaginatedCaseStudiesResult,
 } from "@/types/case-study";
 import type { SanityImage } from "@/types/sanity";
 
-const CASE_STUDY_QUERY = `*[_type == "caseStudy" && language == $locale] | order(publishedAt desc) {
+const CASE_STUDY_FIELDS = `{
   _id,
   title,
   slug,
@@ -21,18 +24,85 @@ const CASE_STUDY_QUERY = `*[_type == "caseStudy" && language == $locale] | order
   featured
 }`;
 
-const CASE_STUDY_BY_SLUG_QUERY = `*[_type == "caseStudy" && slug.current == $slug && language == $locale][0] {
-  _id,
-  title,
-  slug,
-  subtitle,
-  tags,
-  thumbnail,
-  heroImages,
-  timeline,
-  publishedAt,
-  featured
-}`;
+const CASE_STUDY_QUERY = `*[_type == "caseStudy" && language == $locale] | order(publishedAt desc) ${CASE_STUDY_FIELDS}`;
+
+const CASE_STUDY_BY_SLUG_QUERY = `*[_type == "caseStudy" && slug.current == $slug && language == $locale][0] ${CASE_STUDY_FIELDS}`;
+
+const CASE_STUDY_TAGS_QUERY = `*[_type == "caseStudy" && language == $locale].tags[]`;
+
+export const DEFAULT_CASE_STUDY_PAGE_SIZE = 6;
+
+function getCaseStudyFilter(tag?: string | null): string {
+  return tag ? ` && $selectedTag in tags` : "";
+}
+
+function buildCaseStudyListQuery(tag?: string | null): string {
+  return `*[_type == "caseStudy" && language == $locale${getCaseStudyFilter(tag)}] | order(publishedAt desc)[$start...$end] ${CASE_STUDY_FIELDS}`;
+}
+
+function buildCaseStudyCountQuery(tag?: string | null): string {
+  return `count(*[_type == "caseStudy" && language == $locale${getCaseStudyFilter(tag)}])`;
+}
+
+function getFirstParamValue<T>(value: T | T[] | undefined | null): T | undefined {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+
+  return value ?? undefined;
+}
+
+function parsePositiveInteger(
+  value: number | string | string[] | undefined,
+  fallback: number
+): number {
+  const rawValue = getFirstParamValue(value);
+
+  if (typeof rawValue === "number") {
+    return Number.isInteger(rawValue) && rawValue > 0 ? rawValue : fallback;
+  }
+
+  if (typeof rawValue !== "string") {
+    return fallback;
+  }
+
+  const parsedValue = Number.parseInt(rawValue, 10);
+  return Number.isInteger(parsedValue) && parsedValue > 0 ? parsedValue : fallback;
+}
+
+export function normalizeCaseStudyListingParams(
+  params: Pick<CaseStudyListingParams, "page" | "pageSize" | "tag">,
+  defaultPageSize: number = DEFAULT_CASE_STUDY_PAGE_SIZE
+): { page: number; pageSize: number; tag: string | null } {
+  const normalizedTag = getFirstParamValue(params.tag)?.trim() || null;
+
+  return {
+    page: parsePositiveInteger(params.page, 1),
+    pageSize: parsePositiveInteger(params.pageSize, defaultPageSize),
+    tag: normalizedTag,
+  };
+}
+
+export function buildCaseStudyListingPath({
+  page = 1,
+  tag,
+}: {
+  page?: number;
+  tag?: string | null;
+} = {}): string {
+  const searchParams = new URLSearchParams();
+
+  if (tag) {
+    searchParams.set("tag", tag);
+  }
+
+  if (page > 1) {
+    searchParams.set("page", String(page));
+  }
+
+  const queryString = searchParams.toString();
+  return queryString ? `/case-study?${queryString}` : "/case-study";
+}
 
 
 /**
@@ -166,5 +236,60 @@ export async function getCaseStudyBySlug(
       console.error("Error fetching case study:", error);
     }
     return null;
+  }
+}
+
+export async function getPaginatedCaseStudies(
+  params: CaseStudyListingParams
+): Promise<PaginatedCaseStudiesResult> {
+  const locale = params.locale || "en";
+  const normalized = normalizeCaseStudyListingParams(params);
+
+  try {
+    const countQuery = buildCaseStudyCountQuery(normalized.tag);
+    const countParams: QueryParams = normalized.tag
+      ? { locale, selectedTag: normalized.tag }
+      : { locale };
+    const [totalCount, rawTags] = await Promise.all([
+      client.fetch<number>(countQuery, countParams),
+      client.fetch<string[]>(CASE_STUDY_TAGS_QUERY, { locale }),
+    ]);
+
+    const totalPages = Math.max(1, Math.ceil(totalCount / normalized.pageSize));
+    const currentPage = Math.min(normalized.page, totalPages);
+    const start = (currentPage - 1) * normalized.pageSize;
+    const end = start + normalized.pageSize;
+    const listQuery = buildCaseStudyListQuery(normalized.tag);
+    const listParams: QueryParams = normalized.tag
+      ? { locale, start, end, selectedTag: normalized.tag }
+      : { locale, start, end };
+    const caseStudies = await client.fetch<CaseStudy[]>(listQuery, listParams);
+    const availableTags = Array.from(
+      new Set((rawTags || []).filter((tag): tag is string => typeof tag === "string" && tag.trim().length > 0))
+    ).sort((left, right) => left.localeCompare(right, locale));
+
+    return {
+      items: caseStudies.map(transformCaseStudy),
+      totalCount,
+      totalPages,
+      currentPage,
+      pageSize: normalized.pageSize,
+      activeTag: normalized.tag,
+      availableTags,
+    };
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching paginated case studies:", error);
+    }
+
+    return {
+      items: [],
+      totalCount: 0,
+      totalPages: 1,
+      currentPage: 1,
+      pageSize: normalized.pageSize,
+      activeTag: normalized.tag,
+      availableTags: [],
+    };
   }
 }

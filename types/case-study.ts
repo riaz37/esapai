@@ -46,3 +46,20 @@ export interface CaseStudyWithUrls extends Omit<CaseStudy, "heroImages" | "timel
     }>;
   }>;
 }
+
+export interface CaseStudyListingParams {
+  locale?: string;
+  page?: number | string | string[];
+  pageSize?: number | string | string[];
+  tag?: string | string[] | null;
+}
+
+export interface PaginatedCaseStudiesResult {
+  items: CaseStudyWithUrls[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  activeTag: string | null;
+  availableTags: string[];
+}

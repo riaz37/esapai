@@ -36,18 +36,48 @@ test.describe("Content routes", () => {
     page,
     request,
   }) => {
-    await page.goto("/en/case-study");
+    await page.goto("/en/case-study", { waitUntil: "domcontentloaded" });
     await expect(getContentMain(page)).toBeVisible();
 
     const listResponse = await request.get("/api/case-studies?locale=en");
     const data = (await listResponse.json()) as {
       caseStudies?: Array<{ slug?: string }>;
+      availableTags?: string[];
     };
 
     const firstSlug = data.caseStudies?.find((cs) => !!cs.slug)?.slug;
     test.skip(!firstSlug, "No case study slug available in API response");
 
-    await page.goto(`/en/case-study/${firstSlug}`);
+    await page.goto(`/en/case-study/${firstSlug}`, {
+      waitUntil: "domcontentloaded",
+    });
     await expect(getContentMain(page)).toBeVisible();
+  });
+
+  test("case study list normalizes invalid pages and supports filter empty states", async ({
+    page,
+    request,
+  }) => {
+    await page.goto("/en/case-study?page=999", { waitUntil: "domcontentloaded" });
+    await expect(getContentMain(page)).toBeVisible();
+    await expect(page).not.toHaveURL(/page=999/);
+
+    const listResponse = await request.get("/api/case-studies?locale=en");
+    const data = (await listResponse.json()) as {
+      availableTags?: string[];
+    };
+
+    const firstTag = data.availableTags?.[0];
+    test.skip(!firstTag, "No case study tag available in API response");
+
+    await page.goto(`/en/case-study?tag=${encodeURIComponent(firstTag!)}`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(getContentMain(page)).toBeVisible();
+
+    await page.goto("/en/case-study?tag=__unknown__", {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(page.getByRole("link", { name: "Clear filter" })).toBeVisible();
   });
 });

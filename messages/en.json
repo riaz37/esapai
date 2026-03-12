@@ -209,9 +209,18 @@
       "heroTagline": "Study",
       "subtitle": "Where Innovation Meets Productivity Driven by agents Powered by automation Built for what's next",
       "empty": "No case studies available yet.",
+      "filteredEmpty": "No case studies found for \"{tag}\".",
       "featured": "Featured",
       "viewDetails": "View Details",
-      "ariaLabel": "Case studies"
+      "ariaLabel": "Case studies",
+      "filterLabel": "Filter by tag",
+      "filtersAriaLabel": "Case study filters",
+      "allTags": "All",
+      "clearFilter": "Clear filter",
+      "resultsSummary": "See more case studies: {start}-{end}",
+      "previousPage": "Previous",
+      "nextPage": "Next",
+      "paginationLabel": "Case study pagination"
     },
     "detail": {
       "loading": "Loading case study",

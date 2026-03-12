@@ -209,9 +209,18 @@
       "heroTagline": "إبداعية",
       "subtitle": "حيث يلتقي الابتكار بالإنتاجية مدفوعاً بالوكلاء مدعوماً بالأتمتة مبني لما هو قادم",
       "empty": "لا توجد دراسات حالة متاحة حتى الآن.",
+      "filteredEmpty": "لم يتم العثور على دراسات حالة للوسم \"{tag}\".",
       "featured": "مميز",
       "viewDetails": "عرض التفاصيل",
-      "ariaLabel": "دراسات الحالة"
+      "ariaLabel": "دراسات الحالة",
+      "filterLabel": "التصفية حسب الوسم",
+      "filtersAriaLabel": "مرشحات دراسات الحالة",
+      "allTags": "الكل",
+      "clearFilter": "إزالة التصفية",
+      "resultsSummary": "عرض المزيد من دراسات الحالة: {start}-{end}",
+      "previousPage": "السابق",
+      "nextPage": "التالي",
+      "paginationLabel": "ترقيم صفحات دراسات الحالة"
     },
     "detail": {
       "loading": "جارٍ تحميل دراسة الحالة",
