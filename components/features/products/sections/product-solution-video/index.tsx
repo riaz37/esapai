@@ -33,77 +33,110 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
     useGSAP(() => {
         if (!containerRef.current || !videoWrapperRef.current) return;
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                start: "top top",
-                end: "+=200%",
-                scrub: 1.5,
-                pin: true,
-                anticipatePin: 1,
-                invalidateOnRefresh: true,
-            }
-        });
+    const mm = gsap.matchMedia();
 
-        // Proactive Mobile Header Animation
-        const header = containerRef.current?.querySelector('.mobile-section-header [data-testid="section-header"]');
-        if (header) {
-            const children = Array.from(header.children);
-            gsap.fromTo(
-                children,
-                { y: 30, opacity: 0, filter: "blur(10px)" },
-                {
-                    y: 0,
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    stagger: 0.1,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: header,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse",
-                    }
-                }
-            );
-        }
+    mm.add("(min-width: 768px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=200%",
+          scrub: 1.5,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
 
-        // 1. Initial State: Deep in 3D Space
-        gsap.set(videoWrapperRef.current, {
-            z: -1800,
-            rotationX: 30,
-            opacity: 0,
-            filter: "blur(15px) brightness(1.5)",
-            transformPerspective: 2500,
-        });
-
-        // 2. Kinetic Reveal Sequence
-        tl.to(videoWrapperRef.current, {
+      // Proactive Mobile Header Animation (Not really needed if this is desktop only, but keeping it safe)
+      const header = containerRef.current?.querySelector(
+        '.mobile-section-header [data-testid="section-header"]'
+      );
+      if (header) {
+        const children = Array.from(header.children);
+        gsap.fromTo(
+          children,
+          { y: 30, opacity: 0, filter: "blur(10px)" },
+          {
+            y: 0,
             opacity: 1,
-            z: 0,
-            rotationX: 0,
-            filter: "blur(0px) brightness(1)",
-            duration: 4,
-            ease: "power4.out"
-        }, 0);
+            filter: "blur(0px)",
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: header,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
-        // 3. Focal Hold / Cinematic Breathing
-        tl.to(videoWrapperRef.current, {
-            z: 80,
-            duration: 5,
-            ease: "sine.inOut"
-        });
+      // 1. Initial State: Deep in 3D Space
+      gsap.set(videoWrapperRef.current, {
+        z: -1800,
+        rotationX: 30,
+        opacity: 0,
+        filter: "blur(15px) brightness(1.5)",
+        transformPerspective: 2500,
+      });
 
-        // Subtle continuous float
-        gsap.to(videoWrapperRef.current, {
-            y: "+=12",
-            duration: 4,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-        });
+      // 2. Kinetic Reveal Sequence
+      tl.to(
+        videoWrapperRef.current,
+        {
+          opacity: 1,
+          z: 0,
+          rotationX: 0,
+          filter: "blur(0px) brightness(1)",
+          duration: 4,
+          ease: "power4.out",
+        },
+        0
+      );
 
-    }, { scope: containerRef });
+      // 3. Focal Hold / Cinematic Breathing
+      tl.to(videoWrapperRef.current, {
+        z: 80,
+        duration: 5,
+        ease: "sine.inOut",
+      });
+
+      // Subtle continuous float
+      gsap.to(videoWrapperRef.current, {
+        y: "+=12",
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      // Mobile fallback: Just a simple fade and slide up
+      gsap.fromTo(
+        videoWrapperRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+
+    return () => mm.revert();
+  }, { scope: containerRef });
 
     return (
         <div className="relative w-full">
@@ -121,11 +154,11 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
             <Section
                 ref={containerRef}
                 withContainer={false}
-                className="relative w-full h-[100svh] md:h-screen perspective-[2500px] overflow-hidden md:-mt-20"
+                className="relative w-full h-auto md:h-screen perspective-[2500px] overflow-hidden md:-mt-20 sm:pb-24 pb-16 pt-8 md:pt-0"
                 padding="none"
             >
                 {/* Mobile-Only Pinned Header - Clears Navbar */}
-                <div className="mobile-section-header block md:hidden absolute top-0 inset-x-0 w-full container mx-auto px-6 pt-24 pb-0 z-20 pointer-events-auto">
+                <div className="mobile-section-header block md:hidden w-full container mx-auto px-6 mb-8 z-20 pointer-events-auto">
                     <SectionHeader
                         title={demoTitle}
                         subtitle={demoSubtitle}
@@ -138,7 +171,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                 </div>
 
                 {/* The Kinetic 3D Stage - Tightened for mobile to reduce gaps */}
-                <div className="video-stage absolute inset-0 z-10 flex items-center justify-center pointer-events-none px-4 md:px-8 pt-12 md:pt-20">
+                <div className="video-stage relative md:absolute inset-0 z-10 flex items-center justify-center pointer-events-none px-4 md:px-8">
                     <div
                         ref={videoWrapperRef}
                         className="relative w-[95vw] md:w-[90vw] max-w-[1400px] max-h-[55vh] md:max-h-[75vh] aspect-video rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 pointer-events-auto will-change-transform"
