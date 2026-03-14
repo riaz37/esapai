@@ -15,7 +15,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/voiceerp.svg",
         centerIconAlt: "Voice ERP Icon",
-        demoVideo: "/fasih-demo.mp4",
+        demoVideo: "/KB.mp4",
         tagline: "Operational Intelligence",
       },
       mission: {
@@ -126,7 +126,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/ai-framework.svg",
         centerIconAlt: "AI Framework Icon",
-        demoVideo: "/fasih-demo.mp4",
+        demoVideo: "/KB.mp4",
         tagline: "Agent Orchestration",
       },
       mission: {
@@ -237,7 +237,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/zakra.svg",
         centerIconAlt: "Zakra Knowledge Agent Icon",
-        demoVideo: "/fasih-demo.mp4",
+        demoVideo: "/KB.mp4",
         tagline: "Knowledge Synthesis",
       },
       mission: {
@@ -348,7 +348,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/jawib.svg",
         centerIconAlt: "Jawib Customer Service Agent Icon",
-        demoVideo: "/fasih-demo.mp4",
+        demoVideo: "/KB.mp4",
         tagline: "Service Automation",
       },
       mission: {
@@ -459,7 +459,7 @@ export const products: Product[] = [
         ],
         centerIcon: "/products/fasih.svg",
         centerIconAlt: "Fasih Arabic LLM Icon",
-        demoVideo: "/fasih-demo.mp4",
+        demoVideo: "/KB.mp4",
         tagline: "Cultural Nuance",
       },
       mission: {

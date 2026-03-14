@@ -21,11 +21,14 @@ import { MotionProvider } from "@/components/providers/motion-provider";
 import { getSanityServices, getSanityProducts } from "@/lib/sanity/queries";
 
 // Inter font - similar to SF Pro, from Google Fonts
+// Inter font optimized for performance
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
 });
 
 export const metadata: Metadata = {

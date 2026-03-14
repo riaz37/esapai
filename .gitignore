@@ -52,3 +52,8 @@ next-env.d.ts
 # agents
 .agent/
 .shared/
+
+# large original assets
+public/*_orig.mp4
+/.studio
+
