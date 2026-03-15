@@ -44,10 +44,12 @@ Reduced vertical gaps between titles, subtitles, and badges in the "Problem" and
 
 ### [Site-Wide Performance Optimization](file:///Users/riazulislam/.gemini/antigravity/brain/eafba91f-0f42-4a15-85f6-1d41e07acfb0/audit_report.md)
 
-| Global Performance | EN Metrics | AR Metrics | Status |
+| Core Web Vital | EN (Home) | AR (Home) | Status |
 | :--- | :--- | :--- | :--- |
-| **FCP (Home)** | 0.49s | 0.71s | Optimized |
-| **Load Time (ERP)**| 0.13s | 0.09s | Optimized |
+| **FCP (Initial Paint)** | 0.74s | 0.78s | Optimized |
+| **LCP (Full Paint)** | 0.89s | 0.93s | Optimized |
+| **CLS (Stability)** | 0.001 | 0.005 | Perfect |
+| **Load Time** | 1.15s | 1.25s | Optimized |
 
 #### Visual Proof of Optimization (EN & AR)
 

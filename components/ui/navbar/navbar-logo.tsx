@@ -13,19 +13,19 @@ export const NavbarLogo = ({ visible }: NavbarLogoProps) => {
         >
             <div className="flex items-center gap-2">
                 <Image
-                    src="/logo/mainlogo.webp"
+                    src="/logo/mainlogo.png"
                     alt="Main Logo"
                     width={40}
                     height={40}
                     priority
-                    className="h-8 w-auto"
+                    className="h-8 w-auto shrink-0"
                 />
                 <Image
-                    src="/logo/esaplogo.webp"
+                    src="/logo/esaplogo.svg"
                     alt="ESAP Logo"
                     width={65}
                     height={21}
-                    className="h-auto w-auto"
+                    className="h-5 w-auto shrink-0"
                 />
             </div>
         </Link>
