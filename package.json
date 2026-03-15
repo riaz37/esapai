@@ -48,6 +48,7 @@
     "reactflow": "^11.11.4",
     "remotion": "^4.0.409",
     "sanity": "^5.0.0",
+    "sharp": "^0.34.5",
     "split-type": "^0.3.4",
     "tailwind-merge": "^3.3.1",
     "three": "^0.181.1",

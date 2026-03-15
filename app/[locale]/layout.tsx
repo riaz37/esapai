@@ -34,9 +34,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   ...generateHomeMetadata(),
   icons: {
-    icon: "/fav.svg",
-    shortcut: "/fav.svg",
-    apple: "/fav.svg",
+    icon: "/favicon.webp",
+    shortcut: "/favicon.webp",
+    apple: "/favicon.webp",
   },
 };
 
