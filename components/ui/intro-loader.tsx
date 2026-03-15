@@ -80,25 +80,36 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     const t = useTranslations("Loading");
     const pathname = usePathname();
     const isHomePage = pathname === "/";
-    const [isLoading, setIsLoading] = useState(isHomePage);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasCheckedConsent, setHasCheckedConsent] = useState(false);
 
     useEffect(() => {
         if (!isHomePage) return;
 
-        // Smooth transition time for cinematic reveal
+        // Check if user has seen intro in this session or recently
+        const hasSeenIntro = localStorage.getItem("hasSeenIntro");
+        if (hasSeenIntro) {
+            setIsLoading(false);
+            setHasCheckedConsent(true);
+            return;
+        }
+
+        setIsLoading(true);
+        setHasCheckedConsent(true);
+
         const timer = setTimeout(() => {
             setIsLoading(false);
+            localStorage.setItem("hasSeenIntro", "true");
         }, 3500);
 
-        return () => {
-            clearTimeout(timer);
-        };
+        return () => clearTimeout(timer);
     }, [isHomePage]);
+
+    if (!hasCheckedConsent && isHomePage) return null;
 
     return (
         <>
-            {/* Preload the LCP image to make it discoverable in the initial HTML request */}
-            <link rel="preload" href="/logo/mainlogo.png" as="image" fetchPriority="high" />
+            {/* Next.js Image component in NavbarLogo handles preloading via priority prop */}
             <AnimatePresence mode="wait">
                 {isLoading && (
                     <m.div

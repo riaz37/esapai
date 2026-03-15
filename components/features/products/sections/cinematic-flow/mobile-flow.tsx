@@ -14,9 +14,9 @@ export const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicP
                 return (
                     <div key={p.id} className="flex flex-col gap-6">
                         {/* Problem Card */}
-                        <Card className="bg-transparent border-red-500/20 backdrop-blur-xl text-center">
-                            <CardHeader className="pb-4 items-center">
-                                <div className="flex flex-col items-center justify-center gap-2 mb-3">
+                        <Card className="bg-transparent border-red-500/20 backdrop-blur-xl text-center gap-2">
+                            <CardHeader className="pb-0 items-center">
+                                <div className="flex flex-col items-center justify-center gap-2 mb-1">
                                     <Icon className="w-6 h-6 text-red-500" />
                                     <span className="text-red-500 text-xs uppercase tracking-widest">Problem_0{p.id}</span>
                                 </div>
@@ -41,9 +41,9 @@ export const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicP
                         </div>
 
                         {/* Solution Card */}
-                        <Card className="bg-transparent border-[#13F584]/30 backdrop-blur-2xl text-center">
-                            <CardHeader className="pb-4 items-center">
-                                <div className="flex flex-col items-center justify-center gap-2 mb-3">
+                        <Card className="bg-transparent border-[#13F584]/30 backdrop-blur-2xl text-center gap-2">
+                            <CardHeader className="pb-0 items-center">
+                                <div className="flex flex-col items-center justify-center gap-2 mb-1">
                                     <SolIcon className="w-6 h-6 text-[#13F584]" />
                                     <span className="text-[#13F584] text-xs uppercase tracking-widest">{p.solImpact}</span>
                                 </div>

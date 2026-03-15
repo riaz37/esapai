@@ -1,61 +1,35 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { useCookieConsent } from "./cookie-consent-context";
-import Script from "next/script";
 import type { GoogleAnalyticsProviderProps } from "@/types/provider";
 
 /**
  * Google Analytics Provider
  * 
- * Initializes Google Analytics only after user consent.
- * Uses Next.js Script component for optimal loading.
+ * Initializes Google Analytics only after user consent and client-side mount.
  */
 export function GoogleAnalyticsProvider({
   gaId,
 }: GoogleAnalyticsProviderProps) {
-  const { hasConsented } = useCookieConsent();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-  // Don't load GA script if user hasn't consented or no GA ID provided
-  if (!hasConsented || !gaId) {
+  const consent = useCookieConsent();
+  const hasConsented = isMounted ? consent.hasConsented : false;
+
+  // Only render GA when consented and mounted
+  // Next.js third-party GoogleAnalytics uses next/script with strategy="afterInteractive" by default
+  if (!hasConsented || !gaId || !isMounted) {
     return null;
   }
 
-  return (
-    <>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gaId}', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
-    </>
-  );
+  return <GoogleAnalytics gaId={gaId} />;
 }
 
-// Extend Window interface for TypeScript
-declare global {
-  interface Window {
-    dataLayer: unknown[];
-    gtag: (
-      command: string,
-      targetId: string | Date,
-      config?: {
-        page_path?: string;
-        [key: string]: unknown;
-      }
-    ) => void;
-  }
-}
+
 

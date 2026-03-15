@@ -114,7 +114,7 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       {/* 7. CTA */}
       <LazySection minHeight="400px">
         <ServicesCTASection
-          title={ctaContent?.title}
+          title={ctaContent?.title || t("cta.defaultTitle")}
           text={ctaContent?.subtitle || t("cta.defaultText")}
           buttonText={ctaContent?.buttonText || t("cta.defaultButton")}
           buttonHref={ctaContent?.buttonLink || "/contact"}

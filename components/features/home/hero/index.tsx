@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
-import Box from "@/components/shared/box";
 import { SectionMask } from "@/components/ui/section-mask";
 
 import { HeroContent } from "./components/hero-content";
@@ -24,6 +23,11 @@ export interface HeroProps {
 const Circle = dynamic(() => import("./circle"), {
     ssr: false,
     loading: () => <div className="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2" />
+});
+
+const Box = dynamic(() => import("@/components/shared/box"), {
+    ssr: false,
+    loading: () => <div className="max-w-[1400px] xl:max-w-[1800px] w-auto h-auto opacity-0" />
 });
 
 export function Hero({

@@ -14,11 +14,11 @@ export function ProblemSceneCard({
     return (
         <Card
             spotlight={false}
-            className={`w-full max-w-lg border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col justify-between ${side === "left" ? "me-auto" : "ms-auto"
+            className={`w-full max-w-lg border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] min-h-[220px] flex flex-col gap-2 ${side === "left" ? "me-auto" : "ms-auto"
                 }`}
         >
-            <CardHeader className="pb-4 px-6 pt-6">
-                <div className="flex justify-between items-center mb-2">
+            <CardHeader className="pb-0 px-6 pt-6">
+                <div className="flex justify-between items-center mb-1">
                     <Icon className="w-5 h-5 text-red-500 shrink-0" />
                     <span className="text-red-500 text-label-caps">ERR_0{problem.id}</span>
                 </div>
