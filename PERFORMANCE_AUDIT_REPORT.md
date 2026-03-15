@@ -50,7 +50,7 @@ The ESAP AI website is engineered with a **"Performance-First"** architecture. I
 
 ## Resolved Issues & Key Fixes
 
-1.  **Favicon Optimization**: Replaced 1.2MB `fav.svg` with 18KB `esaplogo.svg`.
+1.  **Favicon & Logo Restoration**: Replaced the temporary icon with the original high-fidelity design, converted to a production-optimized **512x512 WebP** using `sharp` for maximum clarity.
 2.  **Script Optimization**: Deferred Google Analytics to post-hydration.
 3.  **Broken Image**: Fixed ERP reel image extensions (`.png` -> `.webp`).
 4.  **CSP Resolution**: Updated `media-src` to allow `data:` URIs for audio assets, resolving all base64-related console errors.
