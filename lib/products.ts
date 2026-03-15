@@ -13,7 +13,7 @@ export const products: Product[] = [
         subtitle: [
           "Voice-Activated ERP for Modern SMEs. AI-powered voice commands for business.",
         ],
-        centerIcon: "/products/voiceerp.svg",
+        centerIcon: "/products/voiceerp.webp",
         centerIconAlt: "Voice ERP Icon",
         demoVideo: "/KB.mp4",
         tagline: "Operational Intelligence",
@@ -124,7 +124,7 @@ export const products: Product[] = [
         subtitle: [
           "Build powerful AI agents. Scalable enterprise solutions.",
         ],
-        centerIcon: "/products/ai-framework.svg",
+        centerIcon: "/products/ai-framework.svg", // This one was 29K, keeping as SVG unless larger one found
         centerIconAlt: "AI Framework Icon",
         demoVideo: "/KB.mp4",
         tagline: "Agent Orchestration",
@@ -457,7 +457,7 @@ export const products: Product[] = [
         subtitle: [
           "Native Arabic AI. Built for Arabic understanding.",
         ],
-        centerIcon: "/products/fasih.svg",
+        centerIcon: "/products/fasih.webp",
         centerIconAlt: "Fasih Arabic LLM Icon",
         demoVideo: "/KB.mp4",
         tagline: "Cultural Nuance",
