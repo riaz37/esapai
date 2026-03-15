@@ -134,10 +134,10 @@ export function CinematicDesktopFlow({ slug, problems }: { slug: string; problem
                                     >
                                         <Card
                                             spotlight={false}
-                                            className="w-full h-full bg-transparent border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] flex flex-col justify-between"
+                                            className="w-full h-full bg-transparent border-red-500/20 backdrop-blur-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)] flex flex-col gap-2"
                                         >
-                                            <CardHeader className="pb-4 px-6 pt-6">
-                                                <div className="flex justify-between items-center mb-2">
+                                            <CardHeader className="pb-0 px-6 pt-6">
+                                                <div className="flex justify-between items-center mb-1">
                                                     <ProblemIcon className="w-5 h-5 text-red-500 shrink-0" />
                                                     <span className="text-red-500 text-label-caps">
                                                         ERR_0{p.id}
@@ -156,9 +156,9 @@ export function CinematicDesktopFlow({ slug, problems }: { slug: string; problem
                                         className="absolute inset-0 rounded-2xl overflow-hidden"
                                         style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
                                     >
-                                        <Card className="w-full h-full bg-transparent border-primary/50 backdrop-blur-xl flex flex-col justify-between">
-                                            <CardHeader className="pb-4 px-6 pt-6">
-                                                <div className="flex justify-between items-center mb-2">
+                                        <Card className="w-full h-full bg-transparent border-primary/50 backdrop-blur-xl flex flex-col gap-2">
+                                            <CardHeader className="pb-0 px-6 pt-6">
+                                                <div className="flex justify-between items-center mb-1">
                                                     <SolIcon className="w-5 h-5 text-primary shrink-0" />
                                                     <span className="text-primary text-label-caps glow-primary">
                                                         {p.solImpact}

@@ -109,8 +109,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
 
     return (
         <>
-            {/* Preload the LCP image to make it discoverable in the initial HTML request */}
-            <link rel="preload" href="/logo/mainlogo.webp" as="image" fetchPriority="high" />
+            {/* Next.js Image component in NavbarLogo handles preloading via priority prop */}
             <AnimatePresence mode="wait">
                 {isLoading && (
                     <m.div

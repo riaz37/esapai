@@ -431,7 +431,9 @@ export function mapSanityProduct(doc: any): Product {
                 title: doc.architectureTitle,
                 badge: doc.architectureBadge,
                 subtitle: doc.architectureSubtitle,
-                reelImages: doc.architectureReelImages,
+                reelImages: doc.architectureReelImages?.map((img: string) => 
+                    img.includes('/productimages/') ? img.replace('.png', '.webp') : img
+                ),
             } : undefined,
             cinematic: (doc.challengesBadge || doc.cinematicNarrative || doc.cinematicProblems) ? {
                 challenges: (doc.challengesBadge || doc.challengesTitlePart1 || doc.challengesTitlePart2 || doc.challengesSubtitle) ? {
