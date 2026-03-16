@@ -9,37 +9,33 @@ import dynamic from "next/dynamic";
 export const metadata: Metadata = generateHomeMetadata();
 
 
-// Below-the-fold sections - lazy loaded with code splitting
+// Below-the-fold sections - lazy loaded with direct imports for proper code splitting
 const MissionSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.MissionSection })),
+  () => import("@/components/features/home/sections/mission").then((mod) => ({ default: mod.Mission })),
 );
 
 const ServiceSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.ServiceSection })),
+  () => import("@/components/features/home/sections/service").then((mod) => ({ default: mod.Service })),
 );
 
 const ProductShowcaseSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.ProductShowcaseSection })),
-);
-
-const TrustedPartnersSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.TrustedPartnersSection })),
+  () => import("@/components/features/home/sections/product-showcase").then((mod) => ({ default: mod.ProductShowcase })),
 );
 
 const CTASection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.CTASection })),
+  () => import("@/components/features/home/sections/cta").then((mod) => ({ default: mod.CTASection })),
 );
 
 const TextRevealSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.TextRevealSection })),
+  () => import("@/components/features/home/sections/text-reveal").then((mod) => ({ default: mod.TextRevealSection })),
 );
 
 const AchievementSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.AchievementSection })),
+  () => import("@/components/features/home/sections/achievement").then((mod) => ({ default: mod.Achievement })),
 );
 
 const TechnologyExcellenceSection = dynamic(
-  () => import("@/components/features/home/sections").then((mod) => ({ default: mod.TechnologyExcellenceSection })),
+  () => import("@/components/features/home/sections/technology-excellence").then((mod) => ({ default: mod.TechnologyExcellence })),
 );
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -69,11 +65,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           subtitle={data?.technologySubtitle}
           badge={data?.technologyBadge}
           cards={data?.technologyCards}
+          partners={data?.partners}
         />
       </LazySection>
-
-      {/* Trusted Partners Ticker */}
-      <TrustedPartnersSection partners={data?.partners} />
 
       {/* Mission Section - Now with proper scroll room */}
       <LazySection minHeight="400px">

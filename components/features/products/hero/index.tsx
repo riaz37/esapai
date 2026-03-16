@@ -37,10 +37,11 @@ const getProductIconPath = (slug?: string, centerIcon?: string): string | null =
   return null;
 };
 
-export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug, tagline, exploreButton }: ProductHeroProps) {
+export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug, tagline, exploreButton, videoSrc }: ProductHeroProps) {
   const iconPath = getProductIconPath(productSlug, centerIcon);
   const exploreLabel = exploreButton ?? "";
   const iconAlt = centerIconAlt || `${title} Icon`;
+  const heroVideo = videoSrc || "/videos/KB.mp4" || "/videos/LP_animation_HomePage_Big_Intro_2X_short.webm";
 
   return (
     <Section
@@ -102,7 +103,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
               {/* Frame/Border */}
               <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-[#13F584]/2 translate-z-0">
                 <OptimizedVideo
-                  src="/LP_animation_HomePage_Big_Intro_2X_short.webm"
+                  src={heroVideo}
                   autoPlay
                   loop
                   muted

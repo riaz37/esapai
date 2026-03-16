@@ -12,6 +12,8 @@ interface ServiceContent {
     /** Highlighted part of the title */
     titleHighlight?: string;
     heroTitle?: React.ReactNode;
+    demoVideo?: string;
+    heroVideo?: string;
   };
   features?: {
     title?: string;

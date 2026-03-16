@@ -14,11 +14,11 @@ interface MissionCardProps {
     showGlow?: boolean;
 }
 
-const cardMask = "/card-mask.svg";
-const cardPattern1 = "/card-pattern-1.svg";
-const cardPattern2 = "/card-pattern-2.svg";
-const cardGlow = "/card-glow.svg";
-const cardShine = "/card-shine.svg";
+const cardMask = "/images/patterns/card-mask.svg";
+const cardPattern1 = "/images/patterns/card-pattern-1.svg";
+const cardPattern2 = "/images/patterns/card-pattern-2.svg";
+const cardGlow = "/images/patterns/card-glow.svg";
+const cardShine = "/images/patterns/card-shine.svg";
 
 export function MissionCard({
     title,

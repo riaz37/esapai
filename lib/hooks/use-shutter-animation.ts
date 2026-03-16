@@ -51,7 +51,7 @@ export function useShutterAnimation({
                     scrollTrigger: {
                         trigger: container,
                         start: "top top",
-                        end: "+=150%", // Adjusted pinning distance
+                        end: "+=100%", // Reduced — no TechCards to animate in
                         scrub: 1,
                         pin: true,
                         anticipatePin: 1,
@@ -118,9 +118,9 @@ export function useShutterAnimation({
                         opacity: 1,
                         scale: 1,
                         y: 0,
-                        duration: 2,
+                        duration: 1.5,
                         ease: "expo.out",
-                    }, "-=0.8");
+                    }, "-=1");
 
                 // Force refresh to ensure pinning is calculated correctly
                 ScrollTrigger.refresh();

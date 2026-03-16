@@ -16,6 +16,7 @@ export interface ProductHeroProps {
   productSlug?: string;
   tagline?: string;
   exploreButton?: string;
+  videoSrc?: string;
 }
 
 export interface ServiceHeroProps {

@@ -28,7 +28,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
     const videoWrapperRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    const demoVideo = product?.content?.hero?.demoVideo ?? "/fasih-demo.mp4";
+    const demoVideo = product?.content?.hero?.demoVideo ?? "/videos/fasih-demo.mp4";
 
     useGSAP(() => {
         if (!containerRef.current || !videoWrapperRef.current) return;
@@ -40,8 +40,8 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=200%",
-          scrub: 1.5,
+          end: "+=120%",
+          scrub: 1,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -75,10 +75,10 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
 
       // 1. Initial State: Deep in 3D Space
       gsap.set(videoWrapperRef.current, {
-        z: -1800,
-        rotationX: 30,
+        z: -1000,
+        rotationX: 25,
         opacity: 0,
-        filter: "blur(15px) brightness(1.5)",
+        filter: "blur(10px) brightness(1.2)",
         transformPerspective: 2500,
       });
 
@@ -91,7 +91,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
           rotationX: 0,
           filter: "blur(0px) brightness(1)",
           duration: 4,
-          ease: "power4.out",
+          ease: "power3.out",
         },
         0
       );

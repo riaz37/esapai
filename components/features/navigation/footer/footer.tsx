@@ -88,7 +88,7 @@ export function Footer() {
               />
               <video
                 ref={ctaVideoRef}
-                src="/footer2.mp4"
+                src="/videos/footer2.mp4"
                 muted
                 loop
                 playsInline
@@ -132,7 +132,7 @@ export function Footer() {
               />
               <video
                 ref={socialVideoRef}
-                src="/footer3.mp4"
+                src="/videos/footer3.mp4"
                 muted
                 loop
                 playsInline
@@ -191,7 +191,7 @@ export function Footer() {
             />
             <video
               ref={menuVideoRef}
-              src="/footer1.mp4"
+              src="/videos/footer1.mp4"
               muted
               loop
               playsInline

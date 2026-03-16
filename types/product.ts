@@ -37,8 +37,10 @@ export interface ProductContent {
     subtitle?: string[];
     centerIcon?: string;
     centerIconAlt?: string;
-    /** Hero background video path in /public (for example /fasih-demo.mp4). When set, used as cinematic hero background. Falls back to gradient when not set. */
+    /** Hero background video path in /public (for example /videos/fasih-demo.mp4). When set, used as cinematic hero background. Falls back to gradient when not set. */
     demoVideo?: string;
+    /** Hero cinematic video path in /public (like /videos/KB.mp4) */
+    heroVideo?: string;
     /** Complementary tagline for the hero title (e.g. Knowledge Synthesis) */
     tagline?: string;
   };
