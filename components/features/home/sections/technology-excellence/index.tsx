@@ -119,13 +119,13 @@ export function TechnologyExcellence({
                 </div>
             </div>
 
-            {/* Content Layer — header centered, cards at bottom */}
+            {/* Content Layer — header centered, partners at bottom */}
             <div
                 ref={contentRef}
                 className="absolute inset-0 z-20 flex flex-col items-center opacity-100 lg:opacity-0 pointer-events-auto"
             >
                 {/* Center: Header */}
-                <div className="flex-1 flex items-center justify-center w-full translate-y-0 lg:translate-y-[20%] pt-24 lg:pt-0">
+                <div className="flex-1 flex items-center justify-center w-full pt-24 lg:pt-0">
                     <div className="w-full max-w-4xl text-center px-6">
                         <SectionHeader
                             title={displayTitle}
@@ -139,7 +139,7 @@ export function TechnologyExcellence({
                 </div>
 
                 {/* Bottom: Trusted Partners Marquee */}
-                <div className="w-full pb-4 md:pb-6">
+                <div className="w-full pb-14 md:pb-16 lg:pb-20">
                     <div className="relative flex overflow-hidden">
                         <div ref={marqueeRef} className="flex whitespace-nowrap">
                             {MARQUEE_PARTNERS.map((partner) => (
