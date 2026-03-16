@@ -2,18 +2,21 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { AboutHero } from "@/components/features/about/sections";
+import { AboutHero } from "@/components/features/about/sections/hero";
 import { LazySection } from "@/components/ui/lazy-section";
-import { CTASection } from "@/components/features/home/sections";
 
 // --- Dynamic imports for below-fold sections (code-split + no SSR) ---
-const AboutNarrative = dynamic(() => import("@/components/features/about/sections").then(mod => ({ default: mod.AboutNarrative })), {
+const AboutNarrative = dynamic(() => import("@/components/features/about/sections/narrative").then(mod => ({ default: mod.AboutNarrative })), {
     ssr: false,
 });
 
-const AboutHistory = dynamic(() => import("@/components/features/about/sections").then(mod => ({ default: mod.AboutHistory })), {
+const AboutHistory = dynamic(() => import("@/components/features/about/sections/history").then(mod => ({ default: mod.AboutHistory })), {
     ssr: false,
 });
+
+const CTASection = dynamic(
+    () => import("@/components/features/home/sections/cta").then(mod => ({ default: mod.CTASection })),
+);
 
 interface SanityPhase {
     phaseLabel?: string;

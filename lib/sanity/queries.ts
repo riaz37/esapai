@@ -1,5 +1,47 @@
 import { client } from "./client";
 
+// ── Asset Path Helpers ──
+/**
+ * Ensures a path has the correct prefix and extension for the reorganized public directory.
+ */
+function ensureVideoPath(path: string | undefined): string | undefined {
+    if (!path) return undefined;
+    if (path.startsWith('http') || path.startsWith('//')) return path;
+    
+    // Remove leading slash if present to normalize
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    
+    // If it's already properly prefixed, just return with leading slash
+    if (cleanPath.startsWith('videos/')) return `/${cleanPath}`;
+    
+    // Otherwise, prefix with /videos/
+    return `/videos/${cleanPath}`;
+}
+
+function ensureImagePath(path: string | undefined, defaultDir: string = 'images'): string | undefined {
+    if (!path) return undefined;
+    if (path.startsWith('http') || path.startsWith('//') || path.startsWith('data:')) return path;
+    
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    
+    // Check for common directories
+    if (
+        cleanPath.startsWith('branding/') || 
+        cleanPath.startsWith('landing/') || 
+        cleanPath.startsWith('products/') || 
+        cleanPath.startsWith('product_icons/') || 
+        cleanPath.startsWith('productimages/') ||
+        cleanPath.startsWith('patterns/') ||
+        cleanPath.startsWith('team/') ||
+        cleanPath.startsWith('partners/') ||
+        cleanPath.startsWith('services/')
+    ) {
+        return `/${cleanPath}`;
+    }
+    
+    return `/${defaultDir}/${cleanPath}`;
+}
+
 // ── UI Translations ──
 export const uiTranslationsQuery = `*[_type == "uiTranslations" && language == $locale][0]`;
 
@@ -206,12 +248,34 @@ export const homePageQuery = `*[_type == "homePage" && language == $locale][0] {
 }`;
 
 export async function getHomePage(locale: string) {
-    return client.fetch(homePageQuery, { locale }, {
+    const doc = await client.fetch(homePageQuery, { locale }, {
         next: {
             revalidate: 3600, // 1 hour
             tags: ["home", `home-${locale}`]
         }
     });
+    
+    if (!doc) return null;
+    return mapSanityHome(doc);
+}
+
+// ── Home Mapper ──
+export function mapSanityHome(doc: any): any {
+    return {
+        ...doc,
+        missionCards: doc.missionCards?.map((card: any) => ({
+            ...card,
+            image: ensureImagePath(card.image, 'images'),
+        })),
+        technologyCards: doc.technologyCards?.map((card: any) => ({
+            ...card,
+            image: ensureImagePath(card.image, 'images'),
+        })),
+        partners: doc.partners?.map((partner: any) => ({
+            ...partner,
+            logo: ensureImagePath(partner.logo, 'partners'),
+        })),
+    };
 }
 
 // ── About Page ──
@@ -232,18 +296,36 @@ export const aboutPageQuery = `*[_type == "aboutPage" && language == $locale][0]
   historyBadge,
   historySubtitle,
   historyHook,
-  historyPhases[]{ year, title, description, phaseLabel, highlight },
+  historyPhases[]{ year, title, description, phaseLabel, highlight, image },
   visionTitle,
   visionBody
 }`;
 
 export async function getAboutPage(locale: string) {
-    return client.fetch(aboutPageQuery, { locale }, {
+    const doc = await client.fetch(aboutPageQuery, { locale }, {
         next: {
             revalidate: 3600, // 1 hour
             tags: ["about", `about-${locale}`]
         }
     });
+
+    if (!doc) return null;
+    return mapSanityAbout(doc);
+}
+
+// ── About Mapper ──
+export function mapSanityAbout(doc: any): any {
+    return {
+        ...doc,
+        teamMembers: doc.teamMembers?.map((member: any) => ({
+            ...member,
+            image: ensureImagePath(member.image, 'team'),
+        })),
+        historyPhases: doc.historyPhases?.map((phase: any) => ({
+            ...phase,
+            image: ensureImagePath(phase.image, 'images'),
+        })),
+    };
 }
 
 // ── Products ──
@@ -259,6 +341,7 @@ const PRODUCT_FIELDS = `
   heroCenterIcon,
   heroCenterIconAlt,
   heroDemoVideo,
+  heroVideo,
   heroTagline,
   missionTitle,
   missionSubtitle,
@@ -328,6 +411,9 @@ const SERVICE_FIELDS = `
   heroTitle,
   heroSubtitle,
   heroTagline,
+  heroCenterIcon,
+  heroDemoVideo,
+  heroVideo,
   heroVideoId,
   heroVideoTitle,
   problemTitle,
@@ -368,13 +454,14 @@ export function mapSanityProduct(doc: any): Product {
         description: doc.description,
         menuDescription: doc.menuDescription,
         slug: doc.slug,
-        icon: doc.icon,
+        icon: ensureImagePath(doc.icon, 'products'),
         content: {
             hero: {
                 subtitle: doc.heroSubtitle,
-                centerIcon: doc.heroCenterIcon,
+                centerIcon: ensureImagePath(doc.heroCenterIcon, 'products'),
                 centerIconAlt: doc.heroCenterIconAlt,
-                demoVideo: doc.heroDemoVideo,
+                demoVideo: ensureVideoPath(doc.heroDemoVideo),
+                heroVideo: ensureVideoPath(doc.heroVideo),
                 tagline: doc.heroTagline,
             },
             mission: {
@@ -427,13 +514,14 @@ export function mapSanityProduct(doc: any): Product {
                 subtitle: doc.ctaSubtitle,
                 buttonText: doc.ctaButtonText,
             } : undefined,
-            architecture: doc.architectureTitle || doc.architectureBadge ? {
+                architecture: doc.architectureTitle || doc.architectureBadge ? {
                 title: doc.architectureTitle,
                 badge: doc.architectureBadge,
                 subtitle: doc.architectureSubtitle,
-                reelImages: doc.architectureReelImages?.map((img: string) => 
-                    img.includes('/productimages/') ? img.replace('.png', '.webp') : img
-                ),
+                reelImages: doc.architectureReelImages?.map((img: string) => {
+                    const normalized = img.includes('/productimages/') ? img.replace('.png', '.webp') : img;
+                    return ensureImagePath(normalized, 'productimages');
+                }),
             } : undefined,
             cinematic: (doc.challengesBadge || doc.cinematicNarrative || doc.cinematicProblems) ? {
                 challenges: (doc.challengesBadge || doc.challengesTitlePart1 || doc.challengesTitlePart2 || doc.challengesSubtitle) ? {
@@ -489,12 +577,15 @@ export function mapSanityService(doc: any): Service {
                 titleMain: doc.heroTitle,
                 titleHighlight: doc.heroTagline,
                 subtitle: doc.heroSubtitle || [],
+                centerIcon: ensureImagePath(doc.heroCenterIcon, 'services'),
+                demoVideo: ensureVideoPath(doc.heroDemoVideo),
+                heroVideo: ensureVideoPath(doc.heroVideo),
             },
             features: {
                 title: doc.featuresTitle,
                 subtitle: doc.featuresSubtitle,
                 badge: doc.featuresBadge,
-                centralNode: doc.featuresCentralNode,
+                centralNode: ensureImagePath(doc.featuresCentralNode, 'services'),
                 items: doc.features?.map((item: any) => ({
                     title: item.title,
                     description: item.description,

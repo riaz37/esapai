@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 
 export function ServiceVideoSection({
-    videoSrc = "/servicesmax.mp4",
+    videoSrc = "/videos/servicesmax.mp4",
     title,
     subtitle,
 }: {

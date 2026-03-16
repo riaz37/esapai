@@ -23,19 +23,19 @@ const defaultCards: MissionCardType[] = [
     title: "Democratizing Intelligence",
     description: "Making advanced AI intuitive and accessible through voice-first innovation.",
     icon: Mic2,
-    image: "/landing/m1.svg",
+    image: "/landing/m1.webp",
   },
   {
     title: "Accelerating Innovation",
     description: "Deploying autonomous agents to eliminate friction and accelerate business growth.",
     icon: Rocket,
-    image: "/landing/m2.svg",
+    image: "/landing/m2.webp",
   },
   {
     title: "Unified Ecosystems",
     description: "Connecting legacy systems with future AI for seamless organizational evolution.",
     icon: Layers,
-    image: "/landing/m3.svg",
+    image: "/landing/m3.webp",
   },
 ];
 
