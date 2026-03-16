@@ -139,7 +139,7 @@ export function TechnologyExcellence({
                 </div>
 
                 {/* Bottom: Trusted Partners Marquee */}
-                <div className="w-full pb-4 md:pb-6">
+                <div className="w-full pb-12 md:pb-20 lg:pb-24">
                     <div className="relative flex overflow-hidden">
                         <div ref={marqueeRef} className="flex whitespace-nowrap">
                             {MARQUEE_PARTNERS.map((partner) => (
