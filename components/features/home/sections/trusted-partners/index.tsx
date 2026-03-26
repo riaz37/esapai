@@ -5,7 +5,6 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -30,7 +29,6 @@ export interface TrustedPartnersProps {
 }
 
 export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartnersProps) {
-    const t = useTranslations("Common"); // I'll add a 'Common' key for 'Partner' if needed, or just use it.
     const MARQUEE_PARTNERS = [
         ...partners.map((p, i) => ({ ...p, id: `a-${p.logo}`, alt: p.alt || `Partner ${i + 1}` })),
         ...partners.map((p, i) => ({ ...p, id: `b-${p.logo}`, alt: p.alt || `Partner ${i + 1}` })),

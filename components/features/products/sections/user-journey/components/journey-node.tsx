@@ -4,12 +4,18 @@ import { cn } from "@/lib/utils";
 
 const PRIMARY = "#13F584";
 
+type JourneyNodeData = {
+    id: string;
+    position: { x: number; y: number };
+    data: Record<string, unknown>;
+};
+
 export const JourneyNode = ({
     node,
     isMobile = false,
     isRTL = false
 }: {
-    node: any,
+    node: JourneyNodeData,
     isMobile?: boolean,
     isRTL?: boolean
 }) => {
@@ -53,7 +59,7 @@ export const JourneyNode = ({
                         />
                     ) : (
                         <div className="scale-75 md:scale-100 italic">
-                            {node.data.icon && React.cloneElement(node.data.icon as any, {
+                            {node.data.icon && React.cloneElement(node.data.icon, {
                                 size: 24,
                                 strokeWidth: 1.5
                             })}

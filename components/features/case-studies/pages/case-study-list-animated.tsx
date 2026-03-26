@@ -78,7 +78,7 @@ export function CaseStudyListAnimated({
         className="relative overflow-hidden"
       >
         <div className="relative z-10 w-full">
-          <div className="case-study-hero-content text-start mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-16">
+          <div className="case-study-hero-content text-start mb-16 sm:mb-20 md:mb-24 lg:mb-28 pt-24 sm:pt-32 lg:pt-36">
             <TypewriterTitle
               title={t("heroTitle")}
               tagline={t("heroTagline")}
@@ -296,11 +296,11 @@ const CaseStudyCard = memo(
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-28 top-10 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl opacity-70"
+          className="pointer-events-none absolute -start-28 top-10 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl opacity-70"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-24 bottom-10 -z-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl opacity-60"
+          className="pointer-events-none absolute -end-24 bottom-10 -z-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl opacity-60"
         />
 
         {caseStudy.featured && (

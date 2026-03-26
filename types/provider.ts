@@ -2,8 +2,6 @@
  * Provider-related type definitions
  */
 
-import type { ReactNode } from "react";
-
 export type CookieConsentStatus = "pending" | "accepted" | "rejected";
 
 export interface CookieConsentContextType {

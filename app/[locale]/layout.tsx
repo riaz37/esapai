@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "../globals.css";
 import { Navbar } from "@/components/features/navigation/navbar";
 import { Footer } from "@/components/features/navigation/footer";
@@ -19,9 +19,9 @@ import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { IntroLoader } from "@/components/ui/intro-loader";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { getSanityServices, getSanityProducts } from "@/lib/sanity/queries";
+import { SkipToContent } from "@/components/ui/skip-to-content";
 
-// Inter font - similar to SF Pro, from Google Fonts
-// Inter font optimized for performance
+// Inter — body font for all locales
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
@@ -29,6 +29,26 @@ const inter = Inter({
   display: "swap",
   preload: true,
   fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
+});
+
+// Space Grotesk — display/heading font for English
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-heading-en",
+  display: "swap",
+  preload: false,
+  fallback: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+});
+
+// IBM Plex Sans Arabic — display/heading font for Arabic
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["500", "600", "700"],
+  variable: "--font-heading-ar",
+  display: "swap",
+  preload: false,
+  fallback: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -70,9 +90,10 @@ export default async function RootLayout(props: Readonly<{
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body
-        className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}
+        className={`${inter.variable} ${locale === "ar" ? ibmPlexArabic.variable : spaceGrotesk.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
+          <SkipToContent />
           <StructuredDataComponent data={structuredData} />
           <MotionProvider>
             <ToastProvider>
@@ -83,7 +104,7 @@ export default async function RootLayout(props: Readonly<{
                       <ServiceMenuProvider>
                         <IntroLoader>
                           <Navbar services={services} products={products} />
-                          <main className="flex-1">{children}</main>
+                          <main id="main-content" className="flex-1">{children}</main>
                           <Footer />
                           <CookieConsentBanner />
                         </IntroLoader>

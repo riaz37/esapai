@@ -1,15 +1,13 @@
 "use client";
 
 import React, { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { Cpu } from "lucide-react";
 import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
+import { SkeletonGrid } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
 import { SectionHeader } from "@/components/ui/section-header";
-import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/section";
 import { Spotlight } from "@/components/ui/spotlight";
-import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import { Counter } from "@/components/ui/counter";
 
 
@@ -67,6 +65,12 @@ export function Achievement({
                 ref={gridRef}
                 className="relative w-full max-w-[1400px] mx-auto"
             >
+                {achievements === undefined ? (
+                    <SkeletonGrid count={3} variant="metric" columns="grid-cols-1 md:grid-cols-3" />
+                ) : displayAchievements.length === 0 ? (
+                    <EmptyState />
+                ) : (
+                <>
                 {/* Horizontal Framing Lines - Contained within content width */}
                 <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
                 <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
@@ -96,6 +100,8 @@ export function Achievement({
                         </Spotlight>
                     ))}
                 </div>
+                </>
+                )}
             </div>
         </Section>
     );

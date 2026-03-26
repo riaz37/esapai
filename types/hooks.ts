@@ -5,7 +5,6 @@
 import type { Product } from "./product";
 import type { Service } from "./service";
 import type { CaseStudyWithUrls } from "./case-study";
-import type { useInView } from "motion/react";
 
 export interface UseProductContentOptions {
   initialProduct?: Product | null;

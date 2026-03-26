@@ -37,6 +37,7 @@ export interface CaseStudyPageClientProps {
   slug: string;
   locale: string;
   initialCaseStudy: import("./case-study").CaseStudyWithUrls;
+  relatedCaseStudies?: import("./case-study").CaseStudyWithUrls[];
 }
 
 export interface LegalPageProps {

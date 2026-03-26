@@ -12,7 +12,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     const data = await getAboutPage(locale).catch(() => null);
 
     return (
-        <main className="min-h-screen">
+        <div className="min-h-screen">
             <AboutPageClient
                 heroTitle={data?.heroTitle}
                 heroSubtitle={data?.heroSubtitle}
@@ -32,6 +32,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 visionTitle={data?.visionTitle}
                 visionBody={data?.visionBody}
             />
-        </main>
+        </div>
     );
 }

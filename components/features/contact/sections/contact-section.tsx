@@ -8,13 +8,26 @@ import { ContactBackdrop } from "./contact-backdrop";
 import { ContactLeftColumn } from "./contact-left-column";
 import { ContactFormCard } from "./contact-form-card";
 
+import { useTranslations } from "next-intl";
 import { useContactForm } from "../hooks/use-contact-form";
 import { useContactAnimations } from "../hooks/use-contact-animations";
 
-export function ContactSection() {
+interface ContactSectionProps {
+  productSlug?: string;
+}
+
+export function ContactSection({ productSlug }: ContactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const formCardRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("Contact");
+
+  // Resolve product name from slug for pre-fill
+  const productName = productSlug
+    ? t.has(`productNames.${productSlug}`)
+      ? t(`productNames.${productSlug}`)
+      : productSlug.charAt(0).toUpperCase() + productSlug.slice(1)
+    : undefined;
 
   // Form Logic Hook
   const {
@@ -22,10 +35,16 @@ export function ContactSection() {
     agreedToTerms,
     isSubmitting,
     submissionState,
+    fieldErrors,
     handleInputChange,
     handleSubmit,
     setAgreedToTerms,
-  } = useContactForm();
+    resetForm,
+  } = useContactForm({
+    initialMessage: productName
+      ? t("form.productInterest", { product: productName })
+      : undefined,
+  });
 
   // Animation Logic Hook
   const { setIntersectionRef, setLeftIntersectionRef } = useContactAnimations({
@@ -65,9 +84,12 @@ export function ContactSection() {
               agreedToTerms={agreedToTerms}
               isSubmitting={isSubmitting}
               submissionState={submissionState}
+              fieldErrors={fieldErrors}
+              productName={productName}
               onInputChange={handleInputChange}
               onSubmit={handleSubmit}
               onAgreedToTermsChange={setAgreedToTerms}
+              onReset={resetForm}
             />
           </div>
         </div>

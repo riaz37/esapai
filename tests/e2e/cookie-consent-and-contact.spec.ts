@@ -73,10 +73,8 @@ test.describe("Cookie consent and contact flow", () => {
     await page.check("#terms");
     await page.locator('form button[type="submit"]').click();
 
-    await expect(page.getByText("Your message has been sent successfully!")).toBeVisible();
-    await expect(page.locator("#fullName")).toHaveValue("");
-    await expect(page.locator("#email")).toHaveValue("");
-    await expect(page.locator("#message")).toHaveValue("");
-    await expect(page.locator("#terms")).not.toBeChecked();
+    // After success, form is replaced by success confirmation screen
+    await expect(page.getByText("Message Sent!")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Send Another Message")).toBeVisible();
   });
 });

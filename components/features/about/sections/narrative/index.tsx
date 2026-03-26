@@ -10,7 +10,7 @@ import { useNarrativeFlow } from "@/lib/hooks/use-narrative-flow";
 
 export interface AboutNarrativeProps {
     data?: typeof ABOUT_V2_DATA;
-    teamMembers?: any[];
+    teamMembers?: Array<{ id?: string; _key?: string; name?: string; role?: string; bio?: string; image?: string }>;
     designation?: string;
     categoryLabel?: string;
     leadershipLabel?: string;
@@ -25,7 +25,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
     leadershipLabel,
     innovationLabel,
 }) => {
-    const locale = useLocale();
+    const _locale = useLocale();
     const t = useTranslations("About");
 
     interface TeamTranslation { role: string; bio: string; }
@@ -41,7 +41,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
         const base = data && data.length > 0 ? data : ABOUT_V2_DATA;
         // If Sanity teamMembers provided, merge them with ABOUT_V2_DATA (photo/id structure)
         const mergedBase = teamMembers && teamMembers.length > 0
-            ? teamMembers.map((member: any, index: number) => {
+            ? teamMembers.map((member, index: number) => {
                 const v2Item = base[index] ?? base[0];
                 return {
                     ...v2Item,

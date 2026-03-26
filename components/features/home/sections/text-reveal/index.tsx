@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/section";
 
@@ -14,8 +15,10 @@ export interface TextRevealSectionProps {
 }
 
 export function TextRevealSection({
-    text = "Forging the intelligence layer of tomorrow. Unlocking limitless potential."
+    text,
 }: TextRevealSectionProps = {}) {
+    const t = useTranslations("Home.reveal");
+    const resolvedText = text || t("text");
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLHeadingElement>(null);
 
@@ -103,7 +106,7 @@ export function TextRevealSection({
         { scope: containerRef }
     );
 
-    const wordsArray = text.split(" ");
+    const wordsArray = resolvedText.split(" ");
     const highlightIndices = [2, 3, 7, 8];
     const wordsWithKeys = wordsArray.map((word, pos) => ({
         word,
@@ -116,7 +119,7 @@ export function TextRevealSection({
             ref={containerRef}
             padding="md"
             containerMaxWidth="5xl"
-            className="relative min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden"
+            className="relative min-h-[500px] min-h-screen w-full flex items-center justify-center bg-transparent overflow-hidden"
         >
             <div className="flex-1 flex items-center justify-center min-h-[60vh]">
                 <h2

@@ -57,3 +57,4 @@ next-env.d.ts
 public/*_orig.mp4
 /.studio
 
+.gstack/

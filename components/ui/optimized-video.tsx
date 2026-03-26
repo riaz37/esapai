@@ -33,7 +33,7 @@ export function OptimizedVideo({
     // Use rootMargin to start loading before it's actually visible
     const isInView = useInView(containerRef, {
         once: true,
-        margin: rootMargin as any,
+        margin: rootMargin as `${number}px` | `${number}px ${number}px` | `${number}px ${number}px ${number}px` | `${number}px ${number}px ${number}px ${number}px`,
         amount: threshold,
     });
 

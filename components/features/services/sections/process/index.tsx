@@ -114,8 +114,8 @@ export function ServiceProcessSection({
             ref={trackRef}
             className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 md:ps-[max(2rem,calc((100vw-1400px)/2+2rem))] md:pe-[5vw] pb-16 sm:pb-20 md:pb-0 w-full md:w-max"
           >
-            {displaySteps.map((step, index) => (
-              <ProcessCard key={step.id} step={step} index={index} />
+            {displaySteps.map((step) => (
+              <ProcessCard key={step.id} step={step} />
             ))}
           </div>
         </div>
@@ -124,7 +124,7 @@ export function ServiceProcessSection({
   );
 }
 
-function ProcessCard({ step, index }: { step: { id: string; title: string; description: string; icon: React.ComponentType<{ className?: string }> }; index: number }) {
+function ProcessCard({ step }: { step: { id: string; title: string; description: string; icon: React.ComponentType<{ className?: string }> } }) {
   return (
     <div className="relative group w-full md:w-[400px] lg:w-[500px] flex-shrink-0">
       <Card

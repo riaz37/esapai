@@ -26,7 +26,6 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
     const demoBadge = product?.content?.demo?.badge ?? "";
     const containerRef = useRef<HTMLDivElement>(null);
     const videoWrapperRef = useRef<HTMLDivElement>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
 
     const demoVideo = product?.content?.hero?.demoVideo ?? "/videos/fasih-demo.mp4";
 

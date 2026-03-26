@@ -94,7 +94,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             <span className="relative z-10">{children}</span>
-            {variant === "primary" && showArrow && <ButtonArrow size={size as any} />}
+            {variant === "primary" && showArrow && <ButtonArrow size={size as "default" | "sm" | "lg" | "icon"} />}
           </>
         )}
       </Comp>

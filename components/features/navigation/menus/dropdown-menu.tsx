@@ -2,61 +2,131 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { m, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import { ChevronRight, LayoutGrid, Zap, Shield, Cpu } from "lucide-react";
-import type { MenuItem, DropdownMenuProps } from "@/types/navigation";
+import { Zap, Cpu } from "lucide-react";
+import type { DropdownMenuProps } from "@/types/navigation";
 
 export function DropdownMenu({
   title,
-  description,
   items,
   basePath,
   dropdownClass,
-  itemClass,
   isOpen,
   onClose,
 }: DropdownMenuProps) {
   const t = useTranslations("Menus");
   const tProducts = useTranslations("Products");
-  const tMetrics = useTranslations("Metrics");
   const [hoveredId, setHoveredId] = useState<string | null>(items[0]?.id || null);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const activeItem = useMemo(() =>
     items.find(item => item.id === hoveredId) || items[0],
     [hoveredId, items]
   );
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case "Escape": {
+        e.preventDefault();
+        onClose();
+        break;
+      }
+      case "ArrowDown": {
+        e.preventDefault();
+        const nextIndex = focusedIndex < items.length - 1 ? focusedIndex + 1 : 0;
+        setFocusedIndex(nextIndex);
+        setHoveredId(items[nextIndex].id);
+        linkRefs.current[nextIndex]?.focus();
+        break;
+      }
+      case "ArrowUp": {
+        e.preventDefault();
+        const prevIndex = focusedIndex > 0 ? focusedIndex - 1 : items.length - 1;
+        setFocusedIndex(prevIndex);
+        setHoveredId(items[prevIndex].id);
+        linkRefs.current[prevIndex]?.focus();
+        break;
+      }
+      case "Home": {
+        e.preventDefault();
+        setFocusedIndex(0);
+        setHoveredId(items[0].id);
+        linkRefs.current[0]?.focus();
+        break;
+      }
+      case "End": {
+        e.preventDefault();
+        const lastIndex = items.length - 1;
+        setFocusedIndex(lastIndex);
+        setHoveredId(items[lastIndex].id);
+        linkRefs.current[lastIndex]?.focus();
+        break;
+      }
+    }
+  }, [focusedIndex, items, onClose]);
+
+  useEffect(() => {
+    if (isOpen && items.length > 0) {
+      setFocusedIndex(0);
+      setHoveredId(items[0].id);
+      const timer = setTimeout(() => {
+        linkRefs.current[0]?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+    return () => {
+      setFocusedIndex(-1);
+    };
+  }, [isOpen, items]);
+
   if (!isOpen) return null;
 
   return (
     <div
+      ref={menuRef}
+      role="menu"
+      aria-label={title}
+      onKeyDown={handleKeyDown}
       className={cn(
         "absolute top-full start-1/2 -translate-x-1/2 rtl:translate-x-1/2 mt-3 z-[100] pointer-events-auto",
-        "w-[900px] bg-zinc-950/98 backdrop-blur-3xl border border-white/10 shadow-3xl rounded-3xl overflow-hidden",
+        "w-[min(900px,90vw)] bg-zinc-950/98 backdrop-blur-3xl border border-white/10 shadow-3xl rounded-3xl overflow-hidden",
         dropdownClass
       )}
     >
-      <div className="flex h-[540px]">
+      <div className="flex h-[min(540px,70vh)]">
         {/* Left Sidebar */}
-        <div className="w-[300px] border-r border-white/5 bg-black/20 flex flex-col">
+        <div className="w-[min(300px,35vw)] border-r border-white/5 bg-black/20 flex flex-col">
           <div className="p-6">
             <h2 className="text-emerald-500 text-xs font-bold">
               {title}
             </h2>
           </div>
 
-          <div className="flex-1 py-4 overflow-y-auto custom-scrollbar">
-            {items.map((item) => (
+          <div className="flex-1 py-4 overflow-y-auto custom-scrollbar" role="none">
+            {items.map((item, index) => (
               <Link
                 key={item.id}
+                ref={(el) => { linkRefs.current[index] = el; }}
                 href={`${basePath}/${item.slug}`}
-                onMouseEnter={() => setHoveredId(item.id)}
+                role="menuitem"
+                tabIndex={focusedIndex === index ? 0 : -1}
+                onMouseEnter={() => {
+                  setHoveredId(item.id);
+                  setFocusedIndex(index);
+                }}
+                onFocus={() => {
+                  setHoveredId(item.id);
+                  setFocusedIndex(index);
+                }}
                 onClick={onClose}
                 className={cn(
                   "group relative px-6 py-4 cursor-pointer transition-all duration-300 block",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#13F584]/50",
                   hoveredId === item.id ? "bg-[#13F584]/5" : "hover:bg-white/5"
                 )}
               >
@@ -76,7 +146,7 @@ export function DropdownMenu({
                       hoveredId === item.id ? "bg-[#13F584]/20 text-[#13F584]" : "bg-white/5 text-zinc-500"
                     )}>
                       {item.icon ? (
-                        <Image src={item.icon} alt={item.name} width={24} height={24} className="opacity-80" />
+                        <Image src={item.icon} alt="" width={24} height={24} className="opacity-80" />
                       ) : (
                         <Cpu className="w-5 h-5" />
                       )}
@@ -97,7 +167,7 @@ export function DropdownMenu({
         </div>
 
         {/* Right Panel: Dynamic Content */}
-        <div className="flex-1 bg-gradient-to-br from-transparent to-[#13F584]/10 relative overflow-hidden">
+        <div className="flex-1 bg-gradient-to-br from-transparent to-[#13F584]/10 relative overflow-hidden" aria-live="polite">
           {activeItem && (
             <AnimatePresence mode="wait">
               <m.div
@@ -127,17 +197,16 @@ export function DropdownMenu({
                   <div className="grid grid-cols-1 gap-8 mb-8">
                     {/* Stats / Metrics */}
                     <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-white/40 text-xs font-bold mb-2">
+                      <div className="flex items-center gap-2 text-white/60 text-xs font-bold mb-2">
                         <Zap className="w-3 h-3 text-[#13F584]" />
                         {t("impactAnalysis")}
                       </div>
                       <div className="grid grid-cols-3 gap-4">
-                        {activeItem.content?.performance?.metrics?.map((m: any, idx: number) => (
-                          <div key={m.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
-                            <div className="text-2xl font-bold text-[#13F584] leading-none">{m.value}</div>
-                            <div className="text-white/40 text-xs font-bold mt-2">
-                              {/* Use the label as is if it's already translated or not a key */}
-                              {m.label}
+                        {activeItem.content?.performance?.metrics?.map((metric: { label: string; value: string }) => (
+                          <div key={metric.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
+                            <div className="text-2xl font-bold text-[#13F584] leading-none">{metric.value}</div>
+                            <div className="text-white/60 text-xs font-bold mt-2">
+                              {metric.label}
                             </div>
                           </div>
                         ))}
@@ -162,10 +231,6 @@ export function DropdownMenu({
           <div className="absolute bottom-0 end-0 w-[300px] h-[300px] bg-emerald-500/5 blur-[100px] rounded-full translate-y-1/2 translate-x-1/2 pointer-events-none" />
         </div>
       </div>
-    </div >
+    </div>
   );
 }
-
-
-
-

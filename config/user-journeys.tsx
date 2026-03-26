@@ -12,7 +12,6 @@ import {
     MessageSquare,
     Search,
     FileText,
-    Server,
     Mic,
     Zap,
     Users,
@@ -26,11 +25,8 @@ import {
     CheckCircle,
     ArrowRight,
     BookOpen,
-    ClipboardList,
-    Cable,
     Sparkles,
     LayoutDashboard,
-    TrendingUp,
 } from 'lucide-react';
 
 // Local lightweight types replacing reactflow's Node/Edge (eliminates reactflow from bundle)

@@ -4,6 +4,13 @@ import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { JourneyNode } from "./journey-node";
 
+type JourneyLayerData = {
+    id: string;
+    title: string;
+    nodes: { id: string; position: { x: number; y: number }; data: { title: string; icon?: React.ReactElement; image?: string } }[];
+    edges: { id: string; source: string; target: string }[];
+};
+
 /**
  * MOBILE VIEW: Vertical Timeline/Card Layout
  */
@@ -12,7 +19,7 @@ export const MobileJourneyFlow = ({
     stages,
     isRTL
 }: {
-    layers: any[],
+    layers: JourneyLayerData[],
     stages: string[],
     isRTL: boolean
 }) => {
@@ -36,7 +43,7 @@ export const MobileJourneyFlow = ({
 
                         {/* Nodes Grid */}
                         <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                            {layer.nodes.map((node: any) => (
+                            {layer.nodes.map((node) => (
                                 <JourneyNode key={node.id} node={node} isMobile={true} isRTL={isRTL} />
                             ))}
                         </div>

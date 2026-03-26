@@ -52,7 +52,7 @@ export function ServicePortalVideoSection({ videoSrc, title, subtitle, badgeLabe
                 <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
                     <div
                         ref={textRef}
-                        className="w-full lg:w-[50%] ltr:ml-auto rtl:mr-auto pointer-events-auto ltr:pl-8 rtl:pr-8"
+                        className="w-full lg:w-[50%] ms-auto pointer-events-auto ps-8"
                     >
                         <div className="mb-6">
                             <BadgeChip label={resolvedBadge} icon={GitCompare} />

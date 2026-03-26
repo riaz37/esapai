@@ -72,6 +72,13 @@ export function useShutterAnimation({
                     }
                 });
 
+                // Ensure the GSAP pin-spacer wrapper doesn't block pointer events
+                // on the hero section underneath (hero is z-0, this section is z-10)
+                const pinSpacer = container.parentElement;
+                if (pinSpacer?.classList.contains("pin-spacer")) {
+                    pinSpacer.style.pointerEvents = "none";
+                }
+
                 // Initial State Setup (Immediate)
                 gsap.set([leftShutter, rightShutter], {
                     opacity: 0,

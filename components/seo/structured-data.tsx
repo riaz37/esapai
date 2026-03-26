@@ -1,5 +1,4 @@
 import Script from "next/script";
-import type { StructuredData } from "@/types/seo";
 import type { StructuredDataProps } from "@/types/props";
 
 /**

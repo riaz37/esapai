@@ -1,11 +1,13 @@
 /**
  * Product-related type definitions
  */
+import type React from "react";
+import type { LucideIcon } from "lucide-react";
 
 export interface MissionCard {
   title: string;
   description: string;
-  icon?: any; // Generic type to allow component or string
+  icon?: LucideIcon | React.ComponentType<{ size?: number; strokeWidth?: number }>; // Generic type to allow component or string
   image?: string;
 }
 

@@ -27,7 +27,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
                 mass: 1,
             }}
             style={{
-                minWidth: visible ? "1100px" : "auto",
+                minWidth: "auto",
             }}
             className={cn(
                 "relative z-[60] mx-auto hidden flex-row items-center justify-between self-start rounded-full bg-transparent border border-transparent py-2 lg:flex max-w-[1400px]",

@@ -1,20 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useToast } from "@/components/ui/toast";
-import type { ContactFormData, SubmissionState } from "../sections/contact-form-card";
+import { contactFormSchema } from "@/lib/validation/schemas";
+import type { ContactFormData, SubmissionState } from "@/types/contact";
 
-export function useContactForm() {
+export type FieldErrors = Partial<Record<"fullName" | "email" | "message", string>>;
+
+interface UseContactFormOptions {
+    initialMessage?: string;
+}
+
+export function useContactForm({ initialMessage }: UseContactFormOptions = {}) {
     const [formData, setFormData] = useState<ContactFormData>({
         fullName: "",
         email: "",
-        message: "",
+        message: initialMessage ?? "",
     });
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionState, setSubmissionState] = useState<SubmissionState>("idle");
+    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
     const { showToast } = useToast();
+
+    const clearFieldError = useCallback((field: string) => {
+        setFieldErrors((prev) => {
+            if (!prev[field as keyof FieldErrors]) return prev;
+            const next = { ...prev };
+            delete next[field as keyof FieldErrors];
+            return next;
+        });
+    }, []);
 
     const handleInputChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,6 +41,33 @@ export function useContactForm() {
             ...prev,
             [name]: value,
         }));
+        clearFieldError(name);
+    };
+
+    const validateForm = (): boolean => {
+        // Map form field names to schema field names
+        const result = contactFormSchema.safeParse({
+            name: formData.fullName,
+            email: formData.email,
+            message: formData.message,
+        });
+
+        if (result.success) {
+            setFieldErrors({});
+            return true;
+        }
+
+        const errors: FieldErrors = {};
+        for (const issue of result.error.issues) {
+            const field = issue.path[0] as string;
+            // Map schema field "name" back to form field "fullName"
+            const formField = field === "name" ? "fullName" : field;
+            if (!errors[formField as keyof FieldErrors]) {
+                errors[formField as keyof FieldErrors] = issue.message;
+            }
+        }
+        setFieldErrors(errors);
+        return false;
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -31,6 +75,10 @@ export function useContactForm() {
 
         if (!agreedToTerms) {
             showToast("Please accept the terms to continue.", "error");
+            return;
+        }
+
+        if (!validateForm()) {
             return;
         }
 
@@ -95,6 +143,7 @@ export function useContactForm() {
                 showToast("Your message has been sent successfully!", "success");
                 setFormData({ fullName: "", email: "", message: "" });
                 setAgreedToTerms(false);
+                setFieldErrors({});
             } else {
                 throw new Error(web3formsData.message || "Submission failed");
             }
@@ -109,13 +158,22 @@ export function useContactForm() {
         }
     };
 
+    const resetForm = useCallback(() => {
+        setFormData({ fullName: "", email: "", message: "" });
+        setAgreedToTerms(false);
+        setFieldErrors({});
+        setSubmissionState("idle");
+    }, []);
+
     return {
         formData,
         agreedToTerms,
         isSubmitting,
         submissionState,
+        fieldErrors,
         handleInputChange,
         handleSubmit,
         setAgreedToTerms,
+        resetForm,
     };
 }

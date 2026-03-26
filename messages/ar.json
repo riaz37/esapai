@@ -70,7 +70,19 @@
       "submit": "إرسال",
       "submitting": "جاري الإرسال...",
       "termsPrefix": "من خلال الإرسال، أوافق على ",
-      "termsLink": "شروط وأحكام إساب"
+      "termsLink": "شروط وأحكام إساب",
+      "successTitle": "تم إرسال الرسالة!",
+      "successMessage": "شكرًا لتواصلك معنا. سنرد عليك خلال ٢٤ ساعة.",
+      "sendAnother": "إرسال رسالة أخرى",
+      "productBanner": "مهتم بـ {product}",
+      "productInterest": "أنا مهتم بمعرفة المزيد عن {product}."
+    },
+    "productNames": {
+      "erp": "ERP",
+      "ai-framework": "إطار عمل الذكاء الاصطناعي",
+      "zakra": "ذاكرة",
+      "jawib": "جواب",
+      "fasih": "فصيح"
     },
     "toasts": {
       "acceptTerms": "يرجى قبول الشروط للاستمرار.",
@@ -228,7 +240,8 @@
       "updating": "جارٍ تحديث المحتوى…",
       "error": "تعذر تحميل دراسة الحالة",
       "readMore": "اقرأ المزيد",
-      "showLess": "عرض أقل"
+      "showLess": "عرض أقل",
+      "relatedTitle": "دراسات حالة ذات صلة"
     },
     "metadata": {
       "listTitle": "دراسات الحالة",
@@ -260,5 +273,12 @@
     "Arabic Text Accuracy": "دقة النص العربي",
     "Dialects Supported": "اللهجات المدعومة",
     "Arabic Tokens Trained": "رموز عربية مدربة"
+  },
+  "UI": {
+    "skipToContent": "تخطي إلى المحتوى الرئيسي",
+    "loading": "جاري التحميل...",
+    "empty": "لا يوجد محتوى متاح",
+    "error": "حدث خطأ ما",
+    "retry": "حاول مرة أخرى"
   }
 }

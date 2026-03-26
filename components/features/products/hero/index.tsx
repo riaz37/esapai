@@ -1,46 +1,14 @@
 "use client";
 
-import { Link, useRouter } from "@/i18n/routing";
-import Image from "next/image";
+import { Link } from "@/i18n/routing";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
-
-
-import { ChevronRight } from "lucide-react";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import type { ProductHeroProps } from "@/types/props";
 import { Section } from "@/components/ui/section";
 
-/**
- * Maps product slugs to their corresponding icon files in the product_icons directory
- */
-const getProductIconPath = (slug?: string, centerIcon?: string): string | null => {
-  // If centerIcon is provided, use it
-  if (centerIcon) {
-    return centerIcon;
-  }
-
-  // Map product slugs to icon filenames
-  const iconMap: Record<string, string> = {
-    "erp": "/product_icons/Voice.svg",
-    "ai-framework": "/product_icons/AI automation.svg",
-    "zakra": "/product_icons/Zakra.svg",
-    "jawib": "/product_icons/Jawib.svg",
-    "fasih": "/product_icons/Fasih LLM.svg",
-
-  };
-
-  if (slug && iconMap[slug]) {
-    return iconMap[slug];
-  }
-
-  return null;
-};
-
-export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, productSlug, tagline, exploreButton, videoSrc }: ProductHeroProps) {
-  const iconPath = getProductIconPath(productSlug, centerIcon);
+export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc }: ProductHeroProps) {
   const exploreLabel = exploreButton ?? "";
-  const iconAlt = centerIconAlt || `${title} Icon`;
   const heroVideo = videoSrc || "/videos/KB.mp4" || "/videos/LP_animation_HomePage_Big_Intro_2X_short.webm";
 
   return (
@@ -69,7 +37,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
             </div>
 
             <div className="space-y-4 mb-10 max-w-lg">
-              {subtitle.map((line, index) => (
+              {subtitle.map((line) => (
                 <p
                   key={line}
                   className="text-lg md:text-xl text-white/70 leading-relaxed font-normal"
@@ -86,7 +54,7 @@ export function ProductHero({ title, subtitle, centerIcon, centerIconAlt, produc
                 asChild
                 className="pe-1.5"
               >
-                <Link href="#explore" className="inline-flex items-center gap-2 group">
+                <Link href="/contact" className="inline-flex items-center gap-2 group">
                   <span>{exploreLabel}</span>
                   <ButtonArrow />
                 </Link>

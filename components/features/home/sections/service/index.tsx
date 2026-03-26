@@ -11,6 +11,8 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cpu } from "lucide-react";
 import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
+import { SkeletonGrid } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -61,10 +63,10 @@ export function Service({
       isDesktop: "(min-width: 768px)",
       isMobile: "(max-width: 767px)",
     }, (context) => {
-      const { isDesktop } = context.conditions as any;
-      const cards = gsap.utils.toArray(gridRef.current!.querySelectorAll(".service-card-wrapper"));
+      const { isDesktop } = context.conditions as { isDesktop: boolean; isMobile: boolean };
+      const cards = gsap.utils.toArray<Element>(gridRef.current!.querySelectorAll(".service-card-wrapper"));
 
-      cards.forEach((card: any, i) => {
+      cards.forEach((card, i) => {
         let entryX = 0;
         let entryY = 80; // Default rise from below
         let rotateY = 0;
@@ -137,7 +139,7 @@ export function Service({
   };
 
   // Helper to get specific card styles/props
-  const getCardProps = (index: number, service: ServiceItemData) => {
+  const getCardProps = (index: number, _service: ServiceItemData) => {
     switch (index) {
       case 0:
         return {
@@ -180,24 +182,30 @@ export function Service({
 
       {/* Bento Grid with dynamic mapping */}
       <div ref={gridRef} className="relative w-full">
-        <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(330px,auto)] md:auto-rows-[minmax(360px,auto)]">
-          {displayServices.slice(0, 4).map((service, index) => (
-            <div
-              key={service.id || service.title}
-              className={cn("service-card-wrapper", getGridClasses(index))}
-            >
-              <ServiceCard
-                title={service.title}
-                description={service.description}
-                className={cn(
-                  "h-full min-h-[330px]",
-                  index === 0 && "md:min-h-[740px]"
-                )}
-                {...getCardProps(index, service)}
-              />
-            </div>
-          ))}
-        </div>
+        {services === undefined ? (
+          <SkeletonGrid count={4} variant="card" columns="grid-cols-1 md:grid-cols-3" />
+        ) : displayServices.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(280px,auto)] md:auto-rows-[minmax(360px,auto)]">
+            {displayServices.slice(0, 4).map((service, index) => (
+              <div
+                key={service.id || service.title}
+                className={cn("service-card-wrapper", getGridClasses(index))}
+              >
+                <ServiceCard
+                  title={service.title}
+                  description={service.description}
+                  className={cn(
+                    "h-full min-h-[280px]",
+                    index === 0 && "md:min-h-[600px] lg:min-h-[740px]"
+                  )}
+                  {...getCardProps(index, service)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Section>
   );

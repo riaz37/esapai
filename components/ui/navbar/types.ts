@@ -56,5 +56,5 @@ export interface NavbarButtonProps {
     variant?: "primary";
     size?: "default" | "sm" | "lg" | "icon";
     onClick?: () => void;
-    [key: string]: any;
+    [key: string]: unknown;
 }

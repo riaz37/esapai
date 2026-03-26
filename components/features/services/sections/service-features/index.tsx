@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import React from "react";
 import { useTranslations } from "next-intl";
 import { Section } from "@/components/ui/section";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -138,7 +138,7 @@ export function ProductShowcase() {
                 style={{ opacity: 0 }}
               />
 
-              <div className="w-full h-[550px] sm:h-[600px] md:h-[700px]">
+              <div className="w-full min-h-[550px] sm:min-h-[600px] md:min-h-[700px]">
                 <ProductCard
                   product={product}
                   index={index}

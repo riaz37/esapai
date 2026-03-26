@@ -23,7 +23,7 @@ const cardShine = "/images/patterns/card-shine.svg";
 export function MissionCard({
     title,
     description,
-    icon: Icon,
+    icon: _Icon,
     image,
     className,
     showGlow = false,

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { NavbarLogoProps } from "./types";
 
-export const NavbarLogo = ({ visible }: NavbarLogoProps) => {
+export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
     return (
         <Link
             href="/"

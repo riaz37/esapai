@@ -6,14 +6,12 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useGSAPAnimations } from "@/lib/hooks/use-gsap-animations";
 import { prefersReducedMotion } from "@/lib/utils/performance-utils";
-import type { CaseStudyWithUrls } from "@/types/case-study";
 import type { CaseStudyHeroProps } from "@/types/props";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { m } from "motion/react";
 
 export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
     const sectionRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
     const imagesRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +53,7 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
             className="relative z-10 w-full mb-12 sm:mb-16 md:mb-20 lg:mb-24"
         >
             {/* Hero Header Content */}
-            <div className="max-w-4xl w-full mb-12 sm:mb-16 pt-24 sm:pt-32 lg:pt-16">
+            <div className="max-w-4xl w-full mb-12 sm:mb-16 pt-24 sm:pt-32 lg:pt-36">
                 <TypewriterTitle
                     title={caseStudy.title}
                     splitMode="lastWord"

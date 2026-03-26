@@ -19,7 +19,7 @@ interface ProcessTimelineProps {
     className?: string;
 }
 
-function TimelineEntry({ item, index, entryRef }: { item: ProcessTimelineItem; index: number; entryRef: (el: HTMLDivElement | null) => void }) {
+function TimelineEntry({ item, index: _index, entryRef }: { item: ProcessTimelineItem; index: number; entryRef: (el: HTMLDivElement | null) => void }) {
     const leftRef = useRef<HTMLDivElement>(null);
     const rightRef = useRef<HTMLDivElement>(null);
     const nodeRef = useRef<HTMLDivElement>(null);

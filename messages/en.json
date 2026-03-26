@@ -70,7 +70,19 @@
       "submit": "Submit",
       "submitting": "Submitting...",
       "termsPrefix": "By submitting, I agree to the ",
-      "termsLink": "ESAP Terms of Conditions"
+      "termsLink": "ESAP Terms of Conditions",
+      "successTitle": "Message Sent!",
+      "successMessage": "Thank you for reaching out. We'll get back to you within 24 hours.",
+      "sendAnother": "Send Another Message",
+      "productBanner": "Interested in {product}",
+      "productInterest": "I'm interested in learning more about {product}."
+    },
+    "productNames": {
+      "erp": "ERP",
+      "ai-framework": "AI Framework",
+      "zakra": "Zakra",
+      "jawib": "Jawib",
+      "fasih": "Fasih"
     },
     "toasts": {
       "acceptTerms": "Please accept the terms to continue.",
@@ -228,7 +240,8 @@
       "updating": "Updating content…",
       "error": "Unable to load case study",
       "readMore": "Read More",
-      "showLess": "Show Less"
+      "showLess": "Show Less",
+      "relatedTitle": "Related Case Studies"
     },
     "metadata": {
       "listTitle": "Case Study",
@@ -260,5 +273,12 @@
     "Arabic Text Accuracy": "Arabic Text Accuracy",
     "Dialects Supported": "Dialects Supported",
     "Arabic Tokens Trained": "Arabic Tokens Trained"
+  },
+  "UI": {
+    "skipToContent": "Skip to main content",
+    "loading": "Loading...",
+    "empty": "No content available",
+    "error": "Something went wrong",
+    "retry": "Try again"
   }
 }

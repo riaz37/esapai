@@ -76,9 +76,9 @@ export default async function ServiceSlugPage({ params }: Props) {
   return (
     <>
       <StructuredDataComponent data={structuredData} />
-      <main className="relative">
+      <div className="relative">
         <ServicePage slug={slug} initialService={service} />
-      </main>
+      </div>
     </>
   );
 }

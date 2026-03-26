@@ -32,7 +32,6 @@ export function AboutHistory({
     title,
     subtitle,
     badge,
-    hook,
     phases,
     visionTitle,
     visionBody,
@@ -51,7 +50,7 @@ export function AboutHistory({
     const dates = ["2020-10-01", "2021-06-01", "2022-01-01"];
     const historyTimeline = rawI18nPhases.map((phase, index) => {
         // Support both `description` (Sanity) and `body` (i18n shape)
-        const body = (phase as any).body ?? phase.description ?? "";
+        const body = (phase as SanityPhase & { body?: string }).body ?? phase.description ?? "";
         return {
             date: dates[index] || "2022-01-01",
             title: phase.title,
@@ -61,8 +60,8 @@ export function AboutHistory({
     });
 
     // Vision section: prefer Sanity props, else fall back to i18n
-    const resolvedVisionTitle = visionTitle ?? ((t.raw("vision") as any)?.title);
-    const resolvedVisionBody = visionBody ?? ((t.raw("vision") as any)?.body);
+    const resolvedVisionTitle = visionTitle ?? ((t.raw("vision") as { title?: string; body?: string })?.title);
+    const resolvedVisionBody = visionBody ?? ((t.raw("vision") as { title?: string; body?: string })?.body);
 
     return (
         <Section ref={sectionRef} className="scroll-mt-20 md:scroll-mt-32">
@@ -73,12 +72,12 @@ export function AboutHistory({
                 subtitle={displaySubtitle}
                 align="center"
             />
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
                 <Timeline timeline={historyTimeline} />
             </div>
 
             {resolvedVisionTitle && resolvedVisionBody && (
-                <div className="max-w-4xl mx-auto px-6 mt-16">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 mt-16">
                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{resolvedVisionTitle}</h3>
                     <p className="text-white/70 text-base md:text-lg leading-relaxed">{resolvedVisionBody}</p>
                 </div>

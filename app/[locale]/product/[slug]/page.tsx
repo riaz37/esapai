@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductBySlug, products } from "@/lib/products";
-import { getSanityProductBySlug, getSanityProducts } from "@/lib/sanity/queries";
+import { getSanityProductBySlug } from "@/lib/sanity/queries";
 import { ProductPage } from "@/components/features/products/pages/product-page";
 import { generateProductMetadata } from "@/lib/seo/metadata";
 import { generateProductSchema } from "@/lib/seo/structured-data";
@@ -67,9 +67,9 @@ export default async function ProductSlugPage({ params }: { params: Promise<{ sl
   return (
     <>
       <StructuredDataComponent data={structuredData} />
-      <main className="relative">
+      <div className="relative">
         <ProductPage slug={slug} initialProduct={productData} />
-      </main>
+      </div>
     </>
   );
 }

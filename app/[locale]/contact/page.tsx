@@ -10,8 +10,12 @@ export const metadata: Metadata = generatePageMetadata({
   path: "/contact",
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default async function ContactPage(props: { params: Promise<{ locale: string }> }) {
+export default async function ContactPage(props: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const searchParams = await props.searchParams;
+  const productSlug = typeof searchParams.product === "string" ? searchParams.product : undefined;
   const structuredData = [
     generateBreadcrumbSchema([
       { name: "Home", url: "/" },
@@ -22,9 +26,9 @@ export default async function ContactPage(props: { params: Promise<{ locale: str
   return (
     <>
       <StructuredDataComponent data={structuredData} />
-      <main className="relative">
-        <ContactSection />
-      </main>
+      <div className="relative">
+        <ContactSection productSlug={productSlug} />
+      </div>
     </>
   );
 }
