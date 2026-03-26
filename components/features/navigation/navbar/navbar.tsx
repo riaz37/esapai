@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { usePathname } from "@/i18n/routing";
-import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";

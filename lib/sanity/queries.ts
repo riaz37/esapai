@@ -1,5 +1,10 @@
 import { client } from "./client";
 
+// Generic type for raw Sanity documents fetched from the API.
+// Sanity returns arbitrary JSON, mapped to typed app models in mappers below.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SanityDoc = Record<string, any>;
+
 // ── Asset Path Helpers ──
 /**
  * Ensures a path has the correct prefix and extension for the reorganized public directory.
@@ -61,7 +66,7 @@ export async function getUITranslations(locale: string) {
  * that next-intl components expect (e.g. caseStudy → "case-study", aiFramework → "ai-framework",
  * timeSavings → "Time Savings").
  */
-function mapSanityTranslationsToMessages(doc: any): Record<string, any> {
+function mapSanityTranslationsToMessages(doc: SanityDoc): Record<string, unknown> {
     const {
         navigation: nav = {},
         loading: load = {},
@@ -260,20 +265,23 @@ export async function getHomePage(locale: string) {
 }
 
 // ── Home Mapper ──
-export function mapSanityHome(doc: any): any {
+export function mapSanityHome(doc: SanityDoc): SanityDoc {
+    const missionCards = Array.isArray(doc.missionCards) ? doc.missionCards : [];
+    const technologyCards = Array.isArray(doc.technologyCards) ? doc.technologyCards : [];
+    const partners = Array.isArray(doc.partners) ? doc.partners : [];
     return {
         ...doc,
-        missionCards: doc.missionCards?.map((card: any) => ({
+        missionCards: missionCards.map((card: SanityDoc) => ({
             ...card,
-            image: ensureImagePath(card.image, 'images'),
+            image: ensureImagePath(card.image as string | undefined, 'images'),
         })),
-        technologyCards: doc.technologyCards?.map((card: any) => ({
+        technologyCards: technologyCards.map((card: SanityDoc) => ({
             ...card,
-            image: ensureImagePath(card.image, 'images'),
+            image: ensureImagePath(card.image as string | undefined, 'images'),
         })),
-        partners: doc.partners?.map((partner: any) => ({
+        partners: partners.map((partner: SanityDoc) => ({
             ...partner,
-            logo: ensureImagePath(partner.logo, 'partners'),
+            logo: ensureImagePath(partner.logo as string | undefined, 'partners'),
         })),
     };
 }
@@ -314,16 +322,18 @@ export async function getAboutPage(locale: string) {
 }
 
 // ── About Mapper ──
-export function mapSanityAbout(doc: any): any {
+export function mapSanityAbout(doc: SanityDoc): SanityDoc {
+    const teamMembers = Array.isArray(doc.teamMembers) ? doc.teamMembers : [];
+    const historyPhases = Array.isArray(doc.historyPhases) ? doc.historyPhases : [];
     return {
         ...doc,
-        teamMembers: doc.teamMembers?.map((member: any) => ({
+        teamMembers: teamMembers.map((member: SanityDoc) => ({
             ...member,
-            image: ensureImagePath(member.image, 'team'),
+            image: ensureImagePath(member.image as string | undefined, 'team'),
         })),
-        historyPhases: doc.historyPhases?.map((phase: any) => ({
+        historyPhases: historyPhases.map((phase: SanityDoc) => ({
             ...phase,
-            image: ensureImagePath(phase.image, 'images'),
+            image: ensureImagePath(phase.image as string | undefined, 'images'),
         })),
     };
 }
@@ -447,7 +457,7 @@ export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current 
 // Maps flat Sanity productDocument to the nested Product type used by client components
 import type { Product } from "@/types/product";
 
-export function mapSanityProduct(doc: any): Product {
+export function mapSanityProduct(doc: SanityDoc): Product {
     return {
         id: doc.slug || doc._id,
         name: doc.name,
@@ -467,7 +477,7 @@ export function mapSanityProduct(doc: any): Product {
             mission: {
                 title: doc.missionTitle,
                 subtitle: doc.missionSubtitle,
-                cards: doc.missionCards?.map((c: any) => ({
+                cards: (doc.missionCards as SanityDoc[] | undefined)?.map((c) => ({
                     title: c.title,
                     description: c.description,
                 })),
@@ -475,7 +485,7 @@ export function mapSanityProduct(doc: any): Product {
             automationHub: {
                 title: doc.automationTitle,
                 subtitle: doc.automationSubtitle,
-                features: doc.automationFeatures?.map((f: any) => ({
+                features: (doc.automationFeatures as SanityDoc[] | undefined)?.map((f) => ({
                     title: f.title,
                     description: f.description,
                 })),
@@ -485,7 +495,7 @@ export function mapSanityProduct(doc: any): Product {
                 title: doc.youtubeVideoTitle,
             },
             performance: {
-                metrics: doc.performanceMetrics?.map((m: any) => ({
+                metrics: (doc.performanceMetrics as SanityDoc[] | undefined)?.map((m) => ({
                     value: m.value,
                     label: m.label,
                 })),
@@ -493,7 +503,7 @@ export function mapSanityProduct(doc: any): Product {
             aceternityFeatures: {
                 title: doc.aceternityTitle,
                 subtitle: doc.aceternitySubtitle,
-                features: doc.aceternityFeatures?.map((f: any) => ({
+                features: (doc.aceternityFeatures as SanityDoc[] | undefined)?.map((f) => ({
                     title: f.title,
                     description: f.description,
                     className: f.className,
@@ -531,7 +541,7 @@ export function mapSanityProduct(doc: any): Product {
                     subtitle: doc.challengesSubtitle,
                 } : undefined,
                 narrative: doc.cinematicNarrative || undefined,
-                problems: doc.cinematicProblems?.map((p: any) => ({
+                problems: (doc.cinematicProblems as SanityDoc[] | undefined)?.map((p) => ({
                     title: p.title,
                     description: p.description,
                     solTitle: p.solTitle,
@@ -544,7 +554,7 @@ export function mapSanityProduct(doc: any): Product {
                 subtitle: doc.journeySubtitle,
                 badge: doc.journeyBadge,
                 stages: doc.journeyStages,
-                layers: doc.journeyLayers?.map((l: any) => ({
+                layers: (doc.journeyLayers as SanityDoc[] | undefined)?.map((l) => ({
                     title: l.title,
                     nodes: l.nodes,
                 })),
@@ -566,7 +576,7 @@ export async function getSanityProductBySlug(slug: string, locale: string): Prom
 // ── Service Mapper ──
 import type { Service } from "@/types/service";
 
-export function mapSanityService(doc: any): Service {
+export function mapSanityService(doc: SanityDoc): Service {
     return {
         id: doc.slug || doc._id,
         name: doc.name,
@@ -586,7 +596,7 @@ export function mapSanityService(doc: any): Service {
                 subtitle: doc.featuresSubtitle,
                 badge: doc.featuresBadge,
                 centralNode: ensureImagePath(doc.featuresCentralNode, 'services'),
-                items: doc.features?.map((item: any) => ({
+                items: (doc.features as SanityDoc[] | undefined)?.map((item) => ({
                     title: item.title,
                     description: item.description,
                 })),
@@ -599,7 +609,7 @@ export function mapSanityService(doc: any): Service {
                 title: doc.problemTitle,
                 subtitle: doc.problemSubtitle,
                 badge: doc.problemBadge,
-                items: doc.problemItems?.map((item: any) => ({
+                items: (doc.problemItems as SanityDoc[] | undefined)?.map((item) => ({
                     title: item.title,
                     description: item.description,
                 })),
@@ -608,7 +618,7 @@ export function mapSanityService(doc: any): Service {
                 title: doc.processTitle,
                 subtitle: doc.processSubtitle,
                 badge: doc.processBadge,
-                steps: doc.processSteps?.map((step: any) => ({
+                steps: (doc.processSteps as SanityDoc[] | undefined)?.map((step) => ({
                     title: step.title,
                     description: step.description,
                 })),
@@ -645,4 +655,38 @@ export async function getSanityServiceBySlug(slug: string, locale: string): Prom
         }
     });
     return doc ? mapSanityService(doc) : null;
+}
+
+// ── Legal Pages ──
+const legalPageQuery = `*[_type == "legalPage" && pageType == $pageType && language == $locale][0]{
+    title,
+    lastUpdated,
+    metaDescription,
+    contactEmail,
+    contactAddress,
+    sections[]{
+        heading,
+        content
+    }
+}`;
+
+export interface SanityLegalPage {
+    title: string;
+    lastUpdated: string;
+    metaDescription?: string;
+    contactEmail?: string;
+    contactAddress?: string;
+    sections: Array<{
+        heading: string;
+        content: Array<{ _type: string; [key: string]: unknown }>;
+    }>;
+}
+
+export async function getSanityLegalPage(pageType: "privacy" | "terms", locale: string): Promise<SanityLegalPage | null> {
+    return client.fetch(legalPageQuery, { pageType, locale }, {
+        next: {
+            revalidate: 86400,
+            tags: ["legal", `legal-${pageType}-${locale}`]
+        }
+    });
 }

@@ -239,6 +239,33 @@ export async function getCaseStudyBySlug(
   }
 }
 
+/**
+ * Fetch related case studies by matching tags, excluding the current one
+ */
+export async function getRelatedCaseStudies(
+  tags: string[],
+  excludeSlug: string,
+  locale: string = "en",
+  limit: number = 3
+): Promise<CaseStudyWithUrls[]> {
+  if (!tags.length) return [];
+  try {
+    const query = `*[_type == "caseStudy" && language == $locale && slug.current != $excludeSlug && count((tags[])[@ in $tags]) > 0] | order(count((tags[])[@ in $tags]) desc, publishedAt desc)[0...$limit] ${CASE_STUDY_FIELDS}`;
+    const caseStudies = await client.fetch<CaseStudy[]>(query, {
+      locale,
+      excludeSlug,
+      tags,
+      limit,
+    });
+    return caseStudies.map(transformCaseStudy);
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching related case studies:", error);
+    }
+    return [];
+  }
+}
+
 export async function getPaginatedCaseStudies(
   params: CaseStudyListingParams
 ): Promise<PaginatedCaseStudiesResult> {

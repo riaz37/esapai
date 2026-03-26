@@ -27,7 +27,7 @@ export function CookieConsentBanner() {
       className={`fixed bottom-0 start-0 end-0 z-50 transition-all duration-500 ease-in-out ${isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
         }`}
     >
-      <div className="container mx-auto px-3 sm:px-4 pb-3 sm:pb-4 md:pb-6">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pb-3 sm:pb-4 md:pb-6">
         <div className="relative rounded-xl sm:rounded-2xl border border-white-opacity-20 bg-white-opacity-10 backdrop-blur-lg p-4 sm:p-5 md:p-6 lg:p-8 shadow-2xl max-w-3xl mx-auto">
           {/* Background gradient effect */}
           <div className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 pointer-events-none">

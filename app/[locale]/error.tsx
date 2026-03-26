@@ -19,12 +19,12 @@ export default function Error({ error, reset }: ErrorProps) {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient effect */}
       <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[min(800px,200vw)] h-[min(800px,200vw)] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
 
       {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-4 py-16 flex flex-col items-center text-center max-w-4xl">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-14 md:py-16 flex flex-col items-center text-center max-w-4xl">
         {/* Error Icon */}
         <div className="mb-8">
           <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-6">
@@ -70,7 +70,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <Button
             variant="primary"
             size="lg"
-            className="rounded-[40px] px-12 py-6 text-lg font-semibold min-w-[180px]"
+            className="rounded-[32px] sm:rounded-[40px] px-10 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
             onClick={reset}
           >
             {t("tryAgain")}
@@ -78,7 +78,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <Button
             variant="outline"
             size="lg"
-            className="rounded-[40px] px-8 py-6 text-lg font-semibold min-w-[180px]"
+            className="rounded-[32px] sm:rounded-[40px] px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
             asChild
           >
             <Link href="/">{t("goHome")}</Link>
@@ -86,7 +86,7 @@ export default function Error({ error, reset }: ErrorProps) {
         </div>
 
         {/* Helpful Information */}
-        <div className="product-card p-6 md:p-8 max-w-md">
+        <div className="product-card p-4 sm:p-5 md:p-6 lg:p-8 max-w-md w-full">
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-gradient-radial-white">
             {t("whatToDo")}
           </h3>

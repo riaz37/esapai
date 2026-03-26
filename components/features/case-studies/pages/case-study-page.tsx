@@ -2,12 +2,12 @@
 
 import { useRef } from "react";
 import { useTranslations } from "next-intl";
-import dynamic from "next/dynamic";
-import type { CaseStudyWithUrls } from "@/types/case-study";
+import Image from "next/image";
 import { CaseStudyHero } from "../hero";
 import { useCaseStudyContent } from "@/lib/hooks/use-case-study-content";
 import { Section } from "@/components/ui/section";
 import { Timeline } from "../sections";
+import { Link } from "@/i18n/routing";
 
 import { GlobalLoader } from "@/components/ui/global-loader";
 import type { CaseStudyPageClientProps } from "@/types/page";
@@ -16,6 +16,7 @@ export function CaseStudyPage({
   slug,
   locale,
   initialCaseStudy,
+  relatedCaseStudies = [],
 }: CaseStudyPageClientProps) {
   const t = useTranslations("CaseStudy.detail");
   const { caseStudy, loading, isFetching, error } = useCaseStudyContent(slug, locale, {
@@ -61,6 +62,58 @@ export function CaseStudyPage({
           </div>
         </div>
       </Section>
+
+      {/* Related Case Studies */}
+      {relatedCaseStudies.length > 0 && (
+        <Section padding="lg" containerMaxWidth="wide">
+          <div className="relative z-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+              {t("relatedTitle")}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedCaseStudies.map((related) => (
+                <Link
+                  key={related._id}
+                  href={`/case-study/${related.slug}`}
+                  className="group block rounded-2xl border border-white/10 bg-white/5 overflow-hidden transition-colors hover:border-[#13F584]/30 hover:bg-white/[0.08]"
+                >
+                  {related.thumbnail?.url && (
+                    <div className="relative aspect-video overflow-hidden">
+                      <Image
+                        src={related.thumbnail.url}
+                        alt={related.thumbnail.alt || related.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5">
+                    <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
+                      {related.title}
+                    </h3>
+                    <p className="text-sm text-white/60 line-clamp-2">
+                      {related.subtitle}
+                    </p>
+                    {related.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {related.tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/50"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </Section>
+      )}
     </div>
   );
 }

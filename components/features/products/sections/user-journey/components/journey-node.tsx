@@ -4,12 +4,22 @@ import { cn } from "@/lib/utils";
 
 const PRIMARY = "#13F584";
 
+type JourneyNodeData = {
+    id: string;
+    position: { x: number; y: number };
+    data: {
+        image?: string;
+        title?: string;
+        icon?: React.ReactElement;
+    } & Record<string, unknown>;
+};
+
 export const JourneyNode = ({
     node,
     isMobile = false,
     isRTL = false
 }: {
-    node: any,
+    node: JourneyNodeData,
     isMobile?: boolean,
     isRTL?: boolean
 }) => {
@@ -46,7 +56,7 @@ export const JourneyNode = ({
                     {node.data.image ? (
                         <Image
                             src={node.data.image}
-                            alt={node.data.title}
+                            alt={node.data.title || ""}
                             fill
                             sizes="64px"
                             className="object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"

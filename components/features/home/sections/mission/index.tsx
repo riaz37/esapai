@@ -15,9 +15,6 @@ import { useLocale } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const defaultTitle = "Our Core Mission";
-const defaultSubtitle =
-  "Building the foundational intelligence layer to empower organizations beyond traditional limits.";
 const defaultCards: MissionCardType[] = [
   {
     title: "Democratizing Intelligence",
@@ -73,7 +70,7 @@ export function Mission({
       }, (context) => {
         if (!trackRef.current) return;
         const cardsElements = Array.from(trackRef.current.children);
-        const { isMobile, isTablet } = context.conditions as any;
+        const { isMobile, isTablet } = context.conditions as { isMobile: boolean; isTablet: boolean; isDesktop: boolean };
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -158,10 +155,10 @@ export function Mission({
           ref={trackRef}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 sm:px-6 w-full max-w-[1400px] mx-auto"
         >
-          {cards.map((card, index) => (
+          {cards.map((card, _index) => (
             <div
               key={card.title}
-              className="w-full h-[340px] sm:h-[380px] md:h-[420px]"
+              className="w-full min-h-[340px] sm:min-h-[380px] md:min-h-[420px]"
             >
               <MissionCard
                 title={card.title}

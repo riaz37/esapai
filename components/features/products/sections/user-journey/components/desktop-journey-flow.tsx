@@ -10,6 +10,23 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+type JourneyNodeData = {
+    id: string;
+    position: { x: number; y: number };
+    data: {
+        image?: string;
+        title?: string;
+        icon?: React.ReactElement;
+    } & Record<string, unknown>;
+};
+
+type JourneyLayerData = {
+    id: string;
+    title: string;
+    nodes: JourneyNodeData[];
+    edges: { id: string; source: string; target: string }[];
+};
+
 /**
  * DESKTOP VIEW: Layered Pinning Layout (Fixed Coordinates)
  */
@@ -18,7 +35,7 @@ export const DesktopJourneyFlow = ({
     stages,
     isRTL
 }: {
-    layers: any[],
+    layers: JourneyLayerData[],
     stages: string[],
     isRTL: boolean
 }) => {
@@ -94,9 +111,9 @@ export const DesktopJourneyFlow = ({
                                 className="absolute inset-0 w-full h-full pointer-events-none"
                                 style={isRTL ? { transform: "scaleX(-1)" } : undefined}
                             >
-                                {layer.edges.map((edge: any) => {
-                                    const sourceNode = layer.nodes.find((n: any) => n.id === edge.source);
-                                    const targetNode = layer.nodes.find((n: any) => n.id === edge.target);
+                                {layer.edges.map((edge) => {
+                                    const sourceNode = layer.nodes.find((n) => n.id === edge.source);
+                                    const targetNode = layer.nodes.find((n) => n.id === edge.target);
                                     if (!sourceNode || !targetNode) return null;
                                     return (
                                         <CinematicEdge
@@ -112,7 +129,7 @@ export const DesktopJourneyFlow = ({
 
                             {/* Nodes */}
                             <div className="absolute inset-0">
-                                {layer.nodes.map((node: any) => (
+                                {layer.nodes.map((node) => (
                                     <JourneyNode key={node.id} node={node} isRTL={isRTL} />
                                 ))}
                             </div>

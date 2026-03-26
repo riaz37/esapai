@@ -93,7 +93,23 @@ Spec:
 Spec:
 - `tests/e2e/accessibility.spec.ts`
 
-## 11. Browser matrix
+## 11. Design improvements (Items 6-12)
+
+- Global error i18n: English/Arabic locale detection and attributes
+- Product → Contact context: CTA links with `?product=` param, banner, pre-filled message
+- Case study related content: detail page loads, related section renders
+- TextReveal data-driven: words render from Sanity/i18n content
+- Business impact metrics: product page metric section renders
+- Skip-to-content: Tab to focus, Enter to navigate
+- Contact form states: validation errors, loading spinner, success confirmation
+- Error boundary: graceful section error handling
+- Skeleton/empty states: home page sections render with content or fallback
+- Privacy/Terms: bilingual pages load in both locales
+
+Spec:
+- `tests/e2e/design-improvements.spec.ts`
+
+## 12. Browser matrix
 
 Projects configured in `playwright.config.ts`:
 

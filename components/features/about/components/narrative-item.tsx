@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { m, AnimatePresence } from "motion/react";
+import { m } from "motion/react";
 import { AboutNarrativeItem } from "@/lib/about-v2-data";
 
 interface NarrativeItemProps {
@@ -52,7 +52,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
 
                             <div className="flex items-center gap-6 lg:gap-10 flex-row">
                                 <div className="flex flex-col">
-                                    <span className="text-xs lg:text-sm text-white/40 mb-1">{designation}</span>
+                                    <span className="text-xs lg:text-sm text-white/60 mb-1">{designation}</span>
                                     <span className="text-base lg:text-lg text-white">{item.price}</span>
                                 </div>
 

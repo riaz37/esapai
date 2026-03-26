@@ -32,7 +32,7 @@ export async function generateMetadata({
 
   if (!service) {
     const messages = await getUITranslations(locale).catch(() => null);
-    const meta = messages?.Service?.metadata;
+    const meta = (messages?.Service as any)?.metadata;
     return {
       title: meta?.notFoundTitle ?? "Service Not Found",
       description: meta?.notFoundDescription ?? "The requested service could not be found.",
@@ -76,9 +76,9 @@ export default async function ServiceSlugPage({ params }: Props) {
   return (
     <>
       <StructuredDataComponent data={structuredData} />
-      <main className="relative">
+      <div className="relative">
         <ServicePage slug={slug} initialService={service} />
-      </main>
+      </div>
     </>
   );
 }

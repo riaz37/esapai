@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading-en, var(--font-heading-ar, var(--font-inter))), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
 
   --animate-light-sweep: light-sweep 1.5s ease-in-out forwards;
 

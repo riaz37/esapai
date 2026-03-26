@@ -62,7 +62,7 @@ export function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="w-full py-12 md:py-20 relative px-4 overflow-hidden"
+      className="w-full py-12 md:py-20 relative px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden"
     >
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 h-full relative z-10">
 
@@ -153,7 +153,7 @@ export function Footer() {
                       key={icon.name}
                       href={icon.href}
                       target="_blank"
-                      className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#13F584] hover:text-black transition-all duration-300 text-white border border-white/10"
+                      className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#13F584] hover:text-black transition-all duration-300 text-white border border-white/10"
                     >
                       <Image
                         src={icon.iconPath}

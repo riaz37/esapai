@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getCaseStudyBySlug, getCaseStudies } from "@/lib/case-studies";
+import { getCaseStudyBySlug, getCaseStudies, getRelatedCaseStudies } from "@/lib/case-studies";
 import { CaseStudyPage } from "@/components/features/case-studies/pages/case-study-page";
 import { generateCaseStudyMetadata } from "@/lib/seo/metadata";
 import { generateArticleSchema } from "@/lib/seo/structured-data";
@@ -51,6 +51,13 @@ export default async function CaseStudySlugPage({ params }: CaseStudySlugPagePro
     notFound();
   }
 
+  const relatedCaseStudies = await getRelatedCaseStudies(
+    caseStudy.tags,
+    slug,
+    locale,
+    3
+  );
+
   // Generate structured data
   const thumbnailUrl =
     caseStudy.thumbnail?.url || caseStudy.heroImages?.[0]?.url;
@@ -78,9 +85,9 @@ export default async function CaseStudySlugPage({ params }: CaseStudySlugPagePro
   return (
     <>
       <StructuredDataComponent data={structuredData} />
-      <main className="relative">
-        <CaseStudyPage slug={slug} locale={locale} initialCaseStudy={caseStudy} />
-      </main>
+      <div className="relative">
+        <CaseStudyPage slug={slug} locale={locale} initialCaseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />
+      </div>
     </>
   );
 }

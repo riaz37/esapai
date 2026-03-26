@@ -3,7 +3,6 @@ import type { NextRequest } from "next/server";
 import { getArcjetInstance } from "@/lib/arcjet/config";
 import { validateContactForm, sanitizeContactFormInput } from "@/lib/validation/contact-form";
 
-const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 
 export async function POST(request: NextRequest) {
   const accessKey = process.env.WEB3FORMS_ACCESS_KEY;

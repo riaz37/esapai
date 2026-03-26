@@ -1,43 +1,12 @@
 "use client";
 
+import React, { useMemo } from "react";
 import { m } from "motion/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { AlertTriangle, Clock, Database, FileX, ZapOff } from "lucide-react";
-import { useMemo, useId } from "react";
 import { useTranslations } from "next-intl";
 
-
-const PAIN_POINTS = [
-  {
-    icon: Clock,
-    title: "Manual Bottlenecks",
-    desc: "Hours lost to repetitive data entry and copy-pasting between tools.",
-    x: -30, y: -5, rotate: -6, delay: 0.1,
-    drift: { duration: 4.8, y: 12, rotate: 1.5, delay: 0.2 }
-  },
-  {
-    icon: Database,
-    title: "Siloed Data",
-    desc: "Critical information trapped in disconnected spreadsheets and emails.",
-    x: 35, y: -25, rotate: 5, delay: 0.2,
-    drift: { duration: 6.2, y: 8, rotate: -1.2, delay: 0.8 }
-  },
-  {
-    icon: ZapOff,
-    title: "Slow Velocity",
-    desc: "Projects stalled by waiting on manual approvals and handoffs.",
-    x: -15, y: 35, rotate: -4, delay: 0.3,
-    drift: { duration: 5.5, y: 14, rotate: 0.8, delay: 1.5 }
-  },
-  {
-    icon: FileX,
-    title: "Human Error",
-    desc: "Costly mistakes slipping through due to fatigue and complexity.",
-    x: 25, y: 25, rotate: 6, delay: 0.4,
-    drift: { duration: 4.2, y: 10, rotate: -1.8, delay: 0.1 }
-  }
-];
 
 const EMPTY_ITEMS: Array<{ title: string; description: string }> = [];
 
@@ -129,7 +98,19 @@ export function ServiceProblemSection({
   );
 }
 
-function PainCard({ point }: { point: any }) {
+type PainPoint = {
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  desc: string;
+  x: number;
+  y: number;
+  rotate: number;
+  delay: number;
+  drift: { duration: number; y: number; rotate: number; delay: number };
+};
+
+function PainCard({ point }: { point: PainPoint }) {
   // Use deterministic drift values from the constant to satisfy React Compiler's purity requirements
   const { duration, y, rotate, delay } = point.drift;
 

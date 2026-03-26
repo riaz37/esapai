@@ -2,8 +2,6 @@
 
 import React from "react";
 import { Link } from "@/i18n/routing";
-import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 
 import { cn } from "@/lib/utils";
@@ -22,13 +20,13 @@ interface ProductCardProps {
     className?: string;
 }
 
-export function ProductCard({ product, index, videoRef, className }: ProductCardProps) {
+export function ProductCard({ product, index: _index, videoRef: _videoRef, className }: ProductCardProps) {
     const t = useTranslations("Home.showcase");
     const cardRef = React.useRef<HTMLDivElement>(null);
     const buttonRef = React.useRef<HTMLDivElement>(null);
 
-    const iconSrc = product.icon ?? product.content?.hero?.centerIcon;
-    const iconAlt = product.content?.hero?.centerIconAlt ?? `${product.name} icon`;
+    const _iconSrc = product.icon ?? product.content?.hero?.centerIcon;
+    const _iconAlt = product.content?.hero?.centerIconAlt ?? `${product.name} icon`;
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;

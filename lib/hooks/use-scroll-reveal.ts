@@ -22,9 +22,9 @@ interface ScrollRevealOptions {
     delay?: number;
     ease?: string;
     toggleActions?: string;
-    dependencies?: any[];
+    dependencies?: unknown[];
 }
-const EMPTY_DEPENDENCIES: any[] = [];
+const EMPTY_DEPENDENCIES: unknown[] = [];
 
 /**
  * Reusable hook for scroll-triggered staggered entrance animations using GSAP

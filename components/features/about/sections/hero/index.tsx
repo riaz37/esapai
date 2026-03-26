@@ -43,7 +43,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
         <Section
             padding="none"
             className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden"
-            containerClassName="relative z-10 px-6 flex flex-col items-center text-center max-w-4xl pt-32 md:pt-40 pb-12"
+            containerClassName="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col items-center text-center max-w-4xl pt-32 md:pt-40 pb-12"
         >
             <m.div
                 initial={{ opacity: 0, y: 15 }}

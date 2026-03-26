@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import type {
   LegalPageProps,
   LegalSectionProps,
@@ -18,7 +17,7 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
           <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[600px] h-[800px] bg-gradient-to-b from-primary via-primary/10 to-transparent opacity-20 blur-3xl" />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 leading-tight text-gradient-primary">
               {title}
@@ -40,7 +39,7 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
           </div>
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 pt-10 sm:pt-12 md:pt-14 lg:pt-16">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-10 sm:pt-12 md:pt-14 lg:pt-16">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14 text-light-gray-90 leading-relaxed">
               {children}

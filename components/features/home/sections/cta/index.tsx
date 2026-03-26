@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import gsap from "gsap";
@@ -8,7 +8,6 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
-import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 import type { Product } from "@/types/product";
 
 import { useStarWarp } from "@/lib/hooks/use-star-warp";
@@ -31,11 +30,10 @@ export function CTASection({
     subtitle: subtitleProp,
     product,
     primaryButtonText,
-    primaryButtonHref = "/contact",
+    primaryButtonHref,
 }: CTASectionProps) {
     const t = useTranslations("CTA");
     const sectionRef = useRef<HTMLElement>(null);
-    const primaryButtonRef = useRef<HTMLAnchorElement>(null);
     const { canvasRef } = useStarWarp();
 
     const title = titleProp ?? (product?.content?.cta?.title
@@ -45,6 +43,8 @@ export function CTASection({
     const displayPrimaryButtonText = primaryButtonText
         || product?.content?.cta?.buttonText
         || (product ? t("productFallbackButton") : t("button"));
+    const href = primaryButtonHref
+        ?? (product ? `/contact?product=${product.slug}` : "/contact");
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -88,7 +88,7 @@ export function CTASection({
             background="transparent"
             withContainer={false}
             // Seamless blend: Using mask-image for the smoothest possible edge blending
-            className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden"
+            className="relative w-full min-h-[80vh] min-h-[450px] sm:min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden"
             style={{
                 maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
                 WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)"
@@ -116,7 +116,7 @@ export function CTASection({
                             size="default"
                             asChild
                         >
-                            <Link href={primaryButtonHref} className="inline-flex items-center gap-2 group">
+                            <Link href={href} className="inline-flex items-center gap-2 group">
                                 <span>{displayPrimaryButtonText}</span>
                                 <ButtonArrow size="default" />
                             </Link>

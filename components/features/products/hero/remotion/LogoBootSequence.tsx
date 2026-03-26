@@ -25,8 +25,6 @@ export const LogoBootSequence = () => {
 
     const glitchX = isGlitching ? (random(frame) - 0.5) * 10 : 0;
     const glitchY = isGlitching ? (random(frame + 1) - 0.5) * 5 : 0;
-    const glitchOpacity = interpolate(frame, [40, 60], [0.8, 0]);
-
     // --- Phase 3: Stabilize ---
     const scale = interpolate(scanProgress, [0, 1], [1.2, 1]);
     const opacity = interpolate(frame, [0, 10], [0, 1]);

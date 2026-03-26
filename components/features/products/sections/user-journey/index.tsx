@@ -73,7 +73,7 @@ export const UserJourney = ({
                     badgeIcon={Workflow}
                     animate={true}
                     titleClassName="text-4xl md:text-5xl lg:text-7xl"
-                    subtitleClassName="text-base md:text-xl text-white/50 max-w-2xl"
+                    subtitleClassName="text-base md:text-xl text-white/70 max-w-2xl"
                 />
             </div>
 

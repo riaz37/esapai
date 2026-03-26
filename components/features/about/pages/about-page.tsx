@@ -31,7 +31,7 @@ export interface AboutPageClientProps {
     heroBadge?: string;
     heroTitlePart1?: string;
     heroTitlePart2?: string;
-    teamMembers?: any[];
+    teamMembers?: Record<string, unknown>[];
     narrativeDesignation?: string;
     teamCategoryLabel?: string;
     teamLeadershipLabel?: string;

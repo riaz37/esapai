@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Service } from "@/types/service";
 import type {
   UseServiceContentOptions,
   UseServiceContentResult,

@@ -104,7 +104,7 @@ export const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(({
                 ref={(el) => {
                     cardRef.current = el;
                     if (typeof ref === "function") ref(el);
-                    else if (ref) (ref as any).current = el;
+                    else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
                 }}
                 onMouseMove={onMouseMove}
                 onMouseLeave={onMouseLeave}

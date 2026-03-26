@@ -26,7 +26,7 @@ export interface TechnologyExcellenceProps {
     subtitle?: string;
     badge?: string;
     videoSrc?: string;
-    cards?: any[];
+    cards?: Record<string, unknown>[];
     partners?: PartnerData[];
 }
 
@@ -34,8 +34,8 @@ export function TechnologyExcellence({
     title,
     subtitle,
     badge,
-    videoSrc,
-    cards,
+    videoSrc: _videoSrc,
+    cards: _cards,
     partners = DEFAULT_PARTNERS,
 }: TechnologyExcellenceProps = {}) {
     const displayTitle = title || "";
@@ -122,7 +122,7 @@ export function TechnologyExcellence({
             {/* Content Layer — header centered, partners at bottom */}
             <div
                 ref={contentRef}
-                className="absolute inset-0 z-20 flex flex-col items-center opacity-100 lg:opacity-0 pointer-events-auto"
+                className="absolute inset-0 z-20 flex flex-col items-center opacity-100 lg:opacity-0 pointer-events-none"
             >
                 {/* Center: Header */}
                 <div className="flex-1 flex items-center justify-center w-full pt-24 lg:pt-0">

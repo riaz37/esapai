@@ -5,22 +5,49 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { GlobalErrorProps } from "@/types/page";
 
-const errorStrings = {
-  criticalTitle: "Critical Error",
-  criticalDescription: "A critical error occurred that prevented the application from loading. Please refresh the page or try again later.",
-  errorId: "Error ID",
-  reloadApp: "Reload Application",
-  tryAgain: "Try Again",
-  troubleshooting: "Troubleshooting Steps:",
-  clearCache: "Clear your browser cache and cookies",
-  tryBrowser: "Try using a different browser",
-  checkJs: "Check if JavaScript is enabled",
-  contactIfPersists: "Contact support if the issue persists",
-  contactSupport: "Contact Support",
+const errorStrings: Record<string, Record<string, string>> = {
+  en: {
+    criticalTitle: "Critical Error",
+    criticalDescription:
+      "A critical error occurred that prevented the application from loading. Please refresh the page or try again later.",
+    errorId: "Error ID",
+    reloadApp: "Reload Application",
+    tryAgain: "Try Again",
+    troubleshooting: "Troubleshooting Steps:",
+    clearCache: "Clear your browser cache and cookies",
+    tryBrowser: "Try using a different browser",
+    checkJs: "Check if JavaScript is enabled",
+    contactIfPersists: "Contact support if the issue persists",
+    contactSupport: "Contact Support",
+  },
+  ar: {
+    criticalTitle: "خطأ حرج",
+    criticalDescription:
+      "حدث خطأ حرج منع التطبيق من التحميل. يرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقًا.",
+    errorId: "معرّف الخطأ",
+    reloadApp: "إعادة تحميل التطبيق",
+    tryAgain: "حاول مرة أخرى",
+    troubleshooting: "خطوات استكشاف الأخطاء:",
+    clearCache: "امسح ذاكرة التخزين المؤقت وملفات تعريف الارتباط",
+    tryBrowser: "جرّب استخدام متصفح مختلف",
+    checkJs: "تحقق من تفعيل JavaScript",
+    contactIfPersists: "تواصل مع الدعم إذا استمرت المشكلة",
+    contactSupport: "تواصل مع الدعم",
+  },
 };
 
+function detectLocale(): string {
+  if (typeof window !== "undefined") {
+    const pathLocale = window.location.pathname.split("/")[1];
+    if (pathLocale === "ar") return "ar";
+  }
+  return "en";
+}
+
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
-  const t = errorStrings;
+  const locale = detectLocale();
+  const t = errorStrings[locale];
+  const dir = locale === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
@@ -29,17 +56,17 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
   }, [error]);
 
   return (
-    <html lang="en">
+    <html lang={locale} dir={dir}>
       <body>
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden text-white">
           {/* Background gradient effect */}
           <div className="absolute inset-0 z-0 opacity-30">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[rgb(19,245,132)] opacity-10 blur-[120px] rounded-full" />
+            <div className="absolute top-0 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 w-[min(800px,200vw)] h-[min(800px,200vw)] bg-[rgb(19,245,132)] opacity-10 blur-[120px] rounded-full" />
           </div>
 
 
           {/* Main Content */}
-          <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 flex flex-col items-center text-center">
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-14 md:py-16 flex flex-col items-center text-center">
             {/* Error Icon */}
             <div className="mb-8">
               <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-6">
@@ -72,7 +99,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 {t.criticalDescription}
               </p>
               {error.digest && (
-                <p className="text-sm text-white/40 mt-2">
+                <p className="text-sm text-white/60 mt-2">
                   {t.errorId}: {error.digest}
                 </p>
               )}
@@ -83,7 +110,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               <Button
                 variant="primary"
                 size="lg"
-                className="rounded-[40px] px-12 py-6 text-lg font-semibold min-w-[180px]"
+                className="rounded-[32px] sm:rounded-[40px] px-10 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
                 onClick={() => {
                   window.location.href = "/";
                 }}
@@ -93,7 +120,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               <Button
                 variant="outline"
                 size="lg"
-                className="rounded-[40px] px-8 py-6 text-lg font-semibold min-w-[180px]"
+                className="rounded-[32px] sm:rounded-[40px] px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
                 onClick={reset}
               >
                 {t.tryAgain}
@@ -101,7 +128,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             </div>
 
             {/* Troubleshooting */}
-            <div className="border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm p-6 md:p-8 max-w-md">
+            <div className="border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm p-4 sm:p-5 md:p-6 lg:p-8 max-w-md w-full">
               <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
                 {t.troubleshooting}
               </h3>
@@ -125,7 +152,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               </ul>
               <div className="mt-6">
                 <Link
-                  href="/contact"
+                  href={`/${locale}/contact`}
                   className="text-[rgb(19,245,132)] hover:text-[rgba(19,245,132,0.8)] transition-colors text-base font-semibold"
                 >
                   {t.contactSupport} →

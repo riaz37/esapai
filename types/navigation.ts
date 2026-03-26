@@ -16,7 +16,7 @@ export interface MenuItem {
   menuDescription?: string;
   slug: string;
   icon?: string;
-  content?: any;
+  content?: object;
 }
 
 export interface DropdownMenuProps {

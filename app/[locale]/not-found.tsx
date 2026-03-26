@@ -10,7 +10,7 @@ export default function NotFound() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient effect */}
       <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary opacity-10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 start-1/2 -translate-x-1/2 w-[min(800px,200vw)] h-[min(800px,200vw)] bg-primary opacity-10 blur-[120px] rounded-full" />
       </div>
 
 
@@ -61,25 +61,25 @@ export default function NotFound() {
           <nav className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link
               href="/"
-              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
+              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] flex items-center justify-center"
             >
               {nav("home")}
             </Link>
             <Link
               href="/about"
-              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
+              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] flex items-center justify-center"
             >
               {nav("about")}
             </Link>
             <Link
               href="/case-study"
-              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
+              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] flex items-center justify-center"
             >
               {nav("case-study")}
             </Link>
             <Link
               href="/contact"
-              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] sm:min-h-[40px] flex items-center justify-center"
+              className="text-primary hover:text-primary-opacity-90 transition-colors text-sm sm:text-base min-h-[44px] flex items-center justify-center"
             >
               {nav("contact")}
             </Link>

@@ -31,8 +31,6 @@ const ServicesCTASection = dynamic(
 );
 
 import { ServiceHero } from "@/components/features/services/hero";
-import { Section } from "@/components/ui/section";
-
 import { LazySection } from "@/components/ui/lazy-section";
 
 export function ServicePage({ slug, initialService }: ServicePageClientProps) {
@@ -51,7 +49,6 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
   ];
   const featuresContent = content.features;
   const features = featuresContent?.items ?? [];
-  const youtubeVideoContent = content.youtubeVideo;
   const problemContent = content.problem;
   const processContent = content.process;
   const ctaContent = content.cta;

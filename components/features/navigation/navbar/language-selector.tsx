@@ -1,40 +1,37 @@
 "use client";
 import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/routing";
+import { usePathname, Link } from "@/i18n/routing";
 import { m, AnimatePresence } from "motion/react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const locales = [
-    { code: "en", flag: "🇺🇸" },
-    { code: "ar", flag: "🇸🇦" },
+    { code: "en", flag: "/united-states.svg" },
+    { code: "ar", flag: "/saudi-arabia.svg" },
 ] as const;
 
-export function LanguageSelector({ className, visible }: { className?: string, visible?: boolean }) {
+export function LanguageSelector({ className }: { className?: string, visible?: boolean }) {
     const locale = useLocale();
     const pathname = usePathname();
-    const router = useRouter();
 
     // Find the target locale (the one we're NOT currently on)
     const targetLocale = locales.find((l) => l.code !== locale) || locales[0];
 
-    const handleToggle = () => {
-        router.replace(pathname, { locale: targetLocale.code });
-    };
-
     return (
         <div className={cn("relative flex items-center", className)}>
-            <button
-                onClick={handleToggle}
+            <Link
+                href={pathname}
+                locale={targetLocale.code}
                 className={cn(
                     "flex items-center justify-center rounded-full transition-all duration-300",
                     "bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20",
                     "text-white group overflow-hidden",
-                    visible ? "h-9 w-9" : "h-11 w-11"
+                    "h-11 w-11"
                 )}
-                aria-label={`Switch to ${targetLocale.code === "en" ? "English" : "Arabic"}`}
+                aria-label={targetLocale.code === "en" ? "Switch to English" : "Switch to Arabic"}
             >
                 <AnimatePresence mode="wait" initial={false}>
-                    <m.span
+                    <m.div
                         key={targetLocale.code}
                         initial={{ y: 20, opacity: 0, rotate: -10 }}
                         animate={{ y: 0, opacity: 1, rotate: 0 }}
@@ -45,12 +42,19 @@ export function LanguageSelector({ className, visible }: { className?: string, v
                             damping: 25,
                             duration: 0.3
                         }}
-                        className="select-none leading-none text-xl md:text-2xl"
+                        className="relative flex items-center justify-center w-7 h-7"
                     >
-                        {targetLocale.flag}
-                    </m.span>
+                        <Image
+                            src={targetLocale.flag}
+                            alt={targetLocale.code === "en" ? "English" : "Arabic"}
+                            width={28}
+                            height={28}
+                            className="object-contain"
+                            priority
+                        />
+                    </m.div>
                 </AnimatePresence>
-            </button>
+            </Link>
         </div>
     );
 }

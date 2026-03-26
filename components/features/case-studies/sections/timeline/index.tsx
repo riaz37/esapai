@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
-import { m, AnimatePresence } from "motion/react";
 import type { TimelineProps } from "@/types/props";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
