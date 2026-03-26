@@ -7,7 +7,11 @@ const PRIMARY = "#13F584";
 type JourneyNodeData = {
     id: string;
     position: { x: number; y: number };
-    data: Record<string, unknown>;
+    data: {
+        image?: string;
+        title?: string;
+        icon?: React.ReactElement;
+    } & Record<string, unknown>;
 };
 
 export const JourneyNode = ({
@@ -52,14 +56,14 @@ export const JourneyNode = ({
                     {node.data.image ? (
                         <Image
                             src={node.data.image}
-                            alt={node.data.title}
+                            alt={node.data.title || ""}
                             fill
                             sizes="64px"
                             className="object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
                         />
                     ) : (
                         <div className="scale-75 md:scale-100 italic">
-                            {node.data.icon && React.cloneElement(node.data.icon, {
+                            {node.data.icon && React.cloneElement(node.data.icon as any, {
                                 size: 24,
                                 strokeWidth: 1.5
                             })}

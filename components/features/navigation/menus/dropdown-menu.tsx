@@ -202,7 +202,7 @@ export function DropdownMenu({
                         {t("impactAnalysis")}
                       </div>
                       <div className="grid grid-cols-3 gap-4">
-                        {activeItem.content?.performance?.metrics?.map((metric: { label: string; value: string }) => (
+                        {(activeItem.content as any)?.performance?.metrics?.map((metric: { label: string; value: string }) => (
                           <div key={metric.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
                             <div className="text-2xl font-bold text-[#13F584] leading-none">{metric.value}</div>
                             <div className="text-white/60 text-xs font-bold mt-2">
@@ -211,7 +211,7 @@ export function DropdownMenu({
                           </div>
                         ))}
                       </div>
-                      {!activeItem.content?.performance?.metrics && (
+                      {!(activeItem.content as any)?.performance?.metrics && (
                         <div className="p-4 border border-dashed border-white/10 rounded-xl flex items-center justify-center text-zinc-600 text-xs text-center italic">
                           {t("telemetryPending")}
                         </div>

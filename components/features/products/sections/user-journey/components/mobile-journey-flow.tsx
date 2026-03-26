@@ -7,7 +7,15 @@ import { JourneyNode } from "./journey-node";
 type JourneyLayerData = {
     id: string;
     title: string;
-    nodes: { id: string; position: { x: number; y: number }; data: { title: string; icon?: React.ReactElement; image?: string } }[];
+    nodes: {
+        id: string;
+        position: { x: number; y: number };
+        data: {
+            title?: string;
+            icon?: React.ReactElement;
+            image?: string;
+        } & Record<string, unknown>;
+    }[];
     edges: { id: string; source: string; target: string }[];
 };
 

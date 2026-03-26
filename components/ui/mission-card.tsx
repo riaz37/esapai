@@ -8,7 +8,7 @@ import { LucideIcon } from "lucide-react";
 interface MissionCardProps {
     title: string;
     description: string;
-    icon?: LucideIcon;
+    icon?: LucideIcon | React.ComponentType<{ size?: number; strokeWidth?: number }>;
     image?: string;
     className?: string;
     showGlow?: boolean;

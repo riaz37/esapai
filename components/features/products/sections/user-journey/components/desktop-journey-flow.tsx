@@ -13,7 +13,11 @@ if (typeof window !== "undefined") {
 type JourneyNodeData = {
     id: string;
     position: { x: number; y: number };
-    data: { title?: unknown; icon?: unknown; image?: unknown; [key: string]: unknown };
+    data: {
+        image?: string;
+        title?: string;
+        icon?: React.ReactElement;
+    } & Record<string, unknown>;
 };
 
 type JourneyLayerData = {
