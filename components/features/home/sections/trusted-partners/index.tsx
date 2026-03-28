@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -11,12 +11,12 @@ if (typeof window !== "undefined") {
 }
 
 const DEFAULT_PARTNERS = [
-    { logo: "/partners/EMp.svg", alt: "Partner 1" },
-    { logo: "/partners/EMp-1.svg", alt: "Partner 2" },
-    { logo: "/partners/EMp-2-1.svg", alt: "Partner 3" },
-    { logo: "/partners/EMp-3.svg", alt: "Partner 4" },
-    { logo: "/partners/EMp-4.svg", alt: "Partner 5" },
-    { logo: "/partners/EMp-5.svg", alt: "Partner 6" },
+    { logo: "/partners/EMp.svg", alt: "" },
+    { logo: "/partners/EMp-1.svg", alt: "" },
+    { logo: "/partners/EMp-2-1.svg", alt: "" },
+    { logo: "/partners/EMp-3.svg", alt: "" },
+    { logo: "/partners/EMp-4.svg", alt: "" },
+    { logo: "/partners/EMp-5.svg", alt: "" },
 ];
 
 export interface PartnerData {
@@ -30,11 +30,12 @@ export interface TrustedPartnersProps {
 
 export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartnersProps) {
     const MARQUEE_PARTNERS = [
-        ...partners.map((p, i) => ({ ...p, id: `a-${p.logo}`, alt: p.alt || `Partner ${i + 1}` })),
-        ...partners.map((p, i) => ({ ...p, id: `b-${p.logo}`, alt: p.alt || `Partner ${i + 1}` })),
+        ...partners.map((p) => ({ ...p, id: `a-${p.logo}`, alt: p.alt || "" })),
+        ...partners.map((p) => ({ ...p, id: `b-${p.logo}`, alt: p.alt || "" })),
     ];
     const sectionRef = useRef<HTMLElement>(null);
     const marqueeRef = useRef<HTMLDivElement>(null);
+    const marqueeTweenRef = useRef<gsap.core.Tween | null>(null);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -80,16 +81,11 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
         // Infinite seamless marquee animation
         if (marqueeRef.current) {
             const marquee = marqueeRef.current;
-
-            // Detect text direction for RTL support
             const isRTL = document.documentElement.dir === "rtl";
 
-            // Set initial position
             gsap.set(marquee, { xPercent: 0 });
 
-            // In RTL, flex-row renders items right-to-left, so we move +50%
-            // In LTR, we move -50% to scroll left
-            gsap.to(marquee, {
+            marqueeTweenRef.current = gsap.to(marquee, {
                 xPercent: isRTL ? 50 : -50,
                 duration: 30,
                 ease: "none",
@@ -100,23 +96,27 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
 
     return (
         <section ref={sectionRef} className="w-full pt-12 pb-8 sm:pt-14 sm:pb-10 md:pt-16 md:pb-12">
-            <div className="relative flex overflow-hidden">
+            <div
+                className="relative flex overflow-hidden"
+                onMouseEnter={() => marqueeTweenRef.current?.pause()}
+                onMouseLeave={() => marqueeTweenRef.current?.resume()}
+            >
                 {/* Marquee Row */}
                 <div ref={marqueeRef} className="flex whitespace-nowrap">
                     {MARQUEE_PARTNERS.map((partner) => (
                         <div
                             key={partner.id}
-                            className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 group/partner transition-all duration-300"
+                            className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 cursor-pointer"
                         >
-                            <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center">
+                            <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center overflow-hidden">
                                 {/* Soft Glow behind logo */}
-                                <div className="absolute inset-0 bg-primary/0 group-hover/partner:bg-primary/10 blur-2xl rounded-full transition-all duration-700" />
+                                <div className="partner-glow absolute inset-0 blur-2xl rounded-full" />
 
                                 <Image
                                     src={partner.logo}
                                     alt={partner.alt || ""}
                                     fill
-                                    className="object-contain opacity-40 brightness-0 invert group-hover/partner:opacity-100 group-hover/partner:brightness-100 group-hover/partner:scale-110 transition-all duration-500 ease-out"
+                                    className="object-contain opacity-40 brightness-0 invert"
                                     sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
                                 />
                             </div>

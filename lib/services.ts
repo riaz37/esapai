@@ -89,7 +89,7 @@ export const services: Service[] = [
           "Managed AI framework platform. Focus on innovation, we handle scaling.",
         ],
         titleMain: "AI Agents Framework",
-        titleHighlight: "as a Service (FaaS)",
+        titleHighlight: "FaaS Platform",
       },
       features: {
         title: "Managed Framework",

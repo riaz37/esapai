@@ -139,7 +139,7 @@ export function ProductShowcase() {
                 style={{ opacity: 0 }}
               />
 
-              <div className="w-full h-[600px] sm:h-[700px] md:h-[810px]">
+              <div className="w-full h-[560px] sm:h-[660px] md:h-[760px]">
                 <ProductCard
                   product={product}
                   index={index}

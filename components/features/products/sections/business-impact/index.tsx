@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -116,10 +116,10 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
       {/* Metrics grid — same structure as landing achievement section (with visible grid lines) */}
       <div ref={gridRef} className="relative w-full">
         {/* Horizontal grid lines — top and bottom */}
-        <div className="absolute top-0 start-0 end-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 start-0 end-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
+        <div className="absolute top-0 start-0 end-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20 pointer-events-none" />
+        <div className="absolute bottom-0 start-0 end-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20 pointer-events-none" />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-[#13F584]/30">
+        <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-primary/30">
           {metrics.map((metric, index) => (
             <Spotlight
               key={metric.label}
@@ -130,7 +130,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
               {/* Vertical grid line — right divider (md+) */}
               {index < metrics.length - 1 && (
                 <div
-                  className="absolute top-0 bottom-0 end-0 w-[1px] bg-gradient-to-b from-transparent via-[#13F584]/40 to-transparent hidden md:block z-50 pointer-events-none"
+                  className="absolute top-0 bottom-0 end-0 w-[1px] bg-gradient-to-b from-transparent via-primary/40 to-transparent hidden md:block z-50 pointer-events-none"
                   aria-hidden
                 />
               )}

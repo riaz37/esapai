@@ -22,7 +22,7 @@ export function BadgeChip({ label, icon: Icon, className, variant = "primary" }:
             className={cn(
                 "group inline-flex items-center gap-2 px-4 py-2 rounded-full",
                 "border relative transition-all duration-300",
-                isRed ? "border-red-500/20 hover:border-red-500/40" : "border-white/10 hover:border-[#13F584]/30",
+                isRed ? "border-red-500/20 hover:border-red-500/40" : "border-white/10 hover:border-primary/30",
                 className
             )}
             style={{
@@ -39,7 +39,7 @@ export function BadgeChip({ label, icon: Icon, className, variant = "primary" }:
                             "w-4 h-4 transition-colors",
                             isRed
                                 ? "text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"
-                                : "text-[#13F584] drop-shadow-[0_0_8px_rgba(19,245,132,0.4)]"
+                                : "text-primary drop-shadow-[0_0_8px_rgba(19,245,132,0.4)]"
                         )}
                         strokeWidth={2.5}
                     />
@@ -47,7 +47,7 @@ export function BadgeChip({ label, icon: Icon, className, variant = "primary" }:
             )}
             <span className={cn(
                 "text-label-caps transition-colors",
-                isRed ? "text-red-500" : "text-[#13F584]"
+                isRed ? "text-red-500" : "text-primary"
             )}>
                 {label}
             </span>

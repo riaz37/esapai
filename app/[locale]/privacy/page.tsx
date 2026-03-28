@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import { getSanityLegalPage } from "@/lib/sanity/queries";
 import { LegalPageFromSanity } from "@/components/shared/legal-page-sanity";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -20,7 +21,7 @@ export default async function PrivacyPolicyPage({ params }: { params: Promise<{ 
   if (!page) {
     return (
       <div className="relative flex items-center justify-center min-h-[60vh]">
-        <p className="text-white/70">Content not available.</p>
+        <EmptyState />
       </div>
     );
   }

@@ -126,15 +126,15 @@ export function DropdownMenu({
                 onClick={onClose}
                 className={cn(
                   "group relative px-6 py-4 cursor-pointer transition-all duration-300 block",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#13F584]/50",
-                  hoveredId === item.id ? "bg-[#13F584]/5" : "hover:bg-white/5"
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/50",
+                  hoveredId === item.id ? "bg-primary/5" : "hover:bg-white/5"
                 )}
               >
                 {/* Active Indicator */}
                 {hoveredId === item.id && (
                   <m.div
                     layoutId="active-indicator"
-                    className="absolute start-0 top-0 bottom-0 w-[3px] bg-[#13F584]"
+                    className="absolute start-0 top-0 bottom-0 w-[3px] bg-primary"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -143,7 +143,7 @@ export function DropdownMenu({
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
-                      hoveredId === item.id ? "bg-[#13F584]/20 text-[#13F584]" : "bg-white/5 text-zinc-500"
+                      hoveredId === item.id ? "bg-primary/20 text-primary" : "bg-white/5 text-zinc-500"
                     )}>
                       {item.icon ? (
                         <Image src={item.icon} alt="" width={24} height={24} className="opacity-80" />
@@ -167,7 +167,7 @@ export function DropdownMenu({
         </div>
 
         {/* Right Panel: Dynamic Content */}
-        <div className="flex-1 bg-gradient-to-br from-transparent to-[#13F584]/10 relative overflow-hidden" aria-live="polite">
+        <div className="flex-1 bg-gradient-to-br from-transparent to-primary/10 relative overflow-hidden" aria-live="polite">
           {activeItem && (
             <AnimatePresence mode="wait">
               <m.div
@@ -198,13 +198,13 @@ export function DropdownMenu({
                     {/* Stats / Metrics */}
                     <div className="space-y-4">
                       <div className="flex items-center gap-2 text-white/60 text-xs font-bold mb-2">
-                        <Zap className="w-3 h-3 text-[#13F584]" />
+                        <Zap className="w-3 h-3 text-primary" />
                         {t("impactAnalysis")}
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         {(activeItem.content as any)?.performance?.metrics?.map((metric: { label: string; value: string }) => (
-                          <div key={metric.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-[#13F584]/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
-                            <div className="text-2xl font-bold text-[#13F584] leading-none">{metric.value}</div>
+                          <div key={metric.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-primary/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
+                            <div className="text-2xl font-bold text-primary leading-none">{metric.value}</div>
                             <div className="text-white/60 text-xs font-bold mt-2">
                               {metric.label}
                             </div>

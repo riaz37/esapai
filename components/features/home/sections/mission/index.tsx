@@ -84,29 +84,20 @@ export function Mission({
           },
         });
 
-        // Luxury "Cylindrical Unrolling" Assembly
+        // Side-by-side assembly (no rotation)
         tl.fromTo(
           cardsElements,
           {
             x: isRTL
               ? (isMobile ? "-20%" : (isTablet ? "-80%" : "-150%"))
               : (isMobile ? "20%" : (isTablet ? "80%" : "150%")),
-            rotationY: isRTL
-              ? (isMobile ? 10 : 60)
-              : (isMobile ? -10 : -60),
-            rotationX: isMobile ? 5 : 15,
-            scale: isMobile ? 0.9 : 0.5,
-            z: isMobile ? -100 : -800,
+            scale: isMobile ? 0.9 : 0.85,
             autoAlpha: 0,
             filter: "blur(15px)",
-            transformOrigin: "50% 50%",
           },
           {
             x: 0,
-            rotationY: 0,
-            rotationX: 0,
             scale: 1,
-            z: 0,
             autoAlpha: 1,
             filter: "blur(0px)",
             duration: 1.5,
@@ -117,17 +108,6 @@ export function Mission({
           0.5
         );
 
-        // Add a subtle "parallax" drift
-        tl.to(cardsElements, {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 2,
-          },
-          z: 20,
-          ease: "none"
-        });
       });
 
     },

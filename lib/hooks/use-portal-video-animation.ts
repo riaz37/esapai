@@ -33,6 +33,9 @@ export function usePortalVideoAnimation({
             const videoElement = videoContainer.querySelector("video");
 
             mm.add("(min-width: 1024px)", () => {
+                const textEl = textRef.current;
+                const overlayEl = overlayRef.current;
+
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: container,
@@ -67,25 +70,34 @@ export function usePortalVideoAnimation({
                         borderRadius: "32px",
                         duration: 1,
                         ease: "power1.inOut"
-                    }, 0)
-                    // 2. Fade out Text
-                    .to(textRef.current, {
+                    }, 0);
+
+                // 2. Fade out Text
+                if (textEl) {
+                    tl.to(textEl, {
                         opacity: 0,
                         y: -50,
                         duration: 0.3,
                         ease: "power1.out"
-                    }, 0)
-                    // 3. Adjust Video Filters
-                    .fromTo(videoElement,
+                    }, 0);
+                }
+
+                // 3. Adjust Video Filters
+                if (videoElement) {
+                    tl.fromTo(videoElement,
                         { filter: "brightness(1.3) saturate(1.2)" },
                         { filter: "brightness(1) saturate(1)", duration: 0.8 },
                         0
-                    )
-                    // 4. Fade out overlay tint
-                    .to(overlayRef.current, {
+                    );
+                }
+
+                // 4. Fade out overlay tint
+                if (overlayEl) {
+                    tl.to(overlayEl, {
                         opacity: 0,
                         duration: 0.3
                     }, 0);
+                }
             });
 
             return () => mm.revert();

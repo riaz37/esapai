@@ -25,14 +25,14 @@ export function FlowContainer({ nodes, edges }: FlowContainerProps) {
                 .service-features-flow .react-flow__viewport { pointer-events: none; }
                 .service-features-flow .react-flow__pane { cursor: default; }
                 .service-features-flow .react-flow__edge-path {
-                    stroke: rgba(19, 245, 132, 0.6);
+                    stroke: color-mix(in srgb, var(--color-primary) 60%, transparent);
                     stroke-width: 2;
                 }
                 .service-features-flow .react-flow__edge.selected .react-flow__edge-path {
-                    stroke: rgba(19, 245, 132, 0.9);
+                    stroke: color-mix(in srgb, var(--color-primary) 90%, transparent);
                 }
                 .service-features-flow .react-flow__edge.animated .react-flow__edge-path {
-                    filter: drop-shadow(0 0 3px rgba(19, 245, 132, 0.5));
+                    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-primary) 50%, transparent));
                 }
                 .service-features-flow .react-flow__handle {
                     opacity: 0;

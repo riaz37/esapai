@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { CaseStudyHero } from "../hero";
 import { useCaseStudyContent } from "@/lib/hooks/use-case-study-content";
 import { Section } from "@/components/ui/section";
@@ -11,6 +12,11 @@ import { Link } from "@/i18n/routing";
 
 import { GlobalLoader } from "@/components/ui/global-loader";
 import type { CaseStudyPageClientProps } from "@/types/page";
+
+const CTASection = dynamic(
+  () => import("@/components/features/home/sections/cta").then((mod) => ({ default: mod.CTASection })),
+  { ssr: false }
+);
 
 export function CaseStudyPage({
   slug,
@@ -75,7 +81,7 @@ export function CaseStudyPage({
                 <Link
                   key={related._id}
                   href={`/case-study/${related.slug}`}
-                  className="group block rounded-2xl border border-white/10 bg-white/5 overflow-hidden transition-colors hover:border-[#13F584]/30 hover:bg-white/[0.08]"
+                  className="group block rounded-2xl border border-white/10 bg-white/5 overflow-hidden transition-colors hover:border-primary/30 hover:bg-white/[0.08]"
                 >
                   {related.thumbnail?.url && (
                     <div className="relative aspect-video overflow-hidden">
@@ -114,6 +120,8 @@ export function CaseStudyPage({
           </div>
         </Section>
       )}
+
+      <CTASection />
     </div>
   );
 }

@@ -66,7 +66,7 @@ export function MissionCard({
                 className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-30"
                 style={{
                     opacity: isHovered ? 1 : 0,
-                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(19, 245, 132, 0.15), transparent 80%)`,
+                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, color-mix(in srgb, var(--color-primary) 15%, transparent), transparent 80%)`,
                 }}
             />
             {/* Masked Background Images */}

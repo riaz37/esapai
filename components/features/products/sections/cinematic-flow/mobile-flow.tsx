@@ -33,19 +33,19 @@ export const ResponsiveMobileProblemFlow = ({ problems }: { problems: CinematicP
 
                         {/* Transition Indicator */}
                         <div className="flex flex-col items-center gap-2 py-2">
-                            <div className="w-[1px] h-8 bg-gradient-to-b from-red-500/50 to-[#13F584]/50" />
+                            <div className="w-[1px] h-8 bg-gradient-to-b from-red-500/50 to-primary/50" />
                             <div className="p-2 rounded-full border border-white/10 bg-white/5">
                                 <CinematicAssistant state="solution" className="w-8 h-8 scale-110" />
                             </div>
-                            <div className="w-[1px] h-8 bg-gradient-to-b from-[#13F584]/50 to-transparent" />
+                            <div className="w-[1px] h-8 bg-gradient-to-b from-primary/50 to-transparent" />
                         </div>
 
                         {/* Solution Card */}
-                        <Card className="bg-transparent border-[#13F584]/30 backdrop-blur-2xl text-center gap-2">
+                        <Card className="bg-transparent border-primary/30 backdrop-blur-2xl text-center gap-2">
                             <CardHeader className="pb-0 items-center">
                                 <div className="flex flex-col items-center justify-center gap-2 mb-1">
-                                    <SolIcon className="w-6 h-6 text-[#13F584]" />
-                                    <span className="text-[#13F584] text-xs uppercase tracking-widest">{p.solImpact}</span>
+                                    <SolIcon className="w-6 h-6 text-primary" />
+                                    <span className="text-primary text-xs uppercase tracking-widest">{p.solImpact}</span>
                                 </div>
                                 <CardTitle className="text-white text-xl font-bold leading-tight">
                                     {p.solTitle}

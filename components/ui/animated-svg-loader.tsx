@@ -19,7 +19,7 @@ const sizeMap = {
 };
 
 const colorMap = {
-  primary: "rgba(19, 245, 132, 1)",
+  primary: "var(--color-primary)",
   white: "rgba(255, 255, 255, 1)",
   gray: "rgba(156, 163, 175, 1)",
 };

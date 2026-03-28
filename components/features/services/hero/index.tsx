@@ -21,21 +21,23 @@ const World = dynamic(
 );
 
 // Theme-matched globe configuration
+// NOTE: Three.js cannot interpret CSS variables or color-mix() — use literal values
+const ESAP_GREEN = "#13F584";
 const globeConfig: GlobeConfig = {
   pointSize: 4,
   globeColor: "#062013",
   showAtmosphere: true,
-  atmosphereColor: "#13F584",
+  atmosphereColor: ESAP_GREEN,
   atmosphereAltitude: 0.1,
   emissive: "#062013",
   emissiveIntensity: 0.9,
   shininess: 0.9,
   polygonColor: "rgba(19, 245, 132, 0.4)",
-  ambientLight: "#13F584",
+  ambientLight: ESAP_GREEN,
   ambientIntensity: 0.8,
   directionalLeftLight: "#ffffff",
   directionalTopLight: "#ffffff",
-  pointLight: "#13F584",
+  pointLight: ESAP_GREEN,
   directionalRightLight: "#ffffff",
   arcTime: 1500,
   arcLength: 0.9,
@@ -55,7 +57,7 @@ const globeData = [
     endLat: -22.9068,
     endLng: -43.1729,
     arcAlt: 0.1,
-    color: "#13F584",
+    color: ESAP_GREEN,
   },
   {
     order: 1,
@@ -64,7 +66,7 @@ const globeData = [
     endLat: 3.139,
     endLng: 101.6869,
     arcAlt: 0.2,
-    color: "#13F584",
+    color: ESAP_GREEN,
   },
   {
     order: 2,
@@ -73,7 +75,7 @@ const globeData = [
     endLat: 35.6762,
     endLng: 139.6503,
     arcAlt: 0.2,
-    color: "#13F584",
+    color: ESAP_GREEN,
   },
   {
     order: 2,
@@ -82,7 +84,7 @@ const globeData = [
     endLat: 3.139,
     endLng: 101.6869,
     arcAlt: 0.3,
-    color: "#13F584",
+    color: ESAP_GREEN,
   },
   {
     order: 3,
@@ -91,7 +93,7 @@ const globeData = [
     endLat: 22.3193,
     endLng: 114.1694,
     arcAlt: 0.3,
-    color: "#13F584",
+    color: ESAP_GREEN,
   },
   {
     order: 3,
@@ -100,7 +102,7 @@ const globeData = [
     endLat: 40.7128,
     endLng: -74.006,
     arcAlt: 0.3,
-    color: "#13F584",
+    color: ESAP_GREEN,
   },
 ];
 

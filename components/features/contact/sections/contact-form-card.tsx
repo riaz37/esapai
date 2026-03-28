@@ -14,7 +14,7 @@ export type { ContactFormData, SubmissionState };
 function LoadingSpinner() {
   return (
     <svg
-      className="animate-spin -ml-1 mr-2 h-4 w-4"
+      className="animate-spin -ms-1 me-2 h-4 w-4"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -41,9 +41,9 @@ function SuccessConfirmation({ onReset }: { onReset: () => void }) {
   const t = useTranslations("Contact");
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
-      <div className="w-16 h-16 rounded-full bg-[#13F584]/20 flex items-center justify-center">
+      <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
         <svg
-          className="w-8 h-8 text-[#13F584]"
+          className="w-8 h-8 text-primary"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -118,8 +118,8 @@ export const ContactFormCard = forwardRef<
           <form onSubmit={onSubmit} className="space-y-4 sm:space-y-5 md:space-y-6" noValidate>
             {/* Product Context Banner */}
             {productName && (
-              <div className="flex items-center gap-2 rounded-lg bg-[#13F584]/10 border border-[#13F584]/20 px-4 py-3">
-                <span className="text-[#13F584] text-sm font-medium">
+              <div className="flex items-center gap-2 rounded-lg bg-primary/10 border border-primary/20 px-4 py-3">
+                <span className="text-primary text-sm font-medium">
                   {t("form.productBanner", { product: productName })}
                 </span>
               </div>

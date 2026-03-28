@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CinematicDesktopFlow } from "./desktop-flow";
 import { ResponsiveMobileProblemFlow } from "./mobile-flow";
 import type { Product } from "@/types/product";

@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  --color-primary: rgba(19, 245, 132, 1);
+  --color-primary-dark: rgba(9, 9, 9, 1);
+
   --font-sans: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-heading-en, var(--font-heading-ar, var(--font-inter))), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
 
@@ -1099,4 +1102,23 @@
   100% {
     offset-distance: 100%;
   }
+}
+
+/* Trusted Partners hover effect */
+.partner-item img {
+  transition: opacity 0.5s ease-out, filter 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.partner-item:hover img {
+  opacity: 1 !important;
+  filter: brightness(1) invert(0) !important;
+  transform: scale(1.1);
+}
+
+.partner-glow {
+  transition: background-color 0.5s ease-out;
+}
+
+.partner-item:hover .partner-glow {
+  background-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
 }

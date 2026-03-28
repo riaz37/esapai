@@ -1,6 +1,6 @@
 import React from "react";
 
-const PRIMARY = "#13F584";
+const PRIMARY = "var(--color-primary)";
 
 /**
  * Lightweight SVG Edge Renderer for Desktop

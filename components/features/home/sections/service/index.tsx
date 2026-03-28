@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 import { Section } from "@/components/ui/section";
 import { ServiceCard } from "@/components/ui/service-card";

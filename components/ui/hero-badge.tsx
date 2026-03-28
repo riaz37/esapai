@@ -15,7 +15,7 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
             <div
                 ref={ref}
                 className={cn(
-                    "relative inline-flex items-center p-1 sm:p-1.5 rounded-full bg-[#020305]/80 backdrop-blur-md border border-[#13F584]/20 shadow-[0_0_20px_rgba(19,245,132,0.1)] mb-6 overflow-hidden gsap-slide-up-optimized",
+                    "relative inline-flex items-center p-1 sm:p-1.5 rounded-full bg-[#020305]/80 backdrop-blur-md border border-primary/20 shadow-[0_0_20px_rgba(19,245,132,0.1)] mb-6 overflow-hidden gsap-slide-up-optimized",
                     className
                 )}
                 {...props}
@@ -31,7 +31,7 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
                 />
 
                 {/* Left: Exclusive Pill */}
-                <div className="relative z-10 flex items-center justify-center px-3 py-0.5 sm:px-4 sm:py-1 rounded-full bg-[#13F584] shadow-[0_0_15px_rgba(19,245,132,0.4)]">
+                <div className="relative z-10 flex items-center justify-center px-3 py-0.5 sm:px-4 sm:py-1 rounded-full bg-primary shadow-[0_0_15px_rgba(19,245,132,0.4)]">
                     <span className="text-xs font-bold tracking-tight text-black leading-none">
                         {pillText}
                     </span>
@@ -39,7 +39,7 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
 
                 {/* Right: Text */}
                 <div className="relative z-10 flex items-center px-2 py-0.5 sm:px-4 sm:py-1 ms-1">
-                    <span className="text-sm font-medium tracking-tight text-[#13F584] leading-none">
+                    <span className="text-sm font-medium tracking-tight text-primary leading-none">
                         {description}
                     </span>
                 </div>

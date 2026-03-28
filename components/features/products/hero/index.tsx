@@ -65,11 +65,8 @@ export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc 
           {/* Right Visual (Video) */}
           <div className="relative flex items-center justify-center lg:justify-end">
             <div className="relative w-full max-w-[700px] aspect-[16/10] group">
-              {/* Glow Decoration */}
-              <div className="absolute -inset-4 bg-[#13F584]/5 blur-[60px] rounded-full group-hover:bg-[#13F584]/10 transition-all duration-700" />
-
               {/* Frame/Border */}
-              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-[#13F584]/2 translate-z-0">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/2 translate-z-0">
                 <OptimizedVideo
                   src={heroVideo}
                   autoPlay

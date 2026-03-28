@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useLocale } from "next-intl";
 import { Workflow } from "lucide-react";
 
