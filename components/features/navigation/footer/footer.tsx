@@ -210,7 +210,7 @@ export function Footer() {
                     <Link
                       key={link.label}
                       href={link.href}
-                      className="text-xl md:text-2xl text-gray-400 hover:text-primary transition-colors"
+                      className="text-xl md:text-2xl text-gray-400 hover:text-primary transition-colors min-h-[44px] inline-flex items-center"
                     >
                       {link.label}
                     </Link>
@@ -241,8 +241,8 @@ export function Footer() {
             <div className="mt-auto pt-10 w-full flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm gap-4">
               <p>{`© ${new Date().getFullYear()} Esap. ${t("rights")}`}</p>
               <div className="flex gap-6">
-                <Link href="/privacy" className="hover:text-white transition-colors">{t("legal.privacy")}</Link>
-                <Link href="/terms" className="hover:text-white transition-colors">{t("legal.terms")}</Link>
+                <Link href="/privacy" className="hover:text-white transition-colors min-h-[44px] inline-flex items-center">{t("legal.privacy")}</Link>
+                <Link href="/terms" className="hover:text-white transition-colors min-h-[44px] inline-flex items-center">{t("legal.terms")}</Link>
               </div>
             </div>
           </div>
