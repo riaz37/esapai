@@ -50,7 +50,7 @@ export function ServiceProblemSection({
   return (
     <Section
       id="why-this-service"
-      className="relative flex items-center scroll-mt-20 md:scroll-mt-32"
+      className="relative flex items-center pt-24 sm:pt-32 scroll-mt-20 md:scroll-mt-32"
       padding="md"
     >
       {/* Background Chaos Elements */}
