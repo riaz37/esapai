@@ -75,11 +75,28 @@ Design and UX debt captured during `/plan-design-review` on 2026-03-28.
 
 ## Deferred / Open Decisions
 
-### 8. Display font for headings
-**What:** DESIGN.md marks `--font-heading` as "to be updated with display font." Currently Inter is used for all text.
-**Why deferred:** Font choice requires brand alignment discussion. Inter is solid and readable.
-**When to revisit:** When brand guidelines are finalized or visual identity work begins.
-**Context:** See DESIGN.md §2 Typography — `--font-heading` note.
+### ~~8. Display font for headings~~ ✅ Fixed 2026-03-28
+**What:** Space Grotesk is now wired to headings via `var(--font-heading-en, ...)` in `globals.css`. IBM Plex Sans Arabic handles Arabic locale. DESIGN.md updated.
+**Fix commit:** `cfca421` + `e285192` on branch `riaz`.
+
+### 10. Fix GSAP "target not found" console warnings
+**What:** 10+ GSAP animations register against refs that don't exist at mount time, silently failing. Add `if (!ref.current) return;` guards before all `gsap.to(ref.current, ...)` calls.
+**Why:** Silent animation failures mean content may stay at opacity-0 or un-translated. These are bugs masquerading as warnings.
+**Cons:** Small effort, high confidence impact on animation reliability.
+**Context:** Visible in browser console on homepage load. Primarily affects scroll-reveal animations in hero and section components.
+**Depends on:** Nothing.
+
+### 11. Verify Sanity token for service detail pages
+**What:** `/en/service/[slug]` pages throw "Something Went Wrong". Check that `SANITY_API_READ_TOKEN` is set in `.env.local` AND in production environment variables. Verify service documents exist in Sanity dataset.
+**Why:** Service detail pages are dead links. Any user clicking a service in the nav or from case studies hits a runtime error.
+**Context:** Product detail pages (`/en/product/erp`) work fine. Service pages specifically fail — check if `serviceDocument` type has content in Sanity dataset.
+**Depends on:** Sanity CMS access.
+
+### 12. Populate Mission and Growth sections at wide viewport (1920px+)
+**What:** At 1920px+, "Our Mission" section has ~800px of vertical scroll for a badge, headline, and one sentence. "Focus on Growth" is similarly sparse. Add horizontal content (stat cards, 3D visuals, or supporting copy) at `xl:` breakpoint.
+**Why:** Big monitor users see too much empty black canvas. Sections feel unfinished at wide widths.
+**Context:** The existing 3D orbs in the Mission section are a start. Add a right-column layout at `xl:grid-cols-2` with stats or supporting visual.
+**Depends on:** Design decision on what content fills the right column.
 
 ### 9. Product and Service listing pages
 **What:** Create `app/[locale]/product/page.tsx` and `app/[locale]/service/page.tsx` as browsable listing pages.
