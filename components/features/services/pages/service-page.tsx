@@ -73,7 +73,7 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
       </LazySection>
 
       {/* 2c. Before & after: comparison video */}
-      <LazySection minHeight="400px">
+      <LazySection minHeight="800px">
         <ServiceBeforeAfterSection
           title={content.beforeAfter?.title}
           badgeLabel={content.beforeAfter?.label}

@@ -103,6 +103,7 @@ export function ProductShowcase() {
   return (
     <Section
       padding="md"
+      containerMaxWidth="full"
       className="relative w-full bg-transparent overflow-visible"
     >
       <SectionHeader
@@ -138,7 +139,7 @@ export function ProductShowcase() {
                 style={{ opacity: 0 }}
               />
 
-              <div className="w-full min-h-[550px] sm:min-h-[600px] md:min-h-[700px]">
+              <div className="w-full h-[600px] sm:h-[700px] md:h-[810px]">
                 <ProductCard
                   product={product}
                   index={index}
