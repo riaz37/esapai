@@ -73,7 +73,7 @@ principles, and RTL guidelines.
 | Variable         | Stack                                                         |
 |------------------|---------------------------------------------------------------|
 | `--font-sans`    | `var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui` |
-| `--font-heading` | Same as `--font-sans` (to be updated with display font)       |
+| `--font-heading` | Space Grotesk (display) → IBM Plex Sans Arabic (ar) → Inter (fallback)       |
 
 **Font loading**: Inter via `next/font/google` with weights 400, 500, 600, 700.
 `display: "swap"`, `preload: true`.
