@@ -71,6 +71,7 @@
     overflow-x: hidden;
     position: relative;
     font-family: var(--font-sans);
+    --font-heading: var(--font-heading-en, var(--font-heading-ar, var(--font-inter)));
     font-size: 18.24px;
     line-height: 1.6;
     color: var(--color-white);
@@ -83,7 +84,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading-en, var(--font-heading-ar, var(--font-inter)));
     font-weight: 700;
   }
 
