@@ -2,14 +2,13 @@
 
 import { Link } from "@/i18n/routing";
 import { Button, ButtonArrow } from "@/components/ui/button";
-import { OptimizedVideo } from "@/components/ui/optimized-video";
+import { HeroAnimation } from "./hero-animation";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import type { ProductHeroProps } from "@/types/props";
 import { Section } from "@/components/ui/section";
 
 export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc }: ProductHeroProps) {
   const exploreLabel = exploreButton ?? "";
-  const heroVideo = videoSrc || "/videos/KB.mp4" || "/videos/LP_animation_HomePage_Big_Intro_2X_short.webm";
 
   return (
     <Section
@@ -63,27 +62,17 @@ export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc 
           </div>
 
           {/* Right Visual (Video) */}
-          <div className="relative flex items-center justify-center lg:justify-end">
-            <div className="relative w-full max-w-[700px] aspect-[16/10] group">
-              {/* Frame/Border */}
-              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/2 translate-z-0">
-                <OptimizedVideo
-                  src={heroVideo}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  priority={true}
-                  className="w-full h-full object-cover"
-                />
-
-
-                {/* Visual Overlays */}
-                <div className="absolute inset-0 pointer-events-none border border-white/5 rounded-2xl" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-              </div>
-
-
+          <div className="relative flex items-center justify-center lg:justify-end mt-16 lg:mt-0">
+            <div 
+              className="relative w-[150%] lg:w-[200%] max-w-[1400px] aspect-video scale-[1.5] lg:scale-[2.4] lg:-translate-x-[20%] lg:translate-y-[10%] mix-blend-screen pointer-events-none"
+              style={{
+                maskImage: "radial-gradient(ellipse 80% 80% at 50% 20%, black 40%, transparent 100%)",
+                WebkitMaskImage: "-webkit-radial-gradient(50% 20%, ellipse 80% 80%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)"
+              }}
+            >
+              <HeroAnimation
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 

@@ -22,7 +22,7 @@ export interface HeroProps {
 
 const Circle = dynamic(() => import("./circle"), {
     ssr: false,
-    loading: () => <div className="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2" />
+    loading: () => <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
 });
 
 const Box = dynamic(() => import("@/components/shared/box"), {
@@ -109,7 +109,7 @@ export function Hero({
                 {/* Eye of AI - Background Circle */}
                 <div
                     ref={circleContainerRef}
-                    className="absolute top-[75%] sm:top-[78%] md:top-[82%] start-1/2 z-0 pointer-events-none animate-optimized"
+                    className="absolute top-[75%] sm:top-[78%] md:top-[82%] left-1/2 z-0 pointer-events-none animate-optimized"
                 >
                     <div ref={circleGlowRef} className="relative">
                         <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[0.9]" />
@@ -119,7 +119,7 @@ export function Hero({
                 {/* Parallax Portal Proxy */}
                 <div
                     ref={proxyCircleRef}
-                    className="absolute top-1/2 start-1/2 w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] rounded-full z-1 pointer-events-none opacity-0 blur-[64px] mix-blend-screen"
+                    className="absolute top-1/2 left-1/2 w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] rounded-full z-1 pointer-events-none opacity-0 blur-[64px] mix-blend-screen"
                     style={{
                         background: 'radial-gradient(circle, rgba(200,255,220,1) 0%, rgba(19,245,132,0.6) 30%, rgba(19,245,132,0) 70%)',
                     }}
@@ -128,7 +128,7 @@ export function Hero({
                 {/* Floating Hexagons */}
                 <div
                     ref={iconsScrollRef}
-                    className="absolute top-1/2 start-1/2 z-[5] pointer-events-none hidden xl:block"
+                    className="absolute top-1/2 left-1/2 z-[5] pointer-events-none hidden xl:block"
                 >
                     <div ref={iconsRef} className="gsap-fade-in-optimized animate-optimized">
                         <Box className="max-w-[1400px] xl:max-w-[1800px] w-auto h-auto opacity-100 brightness-[1.2]" />

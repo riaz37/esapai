@@ -3,6 +3,7 @@
 import React, { forwardRef } from "react";
 import { m } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 interface HeroBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
     pillText?: string;
@@ -11,6 +12,9 @@ interface HeroBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
     ({ className, pillText = "Exclusive", description = "Tomorrow's Edge, Built Today", ...props }, ref) => {
+        const locale = useLocale();
+        const isRTL = locale === "ar";
+
         return (
             <div
                 ref={ref}
@@ -26,7 +30,7 @@ export const HeroBadge = forwardRef<HTMLDivElement, HeroBadgeProps>(
                     style={{
                         background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(19, 245, 132, 0.1) 50%, transparent 55%, transparent 100%)',
                     }}
-                    animate={{ x: ['-100%', '100%'] }}
+                    animate={{ x: isRTL ? ['100%', '-100%'] : ['-100%', '100%'] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
                 />
 

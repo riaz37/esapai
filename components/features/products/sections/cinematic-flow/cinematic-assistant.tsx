@@ -64,7 +64,7 @@ export function CinematicAssistant({ state, className, reducedMotion }: Cinemati
                 />
             </div>
 
-            <div className="absolute -bottom-4 start-1/2 -translate-x-1/2 w-3/4 h-2 bg-white/5 blur-xl rounded-full" />
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-white/5 blur-xl rounded-full" />
 
             <style>{`
                 @keyframes scanline {

@@ -1,6 +1,55 @@
 # TODOS
 
 Design and UX debt captured during `/plan-design-review` on 2026-03-28.
+Jarvis Assistant items captured during `/plan-ceo-review` on 2026-03-28.
+
+---
+
+## Jarvis Assistant
+
+### ~~J1. Mobile layout spec for Jarvis chat panel~~ — RESOLVED (2026-03-28)
+**Decision:** Bottom sheet / drawer pattern. See `docs/designs/jarvis-assistant.md` → Design Spec → Mobile Panel Spec.
+**Spec:** 70vh bottom sheet, drag handle, swipe to dismiss, 100vw, 16px top border-radius. Orb remains visible at safe-area-aware offset. Full implementation spec in the plan file.
+
+### J2. Arabic locale copy for Jarvis (messages/ar.json)
+**What:** Translate all `Jarvis.*` keys in `messages/en.json` to professional Arabic. Covers section announcements, nudge copy, CTA text, error messages, and voice toggle labels (~25 keys).
+**Why:** Without this, the assistant speaks English on the Arabic locale. For ESAP's target market (Gulf enterprise buyers), this is a trust failure.
+**Pros:** First-class Arabic experience. Matches the site's RTL-first positioning.
+**Cons:** Machine translation is not acceptable for customer-facing enterprise copy. Requires human review.
+**Context:** `messages/ar.json` already exists and covers all other sections. CC can produce a draft; a native Arabic speaker needs to review before shipping.
+**Effort:** S (human: ~1 day translation + review / CC: ~30min draft)
+**Priority:** P1 for Arabic market. Can launch English-first.
+**Depends on:** `Jarvis.*` en.json keys finalized in implementation.
+
+### J4. Improve high-intent detection signal quality
+**What:** Add dwell time threshold (e.g. >30s on a section) or question quality heuristic to the `HIGH_INTENT` formula. Current formula fires after 2 questions + product + case-study visited with no time-on-section signal.
+**Why:** Low-signal leads reduce sales team trust in the Jarvis handoff. A visitor who bounced in 30s but scrolled through two sections triggers the CTA incorrectly.
+**Pros:** Higher-quality leads improve sales team confidence in the Jarvis channel. Reduces noise from bounce traffic.
+**Cons:** Adds state (dwell time counter). Requires choosing a threshold without user data. Best calibrated post-launch with real traffic.
+**Context:** Captured during `/plan-eng-review`. The v1 formula is acceptable as a starting point — ship it, then iterate once you have signal on lead quality from the sales team.
+**Effort:** S (human: ~2h / CC: ~10min)
+**Priority:** P2 — ship v1 formula, iterate post-launch.
+**Depends on:** Jarvis v1 shipped and generating leads.
+
+### J5. iOS Safari backdrop-filter performance test for Jarvis panel
+**What:** Test `backdrop-filter: blur(12px)` (the `.glass-cyber` class) on the Jarvis chat panel on iOS Safari. If animation jank or battery drain is detected, fall back to `background: rgba(2,3,5,0.92)` (opaque dark, no blur).
+**Why:** iOS Safari has a known performance issue with `backdrop-filter` on complex animated backgrounds. The Jarvis panel sits over GSAP-animated content — higher jank risk than static sections.
+**Pros:** Smooth experience on iPhone. Avoids draining battery during sales calls.
+**Cons:** Opaque fallback loses the glassmorphism aesthetic on iOS.
+**Context:** Fallback CSS is already documented in `docs/designs/jarvis-assistant.md` Design Spec → Panel Visual Spec. Engineering only needs to test and conditionally apply. Can use `@supports (backdrop-filter: blur(1px))` + Safari-specific detection if needed.
+**Effort:** S (human: ~1h / CC: ~10min)
+**Priority:** P2 — ship first, test on real device.
+**Depends on:** Jarvis panel implementation complete.
+
+### J3. demo-scripts.ts copy authoring (demo mode)
+**What:** Author the scripted responses in `lib/jarvis/demo-scripts.ts` for demo mode. Engineering ships the scaffolding (`DemoScript` interface, section structure, fallback logic). Sales/marketing team authors the actual words.
+**Why:** Without real copy, `?demo=true` shows `[COPY NEEDED]` placeholders — unusable for sales calls.
+**Pros:** Sales team gets a live AI demo tool they can use on screen-shares. Closes deals faster.
+**Cons:** Cross-team dependency (engineering + sales). Copy quality determines demo effectiveness.
+**Context:** Demo mode is gated behind `NEXT_PUBLIC_DEMO_ENABLED=true` env var so it can't ship publicly until copy is ready. Engineering unblocked. Sales owns the content.
+**Effort:** M (human: ~2 days copywriting / CC: ~1h for structure)
+**Priority:** P2 — ship public Jarvis first. Demo mode follows when copy is ready.
+**Depends on:** Engineering: `DemoScript` scaffolding. Sales: copy authoring.
 
 ---
 
