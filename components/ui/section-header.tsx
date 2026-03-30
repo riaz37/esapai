@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -27,7 +27,6 @@ export function SectionHeader({
   const containerRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const accentLineRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
 
   useGSAP(
@@ -60,24 +59,6 @@ export function SectionHeader({
             ease: "power3.out",
           },
           badge ? "-=0.4" : 0
-        );
-      }
-
-      // Animated accent line - draws from center outward
-      if (accentLineRef.current) {
-        tl.fromTo(
-          accentLineRef.current,
-          {
-            scaleX: 0,
-            opacity: 0,
-          },
-          {
-            scaleX: 1,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          "-=0.4"
         );
       }
 
@@ -146,14 +127,6 @@ export function SectionHeader({
           {title}
         </h2>
 
-        {/* Animated Accent Line */}
-        <div
-          ref={accentLineRef}
-          className={cn(
-            "mt-2 h-[2px] w-24 sm:w-32 md:w-40 origin-center bg-primary/80",
-            align === "center" ? "mx-auto" : align === "left" ? "me-auto" : "ms-auto"
-          )}
-        />
       </div>
 
       {/* Subtitle */}

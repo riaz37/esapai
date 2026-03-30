@@ -3,7 +3,7 @@ import React from 'react';
 import { interpolate, useCurrentFrame, useVideoConfig, spring, random } from 'remotion';
 
 const LOGO_PATH = "/logo/mainlogo.webp";
-const PRIMARY_GREEN = '#13F584';
+const PRIMARY_GREEN = 'var(--color-primary)';
 
 export const LogoBootSequence = () => {
     const frame = useCurrentFrame();

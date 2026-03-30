@@ -80,7 +80,7 @@ export function TextRevealSection({
                     duration: 1.5,
                     ease: "power2.out",
                     color: (i, target: HTMLElement) => {
-                        return target.classList.contains("highlight") ? "#13f584" : "#ffffff";
+                        return target.classList.contains("highlight") ? "var(--color-primary)" : "#ffffff";
                     },
                     textShadow: (i, target: HTMLElement) => {
                         return target.classList.contains("highlight")

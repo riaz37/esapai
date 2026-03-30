@@ -104,8 +104,8 @@ function TimelineEntry({ item, index: _index, entryRef }: { item: ProcessTimelin
             <div className="flex md:hidden items-center gap-4 mb-2">
                 <div ref={nodeRef} className="relative z-10 flex items-center justify-center">
                     {item.nodeContent || (
-                        <div className="h-8 w-8 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-[#13F58440] shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
-                            <div className="h-4 w-4 rounded-full border bg-[#13F5844D] border-[#13F584BF]" />
+                        <div className="h-8 w-8 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-primary/25 shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
+                            <div className="h-4 w-4 rounded-full border bg-primary/30 border-primary/75" />
                         </div>
                     )}
                 </div>
@@ -123,8 +123,8 @@ function TimelineEntry({ item, index: _index, entryRef }: { item: ProcessTimelin
             <div className="hidden md:flex flex-shrink-0 relative w-10 items-start justify-center">
                 <div ref={nodeRef} className="relative z-10 flex items-center justify-center">
                     {item.nodeContent || (
-                        <div className="h-10 w-10 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-[#13F58440] shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
-                            <div className="h-5 w-5 rounded-full border bg-[#13F5844D] border-[#13F584BF]" />
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center border bg-[#F8F8F81A] border-primary/25 shadow-[inset_0_0_21.06px_0_#F8F8F840] backdrop-blur-[31.59px]">
+                            <div className="h-5 w-5 rounded-full border bg-primary/30 border-primary/75" />
                         </div>
                     )}
                 </div>

@@ -13,6 +13,7 @@ import { sanitizeText } from "@/lib/utils/sanitize";
 import { Section } from "@/components/ui/section";
 import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { CaseStudyWithUrls } from "@/types/case-study";
 
 interface CaseStudyListAnimatedProps {
@@ -107,10 +108,10 @@ export function CaseStudyListAnimated({
                   <Link
                     href={buildCaseStudyListingPath()}
                     className={cn(
-                      "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#13F584]/50",
+                      "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                       !activeTag
-                        ? "border-[#13F584]/40 bg-[#13F584]/10 text-[#13F584]"
-                        : "border-white/10 text-light-gray-90 hover:border-[#13F584]/30 hover:text-[#13F584]"
+                        ? "border-primary/40 bg-primary/10 text-primary"
+                        : "border-white/10 text-light-gray-90 hover:border-primary/30 hover:text-primary"
                     )}
                   >
                     {t("allTags")}
@@ -123,10 +124,10 @@ export function CaseStudyListAnimated({
                         key={tag}
                         href={buildCaseStudyListingPath({ tag })}
                         className={cn(
-                          "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#13F584]/50",
+                          "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                           isActive
-                            ? "border-[#13F584]/40 bg-[#13F584]/10 text-[#13F584]"
-                            : "border-white/10 text-light-gray-90 hover:border-[#13F584]/30 hover:text-[#13F584]"
+                            ? "border-primary/40 bg-primary/10 text-primary"
+                            : "border-white/10 text-light-gray-90 hover:border-primary/30 hover:text-primary"
                         )}
                       >
                         {tag}
@@ -164,24 +165,18 @@ export function CaseStudyListAnimated({
                 ))}
               </div>
             ) : (
-              <div
-                className="rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-12 text-center"
-                role="status"
-                aria-live="polite"
-              >
-                <p className="text-lg text-light-gray-90 mb-6">
-                  {activeTag
-                    ? t("filteredEmpty", { tag: activeTag })
-                    : t("empty")}
-                </p>
-                {activeTag && (
-                  <Button variant="outline" showArrow={false} asChild>
-                    <Link href={buildCaseStudyListingPath()}>
-                      {t("clearFilter")}
-                    </Link>
-                  </Button>
-                )}
-              </div>
+              <EmptyState
+                message={activeTag ? t("filteredEmpty", { tag: activeTag }) : t("empty")}
+                action={
+                  activeTag ? (
+                    <Button variant="outline" showArrow={false} asChild>
+                      <Link href={buildCaseStudyListingPath()}>
+                        {t("clearFilter")}
+                      </Link>
+                    </Button>
+                  ) : undefined
+                }
+              />
             )}
 
             {shouldShowPagination && (
@@ -249,9 +244,9 @@ function PaginationLink({
   const className = cn(
     "inline-flex min-h-10 items-center justify-center rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300",
     active
-      ? "border-[#13F584]/40 bg-[#13F584]/10 text-[#13F584]"
+      ? "border-primary/40 bg-primary/10 text-primary"
       : "border-white/10 text-light-gray-90",
-    !active && !disabled && "hover:border-[#13F584]/30 hover:text-[#13F584]",
+    !active && !disabled && "hover:border-primary/30 hover:text-primary",
     disabled && "cursor-not-allowed opacity-40"
   );
 

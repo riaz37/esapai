@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId, useEffect } from "react";
+import { useId, useEffect } from "react";
 
 export function CentralNodeIcon() {
     const uniqueId = useId();
@@ -23,8 +23,8 @@ export function CentralNodeIcon() {
                     </feMerge>
                 </filter>
                 <radialGradient id={`gradient-${uniqueId}`} cx="50%" cy="50%">
-                    <stop offset="0%" stopColor="rgba(19, 245, 132, 1)" />
-                    <stop offset="100%" stopColor="rgba(19, 245, 132, 0.3)" />
+                    <stop offset="0%" stopColor="var(--color-primary)" />
+                    <stop offset="100%" stopColor="color-mix(in srgb, var(--color-primary) 30%, transparent)" />
                 </radialGradient>
             </defs>
 
@@ -32,7 +32,7 @@ export function CentralNodeIcon() {
                 cx="40"
                 cy="40"
                 r="35"
-                stroke="rgba(19, 245, 132, 0.6)"
+                stroke="color-mix(in srgb, var(--color-primary) 60%, transparent)"
                 strokeWidth="2"
                 fill="none"
                 filter={`url(#${uniqueId})`}
@@ -41,7 +41,7 @@ export function CentralNodeIcon() {
                 cx="40"
                 cy="40"
                 r="25"
-                stroke="rgba(19, 245, 132, 0.7)"
+                stroke="color-mix(in srgb, var(--color-primary) 70%, transparent)"
                 strokeWidth="2"
                 fill="none"
                 filter={`url(#${uniqueId})`}
@@ -50,7 +50,7 @@ export function CentralNodeIcon() {
                 cx="40"
                 cy="40"
                 r="15"
-                stroke="rgba(19, 245, 132, 0.8)"
+                stroke="color-mix(in srgb, var(--color-primary) 80%, transparent)"
                 strokeWidth="2"
                 fill="none"
                 filter={`url(#${uniqueId})`}
@@ -87,8 +87,8 @@ export function ConnectionDotsMarkers() {
             circleStart.setAttribute('cx', '4');
             circleStart.setAttribute('cy', '4');
             circleStart.setAttribute('r', '3');
-            circleStart.setAttribute('fill', 'rgba(19, 245, 132, 0.8)');
-            circleStart.setAttribute('stroke', 'rgba(19, 245, 132, 1)');
+            circleStart.setAttribute('fill', 'color-mix(in srgb, var(--color-primary) 80%, transparent)');
+            circleStart.setAttribute('stroke', 'var(--color-primary)');
             circleStart.setAttribute('stroke-width', '2');
             markerStart.appendChild(circleStart);
 
@@ -104,8 +104,8 @@ export function ConnectionDotsMarkers() {
             circleEnd.setAttribute('cx', '4');
             circleEnd.setAttribute('cy', '4');
             circleEnd.setAttribute('r', '3');
-            circleEnd.setAttribute('fill', 'rgba(19, 245, 132, 0.8)');
-            circleEnd.setAttribute('stroke', 'rgba(19, 245, 132, 1)');
+            circleEnd.setAttribute('fill', 'color-mix(in srgb, var(--color-primary) 80%, transparent)');
+            circleEnd.setAttribute('stroke', 'var(--color-primary)');
             circleEnd.setAttribute('stroke-width', '2');
             markerEnd.appendChild(circleEnd);
 

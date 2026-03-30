@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { m } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "next-intl";
@@ -101,7 +101,7 @@ export function TypewriterTitle({
     startDelay = 0,
     letterDuration = 0.4,
     staggerDelay = 0.05,
-    showGlow = true,
+    showGlow = false,
     align = "left",
 }: TypewriterTitleProps) {
     const locale = useLocale();

@@ -37,10 +37,10 @@ export const MobileJourneyFlow = ({
                 <div key={layer.id} className="relative group">
                     {/* Stage Label */}
                     <div className="flex flex-col items-center justify-center gap-2 mb-5">
-                        <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase text-center">
+                        <span className="text-xs font-bold text-primary tracking-widest uppercase text-center">
                             {stages[index] ?? `Stage ${index + 1}`}
                         </span>
-                        <div className="w-12 h-[1px] bg-[#13F584]/30" />
+                        <div className="w-12 h-[1px] bg-primary/30" />
                     </div>
 
                     {/* Stage Card */}
@@ -61,7 +61,7 @@ export const MobileJourneyFlow = ({
                             "absolute -bottom-10 start-1/2 opacity-30 group-last:hidden",
                             isRTL ? "translate-x-1/2" : "-translate-x-1/2"
                         )}>
-                            <ArrowDown size={32} className="text-[#13F584] animate-bounce" />
+                            <ArrowDown size={32} className="text-primary animate-bounce" />
                         </div>
                     </Card>
                 </div>

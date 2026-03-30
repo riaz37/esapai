@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 import { Section } from "@/components/ui/section";
 import { ServiceCard } from "@/components/ui/service-card";
@@ -195,7 +195,7 @@ export function Service({
               >
                 <ServiceCard
                   title={service.title}
-                  description={service.description}
+                  description={service.description === "PLACEHOLDER" ? "" : service.description}
                   className={cn(
                     "h-full min-h-[280px]",
                     index === 0 && "md:min-h-[600px] lg:min-h-[740px]"

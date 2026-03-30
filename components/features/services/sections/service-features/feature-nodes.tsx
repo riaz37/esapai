@@ -13,22 +13,22 @@ export function CentralNode({ data }: CentralNodeProps) {
             <Handle
                 type="source"
                 position={Position.Top}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <Handle
                 type="source"
                 position={Position.Right}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <Handle
                 type="source"
                 position={Position.Bottom}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <Handle
                 type="source"
                 position={Position.Left}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <div className="flex flex-col items-center justify-center pointer-events-none">
                 <div className="w-20 h-20 mb-4 flex items-center justify-center">
@@ -49,22 +49,22 @@ export function FeatureNode({ data }: FeatureNodeProps) {
             <Handle
                 type="target"
                 position={Position.Top}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <Handle
                 type="source"
                 position={Position.Right}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <Handle
                 type="source"
                 position={Position.Bottom}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <Handle
                 type="source"
                 position={Position.Left}
-                style={{ background: "rgba(19, 245, 132, 0.8)" }}
+                style={{ background: "color-mix(in srgb, var(--color-primary) 80%, transparent)" }}
             />
             <div className="pointer-events-none">
                 <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-gradient-radial-white">

@@ -28,7 +28,7 @@ export const ContactLeftColumn = forwardRef<
       gsap.to(icon, {
         scale: 1.15,
         rotation: 5,
-        backgroundColor: "#13F584",
+        backgroundColor: "var(--color-primary)",
         duration: 0.3,
         ease: "power2.out",
         force3D: true,

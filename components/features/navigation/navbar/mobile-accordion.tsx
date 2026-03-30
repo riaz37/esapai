@@ -77,15 +77,15 @@ export function MobileAccordion({
         onClick={onToggle}
         onKeyDown={handleTriggerKeyDown}
         className={`nav-link-group relative group w-full px-4 py-3.5 rounded-xl transition-all duration-300 flex items-center justify-between ${isSectionActive || isOpen
-          ? "is-active text-[#13F584]"
-          : "text-white hover:text-[#13F584]"
+          ? "is-active text-primary"
+          : "text-white hover:text-primary"
           }`}
         aria-expanded={isOpen}
         aria-controls={id}
       >
         <span className="relative z-10 text-base font-semibold">{title}</span>
         <ChevronDown
-          className={`relative z-10 size-4 text-[#13F584]/60 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+          className={`relative z-10 size-4 text-primary/60 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
             }`}
           aria-hidden="true"
         />
@@ -114,10 +114,10 @@ export function MobileAccordion({
                   tabIndex={isOpen ? 0 : -1}
                   onClick={onNavigate}
                   onKeyDown={(e) => handleItemKeyDown(e, index)}
-                  className="mobile-menu-item group flex items-center gap-3 px-3 py-3.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#13F584]/50 rounded-lg"
+                  className="mobile-menu-item group flex items-center gap-3 px-3 py-3.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/50 rounded-lg"
                 >
                   {/* Active indicator */}
-                  <div className="w-[2px] h-8 rounded-full bg-white/10 group-hover:bg-[#13F584] group-focus-visible:bg-[#13F584] transition-colors duration-300 shrink-0" />
+                  <div className="w-[2px] h-8 rounded-full bg-white/10 group-hover:bg-primary group-focus-visible:bg-primary transition-colors duration-300 shrink-0" />
 
                   {/* Content */}
                   <div className="min-w-0 flex-1">

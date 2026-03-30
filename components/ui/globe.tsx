@@ -15,6 +15,7 @@ declare module "@react-three/fiber" {
 extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 3;
+const aspect = 1.2;
 const cameraZ = 300;
 
 import type { Position } from "@/types/three";
@@ -26,7 +27,7 @@ export type { GlobeConfig };
 
 type CountriesGeoJSON = { features: object[] };
 
-function Globe({ globeConfig, data }: WorldProps) {
+export function Globe({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
   const groupRef = useRef<THREE_Group | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -53,7 +54,7 @@ function Globe({ globeConfig, data }: WorldProps) {
   useEffect(() => {
     if (!globeRef.current && groupRef.current) {
       globeRef.current = new ThreeGlobe();
-      (groupRef.current as THREE_Group & { add: (obj: ThreeGlobe) => void }).add(globeRef.current);
+      (groupRef.current as any).add(globeRef.current);
       setIsInitialized(true);
     }
   }, []);
@@ -105,9 +106,10 @@ function Globe({ globeConfig, data }: WorldProps) {
     if (!globeRef.current || !isInitialized || !data) return;
 
     const arcs = data;
-    const points = [];
+    let points = [];
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];
+      const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number };
       points.push({
         size: defaultProps.pointSize,
         order: arc.order,
@@ -154,7 +156,7 @@ function Globe({ globeConfig, data }: WorldProps) {
       .arcStroke(() => [0.32, 0.28, 0.3][Math.round(Math.random() * 2)])
       .arcDashLength(defaultProps.arcLength)
       .arcDashInitialGap((e: unknown) => (e as Position).order * 1)
-      .arcDashGap(15)
+      .arcDashGap(1)
       .arcDashAnimateTime(() => defaultProps.arcTime);
 
     globeRef.current
@@ -219,7 +221,7 @@ function Globe({ globeConfig, data }: WorldProps) {
   return <group ref={groupRef} />;
 }
 
-function WebGLRendererConfig() {
+export function WebGLRendererConfig() {
   const { gl, size, camera } = useThree();
 
   useEffect(() => {
@@ -286,7 +288,23 @@ export function World(props: WorldProps) {
   );
 }
 
-function genRandomNumbers(min: number, max: number, count: number) {
+export function hexToRgb(hex: string) {
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
+    : null;
+}
+
+export function genRandomNumbers(min: number, max: number, count: number) {
   const arr = [];
   while (arr.length < count) {
     const r = Math.floor(Math.random() * (max - min)) + min;

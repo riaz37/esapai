@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div"> & { spotlight?: boolean; spotlightColor?: string }>(
-  ({ className, style, spotlight = true, spotlightColor = "rgba(19, 245, 132, 0.2)", onMouseMove, onMouseEnter, onMouseLeave, ...props }, ref) => {
+  ({ className, style, spotlight = true, spotlightColor = "color-mix(in srgb, var(--color-primary) 20%, transparent)", onMouseMove, onMouseEnter, onMouseLeave, ...props }, ref) => {
     const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);

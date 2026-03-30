@@ -46,7 +46,7 @@ export class SectionErrorBoundary extends React.Component<
           <button
             type="button"
             onClick={this.handleRetry}
-            className="text-sm font-medium text-[#13F584]/80 hover:text-[#13F584] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#13F584]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded px-3 py-1.5"
+            className="text-sm font-medium text-primary/80 hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 rounded px-3 py-1.5"
           >
             {this.props.retryLabel ?? "Try again"}
           </button>

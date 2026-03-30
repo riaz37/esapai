@@ -42,9 +42,8 @@ export function Footer() {
 
   const navLinks = [
     { label: navT("home"), href: "/" },
-    { label: navT("product"), href: "/product" },
-    { label: navT("service"), href: "/service" },
     { label: navT("about"), href: "/about" },
+    { label: navT("case-study"), href: "/case-study" },
     { label: navT("contact"), href: "/contact" },
   ];
 
@@ -153,7 +152,7 @@ export function Footer() {
                       key={icon.name}
                       href={icon.href}
                       target="_blank"
-                      className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#13F584] hover:text-black transition-all duration-300 text-white border border-white/10"
+                      className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-black transition-all duration-300 text-white border border-white/10"
                     >
                       <Image
                         src={icon.iconPath}
@@ -211,7 +210,7 @@ export function Footer() {
                     <Link
                       key={link.label}
                       href={link.href}
-                      className="text-xl md:text-2xl text-gray-400 hover:text-[#13F584] transition-colors"
+                      className="text-xl md:text-2xl text-gray-400 hover:text-primary transition-colors min-h-[44px] inline-flex items-center"
                     >
                       {link.label}
                     </Link>
@@ -242,8 +241,8 @@ export function Footer() {
             <div className="mt-auto pt-10 w-full flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm gap-4">
               <p>{`© ${new Date().getFullYear()} Esap. ${t("rights")}`}</p>
               <div className="flex gap-6">
-                <Link href="/privacy" className="hover:text-white transition-colors">{t("legal.privacy")}</Link>
-                <Link href="/terms" className="hover:text-white transition-colors">{t("legal.terms")}</Link>
+                <Link href="/privacy" className="hover:text-white transition-colors min-h-[44px] inline-flex items-center">{t("legal.privacy")}</Link>
+                <Link href="/terms" className="hover:text-white transition-colors min-h-[44px] inline-flex items-center">{t("legal.terms")}</Link>
               </div>
             </div>
           </div>

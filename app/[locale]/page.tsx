@@ -71,12 +71,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
       {/* Mission Section - Now with proper scroll room */}
       <LazySection minHeight="400px">
-        <MissionSection
-          title={data?.missionTitle}
-          subtitle={data?.missionSubtitle}
-          badge={data?.missionBadge}
-          cards={data?.missionCards}
-        />
+        <SectionErrorBoundary>
+          <MissionSection
+            title={data?.missionTitle}
+            subtitle={data?.missionSubtitle}
+            badge={data?.missionBadge}
+            cards={data?.missionCards}
+          />
+        </SectionErrorBoundary>
       </LazySection>
 
       <LazySection minHeight="600px">
@@ -97,7 +99,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </LazySection>
 
       <LazySection minHeight="120vh">
-        <TextRevealSection text={data?.textRevealContent} />
+        <SectionErrorBoundary>
+          <TextRevealSection text={data?.textRevealContent} />
+        </SectionErrorBoundary>
       </LazySection>
 
 
@@ -114,10 +118,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </LazySection>
 
       <LazySection minHeight="600px">
-        <CTASection
-          title={data?.ctaTitle}
-          subtitle={data?.ctaSubtitle}
-        />
+        <SectionErrorBoundary>
+          <CTASection
+            title={data?.ctaTitle}
+            subtitle={data?.ctaSubtitle}
+          />
+        </SectionErrorBoundary>
       </LazySection>
     </div>
   );

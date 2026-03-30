@@ -66,7 +66,7 @@ export function MissionCard({
                 className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-30"
                 style={{
                     opacity: isHovered ? 1 : 0,
-                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(19, 245, 132, 0.15), transparent 80%)`,
+                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, color-mix(in srgb, var(--color-primary) 15%, transparent), transparent 80%)`,
                 }}
             />
             {/* Masked Background Images */}
@@ -87,7 +87,7 @@ export function MissionCard({
                             }}
                         >
                             <div className="absolute" style={{ inset: '-0.18% 0' }}>
-                                <Image alt="" className="block max-w-none w-full h-full" src={cardPattern1} width={405} height={281} unoptimized />
+                                <Image alt="" className="block max-w-none" style={{ width: '100%', height: '100%' }} src={cardPattern1} width={405} height={281} unoptimized />
                             </div>
                         </div>
                         <div className="absolute flex h-[357px] items-center justify-center start-[62px] top-0 w-[281px]">
@@ -106,7 +106,7 @@ export function MissionCard({
                                     }}
                                 >
                                     <div className="absolute" style={{ inset: '-0.18% 0' }}>
-                                        <Image alt="" className="block max-w-none w-full h-full" src={cardPattern2} width={357} height={281} unoptimized />
+                                        <Image alt="" className="block max-w-none" style={{ width: '100%', height: '100%' }} src={cardPattern2} width={357} height={281} unoptimized />
                                     </div>
                                 </div>
                             </div>

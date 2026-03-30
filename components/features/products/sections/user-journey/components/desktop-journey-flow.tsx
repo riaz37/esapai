@@ -136,7 +136,7 @@ export const DesktopJourneyFlow = ({
 
                             {/* Title Component inside the surface */}
                             <div className="absolute top-8 start-8 md:top-12 md:start-12">
-                                <span className="text-xs font-bold text-[#13F584] tracking-widest uppercase mb-2 block">
+                                <span className="text-xs font-bold text-primary tracking-widest uppercase mb-2 block">
                                     {stages[index] ?? `Stage ${index + 1}`}
                                 </span>
                                 <h4 className="text-3xl md:text-5xl font-bold text-white tracking-tighter">

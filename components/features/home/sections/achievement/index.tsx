@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Cpu } from "lucide-react";
 import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 import { SkeletonGrid } from "@/components/ui/skeleton";
@@ -72,10 +72,10 @@ export function Achievement({
                 ) : (
                 <>
                 {/* Horizontal Framing Lines - Contained within content width */}
-                <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
-                <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#13F584]/50 to-transparent z-20 pointer-events-none" />
+                <div className="absolute top-0 start-0 end-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20 pointer-events-none" />
+                <div className="absolute bottom-0 start-0 end-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20 pointer-events-none" />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-[#13F584]/30">
+                <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 md:divide-x md:divide-primary/30">
                     {displayAchievements.map((item: AchievementItemData, index: number) => (
                         <Spotlight
                             key={item.label}
@@ -83,9 +83,8 @@ export function Achievement({
                             intensity={0.45}
                             radius={400}
                         >
-                            {/* Vertical Framing Lines (Internal Dividers Only) - Behind Glow -> Now On Top */}
                             {index < displayAchievements.length - 1 && (
-                                <div className="absolute top-0 bottom-0 end-0 w-[1px] bg-gradient-to-b from-transparent via-[#13F584]/40 to-transparent hidden md:block z-50 pointer-events-none" />
+                                <div className="absolute top-0 bottom-0 end-0 w-[1px] bg-gradient-to-b from-transparent via-primary/40 to-transparent hidden md:block z-50 pointer-events-none" />
                             )}
 
                             <div className="relative z-40 pointer-events-none">
