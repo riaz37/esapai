@@ -74,7 +74,9 @@ export function Hero({
                 const q = gsap.utils.selector(iconsRef);
 
                 hexClasses.forEach((hexClass) => {
-                    gsap.to(q(hexClass), {
+                    const targets = q(hexClass);
+                    if (!targets.length) return;
+                    gsap.to(targets, {
                         y: () => -15 - Math.random() * 20,
                         duration: () => 3 + Math.random() * 2,
                         ease: "sine.inOut",
