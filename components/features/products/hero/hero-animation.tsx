@@ -84,11 +84,11 @@ export function HeroAnimation({
     const imgW = bgImageRef.current.width;
     const imgH = bgImageRef.current.height;
 
-    // Scale to fill width, preserving full image (no crop)
-    const scale = cw / imgW;
-    const drawW = cw;
+    // Contain: fit entire image within canvas (no cropping)
+    const scale = Math.min(cw / imgW, ch / imgH);
+    const drawW = imgW * scale;
     const drawH = imgH * scale;
-    const x = 0;
+    const x = (cw - drawW) / 2;
     const y = 0;
 
     ctx.globalAlpha = alpha;
@@ -111,7 +111,7 @@ export function HeroAnimation({
     ctx.fillStyle = fadeTop;
     ctx.fillRect(0, 0, cw, ch * fadeSize);
 
-    const bottomFadeSize = 0.35;
+    const bottomFadeSize = 0.2;
     const fadeBottom = ctx.createLinearGradient(0, ch, 0, ch - ch * bottomFadeSize);
     fadeBottom.addColorStop(0, "rgba(0,0,0,1)");
     fadeBottom.addColorStop(1, "rgba(0,0,0,0)");

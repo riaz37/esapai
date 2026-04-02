@@ -20,8 +20,8 @@ export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc 
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          maskImage: "linear-gradient(to bottom, black 0%, black 50%, transparent 85%)",
-          WebkitMaskImage: "-webkit-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 85%)"
+          maskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
+          WebkitMaskImage: "-webkit-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)"
         }}
       >
         <HeroAnimation
