@@ -72,6 +72,7 @@ export function AboutPageClient({
                 badge={heroBadge}
                 titlePart1={heroTitlePart1}
                 titlePart2={heroTitlePart2}
+                videoId="IWRdyj_Mj_8"
             />
 
             <LazySection minHeight="800px">

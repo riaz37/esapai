@@ -5,7 +5,7 @@ import React from "react";
 import { ServicePortalVideoSection } from "../portal-video";
 import { Section } from "@/components/ui/section";
 
-const DEFAULT_VIDEO_SRC = "/videos/compare.mp4";
+const DEFAULT_VIDEO_SRC = "/beforeafter.mp4";
 
 export function ServiceBeforeAfterSection({
   title,

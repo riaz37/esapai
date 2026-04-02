@@ -18,13 +18,13 @@ export function HeroAnimation({
   frameCount = 408,
   framePrefix = "/animations/product-hero/frame_",
   frameExtension = ".jpg",
-  backgroundImage = "/producthero.png",
+  backgroundImage = "/comic.png",
 }: HeroAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  
+
   const bgImageRef = useRef<HTMLImageElement | null>(null);
   const currentFrameRef = useRef(0);
   const absoluteFrameRef = useRef(0);
@@ -51,7 +51,7 @@ export function HeroAnimation({
         const img = new Image();
         const paddedIndex = i.toString().padStart(4, "0");
         img.src = `${framePrefix}${paddedIndex}${frameExtension}`;
-        
+
         img.onload = () => {
           if (!active) return;
           loadedCount++;
@@ -75,6 +75,18 @@ export function HeroAnimation({
     };
   }, [frameCount, framePrefix, frameExtension]);
 
+  // Draw a frame with cover scaling (preserves aspect ratio, centered)
+  const drawFrameCover = (ctx: CanvasRenderingContext2D, img: HTMLImageElement) => {
+    const cw = ctx.canvas.width;
+    const ch = ctx.canvas.height;
+    const scale = Math.max(cw / img.width, ch / img.height);
+    const drawW = img.width * scale;
+    const drawH = img.height * scale;
+    const x = (cw - drawW) / 2;
+    const y = (ch - drawH) / 2;
+    ctx.drawImage(img, x, y, drawW, drawH);
+  };
+
   // Draw background helper — cover full canvas
   const drawBackground = (ctx: CanvasRenderingContext2D, alpha: number) => {
     if (!bgImageRef.current || !bgImageRef.current.complete) return;
@@ -84,14 +96,14 @@ export function HeroAnimation({
     const imgW = bgImageRef.current.width;
     const imgH = bgImageRef.current.height;
 
-    // Contain: fit entire image within canvas (no cropping)
-    const scale = Math.min(cw / imgW, ch / imgH);
+    // Cover: fill entire canvas (may crop), centered
+    const scale = Math.max(cw / imgW, ch / imgH);
     const drawW = imgW * scale;
     const drawH = imgH * scale;
     const x = (cw - drawW) / 2;
-    const y = 0;
+    const y = (ch - drawH) / 2;
 
-    ctx.globalAlpha = alpha;
+    ctx.globalAlpha = alpha * 0.4;
     ctx.drawImage(bgImageRef.current, x, y, drawW, drawH);
 
     ctx.globalAlpha = 1.0;
@@ -125,6 +137,42 @@ export function HeroAnimation({
     ctx.fillRect(cw - cw * fadeSize, 0, cw * fadeSize, ch);
   };
 
+  // Edge vignette — runs AFTER all compositing to fade all edges to black
+  const drawEdgeVignette = (ctx: CanvasRenderingContext2D) => {
+    const cw = ctx.canvas.width;
+    const ch = ctx.canvas.height;
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 1.0;
+
+    const sideSize = 0.25;
+    const bottomSize = 0.15;
+    const topSize = 0.08;
+
+    const fadeLeft = ctx.createLinearGradient(0, 0, cw * sideSize, 0);
+    fadeLeft.addColorStop(0, "rgba(0,0,0,1)");
+    fadeLeft.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = fadeLeft;
+    ctx.fillRect(0, 0, cw * sideSize, ch);
+
+    const fadeRight = ctx.createLinearGradient(cw, 0, cw - cw * sideSize, 0);
+    fadeRight.addColorStop(0, "rgba(0,0,0,1)");
+    fadeRight.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = fadeRight;
+    ctx.fillRect(cw - cw * sideSize, 0, cw * sideSize, ch);
+
+    const fadeBottom = ctx.createLinearGradient(0, ch, 0, ch - ch * bottomSize);
+    fadeBottom.addColorStop(0, "rgba(0,0,0,1)");
+    fadeBottom.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = fadeBottom;
+    ctx.fillRect(0, ch - ch * bottomSize, cw, ch * bottomSize);
+
+    const fadeTop = ctx.createLinearGradient(0, 0, 0, ch * topSize);
+    fadeTop.addColorStop(0, "rgba(0,0,0,1)");
+    fadeTop.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = fadeTop;
+    ctx.fillRect(0, 0, cw, ch * topSize);
+  };
+
   // Initial Draw
   useEffect(() => {
     if (images.length > 0 && images[0].complete && canvasRef.current) {
@@ -140,16 +188,16 @@ export function HeroAnimation({
         }
 
         ctx.globalCompositeOperation = "multiply";
-        ctx.drawImage(images[0], 0, 0, canvasRef.current.width, canvasRef.current.height);
+        drawFrameCover(ctx, images[0]);
 
         // Ambient background starts at 0 on initial draw
         ctx.globalCompositeOperation = "source-over";
         drawBackground(ctx, 0.0);
 
         ctx.globalCompositeOperation = "screen";
-        ctx.drawImage(images[0], 0, 0, canvasRef.current.width, canvasRef.current.height);
-        
-        ctx.globalCompositeOperation = "source-over";
+        drawFrameCover(ctx, images[0]);
+
+        drawEdgeVignette(ctx);
       }
     }
   }, [images]);
@@ -164,7 +212,7 @@ export function HeroAnimation({
     );
 
     if (canvasRef.current) observer.observe(canvasRef.current);
-    
+
     return () => observer.disconnect();
   }, []);
 
@@ -196,7 +244,7 @@ export function HeroAnimation({
           }
 
           ctx.globalCompositeOperation = "multiply";
-          ctx.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height);
+          drawFrameCover(ctx, img);
 
           // Calculate ambient alpha using the absolute frame counter for a one-time fade in
           absoluteFrameRef.current += 1;
@@ -208,10 +256,10 @@ export function HeroAnimation({
           drawBackground(ctx, ambientAlpha);
 
           ctx.globalCompositeOperation = "screen";
-          ctx.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height);
+          drawFrameCover(ctx, img);
 
-          ctx.globalCompositeOperation = "source-over";
-          
+          drawEdgeVignette(ctx);
+
           const progress = idx / (frameCount - 1);
           if (onProgress) {
             onProgress(progress);
@@ -235,12 +283,26 @@ export function HeroAnimation({
     };
   }, [isPlaying, loaded, images, frameCount, onProgress]);
 
+  // Resize canvas to match container so CSS doesn't scale/zoom it
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+    });
+
+    resizeObserver.observe(canvas);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     <canvas
       ref={canvasRef}
-      width={1920}
-      height={1080}
-      className={cn("w-full h-full object-cover", className)}
+      className={cn("w-full h-full", className)}
       aria-label="Product Animation sequence"
     />
   );
