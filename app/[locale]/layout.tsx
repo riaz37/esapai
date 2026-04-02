@@ -90,7 +90,7 @@ export default async function RootLayout(props: Readonly<{
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body
-        className={`${inter.variable} ${locale === "ar" ? ibmPlexArabic.variable : spaceGrotesk.variable} font-sans antialiased flex flex-col min-h-screen`}
+        className={`${inter.className} ${inter.variable} ${locale === "ar" ? ibmPlexArabic.variable : spaceGrotesk.variable} antialiased flex flex-col min-h-screen`}
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <SkipToContent />
