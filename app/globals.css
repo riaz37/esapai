@@ -86,6 +86,7 @@
   h6 {
     font-family: var(--font-heading-en, var(--font-heading-ar, var(--font-inter)));
     font-weight: 700;
+    text-wrap: balance;
   }
 
   h1 {
