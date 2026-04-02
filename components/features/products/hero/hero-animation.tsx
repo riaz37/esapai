@@ -75,56 +75,54 @@ export function HeroAnimation({
     };
   }, [frameCount, framePrefix, frameExtension]);
 
-  // Draw background helper
+  // Draw background helper — cover full canvas
   const drawBackground = (ctx: CanvasRenderingContext2D, alpha: number) => {
     if (!bgImageRef.current || !bgImageRef.current.complete) return;
     const cw = ctx.canvas.width;
     const ch = ctx.canvas.height;
-    
-    ctx.globalAlpha = alpha;
-    
-    // Target width is ~70% of canvas, right-aligned
+
     const imgW = bgImageRef.current.width;
     const imgH = bgImageRef.current.height;
-    const targetW = cw * 0.8;
-    const targetH = targetW * (imgH / imgW);
-    
-    const x = cw - targetW + (cw * 0.1); // Slightly off center right
-    const y = 0; // Aligned to the fully top
+
+    // Scale to fill width, preserving full image (no crop)
+    const scale = cw / imgW;
+    const drawW = cw;
+    const drawH = imgH * scale;
+    const x = 0;
+    const y = 0;
+
     ctx.globalAlpha = alpha;
-    // Draw the image
-    ctx.drawImage(bgImageRef.current, x, y, targetW, targetH);
-    
-    // CRITICAL: The mask MUST be drawn at 100% opacity to cover the edges properly!
+    ctx.drawImage(bgImageRef.current, x, y, drawW, drawH);
+
     ctx.globalAlpha = 1.0;
 
-    // Apply Left Edge Fade
-    const fadeLeft = ctx.createLinearGradient(x, 0, x + targetW * 0.35, 0);
+    // Soft edge fades on all sides
+    const fadeSize = 0.15;
+
+    const fadeLeft = ctx.createLinearGradient(0, 0, cw * fadeSize, 0);
     fadeLeft.addColorStop(0, "rgba(0,0,0,1)");
     fadeLeft.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = fadeLeft;
-    ctx.fillRect(x, y, targetW * 0.35, targetH);
+    ctx.fillRect(0, 0, cw * fadeSize, ch);
 
-    // Apply Top Edge Fade
-    const fadeTop = ctx.createLinearGradient(0, y, 0, y + targetH * 0.35);
+    const fadeTop = ctx.createLinearGradient(0, 0, 0, ch * fadeSize);
     fadeTop.addColorStop(0, "rgba(0,0,0,1)");
     fadeTop.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = fadeTop;
-    ctx.fillRect(x, y, targetW, targetH * 0.35);
+    ctx.fillRect(0, 0, cw, ch * fadeSize);
 
-    // Apply Bottom Edge Fade
-    const fadeBottom = ctx.createLinearGradient(0, y + targetH, 0, y + targetH - targetH * 0.35);
+    const bottomFadeSize = 0.35;
+    const fadeBottom = ctx.createLinearGradient(0, ch, 0, ch - ch * bottomFadeSize);
     fadeBottom.addColorStop(0, "rgba(0,0,0,1)");
     fadeBottom.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = fadeBottom;
-    ctx.fillRect(x, y + targetH - targetH * 0.35, targetW, targetH * 0.35);
+    ctx.fillRect(0, ch - ch * bottomFadeSize, cw, ch * bottomFadeSize);
 
-    // Apply Right Edge Fade
-    const fadeRight = ctx.createLinearGradient(x + targetW, 0, x + targetW - targetW * 0.35, 0);
+    const fadeRight = ctx.createLinearGradient(cw, 0, cw - cw * fadeSize, 0);
     fadeRight.addColorStop(0, "rgba(0,0,0,1)");
     fadeRight.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = fadeRight;
-    ctx.fillRect(x + targetW - targetW * 0.35, y, targetW * 0.35, targetH);
+    ctx.fillRect(cw - cw * fadeSize, 0, cw * fadeSize, ch);
   };
 
   // Initial Draw
@@ -240,8 +238,8 @@ export function HeroAnimation({
   return (
     <canvas
       ref={canvasRef}
-      width={1280}
-      height={720}
+      width={1920}
+      height={1080}
       className={cn("w-full h-full object-cover", className)}
       aria-label="Product Animation sequence"
     />

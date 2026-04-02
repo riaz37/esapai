@@ -277,7 +277,7 @@ const CaseStudyCard = memo(
 
     const hasImageError = imageErrors.has(caseStudy._id);
     const imageUrl = hasImageError
-      ? `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect fill='%23131313' width='800' height='450'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%2313f584' font-size='72' font-family='Arial'%3E${encodeURIComponent(caseStudy.title.charAt(0))}%3C/text%3E%3C/svg%3E`
+      ? `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect fill='%23131313' width='800' height='450'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%2313f584' font-size='72' font-family='Inter,ui-sans-serif,system-ui,sans-serif'%3E${encodeURIComponent(caseStudy.title.charAt(0))}%3C/text%3E%3C/svg%3E`
       : thumbnail?.url;
 
     return (

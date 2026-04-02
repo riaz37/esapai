@@ -32,7 +32,7 @@ export function Timeline({ timeline }: TimelineProps) {
         id: index,
         leftContent: (
           <div className="flex flex-row md:flex-col items-center md:items-end gap-2 md:gap-0 pt-[1px] sm:pt-0 md:-mt-1 lg:-mt-1.5">
-            <span className="text-xl sm:text-2xl md:text-5xl font-bold text-white leading-none">
+            <span className="text-xl sm:text-2xl md:text-5xl font-bold font-heading text-white leading-none">
               {day}
             </span>
             <span className="text-white/60 text-start md:text-end text-xs font-bold uppercase tracking-widest">

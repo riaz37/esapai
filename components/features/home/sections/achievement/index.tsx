@@ -90,7 +90,7 @@ export function Achievement({
                             <div className="relative z-40 pointer-events-none">
                                 <Counter
                                     value={item.number}
-                                    className="block text-5xl sm:text-6xl md:text-7xl font-bold text-primary tracking-tighter mb-3"
+                                    className="block text-5xl sm:text-6xl md:text-7xl font-bold font-heading text-primary tracking-tighter mb-3"
                                 />
                                 <span className="text-white/80 text-lg">
                                     {item.label}

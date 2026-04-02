@@ -128,7 +128,7 @@ export function GlobalLoader({
           <p className="text-xs uppercase tracking-widest text-white/60">
             {resolvedSubMessage}
           </p>
-          <p className="text-2xl font-semibold text-white md:text-3xl">
+          <p className="text-2xl font-semibold font-heading text-white md:text-3xl">
             {resolvedMessage}
           </p>
         </div>
