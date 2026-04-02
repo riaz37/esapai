@@ -141,12 +141,18 @@ Jarvis Assistant items captured during `/plan-ceo-review` on 2026-03-28.
 **Priority:** P2 — affects a minority of users but is a trust-breaking error.
 **Depends on:** Nothing.
 
-### 10. Fix GSAP "target not found" console warnings
-**What:** 10+ GSAP animations register against refs that don't exist at mount time, silently failing. Add `if (!ref.current) return;` guards before all `gsap.to(ref.current, ...)` calls.
-**Why:** Silent animation failures mean content may stay at opacity-0 or un-translated. These are bugs masquerading as warnings.
-**Cons:** Small effort, high confidence impact on animation reliability.
-**Context:** Visible in browser console on homepage load. Primarily affects scroll-reveal animations in hero and section components.
+### ~~10. Fix GSAP "target not found" console warnings~~ — Partially fixed 2026-04-02
+**What:** 10+ GSAP animations register against refs that don't exist at mount time, silently failing.
+**Fixed:** FINDING-005 (CTA `.container` query, commit `8f3730c`) and FINDING-006 (hero hexagon guard, commit `037444b`).
+**Remaining:** ~6 additional GSAP target warnings per page load from other components. Requires deeper investigation into component rendering timing.
 **Depends on:** Nothing.
+
+### 15. Solutions section icon-in-circle design pattern
+**What:** The "Focus on Growth" solutions section uses icons inside circular containers for each solution card (Agentic AI Integration, FaaS Infrastructure, Tailored Solutions).
+**Why:** Matches AI slop pattern #3 (icons in colored circles as section decoration). Not egregious, but identifiable by design-aware visitors.
+**Context:** Flagged by /design-review on 2026-04-02. Consider replacing with more distinctive layout (asymmetric grid, illustrations, or product screenshots).
+**Priority:** P3 — polish item.
+**Depends on:** Design decision.
 
 ### 11. Verify Sanity token for service detail pages
 **What:** `/en/service/[slug]` pages throw "Something Went Wrong". Check that `SANITY_API_READ_TOKEN` is set in `.env.local` AND in production environment variables. Verify service documents exist in Sanity dataset.
