@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 
 export function ServiceVideoSection({
-    videoSrc = "/videos/servicesmax.mp4",
+    videoSrc = "/servicebusiness.mp4",
     title,
     subtitle,
 }: {
@@ -34,19 +34,17 @@ export function ServiceVideoSection({
                 align="center"
             />
 
-            <div className="relative w-full max-w-[1400px] mx-auto aspect-[21/9] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <div className="relative w-full max-w-[900px] mx-auto aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl">
                 <OptimizedVideo
                     src={videoSrc}
                     autoPlay
                     muted
                     loop
                     playsInline
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                 />
 
 
-                {/* Optional subtle overlay for depth */}
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-3xl pointer-events-none" />
             </div>
         </Section>
     );

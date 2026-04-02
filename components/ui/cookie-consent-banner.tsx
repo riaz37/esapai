@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { useCookieConsent } from "@/components/providers/cookie-consent-context";
 import { Link } from "@/i18n/routing";
 
 export function CookieConsentBanner() {
   const { consentStatus, acceptCookies, rejectCookies } = useCookieConsent();
+  const t = useTranslations("CookieConsent");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -38,16 +40,15 @@ export function CookieConsentBanner() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-5 md:gap-6">
               <div className="flex-1 space-y-2 sm:space-y-3">
                 <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-light-gray-90">
-                  Cookie Consent
+                  {t("title")}
                 </h3>
                 <p className="text-xs sm:text-sm md:text-base text-white-opacity-70 leading-relaxed">
-                  We use cookies to enhance your browsing experience, analyze site traffic, and personalize content.
-                  By clicking &quot;Accept All&quot;, you consent to our use of cookies.{" "}
+                  {t("description")}{" "}
                   <Link
                     href="/privacy"
                     className="text-primary hover:underline transition-colors font-medium"
                   >
-                    Learn more
+                    {t("learnMore")}
                   </Link>
                 </p>
               </div>
@@ -58,14 +59,14 @@ export function CookieConsentBanner() {
                   variant="outline"
                   className="bg-white/10 border-white/20 text-light-gray hover:bg-white/20"
                 >
-                  Reject
+                  {t("reject")}
                 </Button>
                 <Button
                   onClick={acceptCookies}
                   variant="primary"
                   showArrow={false}
                 >
-                  Accept All
+                  {t("acceptAll")}
                 </Button>
               </div>
             </div>

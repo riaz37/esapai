@@ -76,7 +76,7 @@ export function ProductCard({ product, index: _index, videoRef: _videoRef, class
                     {/* Left Side: Content */}
                     <div className="flex-1 text-start space-y-4 z-10">
                         <div className="space-y-2">
-                            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white leading-tight">
+                            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                                 {t(`products.${product.id}.name`)}
                             </h3>
                         </div>

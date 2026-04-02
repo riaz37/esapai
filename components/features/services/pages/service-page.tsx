@@ -62,7 +62,7 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
         subtitle={heroSubtitle}
       />
 
-      {/* 2. Problem: Why this service (placeholder) */}
+      {/* 2. Problem: Why this service */}
       <LazySection minHeight="400px">
         <ServiceProblemSection
           title={problemContent?.title}

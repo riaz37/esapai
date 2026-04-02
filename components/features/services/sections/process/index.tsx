@@ -135,7 +135,7 @@ function ProcessCard({ step }: { step: { id: string; title: string; description:
           "group cursor-default overflow-hidden"
         )}
       >
-        <span className="absolute bottom-0 end-4 text-7xl md:text-8xl font-bold text-white/5 select-none transition-colors group-hover:text-primary/10">
+        <span className="absolute bottom-0 end-4 text-7xl md:text-8xl font-bold font-heading text-white/5 select-none transition-colors group-hover:text-primary/10">
           {step.id}
         </span>
 

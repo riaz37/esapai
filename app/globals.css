@@ -4,8 +4,8 @@
   --color-primary: rgba(19, 245, 132, 1);
   --color-primary-dark: rgba(9, 9, 9, 1);
 
-  --font-sans: var(--font-inter), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-heading-en, var(--font-heading-ar, var(--font-inter))), "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Space Grotesk", "IBM Plex Sans Arabic", "Inter", Arial, ui-sans-serif, system-ui, sans-serif;
 
   --animate-light-sweep: light-sweep 1.5s ease-in-out forwards;
 
@@ -70,8 +70,8 @@
     background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
-    font-family: var(--font-sans);
     --font-heading: var(--font-heading-en, var(--font-heading-ar, var(--font-inter)));
+    font-family: var(--font-sans);
     font-size: 18.24px;
     line-height: 1.6;
     color: var(--color-white);
@@ -86,6 +86,7 @@
   h6 {
     font-family: var(--font-heading-en, var(--font-heading-ar, var(--font-inter)));
     font-weight: 700;
+    text-wrap: balance;
   }
 
   h1 {

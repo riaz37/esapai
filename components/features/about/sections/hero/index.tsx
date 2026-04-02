@@ -13,6 +13,7 @@ export interface AboutHeroProps {
     badge?: string;
     titlePart1?: string;
     titlePart2?: string;
+    videoId?: string;
 }
 
 function TitleDisplay({ title, titlePart1, titlePart2 }: Pick<AboutHeroProps, "title" | "titlePart1" | "titlePart2">) {
@@ -35,6 +36,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
     badge,
     titlePart1,
     titlePart2,
+    videoId,
 }) => {
     const displayBadge = badge ?? "";
     const displaySubtitle = subtitle ?? "";
@@ -42,8 +44,8 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
     return (
         <Section
             padding="none"
-            className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden"
-            containerClassName="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col items-center text-center max-w-4xl pt-32 md:pt-40 pb-12"
+            className="relative flex items-center justify-center overflow-hidden"
+            containerClassName="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col items-center text-center max-w-4xl pt-28 md:pt-36 pb-12"
         >
             <m.div
                 initial={{ opacity: 0, y: 15 }}
@@ -73,6 +75,23 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
             >
                 {displaySubtitle}
             </m.p>
+
+            {videoId && (
+                <m.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.6 }}
+                    className="w-full max-w-3xl mx-auto mt-12 aspect-video rounded-2xl overflow-hidden shadow-2xl"
+                >
+                    <iframe
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        title="About ESAP AI"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                    />
+                </m.div>
+            )}
         </Section>
     );
 };

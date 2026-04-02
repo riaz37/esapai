@@ -140,7 +140,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
                   ref={(el) => {
                     valueRefs.current[index] = el;
                   }}
-                  className="block text-5xl sm:text-6xl md:text-7xl font-bold text-primary tracking-tighter mb-3"
+                  className="block text-5xl sm:text-6xl md:text-7xl font-bold font-heading text-primary tracking-tighter mb-3"
                 >
                   {metric.value}
                 </span>
