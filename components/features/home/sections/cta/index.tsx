@@ -49,8 +49,7 @@ export function CTASection({
     useGSAP(() => {
         if (!sectionRef.current) return;
 
-        const container = sectionRef.current.querySelector(".container");
-        const children = container?.querySelectorAll("h2, p, .flex > *");
+        const children = sectionRef.current.querySelectorAll("h2, p, .flex > *");
 
         if (children) {
             gsap.fromTo(children,
