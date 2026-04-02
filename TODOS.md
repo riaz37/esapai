@@ -128,6 +128,19 @@ Jarvis Assistant items captured during `/plan-ceo-review` on 2026-03-28.
 **What:** Space Grotesk is now wired to headings via `var(--font-heading-en, ...)` in `globals.css`. IBM Plex Sans Arabic handles Arabic locale. DESIGN.md updated.
 **Fix commit:** `cfca421` + `e285192` on branch `riaz`.
 
+### ~~13. Inter body font not loading~~ ✅ Fixed 2026-04-02
+**What:** `@theme --font-sans` used `var(--font-inter)` which doesn't exist at `:root` scope (only on body via next/font class). Body text fell back to system ui-sans-serif site-wide.
+**Fix:** Use `inter.className` on body + literal font names in @theme.
+**Fix commit:** `51c9d79` on branch `riaz` via `/design-review`.
+
+### 14. WebGL fallback for service pages
+**What:** Service pages using Three.js crash with "Something Went Wrong" when WebGL context fails (low-end devices, headless browsers, privacy-focused browsers).
+**Why:** No graceful degradation. Users on affected devices see a full-page error instead of the service content.
+**Pros:** Broader device support. Better error resilience.
+**Effort:** M (human: ~4h / CC: ~20min) — add WebGL capability check and static fallback rendering.
+**Priority:** P2 — affects a minority of users but is a trust-breaking error.
+**Depends on:** Nothing.
+
 ### 10. Fix GSAP "target not found" console warnings
 **What:** 10+ GSAP animations register against refs that don't exist at mount time, silently failing. Add `if (!ref.current) return;` guards before all `gsap.to(ref.current, ...)` calls.
 **Why:** Silent animation failures mean content may stay at opacity-0 or un-translated. These are bugs masquerading as warnings.
