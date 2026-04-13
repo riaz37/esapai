@@ -9,9 +9,9 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
     return (
         <Link
             href="/"
-            className="relative z-20 me-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal"
+            className="relative z-20 flex shrink-0 items-center space-x-2 px-2 py-1 text-sm font-normal"
         >
-            <div className="flex items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">
                 <Image
                     src="/logo/mainlogo.png"
                     alt="Main Logo"
@@ -23,9 +23,9 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
                 <Image
                     src="/logo/esaplogo.svg"
                     alt="ESAP Logo"
-                    width={65}
-                    height={21}
-                    className="h-5 w-auto shrink-0"
+                    width={130}
+                    height={42}
+                    className="h-7 w-auto shrink-0"
                 />
             </div>
         </Link>
