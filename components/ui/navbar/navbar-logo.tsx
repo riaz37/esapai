@@ -9,7 +9,7 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
     return (
         <Link
             href="/"
-            className="relative z-20 flex shrink-0 items-center space-x-2 px-2 py-1 text-sm font-normal"
+            className="relative z-20 flex shrink-0 items-center space-x-2 px-2 py-1 me-6 text-sm font-normal"
         >
             <div className="flex shrink-0 items-center gap-2">
                 <Image
