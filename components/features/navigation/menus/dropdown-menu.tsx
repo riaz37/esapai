@@ -167,7 +167,24 @@ export function DropdownMenu({
         </div>
 
         {/* Right Panel: Dynamic Content */}
-        <div className="flex-1 bg-gradient-to-br from-transparent to-primary/10 relative overflow-hidden" aria-live="polite">
+        <div
+          className="flex-1 bg-gradient-to-br from-transparent to-primary/10 relative overflow-hidden"
+          aria-live="polite"
+        >
+          {/* Background: static mesh — top-right, rotated 180deg */}
+          <img
+            src="/footerbg.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute top-0 end-0 w-[85%] h-auto pointer-events-none select-none"
+            style={{
+              opacity: 0.35,
+              filter: "invert(1)",
+              mixBlendMode: "screen",
+              zIndex: 0,
+              transform: "rotate(180deg)",
+            }}
+          />
           {activeItem && (
             <AnimatePresence mode="wait">
               <m.div
@@ -176,7 +193,7 @@ export function DropdownMenu({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="absolute inset-0 p-10 flex flex-col"
+                className="absolute inset-0 p-10 flex flex-col z-10"
               >
                 <div className="flex-1">
                   {/* Header Section */}
