@@ -76,7 +76,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
     });
 
     return (
-        <div ref={containerRef} className="relative h-[600vh] scroll-mt-20 md:scroll-mt-32">
+        <div ref={containerRef} className="relative h-[1000vh] scroll-mt-20 md:scroll-mt-32">
             <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
 
