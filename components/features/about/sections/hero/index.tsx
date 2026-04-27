@@ -77,20 +77,32 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
             </m.p>
 
             {videoId && (
-                <m.div
+                <m.a
+                    href={`https://www.youtube.com/watch?v=${videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.6 }}
-                    className="w-full max-w-3xl mx-auto mt-12 aspect-video rounded-2xl overflow-hidden shadow-2xl"
+                    className="group relative block w-full max-w-3xl mx-auto mt-12 aspect-video rounded-2xl overflow-hidden shadow-2xl"
                 >
-                    <iframe
-                        src={`https://www.youtube.com/embed/${videoId}`}
-                        title="About ESAP AI"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full"
+                    {/* Thumbnail */}
+                    <img
+                        src={`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`}
+                        alt="Video thumbnail"
+                        className="w-full h-full object-cover"
                     />
-                </m.div>
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+                    {/* Play button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg className="w-7 h-7 text-white ms-1" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </m.a>
             )}
         </Section>
     );
