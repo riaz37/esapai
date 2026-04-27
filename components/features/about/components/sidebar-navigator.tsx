@@ -64,11 +64,6 @@ export const SidebarNavigator: React.FC<SidebarNavigatorProps> = ({
                             />
                         </div>
 
-                        <div className="absolute -start-4 top-1/2 -translate-y-1/2 -translate-x-full rtl:translate-x-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                            <span className="text-primary bg-black/80 px-2 py-1 rounded text-xs">
-                                {item.name}
-                            </span>
-                        </div>
                     </m.button>
                 ))}
             </m.div>

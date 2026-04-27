@@ -446,7 +446,9 @@ const SERVICE_FIELDS = `
   ctaTitle,
   ctaSubtitle,
   ctaButtonText,
-  ctaButtonLink
+  ctaButtonLink,
+  menuDescription,
+  performanceMetrics
 `;
 
 export const servicesListQuery = `*[_type == "serviceDocument" && language == $locale] | order(_createdAt asc) {${SERVICE_FIELDS}}`;
@@ -577,12 +579,20 @@ export async function getSanityProductBySlug(slug: string, locale: string): Prom
 import type { Service } from "@/types/service";
 
 export function mapSanityService(doc: SanityDoc): Service {
+    const slug = doc.slug as string;
     return {
-        id: doc.slug || doc._id,
+        id: slug || doc._id,
         name: doc.name,
-        slug: doc.slug,
+        slug,
+        menuDescription: doc.menuDescription,
         description: doc.heroSubtitle?.[0] || doc.problemSubtitle || "",
         content: {
+            performance: {
+                metrics: (doc.performanceMetrics as SanityDoc[] | undefined)?.map((m) => ({
+                    value: m.value as string,
+                    label: m.label as string,
+                })),
+            },
             hero: {
                 titleMain: doc.heroTitle,
                 titleHighlight: doc.heroTagline,

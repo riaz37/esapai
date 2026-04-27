@@ -3,6 +3,9 @@
  */
 
 interface ServiceContent {
+  performance?: {
+    metrics?: { value: string; label: string }[];
+  };
   hero?: {
     subtitle?: string[];
     centerIcon?: string;
@@ -54,6 +57,7 @@ export interface Service {
   id: string;
   name: string;
   description: string;
+  menuDescription?: string;
   slug: string;
   icon?: string;
   content?: ServiceContent;

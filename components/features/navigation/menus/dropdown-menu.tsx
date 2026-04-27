@@ -98,16 +98,10 @@ export function DropdownMenu({
         dropdownClass
       )}
     >
-      <div className="flex h-[min(540px,70vh)]">
+      <div className="flex">
         {/* Left Sidebar */}
         <div className="w-[min(300px,35vw)] border-r border-white/5 bg-black/20 flex flex-col">
-          <div className="p-6">
-            <h2 className="text-emerald-500 text-xs font-bold">
-              {title}
-            </h2>
-          </div>
-
-          <div className="flex-1 py-4 overflow-y-auto custom-scrollbar" role="none">
+          <div className="flex-1 overflow-y-auto custom-scrollbar" role="none">
             {items.map((item, index) => (
               <Link
                 key={item.id}
@@ -193,9 +187,9 @@ export function DropdownMenu({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="absolute inset-0 p-10 flex flex-col z-10"
+                className="relative p-10 flex flex-col z-10"
               >
-                <div className="flex-1">
+                <div>
                   {/* Header Section */}
                   <div className="flex items-start justify-between mb-10">
                     <div className="max-w-lg">
