@@ -176,7 +176,7 @@ export function DropdownMenu({
             src="/footerbg.png"
             alt=""
             aria-hidden="true"
-            className="absolute top-0 end-0 w-[85%] h-auto pointer-events-none select-none"
+            className="absolute top-0 end-0 w-full h-auto pointer-events-none select-none"
             style={{
               opacity: 0.35,
               filter: "invert(1)",
@@ -220,7 +220,7 @@ export function DropdownMenu({
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         {(activeItem.content as any)?.performance?.metrics?.map((metric: { label: string; value: string }) => (
-                          <div key={metric.label} className="bg-white/5 border border-white/5 p-4 rounded-xl hover:border-primary/20 transition-all duration-300 bg-gradient-to-b from-white/[0.02] to-transparent">
+                          <div key={metric.label} className="bg-zinc-900/80 border border-white/10 p-4 rounded-xl hover:border-primary/20 transition-all duration-300">
                             <div className="text-2xl font-bold text-primary leading-none">{metric.value}</div>
                             <div className="text-white/60 text-xs font-bold mt-2">
                               {metric.label}
