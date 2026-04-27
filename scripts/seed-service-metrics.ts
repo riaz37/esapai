@@ -27,7 +27,7 @@ const client = createClient({
 
 const METRICS_BY_SLUG: Record<
   string,
-  { menuDescription: string; metrics: { value: string; label: string }[] }
+  { name?: string; menuDescription: string; metrics: { value: string; label: string }[] }
 > = {
   "integration-and-automation": {
     menuDescription:
@@ -39,8 +39,9 @@ const METRICS_BY_SLUG: Record<
     ],
   },
   "faas": {
+    name: "AI Agents FaaS",
     menuDescription:
-      "Scalable infrastructure for AI agents. Deploy intelligent agents in days, not months.",
+      "Scalable AI agent infrastructure. Deploy in days, not months.",
     metrics: [
       { value: "10x", label: "Faster Agent Setup" },
       { value: "85%", label: "Task Automation" },
@@ -49,7 +50,7 @@ const METRICS_BY_SLUG: Record<
   },
   "innovation-lab": {
     menuDescription:
-      "Applied AI R&D and rapid prototyping tailored to your industry challenges.",
+      "Applied AI R&D and rapid prototyping for your industry.",
     metrics: [
       { value: "3x", label: "Innovation Speed" },
       { value: "50+", label: "Prototypes Built" },
@@ -81,6 +82,7 @@ async function seed() {
 
     tx.patch(doc._id, (patch) =>
       patch.set({
+        ...(data.name ? { name: data.name } : {}),
         menuDescription: data.menuDescription,
         performanceMetrics: data.metrics.map((m) => ({
           _type: "object",
