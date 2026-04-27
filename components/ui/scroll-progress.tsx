@@ -1,43 +1,61 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLenis } from "@/components/providers/smooth-scroll-provider";
 
 export function ScrollProgress() {
     const thumbRef = useRef<HTMLDivElement>(null);
     const thumbRatioRef = useRef(0);
     const lenis = useLenis();
+    const pathname = usePathname();
+    const [isRTL, setIsRTL] = useState(false);
+
+    // Detect RTL on mount (dir is set on <html> by the locale layout)
+    useEffect(() => {
+        setIsRTL(document.documentElement.dir === "rtl");
+    }, [pathname]);
 
     const updateThumbSize = useCallback(() => {
-        const ratio = window.innerHeight / document.documentElement.scrollHeight;
-        thumbRatioRef.current = Math.max(ratio, 0.04); // min 4% so thumb never vanishes
+        const ratio = Math.max(window.innerHeight / document.documentElement.scrollHeight, 0.04);
+        thumbRatioRef.current = ratio;
         if (thumbRef.current) {
-            thumbRef.current.style.height = `${thumbRatioRef.current * 100}%`;
+            thumbRef.current.style.height = `${ratio * 100}%`;
         }
     }, []);
 
+    // Initial size + resize
     useEffect(() => {
         updateThumbSize();
-
-        // Recalculate when page height changes (lazy sections, ScrollTrigger.refresh, resize)
-        const ro = new ResizeObserver(updateThumbSize);
-        ro.observe(document.body);
         window.addEventListener("resize", updateThumbSize);
-
-        return () => {
-            ro.disconnect();
-            window.removeEventListener("resize", updateThumbSize);
-        };
+        return () => window.removeEventListener("resize", updateThumbSize);
     }, [updateThumbSize]);
 
+    // Reset thumb position on route change (Lenis may skip event if already at top)
+    useEffect(() => {
+        if (thumbRef.current) {
+            thumbRef.current.style.top = "0%";
+        }
+        updateThumbSize();
+    }, [pathname, updateThumbSize]);
+
+    // Keep thumb size accurate after ScrollTrigger.refresh() (triggered by LazySection loads)
+    useEffect(() => {
+        ScrollTrigger.addEventListener("refresh", updateThumbSize);
+        return () => ScrollTrigger.removeEventListener("refresh", updateThumbSize);
+    }, [updateThumbSize]);
+
+    // Update size + position atomically on every Lenis scroll event
     useEffect(() => {
         if (!lenis || !thumbRef.current) return;
 
         const handler = ({ progress }: { progress: number }) => {
-            if (thumbRef.current) {
-                const maxOffset = (1 - thumbRatioRef.current) * 100;
-                thumbRef.current.style.top = `${progress * maxOffset}%`;
-            }
+            if (!thumbRef.current) return;
+            const ratio = Math.max(window.innerHeight / document.documentElement.scrollHeight, 0.04);
+            thumbRatioRef.current = ratio;
+            thumbRef.current.style.height = `${ratio * 100}%`;
+            thumbRef.current.style.top = `${progress * (1 - ratio) * 100}%`;
         };
 
         lenis.on("scroll", handler);
@@ -46,7 +64,7 @@ export function ScrollProgress() {
 
     return (
         <div
-            className="fixed right-0 top-0 z-[9999] h-full w-[6px] bg-[var(--color-dark)]"
+            className={`fixed ${isRTL ? "left-0" : "right-0"} top-0 z-[9999] h-full w-[6px] bg-[var(--color-dark)]`}
             aria-hidden="true"
         >
             <div
