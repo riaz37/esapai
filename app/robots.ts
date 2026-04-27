@@ -89,6 +89,42 @@ export default function robots(): MetadataRoute.Robots {
           "/_next/",
         ],
       },
+      {
+        userAgent: "OAI-SearchBot",
+        allow: "/",
+        disallow: [
+          "/api/",
+          "/_next/",
+        ],
+        crawlDelay: 1,
+      },
+      {
+        userAgent: "meta-externalagent",
+        allow: "/",
+        disallow: [
+          "/api/",
+          "/_next/",
+        ],
+        crawlDelay: 1,
+      },
+      {
+        userAgent: "cohere-ai",
+        allow: "/",
+        disallow: [
+          "/api/",
+          "/_next/",
+        ],
+        crawlDelay: 1,
+      },
+      {
+        userAgent: "Bytespider",
+        allow: "/",
+        disallow: [
+          "/api/",
+          "/_next/",
+        ],
+        crawlDelay: 1,
+      },
     ],
     sitemap: sitemapUrl,
   };

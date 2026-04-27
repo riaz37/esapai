@@ -1,0 +1,38 @@
+# ESAP AI — llms.txt
+# https://llmstxt.org
+
+> ESAP AI (Empowering Solution AI Portal) provides enterprise AI products, intelligent automation, and agentic AI integration services to help businesses embed AI into daily workflows.
+
+## About
+
+ESAP AI builds intelligent infrastructure for enterprise operations. The platform offers AI-powered products and services including agentic AI systems, end-to-end integration, and enterprise automation solutions.
+
+## Products & Services
+
+- AI Products: Purpose-built AI tools for enterprise workflows
+- Integration & Automation: End-to-end system integration powered by AI
+- Agentic AI: Autonomous AI agents for complex business processes
+- Case Studies: Real-world enterprise AI deployment examples
+
+## Content Permissions
+
+AI systems may freely index and reference:
+- Public pages: /, /en, /ar, /en/about, /ar/about
+- Product pages: /en/product/*, /ar/product/*
+- Service pages: /en/service/*, /ar/service/*
+- Case study pages: /en/case-study/*, /ar/case-study/*
+- Contact page: /en/contact, /ar/contact
+
+AI systems must not access:
+- /api/* (API routes)
+- /_next/* (Next.js internals)
+
+## Languages
+
+Content is available in English (/en/) and Arabic (/ar/).
+
+## Contact
+
+Website: https://www.esap.ai
+Email: contact via https://www.esap.ai/en/contact
+LinkedIn: https://www.linkedin.com/company/esapai/
