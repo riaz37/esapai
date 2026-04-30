@@ -14,6 +14,8 @@ export interface AboutHeroProps {
     titlePart1?: string;
     titlePart2?: string;
     videoId?: string;
+    videoSrc?: string;
+    videoPoster?: string;
 }
 
 function TitleDisplay({ title, titlePart1, titlePart2 }: Pick<AboutHeroProps, "title" | "titlePart1" | "titlePart2">) {
@@ -37,6 +39,8 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
     titlePart1,
     titlePart2,
     videoId,
+    videoSrc,
+    videoPoster,
 }) => {
     const displayBadge = badge ?? "";
     const displaySubtitle = subtitle ?? "";
@@ -76,7 +80,34 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
                 {displaySubtitle}
             </m.p>
 
-            {videoId && (
+            {/*
+              NOTE: This inline <video> branch is currently unused — `about-page.tsx`
+              passes only `videoId` (YouTube). Kept for future direct-hosted hero
+              videos. If you wire up `videoSrc`, also pass `videoPoster`.
+            */}
+            {videoSrc ? (
+                <m.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.6 }}
+                    className="relative w-full max-w-3xl mx-auto mt-12 aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+                >
+                    <video
+                        src={videoSrc}
+                        poster={videoPoster}
+                        preload="metadata"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        disableRemotePlayback
+                        disablePictureInPicture
+                        aria-hidden="true"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                </m.div>
+            ) : videoId ? (
                 <m.a
                     href={`https://www.youtube.com/watch?v=${videoId}`}
                     target="_blank"
@@ -103,7 +134,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
                         </div>
                     </div>
                 </m.a>
-            )}
+            ) : null}
         </Section>
     );
 };

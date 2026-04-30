@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { m } from "motion/react";
 import { AboutNarrativeItem } from "@/lib/about-v2-data";
 
@@ -11,6 +11,21 @@ interface NarrativeItemProps {
     designation?: string;
 }
 
+const usePrefersReducedMotion = (): boolean => {
+    const [prefersReduced, setPrefersReduced] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === "undefined" || !window.matchMedia) return;
+        const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const update = () => setPrefersReduced(media.matches);
+        update();
+        media.addEventListener("change", update);
+        return () => media.removeEventListener("change", update);
+    }, []);
+
+    return prefersReduced;
+};
+
 export const NarrativeItem: React.FC<NarrativeItemProps> = ({
     item,
     isActive,
@@ -18,19 +33,31 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
     designation = "Designation",
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const prefersReducedMotion = usePrefersReducedMotion();
+    const [manuallyPlayed, setManuallyPlayed] = useState(false);
+
+    const hasVideo = Boolean(item.videoMp4 ?? item.videoWebm ?? item.video);
+    const shouldAutoPlay = hasVideo && !prefersReducedMotion;
 
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
-        if (isActive) {
+
+        if (isActive && shouldAutoPlay) {
+            video.play().catch(() => undefined);
+        } else if (isActive && prefersReducedMotion && manuallyPlayed) {
             video.play().catch(() => undefined);
         } else {
             video.pause();
         }
-    }, [isActive]);
+    }, [isActive, shouldAutoPlay, prefersReducedMotion, manuallyPlayed]);
+
+    const handleManualPlay = () => {
+        setManuallyPlayed(true);
+    };
 
     return (
-        <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+        <div className="relative w-full h-full flex items-center justify-center pointer-events-none lg:pr-36">
             <div className={`container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col ${isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"} items-center justify-center lg:justify-between relative h-full gap-4 lg:gap-8 z-10 max-w-[1400px] pt-20 md:pt-32`}>
 
                 {/* Details Block */}
@@ -93,15 +120,46 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
                     >
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
 
-                        {item.video ? (
-                            <video
-                                ref={videoRef}
-                                src={item.video}
-                                muted
-                                loop
-                                playsInline
-                                className="w-full h-full object-cover object-top"
-                            />
+                        {hasVideo ? (
+                            <>
+                                <video
+                                    ref={videoRef}
+                                    poster={item.poster}
+                                    muted
+                                    loop
+                                    playsInline
+                                    preload="metadata"
+                                    autoPlay={shouldAutoPlay}
+                                    disableRemotePlayback
+                                    disablePictureInPicture
+                                    aria-hidden="true"
+                                    className="w-full h-full object-cover object-top"
+                                >
+                                    {item.videoWebm ? (
+                                        <source src={item.videoWebm} type="video/webm" />
+                                    ) : null}
+                                    {item.videoMp4 ? (
+                                        <source src={item.videoMp4} type="video/mp4" />
+                                    ) : item.video ? (
+                                        <source src={item.video} />
+                                    ) : null}
+                                </video>
+
+                                {prefersReducedMotion && !manuallyPlayed ? (
+                                    <button
+                                        type="button"
+                                        onClick={handleManualPlay}
+                                        aria-label={`Play video for ${item.name}`}
+                                        className="pointer-events-auto absolute inset-0 z-20 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors"
+                                    >
+                                        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
+                                            <svg className="h-7 w-7 text-white ms-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </span>
+                                    </button>
+                                ) : null}
+                            </>
                         ) : (
                             <m.img
                                 initial={{ scale: 1.1 }}

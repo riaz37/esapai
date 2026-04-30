@@ -1,12 +1,29 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { m, AnimatePresence } from "motion/react";
 import { ABOUT_V2_DATA } from "@/lib/about-v2-data";
 import { NarrativeItem } from "../../components/narrative-item";
 import { SidebarNavigator } from "../../components/sidebar-navigator";
 import { useTranslations, useLocale } from "next-intl";
 import { useNarrativeFlow } from "@/lib/hooks/use-narrative-flow";
+
+interface NetworkInformation {
+    effectiveType?: string;
+    saveData?: boolean;
+}
+
+interface NavigatorWithConnection extends Navigator {
+    connection?: NetworkInformation;
+}
+
+const isFastConnection = (): boolean => {
+    if (typeof navigator === "undefined") return false;
+    const conn = (navigator as NavigatorWithConnection).connection;
+    if (!conn) return true; // Unknown — be optimistic on desktop.
+    if (conn.saveData) return false;
+    return conn.effectiveType === "4g" || conn.effectiveType === undefined;
+};
 
 export interface AboutNarrativeProps {
     data?: typeof ABOUT_V2_DATA;
@@ -40,19 +57,19 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
     const translatedData = useMemo(() => {
         const base = data && data.length > 0 ? data : ABOUT_V2_DATA;
         // If Sanity teamMembers provided, merge them with ABOUT_V2_DATA (photo/id structure)
-        const mergedBase = teamMembers && teamMembers.length > 0
-            ? teamMembers.map((member, index: number) => {
-                const v2Item = base[index] ?? base[0];
-                return {
-                    ...v2Item,
-                    id: String(member?.id ?? member?._key ?? `${v2Item.id}-${index}`),
-                    name: member.name ?? v2Item.name,
-                    price: member.role ?? v2Item.price,
-                    description: member.bio ?? v2Item.description,
-                    image: member.image ?? v2Item.image,
-                };
-            })
-            : base;
+        const mergedBase = base.map((v2Item, index) => {
+            const member = teamMembers && teamMembers[index];
+            if (!member) return v2Item;
+
+            return {
+                ...v2Item,
+                id: String(member?.id ?? member?._key ?? v2Item.id),
+                name: member.name ?? v2Item.name,
+                price: member.role ?? v2Item.price,
+                description: member.bio ?? v2Item.description,
+                image: member.image ?? v2Item.image,
+            };
+        });
 
         return mergedBase.map((item, index) => {
             // Fall back to i18n team translations if not using Sanity members
@@ -75,13 +92,34 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
         itemCount: items.length
     });
 
+    // Preload the NEXT slide's MP4 only when on a fast connection.
+    // This avoids aggressive pre-downloading on 2G/3G/save-data networks.
+    const nextItem = items[(activeIndex + 1) % items.length];
+    const preloadHref = nextItem?.videoMp4;
+
+    useEffect(() => {
+        if (!preloadHref) return;
+        if (!isFastConnection()) return;
+
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "video";
+        link.href = preloadHref;
+        link.type = "video/mp4";
+        document.head.appendChild(link);
+
+        return () => {
+            if (link.parentNode) link.parentNode.removeChild(link);
+        };
+    }, [preloadHref]);
+
     return (
         <div ref={containerRef} className="relative h-[1000vh] scroll-mt-20 md:scroll-mt-32">
-            <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
+            <div className="relative sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
 
                 {/* Sidebar Navigator - Right Side */}
-                <div className="absolute end-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
+                <div className="absolute right-12 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
                     <SidebarNavigator
                         items={items}
                         activeIndex={activeIndex}
