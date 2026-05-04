@@ -225,7 +225,11 @@ export function Footer() {
                   {t("newsletter.subtitle")}
                 </p>
                 <form className="w-full max-w-md space-y-4">
+                  <label htmlFor="newsletter-email" className="sr-only">
+                    {t("newsletter.placeholder")}
+                  </label>
                   <input
+                    id="newsletter-email"
                     type="email"
                     placeholder={t("newsletter.placeholder")}
                     required
