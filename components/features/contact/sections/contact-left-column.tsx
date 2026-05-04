@@ -80,44 +80,6 @@ export const ContactLeftColumn = forwardRef<
         {t("description")}
       </p>
 
-      {/* Social Media Section */}
-      <div className="space-y-4 sm:space-y-5 md:space-y-6 pt-6 sm:pt-7 md:pt-8">
-        <h2
-          data-gsap="contact-left-item"
-          className="text-gradient-primary text-lg sm:text-xl md:text-2xl font-semibold"
-        >
-          {t("social")}
-        </h2>
-        <div className="flex flex-wrap items-center gap-4 sm:gap-5 md:gap-6">
-          {socialLinks.map((social, index) => (
-            <a
-              key={social.name}
-              ref={(el) => { socialIconRefs.current[index] = el; }}
-              data-gsap="contact-social-icon"
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group w-11 h-11 flex items-center justify-center rounded-full transition-shadow duration-300 min-h-[44px] min-w-[44px]"
-              aria-label={social.name}
-              onMouseEnter={() => handleSocialHover(index, true)}
-              onMouseLeave={() => handleSocialHover(index, false)}
-            >
-              <span
-                data-gsap="contact-social-float"
-                className="inline-flex items-center justify-center"
-              >
-                <Image
-                  src={social.iconPath}
-                  alt={`${social.name} icon`}
-                  width={24}
-                  height={24}
-                  className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain"
-                />
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
     </div>
   );
 });
