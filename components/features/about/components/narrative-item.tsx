@@ -128,7 +128,7 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
                                     muted
                                     loop
                                     playsInline
-                                    preload="metadata"
+                                    preload={isActive ? "metadata" : "none"}
                                     autoPlay={shouldAutoPlay}
                                     disableRemotePlayback
                                     disablePictureInPicture
