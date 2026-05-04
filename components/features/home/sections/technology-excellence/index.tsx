@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Cpu } from "lucide-react";
+import { CircuitBoard } from "lucide-react";
 import { ShutterCanvas, ShutterCanvasHandle } from "./shutter-canvas";
 import { useShutterAnimation } from "@/lib/hooks/use-shutter-animation";
 import { useLocale } from "next-intl";
@@ -131,7 +131,7 @@ export function TechnologyExcellence({
                             title={displayTitle}
                             subtitle={displaySubtitle}
                             badge={badge ?? ""}
-                            badgeIcon={Cpu}
+                            badgeIcon={CircuitBoard}
                             align="center"
                             className="mb-0"
                         />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Cpu } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 import { SkeletonGrid } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -55,7 +55,7 @@ export function Achievement({
         <Section ref={sectionRef} padding="md" className="w-full bg-transparent overflow-hidden">
             <SectionHeader
                 badge={badge ?? ""}
-                badgeIcon={Cpu}
+                badgeIcon={Trophy}
                 title={displayTitle}
                 subtitle={displaySubtitle}
                 align="center"

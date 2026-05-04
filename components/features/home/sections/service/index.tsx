@@ -9,7 +9,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Cpu } from "lucide-react";
+import { Zap } from "lucide-react";
 import { useScrollReveal } from "@/lib/hooks/use-scroll-reveal";
 import { SkeletonGrid } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -176,7 +176,7 @@ export function Service({
         title={displayTitle}
         subtitle={displaySubtitle}
         badge={displayBadge}
-        badgeIcon={Cpu}
+        badgeIcon={Zap}
         align="center"
       />
 

@@ -21,40 +21,22 @@ export function ServiceCard({
     imageSrc,
 }: ServiceCardProps) {
     const cardRef = React.useRef<HTMLDivElement>(null);
-    const contentRef = React.useRef<HTMLDivElement>(null);
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const [isHovered, setIsHovered] = React.useState(false);
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = cardRef.current;
         if (!card) return;
-
         const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = ((y - centerY) / centerY) * -5; // Subtle 5 deg max
-        const rotateY = ((x - centerX) / centerX) * 5;
-
-        gsap.to(card, {
-            rotateX,
-            rotateY,
-            scale: 1.02,
-            duration: 0.5,
-            ease: "power2.out",
-            transformPerspective: 1000,
-        });
+        const rotateX = (((e.clientY - rect.top) / rect.height) - 0.5) * -10;
+        const rotateY = (((e.clientX - rect.left) / rect.width) - 0.5) * 10;
+        gsap.to(card, { rotateX, rotateY, scale: 1.02, duration: 0.5, ease: "power2.out", transformPerspective: 1000 });
     };
 
     const handleMouseEnter = () => {
         setIsHovered(true);
         if (videoRef.current) {
-            videoRef.current.play().catch(() => {
-                // Ignore auto-play errors
-            });
+            videoRef.current.play().catch(() => {});
         }
     };
 
@@ -64,15 +46,9 @@ export function ServiceCard({
             videoRef.current.pause();
             videoRef.current.currentTime = 0;
         }
-
-        if (!cardRef.current) return;
-        gsap.to(cardRef.current, {
-            rotateX: 0,
-            rotateY: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "power3.out",
-        });
+        if (cardRef.current) {
+            gsap.to(cardRef.current, { rotateX: 0, rotateY: 0, scale: 1, duration: 0.6, ease: "power3.out" });
+        }
     };
 
     return (
@@ -84,8 +60,7 @@ export function ServiceCard({
             onMouseLeave={handleMouseLeave}
         >
             <Card
-                ref={contentRef}
-                className={cn(
+className={cn(
                     "group relative overflow-hidden p-0 py-0 gap-0 flex flex-col h-full transition-all duration-300 border-none bg-zinc-950",
                 )}
             >
@@ -123,10 +98,6 @@ export function ServiceCard({
                 <div className="relative flex-1 min-h-[160px] z-10 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-primary/2 blur-[80px] rounded-full opacity-50 z-0" />
 
-                    {/* Light Sweep/Shimmer Effect */}
-                    <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent -translate-x-[200%] group-hover:animate-light-sweep skew-x-[-20deg]" />
-                    </div>
                 </div>
 
                 {/* Content Area */}
