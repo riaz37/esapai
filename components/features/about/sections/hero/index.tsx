@@ -2,9 +2,8 @@
 
 import React from "react";
 import { m } from "motion/react";
-import { Badge } from "@/components/ui/badge";
-
-
+import { BadgeChip } from "@/components/ui/badge-chip";
+import { Landmark } from "lucide-react";
 import { Section } from "@/components/ui/section";
 
 export interface AboutHeroProps {
@@ -57,9 +56,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
                 transition={{ duration: 0.8 }}
                 className="mb-8"
             >
-                <Badge variant="outline" className="px-4 py-1.5 text-xs sm:text-xs border-white/10 text-primary bg-white/5 backdrop-blur-sm rounded-full">
-                    {displayBadge}
-                </Badge>
+                <BadgeChip label={displayBadge} icon={Landmark} />
             </m.div>
 
             <m.h1
@@ -115,7 +112,7 @@ export const AboutHero: React.FC<AboutHeroProps> = ({
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.6 }}
-                    className="group relative block w-full max-w-3xl mx-auto mt-12 aspect-video rounded-2xl overflow-hidden shadow-2xl"
+                    className="group relative block w-full max-w-2xl mx-auto mt-12 aspect-video rounded-2xl overflow-hidden shadow-2xl"
                 >
                     {/* Thumbnail */}
                     <img

@@ -459,14 +459,23 @@ export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current 
 // Maps flat Sanity productDocument to the nested Product type used by client components
 import type { Product } from "@/types/product";
 
+const PRODUCT_MENU_ICONS: Record<string, string> = {
+    'erp':          '/products.menu_icons/ERP.png',
+    'ai-framework': '/products.menu_icons/AI Framwork.png',
+    'zakra':        '/products.menu_icons/zakra.png',
+    'jawib':        '/products.menu_icons/jwaib.png',
+    'fasih':        '/products.menu_icons/Fasih.png',
+};
+
 export function mapSanityProduct(doc: SanityDoc): Product {
+    const slug = doc.slug || doc._id;
     return {
-        id: doc.slug || doc._id,
+        id: slug,
         name: doc.name,
         description: doc.description,
         menuDescription: doc.menuDescription,
         slug: doc.slug,
-        icon: ensureImagePath(doc.icon, 'products'),
+        icon: PRODUCT_MENU_ICONS[slug] ?? ensureImagePath(doc.icon, 'products'),
         content: {
             hero: {
                 subtitle: doc.heroSubtitle,
@@ -578,12 +587,19 @@ export async function getSanityProductBySlug(slug: string, locale: string): Prom
 // ── Service Mapper ──
 import type { Service } from "@/types/service";
 
+const SERVICE_MENU_ICONS: Record<string, string> = {
+    'integration-and-automation': '/services.menu_icons/Automation.png',
+    'faas':                       '/services.menu_icons/Agent.png',
+    'innovation-lab':             '/services.menu_icons/Inovetion Lab.png',
+};
+
 export function mapSanityService(doc: SanityDoc): Service {
     const slug = doc.slug as string;
     return {
         id: slug || doc._id,
         name: doc.name,
         slug,
+        icon: SERVICE_MENU_ICONS[slug] ?? ensureImagePath(doc.icon, 'services'),
         menuDescription: doc.menuDescription,
         description: doc.heroSubtitle?.[0] || doc.problemSubtitle || "",
         content: {

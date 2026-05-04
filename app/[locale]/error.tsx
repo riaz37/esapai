@@ -70,7 +70,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <Button
             variant="primary"
             size="lg"
-            className="rounded-[32px] sm:rounded-[40px] px-10 sm:px-12 md:px-16 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
+            className="rounded-[32px] sm:rounded-[40px] py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold min-w-[140px] sm:min-w-[180px] min-h-[44px] sm:min-h-[48px]"
             onClick={reset}
           >
             {t("tryAgain")}
