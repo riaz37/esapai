@@ -41,7 +41,7 @@ export function ServicePortalVideoSection({ videoSrc, title, subtitle, badgeLabe
     }, { scope: containerRef });
 
     return (
-        <div ref={containerRef} className="relative w-full max-w-[1400px] mx-auto h-auto lg:min-h-screen flex flex-col py-20 sm:py-24 lg:py-0 overflow-visible">
+        <div ref={containerRef} className="relative w-full h-auto lg:min-h-screen flex flex-col py-20 sm:py-24 lg:py-0 overflow-visible">
 
 
             {/* Desktop Text Content - positioned on the right side */}
@@ -78,7 +78,7 @@ export function ServicePortalVideoSection({ videoSrc, title, subtitle, badgeLabe
             </div>
 
             {/* Video Container Wrapper */}
-            <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-0 relative lg:absolute lg:inset-0 z-20 pointer-events-none">
+            <div className="w-full px-4 sm:px-6 md:px-8 lg:px-0 relative lg:absolute lg:inset-0 z-20 pointer-events-none">
                 <div
                     ref={videoRef}
                     className="relative lg:absolute w-full shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 overflow-hidden aspect-video rounded-2xl lg:rounded-[48px] pointer-events-auto"

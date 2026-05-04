@@ -24,6 +24,7 @@ export function ServiceBeforeAfterSection({
       className="relative w-full scroll-mt-20 md:scroll-mt-32"
       padding="none"
       containerMaxWidth="full"
+      withContainer={false}
     >
       <ServicePortalVideoSection
         videoSrc={videoSrc}

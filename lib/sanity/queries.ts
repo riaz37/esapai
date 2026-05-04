@@ -621,7 +621,7 @@ export function mapSanityService(doc: SanityDoc): Service {
                 title: doc.featuresTitle,
                 subtitle: doc.featuresSubtitle,
                 badge: doc.featuresBadge,
-                centralNode: ensureImagePath(doc.featuresCentralNode, 'services'),
+                centralNode: doc.featuresCentralNode as string | undefined,
                 items: (doc.features as SanityDoc[] | undefined)?.map((item) => ({
                     title: item.title,
                     description: item.description,
