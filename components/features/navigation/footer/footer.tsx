@@ -152,14 +152,14 @@ export function Footer() {
                       key={icon.name}
                       href={icon.href}
                       target="_blank"
-                      className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-black transition-all duration-300 text-white border border-white/10"
+                      className="group w-11 h-11 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/15 hover:border-primary/50 transition-all duration-300 text-white border border-white/10"
                     >
                       <Image
                         src={icon.iconPath}
                         alt={icon.name}
                         width={18}
                         height={18}
-                        className="opacity-80 group-hover:opacity-100"
+                        className="opacity-70 transition-opacity duration-300 group-hover:opacity-100"
                       />
                     </Link>
                   ))}
