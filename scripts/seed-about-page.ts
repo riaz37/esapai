@@ -40,6 +40,7 @@ const ABOUT_DATA: Record<string, {
   historyHook: string;
   visionTitle: string;
   visionBody: string;
+  teamMembers: Array<{ name: string; role: string; bio: string; image: string }>;
 }> = {
   en: {
     heroBadge: "Legacy & Vision",

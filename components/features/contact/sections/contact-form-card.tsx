@@ -210,10 +210,10 @@ export const ContactFormCard = forwardRef<
                 variant="primary"
                 size="default"
                 disabled={!agreedToTerms || isSubmitting}
+                showArrow={!isSubmitting}
                 className="w-fit"
               >
-                {isSubmitting && <LoadingSpinner />}
-                {isSubmitting ? t("form.submitting") : t("form.submit")}
+                {isSubmitting ? <LoadingSpinner /> : t("form.submit")}
               </Button>
             </div>
 
