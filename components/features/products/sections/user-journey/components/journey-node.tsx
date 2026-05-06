@@ -30,8 +30,8 @@ export const JourneyNode = ({
                     : cn("absolute -translate-y-1/2", isRTL ? "translate-x-1/2" : "-translate-x-1/2")
             )}
             style={isMobile ? {} : {
-                insetInlineStart: node.position.x,
-                top: node.position.y,
+                insetInlineStart: `${(node.position.x / 1400) * 100}%`,
+                top: `${(node.position.y / 600) * 100}%`,
             }}
         >
             <div
@@ -40,7 +40,7 @@ export const JourneyNode = ({
                     "rounded-2xl overflow-hidden",
                     "border border-white/10 hover:border-primary/50 transition-all duration-500",
                     "bg-transparent backdrop-blur-3xl",
-                    "min-w-full md:min-w-[150px] p-4 md:p-6",
+                    "min-w-full md:min-w-[120px] p-3 md:p-4",
                     "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]",
                     "group-hover/node:scale-105 group-hover/node:shadow-[0_0_50px_rgba(19,245,132,0.15)]"
                 )}
@@ -48,7 +48,7 @@ export const JourneyNode = ({
                 <div className="absolute inset-0 bg-radial-at-t from-primary/5 to-transparent opacity-0 group-hover/node:opacity-100 transition-opacity duration-700" />
 
                 <div
-                    className="relative mb-3 md:mb-4 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-2xl border border-white/5 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.2)] transition-all"
+                    className="relative mb-2 md:mb-3 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-xl border border-white/5 bg-white/5 overflow-hidden shadow-[0_0_20px_rgba(19,245,132,0.1)] group-hover/node:shadow-[0_0_30px_rgba(19,245,132,0.2)] transition-all"
                     style={{ color: "var(--color-primary)" }}
                 >
                     {node.data.image ? (
@@ -56,7 +56,7 @@ export const JourneyNode = ({
                             src={node.data.image}
                             alt={node.data.title || ""}
                             fill
-                            sizes="64px"
+                            sizes="48px"
                             className="object-cover opacity-80 group-hover/node:opacity-100 transition-opacity duration-500"
                         />
                     ) : (

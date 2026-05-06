@@ -6,13 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLenis } from "@/components/providers/smooth-scroll-provider";
 
 export function ScrollProgress() {
+    const trackRef = useRef<HTMLDivElement>(null);
     const thumbRef = useRef<HTMLDivElement>(null);
     const thumbRatioRef = useRef(0);
     const lenis = useLenis();
     const pathname = usePathname();
     const [isRTL, setIsRTL] = useState(false);
 
-    // Detect RTL on mount (dir is set on <html> by the locale layout)
     useEffect(() => {
         setIsRTL(document.documentElement.dir === "rtl");
     }, [pathname]);
@@ -25,14 +25,12 @@ export function ScrollProgress() {
         }
     }, []);
 
-    // Initial size + resize
     useEffect(() => {
         updateThumbSize();
         window.addEventListener("resize", updateThumbSize);
         return () => window.removeEventListener("resize", updateThumbSize);
     }, [updateThumbSize]);
 
-    // Reset thumb position on route change (Lenis may skip event if already at top)
     useEffect(() => {
         if (thumbRef.current) {
             thumbRef.current.style.top = "0%";
@@ -40,13 +38,11 @@ export function ScrollProgress() {
         updateThumbSize();
     }, [pathname, updateThumbSize]);
 
-    // Keep thumb size accurate after ScrollTrigger.refresh() (triggered by LazySection loads)
     useEffect(() => {
         ScrollTrigger.addEventListener("refresh", updateThumbSize);
         return () => ScrollTrigger.removeEventListener("refresh", updateThumbSize);
     }, [updateThumbSize]);
 
-    // Update size + position atomically on every Lenis scroll event
     useEffect(() => {
         if (!lenis || !thumbRef.current) return;
 
@@ -62,14 +58,55 @@ export function ScrollProgress() {
         return () => lenis.off("scroll", handler);
     }, [lenis]);
 
+    // Track click — jump to clicked position
+    const handleTrackClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if (!trackRef.current || !lenis) return;
+        const rect = trackRef.current.getBoundingClientRect();
+        const clickRatio = (e.clientY - rect.top) / rect.height;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        lenis.scrollTo(clickRatio * maxScroll, { immediate: false });
+    }, [lenis]);
+
+    // Thumb drag
+    const handleThumbMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!trackRef.current || !lenis) return;
+
+        const startY = e.clientY;
+        const startScroll = window.scrollY;
+        const trackHeight = trackRef.current.getBoundingClientRect().height;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+        lenis.stop();
+
+        const onMove = (moveEvent: MouseEvent) => {
+            const delta = moveEvent.clientY - startY;
+            const scrollDelta = (delta / trackHeight) * maxScroll / (1 - thumbRatioRef.current);
+            lenis.scrollTo(Math.max(0, Math.min(maxScroll, startScroll + scrollDelta)), { immediate: true });
+        };
+
+        const onUp = () => {
+            lenis.start();
+            document.removeEventListener("mousemove", onMove);
+            document.removeEventListener("mouseup", onUp);
+        };
+
+        document.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseup", onUp);
+    }, [lenis]);
+
     return (
         <div
-            className={`fixed ${isRTL ? "left-0" : "right-0"} top-0 z-[9999] h-full w-[6px] bg-[var(--color-dark)]`}
+            ref={trackRef}
+            onClick={handleTrackClick}
+            className={`fixed ${isRTL ? "left-0" : "right-0"} top-0 z-[9999] h-full w-[6px] cursor-pointer bg-[var(--color-dark)]`}
             aria-hidden="true"
         >
             <div
                 ref={thumbRef}
-                className="absolute w-full rounded-[3px] bg-[var(--color-primary-opacity-50)]"
+                onMouseDown={handleThumbMouseDown}
+                className="absolute w-full cursor-grab rounded-[3px] bg-[var(--color-primary-opacity-50)] active:cursor-grabbing"
                 style={{ height: "0%", top: "0%" }}
             />
         </div>

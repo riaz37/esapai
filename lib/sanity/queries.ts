@@ -460,11 +460,11 @@ export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current 
 import type { Product } from "@/types/product";
 
 const PRODUCT_MENU_ICONS: Record<string, string> = {
-    'erp':          '/products.menu_icons/ERP.png',
-    'ai-framework': '/products.menu_icons/AI Framwork.png',
-    'zakra':        '/products.menu_icons/zakra.png',
-    'jawib':        '/products.menu_icons/jwaib.png',
-    'fasih':        '/products.menu_icons/Fasih.png',
+    'erp':          '/productsmenu_icons/ERP.png',
+    'ai-framework': '/productsmenu_icons/AI Framwork.png',
+    'zakra':        '/productsmenu_icons/zakra.png',
+    'jawib':        '/productsmenu_icons/jwaib.png',
+    'fasih':        '/productsmenu_icons/Fasih.png',
 };
 
 export function mapSanityProduct(doc: SanityDoc): Product {
@@ -588,9 +588,9 @@ export async function getSanityProductBySlug(slug: string, locale: string): Prom
 import type { Service } from "@/types/service";
 
 const SERVICE_MENU_ICONS: Record<string, string> = {
-    'integration-and-automation': '/services.menu_icons/Automation.png',
-    'faas':                       '/services.menu_icons/Agent.png',
-    'innovation-lab':             '/services.menu_icons/Inovetion Lab.png',
+    'integration-and-automation': '/servicemenu_icons/Automation.png',
+    'faas':                       '/servicemenu_icons/Agent.png',
+    'innovation-lab':             '/servicemenu_icons/Inovetion Lab.png',
 };
 
 export function mapSanityService(doc: SanityDoc): Service {

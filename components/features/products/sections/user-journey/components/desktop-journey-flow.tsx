@@ -109,6 +109,8 @@ export const DesktopJourneyFlow = ({
                             {/* SVG Edges */}
                             <svg
                                 className="absolute inset-0 w-full h-full pointer-events-none"
+                                viewBox="0 0 1400 600"
+                                preserveAspectRatio="none"
                                 style={isRTL ? { transform: "scaleX(-1)" } : undefined}
                             >
                                 {layer.edges.map((edge) => {
