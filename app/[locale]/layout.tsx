@@ -21,6 +21,7 @@ import { MotionProvider } from "@/components/providers/motion-provider";
 import { getSanityServices, getSanityProducts } from "@/lib/sanity/queries";
 import { SkipToContent } from "@/components/ui/skip-to-content";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 // Inter — body font for all locales
 const inter = Inter({
@@ -108,6 +109,7 @@ export default async function RootLayout(props: Readonly<{
                           <main id="main-content" className="flex-1">{children}</main>
                           <Footer />
                           <CookieConsentBanner />
+                          <ScrollProgress />
                           <ScrollToTop />
                         </IntroLoader>
                       </ServiceMenuProvider>
