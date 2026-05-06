@@ -99,7 +99,7 @@ export function GlobalLoader({
     <div
       ref={containerRef}
       className={cn(
-        "isolate flex min-h-screen w-full flex-col items-center justify-center gap-6 overflow-hidden bg-[#050505] text-white",
+        "isolate flex min-h-screen w-full flex-col items-center justify-center gap-6 overflow-hidden bg-black text-white",
         "before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top,rgba(19,245,132,0.18),transparent_60%)] before:content-['']",
         className
       )}

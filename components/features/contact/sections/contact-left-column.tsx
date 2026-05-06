@@ -65,11 +65,6 @@ export const ContactLeftColumn = forwardRef<
           <span className="text-primary">{t("title.part3")}</span>
         </h1>
 
-        {/* Accent Line */}
-        <div
-          data-gsap="contact-left-item"
-          className="h-[2px] w-24 bg-primary/80"
-        />
       </div>
 
       {/* Description */}

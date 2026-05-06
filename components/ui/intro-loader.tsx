@@ -123,7 +123,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                 when: "afterChildren"
                             }
                         }}
-                        className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-[#050505]"
+                        className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-black"
                         dir="ltr"
                     >
                         {/* Cinematic Grain Overlay - Static noise for better color accuracy */}
