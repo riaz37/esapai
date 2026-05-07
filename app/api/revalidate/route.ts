@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     }
 
     const tag = request.nextUrl.searchParams.get("tag") ?? "about";
-    revalidateTag(tag);
+    updateTag(tag);
 
     return NextResponse.json({ revalidated: true, tag });
 }
