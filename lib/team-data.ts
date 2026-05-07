@@ -15,8 +15,7 @@ export interface TeamMember {
     poster: string;
 }
 
-const memberVideoExtension = (name: string): "mp4" | "mov" =>
-    name === "Hamed Hasan" ? "mp4" : "mov";
+const memberVideoExtension = (_name: string): "mov" => "mov";
 
 const buildMember = (
     member: Omit<TeamMember, "video" | "videoMp4" | "videoWebm" | "poster">,
