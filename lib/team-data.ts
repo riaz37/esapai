@@ -81,6 +81,14 @@ export const teamData: TeamMember[] = [
     }),
     buildMember({
         id: "7",
+        slug: "salem-almtaery",
+        name: "Salem Almtaery",
+        role: "Human Resources Manager",
+        bio: "Human Resources Manager at ESAP AI, dedicated to building and supporting the talented team that drives ESAP's innovation and growth.",
+        image: "/team/Salem Almtaery.jpg",
+    }),
+    buildMember({
+        id: "8",
         slug: "alaa-said",
         name: "Alaa Said",
         role: "Chief Finance Officer",
@@ -88,7 +96,7 @@ export const teamData: TeamMember[] = [
         image: "/team/Alaa Said.jpg",
     }),
     buildMember({
-        id: "8",
+        id: "9",
         slug: "hamed-hasan",
         name: "Hamed Hasan",
         role: "Senior Software Engineer Lead",
@@ -96,7 +104,7 @@ export const teamData: TeamMember[] = [
         image: "/team/Hamed Hasan.jpg",
     }),
     buildMember({
-        id: "9",
+        id: "10",
         slug: "mohamed-mostafa",
         name: "Mohamed Mostafa",
         role: "Lead Software Engineer & Delivery Manager",
@@ -104,19 +112,11 @@ export const teamData: TeamMember[] = [
         image: "/team/Mohamed Mostafa.jpg",
     }),
     buildMember({
-        id: "10",
+        id: "11",
         slug: "osama-hassanein",
         name: "Osama Hassanein",
         role: "Head of Backend & System Architecture",
         bio: "Head of Backend Engineering & System Architecture at ESAP AI, designing the scalable infrastructure and distributed systems that power ESAP's agentic AI platform.",
         image: "/team/Osama Hassanein.jpg",
-    }),
-    buildMember({
-        id: "11",
-        slug: "abu-rasha",
-        name: "Abu Ra'sha",
-        role: "Human Resources Manager",
-        bio: "Human Resources Manager at ESAP AI, dedicated to building and supporting the talented team that drives ESAP's innovation and growth.",
-        image: "/team/Abu Ra'sha.jpg",
     }),
 ];
