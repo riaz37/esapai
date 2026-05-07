@@ -1,4 +1,4 @@
-import { updateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -9,7 +9,8 @@ export async function POST(request: NextRequest) {
     }
 
     const tag = request.nextUrl.searchParams.get("tag") ?? "about";
-    updateTag(tag);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (revalidateTag as any)(tag);
 
     return NextResponse.json({ revalidated: true, tag });
 }
