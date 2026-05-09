@@ -26,24 +26,35 @@ function ensureVideoPath(path: string | undefined): string | undefined {
 function ensureImagePath(path: string | undefined, defaultDir: string = 'images'): string | undefined {
     if (!path) return undefined;
     if (path.startsWith('http') || path.startsWith('//') || path.startsWith('data:')) return path;
-    
-    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    
+
+    let cleanPath = path.startsWith('/') ? path.slice(1) : path;
+
+    // Rewrite renamed directories
+    if (cleanPath.startsWith('bentogird/')) {
+        cleanPath = 'bento-grid/' + cleanPath.slice('bentogird/'.length);
+    }
+
     // Check for common directories
     if (
-        cleanPath.startsWith('branding/') || 
-        cleanPath.startsWith('landing/') || 
-        cleanPath.startsWith('products/') || 
+        cleanPath.startsWith('branding/') ||
+        cleanPath.startsWith('landing/') ||
+        cleanPath.startsWith('products/') ||
         cleanPath.startsWith('product-icons/') ||
         cleanPath.startsWith('product-images/') ||
+        cleanPath.startsWith('bento-grid/') ||
         cleanPath.startsWith('patterns/') ||
         cleanPath.startsWith('team/') ||
         cleanPath.startsWith('partners/') ||
         cleanPath.startsWith('services/')
     ) {
+        // Lowercase the filename for partners/ to match actual files on case-sensitive filesystems
+        if (cleanPath.startsWith('partners/')) {
+            const filename = cleanPath.slice('partners/'.length).toLowerCase();
+            return `/partners/${filename}`;
+        }
         return `/${cleanPath}`;
     }
-    
+
     return `/${defaultDir}/${cleanPath}`;
 }
 
@@ -269,6 +280,7 @@ export function mapSanityHome(doc: SanityDoc): SanityDoc {
     const missionCards = Array.isArray(doc.missionCards) ? doc.missionCards : [];
     const technologyCards = Array.isArray(doc.technologyCards) ? doc.technologyCards : [];
     const partners = Array.isArray(doc.partners) ? doc.partners : [];
+    const services = Array.isArray(doc.services) ? doc.services : [];
     return {
         ...doc,
         missionCards: missionCards.map((card: SanityDoc) => ({
@@ -282,6 +294,10 @@ export function mapSanityHome(doc: SanityDoc): SanityDoc {
         partners: partners.map((partner: SanityDoc) => ({
             ...partner,
             logo: ensureImagePath(partner.logo as string | undefined, 'partners'),
+        })),
+        services: services.map((service: SanityDoc) => ({
+            ...service,
+            image: ensureImagePath(service.image as string | undefined, 'bento-grid'),
         })),
     };
 }
