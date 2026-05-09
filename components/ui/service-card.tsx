@@ -82,15 +82,17 @@ className={cn(
                     {videoSrc && (
                         <video
                             ref={videoRef}
-                            src={videoSrc}
                             loop
                             muted
                             playsInline
+                            preload="none"
                             className={cn(
                                 "absolute inset-0 w-full h-full object-cover mix-blend-screen transition-opacity duration-500",
                                 isHovered ? "opacity-90" : "opacity-0"
                             )}
-                        />
+                        >
+                            <source src={videoSrc} type="video/mp4" />
+                        </video>
                     )}
                 </div>
 

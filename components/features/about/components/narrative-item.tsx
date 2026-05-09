@@ -135,6 +135,9 @@ export const NarrativeItem: React.FC<NarrativeItemProps> = ({
                                     aria-hidden="true"
                                     className="w-full h-full object-cover object-top"
                                 >
+                                    {item.videoAv1 ? (
+                                        <source src={item.videoAv1} type="video/webm; codecs=av01" />
+                                    ) : null}
                                     {item.videoWebm ? (
                                         <source src={item.videoWebm} type="video/webm" />
                                     ) : null}

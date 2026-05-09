@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -13,13 +13,33 @@ import { useLocale } from "next-intl";
 import type { PartnerData } from "@/components/features/home/sections/trusted-partners";
 
 const DEFAULT_PARTNERS = [
-    { logo: "/partners/EMp.svg", alt: "Partner 1" },
-    { logo: "/partners/EMp-1.svg", alt: "Partner 2" },
-    { logo: "/partners/EMp-2-1.svg", alt: "Partner 3" },
-    { logo: "/partners/EMp-3.svg", alt: "Partner 4" },
-    { logo: "/partners/EMp-4.svg", alt: "Partner 5" },
-    { logo: "/partners/EMp-5.svg", alt: "Partner 6" },
+    { logo: "/partners/emp.svg", alt: "Partner 1" },
+    { logo: "/partners/emp-1.svg", alt: "Partner 2" },
+    { logo: "/partners/emp-2.svg", alt: "Partner 3" },
+    { logo: "/partners/emp-3.svg", alt: "Partner 4" },
+    { logo: "/partners/emp-4.svg", alt: "Partner 5" },
+    { logo: "/partners/emp-5.svg", alt: "Partner 6" },
 ];
+
+function PartnerItem({ partner }: { partner: { id: string; logo: string; alt: string } }) {
+    const [broken, setBroken] = useState(false);
+    if (broken || !partner.logo) return null;
+    return (
+        <div className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 group/partner transition-all duration-300">
+            <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center">
+                <div className="absolute inset-0 bg-primary/0 group-hover/partner:bg-primary/10 blur-2xl rounded-full transition-all duration-700" />
+                <Image
+                    src={partner.logo}
+                    alt={partner.alt || ""}
+                    fill
+                    className="object-contain opacity-40 brightness-0 invert group-hover/partner:opacity-100 group-hover/partner:brightness-100 group-hover/partner:scale-110 transition-all duration-500 ease-out"
+                    sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
+                    onError={() => setBroken(true)}
+                />
+            </div>
+        </div>
+    );
+}
 
 export interface TechnologyExcellenceProps {
     title?: string;
@@ -143,21 +163,7 @@ export function TechnologyExcellence({
                     <div className="relative flex overflow-hidden">
                         <div ref={marqueeRef} className="flex whitespace-nowrap">
                             {MARQUEE_PARTNERS.map((partner) => (
-                                <div
-                                    key={partner.id}
-                                    className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 group/partner transition-all duration-300"
-                                >
-                                    <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center">
-                                        <div className="absolute inset-0 bg-primary/0 group-hover/partner:bg-primary/10 blur-2xl rounded-full transition-all duration-700" />
-                                        <Image
-                                            src={partner.logo}
-                                            alt={partner.alt || ""}
-                                            fill
-                                            className="object-contain opacity-40 brightness-0 invert group-hover/partner:opacity-100 group-hover/partner:brightness-100 group-hover/partner:scale-110 transition-all duration-500 ease-out"
-                                            sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
-                                        />
-                                    </div>
-                                </div>
+                                <PartnerItem key={partner.id} partner={partner} />
                             ))}
                         </div>
                     </div>

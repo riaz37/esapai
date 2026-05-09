@@ -16,7 +16,7 @@ export const products: Product[] = [
         centerIcon: "/products/voiceerp.webp",
         centerIconAlt: "Voice ERP Icon",
         heroVideo: "/videos/KB.mp4",
-        demoVideo: "/productvideos/CRM.mp4",
+        demoVideo: "/product-videos/crm.mp4",
         tagline: "Operational Intelligence",
       },
       mission: {
@@ -128,7 +128,7 @@ export const products: Product[] = [
         centerIcon: "/products/ai-framework.svg", // This one was 29K, keeping as SVG unless larger one found
         centerIconAlt: "AI Framework Icon",
         heroVideo: "/videos/KB.mp4",
-        demoVideo: "/productvideos/AIF.mp4",
+        demoVideo: "/product-videos/ai-framework.mp4",
         tagline: "Agent Orchestration",
       },
       mission: {
@@ -240,7 +240,7 @@ export const products: Product[] = [
         centerIcon: "/products/zakra.svg",
         centerIconAlt: "Zakra Knowledge Agent Icon",
         heroVideo: "/videos/KB.mp4",
-        demoVideo: "/productvideos/KB.mp4",
+        demoVideo: "/product-videos/zakra.mp4",
         tagline: "Knowledge Synthesis",
       },
       mission: {
@@ -352,7 +352,7 @@ export const products: Product[] = [
         centerIcon: "/products/jawib.svg",
         centerIconAlt: "Jawib Customer Service Agent Icon",
         heroVideo: "/videos/KB.mp4",
-        demoVideo: "/productvideos/JW.mp4",
+        demoVideo: "/product-videos/jawib.mp4",
         tagline: "Service Automation",
       },
       mission: {
@@ -464,7 +464,7 @@ export const products: Product[] = [
         centerIcon: "/products/fasih.webp",
         centerIconAlt: "Fasih Arabic LLM Icon",
         heroVideo: "/videos/KB.mp4",
-        demoVideo: "/productvideos/Fa.mp4",
+        demoVideo: "/product-videos/fasih.mp4",
         tagline: "Cultural Nuance",
       },
       mission: {

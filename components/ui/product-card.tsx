@@ -99,14 +99,24 @@ export function ProductCard({ product, index: _index, videoRef: _videoRef, class
                         <div className="relative w-full h-full bg-white/[0.02] rounded-2xl overflow-hidden flex items-center justify-center z-20 backdrop-blur-sm border border-white/5">
                             {product.content?.hero?.demoVideo ? (
                                 <div className="relative w-full h-full">
-                                    <OptimizedVideo
-                                        src={product.content.hero.demoVideo}
-                                        autoPlay
-                                        loop
-                                        muted
-                                        playsInline
-                                        className="w-full h-full object-cover"
-                                    />
+                                    {(() => {
+                                        const mp4 = product.content!.hero!.demoVideo!;
+                                        const base = mp4.replace(/\.mp4$/, '');
+                                        return (
+                                            <OptimizedVideo
+                                                src={mp4}
+                                                webmSrc={`${base}.webm`}
+                                                av1Src={`${base}.av1.webm`}
+                                                poster={`${base}-poster.jpg`}
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                priority
+                                                className="w-full h-full object-cover"
+                                            />
+                                        );
+                                    })()}
                                     {/* Overlay for cinematic feel */}
                                     <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent pointer-events-none" />
                                 </div>

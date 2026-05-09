@@ -14,13 +14,13 @@ export type CinematicProblemItem = CinematicProblemConfig & CinematicProblemText
 
 export const MARCO_FRAMES = {
     problem: [
-        "/logo/marco/Angry-01.svg",
-        "/logo/marco/Angry-02.svg"
+        "/logo/marco/angry-01.svg",
+        "/logo/marco/angry-02.svg"
     ],
     solution: [
-        "/logo/marco/Smill face-01.svg",
-        "/logo/marco/Smill face-02.svg",
-        "/logo/marco/Smill face03.svg"
+        "/logo/marco/smile-01.svg",
+        "/logo/marco/smile-02.svg",
+        "/logo/marco/smile-03.svg"
     ]
 };
 

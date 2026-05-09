@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import ReactDOM from "react-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +12,12 @@ import { Play } from "lucide-react";
 import { OptimizedVideo } from "@/components/ui/optimized-video";
 import type { Product } from "@/types/product";
 
+// AV1 variants exist only where encoding produced a smaller file than H.264.
+const AV1_VIDEO_MAP: Record<string, string> = {
+    "/product-videos/fasih.mp4": "/product-videos/fasih.av1.webm",
+    "/product-videos/ai-framework.mp4": "/product-videos/ai-framework.av1.webm",
+    "/videos/fasih-demo.mp4": "/videos/fasih-demo.av1.webm",
+};
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -28,6 +35,9 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
     const videoWrapperRef = useRef<HTMLDivElement>(null);
 
     const demoVideo = product?.content?.hero?.demoVideo ?? "/videos/fasih-demo.mp4";
+    const demoVideoAv1 = AV1_VIDEO_MAP[demoVideo];
+
+    ReactDOM.preload(demoVideo, { as: "video", fetchPriority: "high" });
 
     useGSAP(() => {
         if (!containerRef.current || !videoWrapperRef.current) return;
@@ -180,10 +190,12 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
                         <div className="relative w-full h-full">
                             <OptimizedVideo
                                 src={demoVideo}
+                                av1Src={demoVideoAv1}
                                 autoPlay
                                 loop
                                 muted
                                 playsInline
+                                priority
                                 className="w-full h-full object-cover"
                             />
 

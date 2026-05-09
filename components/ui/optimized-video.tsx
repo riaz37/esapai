@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 interface OptimizedVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
     src: string;
+    webmSrc?: string;
+    av1Src?: string;
     poster?: string;
     className?: string;
     priority?: boolean;
@@ -14,51 +16,73 @@ interface OptimizedVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement
     rootMargin?: string;
 }
 
-/**
- * A video component that defers loading and playback until it's close to the viewport.
- * Uses Intersection Observer via framer-motion's useInView.
- */
 export function OptimizedVideo({
     src,
+    webmSrc,
+    av1Src,
     poster,
     className,
     priority = false,
     threshold = 0.1,
     rootMargin = "200px 0px",
+    autoPlay,
+    preload,
     ...props
 }: OptimizedVideoProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Use rootMargin to start loading before it's actually visible
     const isInView = useInView(containerRef, {
         once: true,
-        margin: rootMargin as `${number}px` | `${number}px ${number}px` | `${number}px ${number}px ${number}px` | `${number}px ${number}px ${number}px ${number}px`,
         amount: threshold,
     });
 
-    // Derive shouldLoad from props and viewport state — no useState/useEffect cascade
+    const isVisible = useInView(containerRef, {
+        once: false,
+        amount: 0,
+    });
+
     const shouldLoad = priority || isInView;
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video || !autoPlay) return;
+        if (isVisible) {
+            video.play().catch(() => {});
+        } else {
+            video.pause();
+        }
+    }, [isVisible, autoPlay]);
+
+    useEffect(() => {
+        const onVisibility = () => { if (document.hidden) videoRef.current?.pause(); };
+        document.addEventListener("visibilitychange", onVisibility);
+        return () => document.removeEventListener("visibilitychange", onVisibility);
+    }, []);
 
     return (
         <div ref={containerRef} className={cn("relative overflow-hidden w-full h-full", className)}>
             {shouldLoad ? (
                 <video
                     ref={videoRef}
-                    src={src}
                     poster={poster}
+                    preload={preload ?? (priority ? "auto" : "none")}
+                    {...(priority ? { fetchPriority: "high" } : {})}
                     className="w-full h-full object-cover"
                     {...props}
                 >
-                    <source src={src} type={src.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+                    {av1Src && <source src={av1Src} type="video/webm; codecs=av01" />}
+                    {webmSrc && <source src={webmSrc} type="video/webm" />}
+                    <source src={src} type="video/mp4" />
                 </video>
             ) : (
-                <div className="w-full h-full bg-neutral-900/50 flex items-center justify-center">
+                <div aria-hidden="true" className="w-full h-full bg-neutral-900">
                     {poster && (
                         <Image
                             src={poster}
-                            alt="Video thumbnail"
+                            alt=""
                             fill
+                            priority={priority}
                             sizes="100vw"
                             className="object-cover opacity-50"
                         />

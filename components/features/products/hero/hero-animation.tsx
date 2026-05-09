@@ -18,7 +18,7 @@ export function HeroAnimation({
   frameCount = 408,
   framePrefix = "/animations/product-hero/frame_",
   frameExtension = ".jpg",
-  backgroundImage = "/comic.png",
+  backgroundImage = "/images/comic.png",
 }: HeroAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);

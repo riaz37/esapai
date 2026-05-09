@@ -143,12 +143,12 @@ export function Service({
     switch (index) {
       case 0:
         return {
-          videoSrc: "/services/girdvideo.mp4",
+          videoSrc: "/services/grid-video.mp4",
           imageSrc: "/services/grid1.png",
         };
       case 1:
         return {
-          videoSrc: "/services/gird2.mp4",
+          videoSrc: "/services/grid-2.mp4",
           imageSrc: "/services/gridvideo2.png",
         };
       case 2:

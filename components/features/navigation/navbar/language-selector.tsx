@@ -6,8 +6,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const locales = [
-    { code: "en", flag: "/united-states.svg" },
-    { code: "ar", flag: "/saudi-arabia.svg" },
+    { code: "en", flag: "/flags/united-states.svg" },
+    { code: "ar", flag: "/flags/saudi-arabia.svg" },
 ] as const;
 
 export function LanguageSelector({ className }: { className?: string, visible?: boolean }) {

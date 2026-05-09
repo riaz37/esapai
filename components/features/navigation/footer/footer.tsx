@@ -91,6 +91,7 @@ export function Footer() {
                 muted
                 loop
                 playsInline
+                preload="none"
                 className="absolute inset-0 w-full h-full object-cover object-left-top transition-opacity duration-500"
                 style={{ opacity: ctaCardHovered ? 0.3 : 0 }}
               />
@@ -135,6 +136,7 @@ export function Footer() {
                 muted
                 loop
                 playsInline
+                preload="none"
                 className="absolute inset-0 w-full h-full object-cover object-right transition-opacity duration-500"
                 style={{ opacity: socialCardHovered ? 0.3 : 0 }}
               />
@@ -194,6 +196,7 @@ export function Footer() {
               muted
               loop
               playsInline
+              preload="none"
               className="absolute inset-0 w-full h-full object-cover object-right transition-opacity duration-500"
               style={{ opacity: menuCardHovered ? 0.2 : 0 }}
             />

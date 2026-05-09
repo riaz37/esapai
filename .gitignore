@@ -55,6 +55,11 @@ next-env.d.ts
 
 # large original assets
 public/*_orig.mp4
+public/members-videos/*.mov
+public/videos/originals/
+public/productvideos/originals/
+public/product-videos/originals/
+public/services/originals/
 /.studio
 
 .gstack/

@@ -8,9 +8,9 @@ import { ReelHeader } from "./reel-header";
 import { ReelStage } from "./reel-stage";
 
 const DEFAULT_REEL_IMAGES = [
-    '/productimages/Slide-22.webp',
-    '/productimages/Slide-23.webp',
-    '/productimages/Slide-24.webp',
+    '/product-images/Slide-22.webp',
+    '/product-images/Slide-23.webp',
+    '/product-images/Slide-24.webp',
 ];
 
 interface ProductCinematicReelSectionProps {

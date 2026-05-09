@@ -167,7 +167,7 @@ export function DropdownMenu({
         >
           {/* Background: static mesh — top-right, rotated 180deg */}
           <img
-            src="/footerbg.png"
+            src="/images/footerbg.png"
             alt=""
             aria-hidden="true"
             className="absolute top-0 end-0 w-full h-auto pointer-events-none select-none"

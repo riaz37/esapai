@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -11,13 +11,33 @@ if (typeof window !== "undefined") {
 }
 
 const DEFAULT_PARTNERS = [
-    { logo: "/partners/EMp.svg", alt: "" },
-    { logo: "/partners/EMp-1.svg", alt: "" },
-    { logo: "/partners/EMp-2-1.svg", alt: "" },
-    { logo: "/partners/EMp-3.svg", alt: "" },
-    { logo: "/partners/EMp-4.svg", alt: "" },
-    { logo: "/partners/EMp-5.svg", alt: "" },
+    { logo: "/partners/emp.svg", alt: "" },
+    { logo: "/partners/emp-1.svg", alt: "" },
+    { logo: "/partners/emp-2.svg", alt: "" },
+    { logo: "/partners/emp-3.svg", alt: "" },
+    { logo: "/partners/emp-4.svg", alt: "" },
+    { logo: "/partners/emp-5.svg", alt: "" },
 ];
+
+function PartnerItem({ partner }: { partner: { id: string; logo: string; alt: string } }) {
+    const [broken, setBroken] = useState(false);
+    if (broken || !partner.logo) return null;
+    return (
+        <div className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 cursor-pointer">
+            <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center overflow-hidden">
+                <div className="partner-glow absolute inset-0 blur-2xl rounded-full" />
+                <Image
+                    src={partner.logo}
+                    alt={partner.alt || ""}
+                    fill
+                    className="object-contain opacity-40 brightness-0 invert"
+                    sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
+                    onError={() => setBroken(true)}
+                />
+            </div>
+        </div>
+    );
+}
 
 export interface PartnerData {
     logo: string;
@@ -104,23 +124,7 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
                 {/* Marquee Row */}
                 <div ref={marqueeRef} className="flex whitespace-nowrap">
                     {MARQUEE_PARTNERS.map((partner) => (
-                        <div
-                            key={partner.id}
-                            className="partner-item flex items-center justify-center px-8 sm:px-12 md:px-16 cursor-pointer"
-                        >
-                            <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24 flex items-center justify-center overflow-hidden">
-                                {/* Soft Glow behind logo */}
-                                <div className="partner-glow absolute inset-0 blur-2xl rounded-full" />
-
-                                <Image
-                                    src={partner.logo}
-                                    alt={partner.alt || ""}
-                                    fill
-                                    className="object-contain opacity-40 brightness-0 invert"
-                                    sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
-                                />
-                            </div>
-                        </div>
+                        <PartnerItem key={partner.id} partner={partner} />
                     ))}
                 </div>
             </div>

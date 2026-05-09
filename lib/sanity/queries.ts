@@ -34,8 +34,8 @@ function ensureImagePath(path: string | undefined, defaultDir: string = 'images'
         cleanPath.startsWith('branding/') || 
         cleanPath.startsWith('landing/') || 
         cleanPath.startsWith('products/') || 
-        cleanPath.startsWith('product_icons/') || 
-        cleanPath.startsWith('productimages/') ||
+        cleanPath.startsWith('product-icons/') ||
+        cleanPath.startsWith('product-images/') ||
         cleanPath.startsWith('patterns/') ||
         cleanPath.startsWith('team/') ||
         cleanPath.startsWith('partners/') ||
@@ -327,10 +327,23 @@ export function mapSanityAbout(doc: SanityDoc): SanityDoc {
     const historyPhases = Array.isArray(doc.historyPhases) ? doc.historyPhases : [];
     return {
         ...doc,
-        teamMembers: teamMembers.map((member: SanityDoc) => ({
-            ...member,
-            image: ensureImagePath(member.image as string | undefined, 'team'),
-        })),
+        teamMembers: teamMembers.map((member: SanityDoc) => {
+            const rawImage = member.image as string | undefined;
+            const memberName = member.name as string | undefined;
+            let normalizedImage: string | undefined;
+            if (!rawImage) {
+                normalizedImage = undefined;
+            } else if (rawImage.startsWith('http') || rawImage.startsWith('//') || rawImage.startsWith('data:')) {
+                normalizedImage = rawImage;
+            } else if (memberName) {
+                const kebab = memberName.toLowerCase().replace(/\./g, '').trim().replace(/\s+/g, '-');
+                normalizedImage = `/team/${kebab}.jpg`;
+            } else {
+                const filename = rawImage.split('/').pop() ?? '';
+                normalizedImage = `/team/${filename.toLowerCase().replace(/\./g, '').replace(/\s+/g, '-')}`;
+            }
+            return { ...member, image: normalizedImage };
+        }),
         historyPhases: historyPhases.map((phase: SanityDoc) => ({
             ...phase,
             image: ensureImagePath(phase.image as string | undefined, 'images'),
@@ -460,11 +473,11 @@ export const serviceBySlugQuery = `*[_type == "serviceDocument" && slug.current 
 import type { Product } from "@/types/product";
 
 const PRODUCT_MENU_ICONS: Record<string, string> = {
-    'erp':          '/productsmenu_icons/ERP.png',
-    'ai-framework': '/productsmenu_icons/AI Framwork.png',
-    'zakra':        '/productsmenu_icons/zakra.png',
-    'jawib':        '/productsmenu_icons/jwaib.png',
-    'fasih':        '/productsmenu_icons/Fasih.png',
+    'erp':          '/products-menu-icons/ERP.png',
+    'ai-framework': '/products-menu-icons/ai-framework.png',
+    'zakra':        '/products-menu-icons/zakra.png',
+    'jawib':        '/products-menu-icons/jawib.png',
+    'fasih':        '/products-menu-icons/Fasih.png',
 };
 
 export function mapSanityProduct(doc: SanityDoc): Product {
@@ -540,9 +553,10 @@ export function mapSanityProduct(doc: SanityDoc): Product {
                 badge: doc.architectureBadge,
                 subtitle: doc.architectureSubtitle,
                 reelImages: doc.architectureReelImages?.map((img: string) => {
-                    const normalized = img.includes('/productimages/') ? img.replace('.png', '.webp') : img;
-                    return ensureImagePath(normalized, 'productimages');
-                }),
+                    const filename = img.split('/').pop();
+                    if (!filename) return undefined;
+                    return `/product-images/${filename.replace(/\.png$/i, '.webp')}`;
+                }).filter((img): img is string => !!img),
             } : undefined,
             cinematic: (doc.challengesBadge || doc.cinematicNarrative || doc.cinematicProblems) ? {
                 challenges: (doc.challengesBadge || doc.challengesTitlePart1 || doc.challengesTitlePart2 || doc.challengesSubtitle) ? {
@@ -588,9 +602,9 @@ export async function getSanityProductBySlug(slug: string, locale: string): Prom
 import type { Service } from "@/types/service";
 
 const SERVICE_MENU_ICONS: Record<string, string> = {
-    'integration-and-automation': '/servicemenu_icons/Automation.png',
-    'faas':                       '/servicemenu_icons/Agent.png',
-    'innovation-lab':             '/servicemenu_icons/Inovetion Lab.png',
+    'integration-and-automation': '/service-menu-icons/Automation.png',
+    'faas':                       '/service-menu-icons/Agent.png',
+    'innovation-lab':             '/service-menu-icons/Inovetion Lab.png',
 };
 
 export function mapSanityService(doc: SanityDoc): Service {

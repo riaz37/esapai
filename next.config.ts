@@ -146,11 +146,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/members-videos/:path*",
+        source: "/:path*.(mp4|webm|mov)",
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
+          },
+          {
+            key: "Accept-Ranges",
+            value: "bytes",
           },
         ],
       },

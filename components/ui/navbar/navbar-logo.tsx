@@ -13,7 +13,7 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
         >
             <div className="flex shrink-0 items-center gap-2">
                 <Image
-                    src="/logo/mainlogo.png"
+                    src="/logo/mainlogo.webp"
                     alt="Main Logo"
                     width={40}
                     height={40}
