@@ -572,7 +572,7 @@ export function mapSanityProduct(doc: SanityDoc): Product {
                     const filename = img.split('/').pop();
                     if (!filename) return undefined;
                     return `/product-images/${filename.replace(/\.png$/i, '.webp')}`;
-                }).filter((img): img is string => !!img),
+                }).filter((img: string | undefined): img is string => !!img),
             } : undefined,
             cinematic: (doc.challengesBadge || doc.cinematicNarrative || doc.cinematicProblems) ? {
                 challenges: (doc.challengesBadge || doc.challengesTitlePart1 || doc.challengesTitlePart2 || doc.challengesSubtitle) ? {
