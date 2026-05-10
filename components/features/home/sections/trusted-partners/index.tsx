@@ -64,7 +64,7 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
 
         // Reveal the section
         gsap.fromTo(sectionRef.current,
-            { opacity: 0, y: 40, scale: 0.95, filter: "blur(4px)" },
+            { opacity: 0, y: 40, scale: 0.95, filter: "blur(4px)", immediateRender: false },
             {
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -83,7 +83,7 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
 
         // Staggered logo reveal
         gsap.fromTo(logos,
-            { opacity: 0, scale: 0.8, y: 10 },
+            { opacity: 0, scale: 0.8, y: 10, immediateRender: false },
             {
                 opacity: 1,
                 scale: 1,

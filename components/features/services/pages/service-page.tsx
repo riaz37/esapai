@@ -42,11 +42,14 @@ export function ServicePage({ slug, initialService }: ServicePageClientProps) {
   const hydratedService = service ?? initialService;
   const content = hydratedService.content ?? {};
 
-  const heroSubtitle = content.hero?.subtitle ?? [
-    hydratedService.description,
-    t("defaultHeroSubtitle1"),
-    t("defaultHeroSubtitle2"),
-  ];
+  const rawSubtitle = content.hero?.subtitle;
+  const heroSubtitle = Array.isArray(rawSubtitle) && rawSubtitle.length > 0
+    ? rawSubtitle
+    : [
+        hydratedService.description,
+        t("defaultHeroSubtitle1"),
+        t("defaultHeroSubtitle2"),
+      ];
   const featuresContent = content.features;
   const features = featuresContent?.items ?? [];
   const problemContent = content.problem;

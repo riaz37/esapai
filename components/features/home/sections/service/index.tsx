@@ -97,6 +97,7 @@ export function Service({
             y: isDesktop ? entryY : 60,
             rotateY: isDesktop ? rotateY : 0,
             scale: 0.85,
+            immediateRender: false,
           },
           {
             scrollTrigger: {

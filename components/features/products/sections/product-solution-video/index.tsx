@@ -65,7 +65,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
         const children = Array.from(header.children);
         gsap.fromTo(
           children,
-          { y: 30, opacity: 0, filter: "blur(10px)" },
+          { y: 30, opacity: 0, filter: "blur(10px)", immediateRender: false },
           {
             y: 0,
             opacity: 1,
@@ -82,18 +82,18 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
         );
       }
 
-      // 1. Initial State: Deep in 3D Space
-      gsap.set(videoWrapperRef.current, {
-        z: -1000,
-        rotationX: 25,
-        opacity: 0,
-        filter: "blur(10px) brightness(1.2)",
-        transformPerspective: 2500,
-      });
-
-      // 2. Kinetic Reveal Sequence
-      tl.to(
+      // 1 + 2. Kinetic Reveal Sequence (combined into fromTo so element stays
+      // visible in CSS until the ScrollTrigger/timeline actually begins).
+      tl.fromTo(
         videoWrapperRef.current,
+        {
+          z: -1000,
+          rotationX: 25,
+          opacity: 0,
+          filter: "blur(10px) brightness(1.2)",
+          transformPerspective: 2500,
+          immediateRender: false,
+        },
         {
           opacity: 1,
           z: 0,
@@ -129,6 +129,7 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
         {
           opacity: 0,
           y: 50,
+          immediateRender: false,
         },
         {
           opacity: 1,

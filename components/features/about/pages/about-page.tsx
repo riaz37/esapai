@@ -6,6 +6,7 @@ import { AboutHero } from "@/components/features/about/sections/hero";
 import { LazySection } from "@/components/ui/lazy-section";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // --- Dynamic imports for below-fold sections (code-split + no SSR) ---
 const AboutNarrative = dynamic(() => import("@/components/features/about/sections/narrative").then(mod => ({ default: mod.AboutNarrative })), {
@@ -66,6 +67,7 @@ export function AboutPageClient({
     visionTitle,
     visionBody,
 }: AboutPageClientProps = {}) {
+    const t = useTranslations("About.teamSection");
     return (
         <div className="relative">
             <AboutHero
@@ -80,10 +82,10 @@ export function AboutPageClient({
             <div className="py-20 text-center px-6">
                 <BadgeChip label="The People" icon={Users} className="mb-4" />
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight">
-                    Minds Behind the <span className="text-primary">Machine</span>
+                    {t("heading")}
                 </h2>
                 <p className="mt-4 text-white/50 text-base sm:text-lg max-w-xl mx-auto">
-                    A tight-knit group of builders, researchers, and operators obsessed with making AI work in the real world.
+                    {t("subheading")}
                 </p>
             </div>
 

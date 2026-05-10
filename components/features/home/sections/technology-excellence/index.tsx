@@ -120,7 +120,7 @@ export function TechnologyExcellence({
                             side="left"
                             className="absolute top-0 right-0 w-[100vw] max-w-none h-full opacity-80"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
+                        <div className={`absolute inset-0 ${isRTL ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-black/80 via-transparent to-transparent`} />
                     </div>
 
                     {/* Right Shutter Pane */}
@@ -134,7 +134,7 @@ export function TechnologyExcellence({
                             side="right"
                             className="absolute top-0 left-0 w-[100vw] max-w-none h-full opacity-80"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-transparent to-transparent" />
+                        <div className={`absolute inset-0 ${isRTL ? "bg-gradient-to-r" : "bg-gradient-to-l"} from-black/80 via-transparent to-transparent`} />
                     </div>
                 </div>
             </div>

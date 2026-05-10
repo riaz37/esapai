@@ -75,14 +75,14 @@ export const DesktopJourneyFlow = ({
             if (i > 0) {
                 if (surface) {
                     tl.fromTo(surface,
-                        { rotateX: 10, translateZ: -100, opacity: 0 },
+                        { rotateX: 10, translateZ: -100, opacity: 0, immediateRender: false },
                         { rotateX: 0, translateZ: 0, opacity: 1, duration: 0.8 },
                         "-=0.6"
                     );
                 }
                 if (nodes.length) {
                     tl.fromTo(nodes,
-                        { scale: 0.8, opacity: 0 },
+                        { scale: 0.8, opacity: 0, immediateRender: false },
                         { scale: 1, opacity: 1, stagger: 0.1, duration: 0.5 },
                         "-=0.4"
                     );

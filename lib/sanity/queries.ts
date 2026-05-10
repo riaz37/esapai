@@ -351,12 +351,12 @@ export function mapSanityAbout(doc: SanityDoc): SanityDoc {
                 normalizedImage = undefined;
             } else if (rawImage.startsWith('http') || rawImage.startsWith('//') || rawImage.startsWith('data:')) {
                 normalizedImage = rawImage;
-            } else if (memberName) {
-                const kebab = memberName.toLowerCase().replace(/\./g, '').trim().replace(/\s+/g, '-');
-                normalizedImage = `/team/${kebab}.jpg`;
             } else {
+                // Normalize path: /team/Baker Abukhater.jpg → /team/baker-abukhater.jpg
                 const filename = rawImage.split('/').pop() ?? '';
-                normalizedImage = `/team/${filename.toLowerCase().replace(/\./g, '').replace(/\s+/g, '-')}`;
+                const base = filename.replace(/\.[^.]+$/, '');
+                const kebab = base.toLowerCase().replace(/\./g, '').trim().replace(/\s+/g, '-').replace(/-?\d+$/, '');
+                normalizedImage = `/team/${kebab}.jpg`;
             }
             return { ...member, image: normalizedImage };
         }),
@@ -642,7 +642,7 @@ export function mapSanityService(doc: SanityDoc): Service {
             hero: {
                 titleMain: doc.heroTitle,
                 titleHighlight: doc.heroTagline,
-                subtitle: doc.heroSubtitle || [],
+                subtitle: Array.isArray(doc.heroSubtitle) ? doc.heroSubtitle : [],
                 centerIcon: ensureImagePath(doc.heroCenterIcon, 'services'),
                 demoVideo: ensureVideoPath(doc.heroDemoVideo),
                 heroVideo: ensureVideoPath(doc.heroVideo),

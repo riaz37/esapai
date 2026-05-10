@@ -49,7 +49,11 @@
     }
   },
   "About": {
-    "team": {}
+    "team": {},
+    "teamSection": {
+      "heading": "Minds Behind the Machine",
+      "subheading": "A tight-knit group of builders, researchers, and operators obsessed with making AI work in the real world."
+    }
   },
   "Contact": {
     "badge": "Get in touch",

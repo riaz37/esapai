@@ -10,6 +10,7 @@ interface HeroAnimationProps {
   framePrefix?: string;
   frameExtension?: string;
   backgroundImage?: string;
+  isRTL?: boolean;
 }
 
 export function HeroAnimation({
@@ -19,6 +20,7 @@ export function HeroAnimation({
   framePrefix = "/animations/product-hero/frame_",
   frameExtension = ".jpg",
   backgroundImage = "/images/comic.png",
+  isRTL = false,
 }: HeroAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
@@ -144,21 +146,22 @@ export function HeroAnimation({
     ctx.globalCompositeOperation = "source-over";
     ctx.globalAlpha = 1.0;
 
-    const sideSize = 0.25;
+    const leftSize = isRTL ? 0.15 : 0.25;
+    const rightSize = isRTL ? 0.25 : 0.15;
     const bottomSize = 0.15;
     const topSize = 0.08;
 
-    const fadeLeft = ctx.createLinearGradient(0, 0, cw * sideSize, 0);
+    const fadeLeft = ctx.createLinearGradient(0, 0, cw * leftSize, 0);
     fadeLeft.addColorStop(0, "rgba(0,0,0,1)");
     fadeLeft.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = fadeLeft;
-    ctx.fillRect(0, 0, cw * sideSize, ch);
+    ctx.fillRect(0, 0, cw * leftSize, ch);
 
-    const fadeRight = ctx.createLinearGradient(cw, 0, cw - cw * sideSize, 0);
+    const fadeRight = ctx.createLinearGradient(cw, 0, cw - cw * rightSize, 0);
     fadeRight.addColorStop(0, "rgba(0,0,0,1)");
     fadeRight.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = fadeRight;
-    ctx.fillRect(cw - cw * sideSize, 0, cw * sideSize, ch);
+    ctx.fillRect(cw - cw * rightSize, 0, cw * rightSize, ch);
 
     const fadeBottom = ctx.createLinearGradient(0, ch, 0, ch - ch * bottomSize);
     fadeBottom.addColorStop(0, "rgba(0,0,0,1)");
@@ -303,6 +306,7 @@ export function HeroAnimation({
     <canvas
       ref={canvasRef}
       className={cn("w-full h-full", className)}
+      style={isRTL ? { transform: "scaleX(-1)" } : undefined}
       aria-label="Product Animation sequence"
     />
   );

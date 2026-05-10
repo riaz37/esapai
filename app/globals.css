@@ -128,6 +128,55 @@
   }
 }
 
+/*
+ * No-JS / scripting-disabled fallback.
+ * GSAP hides elements before animating them in. When JS is disabled or
+ * fails to execute, elements that GSAP would have set to opacity:0 stay
+ * invisible, leaving a black void. This rule overrides inline GSAP styles
+ * for those browsers so all page content remains readable.
+ *
+ * When JS runs normally, GSAP's inline `style` takes precedence and the
+ * animations work as intended (specificity: element[style] > @media rule).
+ */
+@media (scripting: none) {
+  /*
+   * No-JS / scripting-disabled fallback.
+   * GSAP sets elements to opacity:0 before animating them in. Without JS,
+   * those elements stay permanently invisible. These rules ensure all content
+   * is readable when scripting is unavailable (headless browsers, very slow
+   * connections where JS hasn't yet executed, search crawlers).
+   *
+   * When JS runs normally, GSAP's inline style attribute wins due to higher
+   * specificity (element[style] > @media rule), so animations are unaffected.
+   */
+
+  /* Section headers animated by SectionHeader component */
+  [data-testid="section-header"] > *,
+
+  /* Service bento grid cards */
+  .service-card-wrapper,
+
+  /* Business impact metric counters */
+  [data-section="impact"] span,
+
+  /* Mission section cards animated from off-screen */
+  .mission-header > *,
+
+  /* Trusted partners section */
+  section:has(.partner-item),
+
+  /* CTA section children (h2, p, buttons) */
+  .partner-item,
+
+  /* Product/service page sections */
+  [data-section] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    visibility: visible !important;
+  }
+}
+
 
 
 

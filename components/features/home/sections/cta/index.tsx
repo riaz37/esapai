@@ -57,7 +57,8 @@ export function CTASection({
                     opacity: 0,
                     y: 40,
                     scale: 0.9,
-                    filter: "blur(10px)"
+                    filter: "blur(10px)",
+                    immediateRender: false,
                 },
                 {
                     scrollTrigger: {

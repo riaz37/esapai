@@ -85,14 +85,14 @@ export function useShutterAnimation({
                     willChange: "transform, opacity"
                 });
                 gsap.set(leftShutter, {
-                    rotateY: 90,
-                    xPercent: -50,
-                    transformOrigin: "left center",
+                    rotateY: isRTL ? -90 : 90,
+                    xPercent: isRTL ? 50 : -50,
+                    transformOrigin: isRTL ? "right center" : "left center",
                 });
                 gsap.set(rightShutter, {
-                    rotateY: -90,
-                    xPercent: 50,
-                    transformOrigin: "right center",
+                    rotateY: isRTL ? 90 : -90,
+                    xPercent: isRTL ? -50 : 50,
+                    transformOrigin: isRTL ? "left center" : "right center",
                 });
                 gsap.set(content, { opacity: 0, scale: 0.9, y: 30 });
 

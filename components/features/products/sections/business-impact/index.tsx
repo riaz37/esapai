@@ -67,7 +67,7 @@ export function BusinessImpact({ product }: BusinessImpactProps) {
 
         gsap.fromTo(
           valueRef,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 20, immediateRender: false },
           {
             opacity: 1,
             y: 0,

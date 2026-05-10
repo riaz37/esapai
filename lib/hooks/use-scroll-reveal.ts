@@ -67,6 +67,7 @@ export function useScrollReveal(
                     y,
                     scale,
                     filter: filter === "none" ? "none" : filter,
+                    immediateRender: false,
                 },
                 {
                     opacity: 1,
@@ -81,6 +82,9 @@ export function useScrollReveal(
                         trigger: ref.current,
                         start,
                         toggleActions,
+                    },
+                    onComplete: () => {
+                        gsap.set(targets, { willChange: "auto" });
                     },
                 }
             );

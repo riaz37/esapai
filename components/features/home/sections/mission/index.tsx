@@ -94,6 +94,7 @@ export function Mission({
             scale: isMobile ? 0.9 : 0.85,
             autoAlpha: 0,
             filter: "blur(15px)",
+            immediateRender: false,
           },
           {
             x: 0,

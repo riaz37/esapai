@@ -46,6 +46,7 @@ export function SectionHeader({
           opacity: 0,
           duration: 0.6,
           ease: "power3.out",
+          immediateRender: false,
         });
       }
 
@@ -57,6 +58,7 @@ export function SectionHeader({
             opacity: 0,
             duration: 0.8,
             ease: "power3.out",
+            immediateRender: false,
           },
           badge ? "-=0.4" : 0
         );
@@ -70,6 +72,7 @@ export function SectionHeader({
             opacity: 0,
             duration: 0.8,
             ease: "power3.out",
+            immediateRender: false,
           },
           "-=0.5"
         );

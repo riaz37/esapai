@@ -19,7 +19,7 @@ export function NavDropdownTrigger({
     return (
         <button
             onClick={onClick}
-            className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer ${visible ? "px-2 py-1.5" : "px-4 py-2"
+            className={`nav-link-group relative group whitespace-nowrap flex items-center gap-1 cursor-pointer min-h-[44px] ${visible ? "px-2 py-1.5" : "px-4 py-2"
                 } text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
                 }`}
             aria-expanded={isOpen}

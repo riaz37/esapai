@@ -22,7 +22,7 @@ export function NavLinkItem({
         <Link
             href={href}
             className={`nav-link-group relative group whitespace-nowrap cursor-pointer ${visible ? "px-2 py-1.5" : "px-4 py-2"
-                } text-base font-semibold transition-all duration-300 ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
+                } text-base font-semibold transition-all duration-300 min-h-[44px] flex items-center ${isActive ? "is-active text-[var(--color-primary)]" : "text-light-gray hover:text-[var(--color-primary)]"
                 } ${className}`}
             onClick={onClick}
         >

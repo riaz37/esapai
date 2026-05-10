@@ -38,6 +38,7 @@ export function TextRevealSection({
                     scale: 0.9,
                     filter: "blur(4px)",
                     color: "rgba(255, 255, 255, 0.1)",
+                    immediateRender: false,
                 },
                 {
                     opacity: 0.3, // Visible but faint
