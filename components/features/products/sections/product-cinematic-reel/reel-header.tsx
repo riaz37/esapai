@@ -16,7 +16,7 @@ interface ReelHeaderProps {
 export function ReelHeader({ title, subtitle, badge, isMobile, className }: ReelHeaderProps) {
     if (isMobile) {
         return (
-            <div className={cn("mobile-section-header block md:hidden absolute top-0 inset-x-0 w-full container mx-auto px-6 pt-24 pb-0 z-50 pointer-events-auto", className)}>
+            <div className={cn("mobile-section-header block md:hidden w-full container mx-auto px-6 pt-24 pb-8 pointer-events-auto", className)}>
                 <SectionHeader
                     title={title}
                     subtitle={subtitle}

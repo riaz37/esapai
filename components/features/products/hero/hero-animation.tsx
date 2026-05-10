@@ -77,14 +77,18 @@ export function HeroAnimation({
     };
   }, [frameCount, framePrefix, frameExtension]);
 
-  // Draw a frame with cover scaling (preserves aspect ratio, centered)
+  // Draw a frame with cover scaling — focal point shifts right on mobile
+  // to keep the lightbulb (at ~75% from left) visible on portrait viewports
   const drawFrameCover = (ctx: CanvasRenderingContext2D, img: HTMLImageElement) => {
     const cw = ctx.canvas.width;
     const ch = ctx.canvas.height;
     const scale = Math.max(cw / img.width, ch / img.height);
     const drawW = img.width * scale;
     const drawH = img.height * scale;
-    const x = (cw - drawW) / 2;
+    const dpr = window.devicePixelRatio || 1;
+    const isMobile = cw / dpr < 1024;
+    const xFocal = isMobile ? 0.72 : 0.5; // 72% from left on mobile to center lightbulb
+    const x = (cw - drawW) * xFocal;
     const y = (ch - drawH) / 2;
     ctx.drawImage(img, x, y, drawW, drawH);
   };

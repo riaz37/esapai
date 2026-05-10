@@ -20,13 +20,13 @@ export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc 
       className="relative min-h-[90vh] flex items-center pt-28 pb-16 md:pt-32 md:pb-24 overflow-hidden"
     >
       {/* Full-viewport background animation */}
-      <div
-        className="absolute inset-0 z-0 pointer-events-none"
-      >
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <HeroAnimation
           className="w-full h-full"
           isRTL={isRTL}
         />
+        {/* Mobile scrim — canvas vignette alone isn't enough on small screens */}
+        <div className="absolute inset-0 bg-black/55 lg:hidden" />
       </div>
 
       {/* Content overlay */}

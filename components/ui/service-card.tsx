@@ -97,7 +97,7 @@ className={cn(
                 </div>
 
                 {/* Visual/Illustration Area */}
-                <div className="relative flex-1 min-h-[160px] z-10 flex items-center justify-center overflow-hidden">
+                <div className="relative flex-1 min-h-0 z-10 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-primary/2 blur-[80px] rounded-full opacity-50 z-0" />
 
                 </div>

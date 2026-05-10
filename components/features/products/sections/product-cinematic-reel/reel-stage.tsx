@@ -11,7 +11,7 @@ interface ReelStageProps {
 export const ReelStage = forwardRef<HTMLDivElement, ReelStageProps>(({ images, imagesRef }, ref) => {
     return (
         <div ref={ref} className="relative w-full h-auto md:h-[110vh] overflow-hidden">
-            <div className="deck-stage relative md:absolute inset-0 z-10 flex flex-col md:items-center md:justify-center pointer-events-none transform-gpu pt-10 md:pt-0" style={{ transformStyle: 'preserve-3d' }}>
+            <div className="deck-stage relative md:absolute inset-0 z-10 flex flex-col md:items-center md:justify-center pointer-events-none transform-gpu pt-0 md:pt-0" style={{ transformStyle: 'preserve-3d' }}>
                 <div className="relative w-full h-full flex flex-col md:items-center justify-center gap-8 md:gap-0 px-4 md:px-0" style={{ transformStyle: 'preserve-3d' }}>
                     {images.map((src, idx) => (
                         <div

@@ -188,17 +188,17 @@ export function Service({
         ) : displayServices.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 auto-rows-[minmax(280px,auto)] md:auto-rows-[minmax(360px,auto)]">
+          <div className="grid grid-cols-1 md:grid-cols-[40%_1fr_1fr] gap-4 md:auto-rows-[minmax(360px,auto)]">
             {displayServices.slice(0, 4).map((service, index) => (
               <div
                 key={service.id || service.title}
-                className={cn("service-card-wrapper", getGridClasses(index))}
+                className={cn("service-card-wrapper aspect-[4/3] md:aspect-auto md:h-full", getGridClasses(index))}
               >
                 <ServiceCard
                   title={service.title}
                   description={service.description === "PLACEHOLDER" ? "" : service.description}
                   className={cn(
-                    "h-full min-h-[280px]",
+                    "h-full min-h-0",
                     index === 0 && "md:min-h-[600px] lg:min-h-[740px]"
                   )}
                   {...getCardProps(index, service)}
