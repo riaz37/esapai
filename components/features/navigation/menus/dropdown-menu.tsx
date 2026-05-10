@@ -23,8 +23,6 @@ export function DropdownMenu({
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const menuRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const panelVideoRef = useRef<HTMLVideoElement>(null);
-  const [panelHovered, setPanelHovered] = useState(false);
 
   const activeItem = useMemo(() =>
     items.find(item => item.id === hoveredId) || items[0],
@@ -166,8 +164,6 @@ export function DropdownMenu({
         <div
           className="flex-1 bg-gradient-to-br from-transparent to-primary/10 relative overflow-hidden"
           aria-live="polite"
-          onMouseEnter={() => { setPanelHovered(true); panelVideoRef.current?.play(); }}
-          onMouseLeave={() => { setPanelHovered(false); if (panelVideoRef.current) { panelVideoRef.current.pause(); panelVideoRef.current.currentTime = 0; } }}
         >
           {/* Background: static mesh — top-right, rotated 180deg */}
           <img
@@ -176,22 +172,11 @@ export function DropdownMenu({
             aria-hidden="true"
             className="absolute top-0 end-0 w-full h-auto pointer-events-none select-none"
             style={{
-              opacity: panelHovered ? 0 : 0.15,
+              opacity: 0.15,
               filter: "invert(1)",
               zIndex: 0,
               transform: "rotate(180deg)",
-              transition: "opacity 0.5s",
             }}
-          />
-          <video
-            ref={panelVideoRef}
-            src="/videos/footer3.mp4"
-            muted
-            loop
-            playsInline
-            preload="none"
-            className="absolute top-0 end-0 w-full h-full object-cover object-top pointer-events-none select-none"
-            style={{ opacity: panelHovered ? 0.35 : 0, transition: "opacity 0.5s", zIndex: 0, transform: "rotate(180deg)" }}
           />
           {activeItem && (
             <AnimatePresence mode="wait">
