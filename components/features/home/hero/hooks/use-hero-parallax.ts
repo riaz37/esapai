@@ -22,7 +22,9 @@ export function useHeroParallax({
     useGSAP(
         () => {
             if (!sectionRef.current) return;
-            if (typeof window !== "undefined" && window.navigator.maxTouchPoints > 0) return;
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+            if (isIOS) return;
 
             const mainTl = gsap.timeline({
                 scrollTrigger: {

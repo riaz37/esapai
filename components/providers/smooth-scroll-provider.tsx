@@ -21,9 +21,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
     useEffect(() => {
-        // Lenis smooth scroll fights iOS native scroll and causes WebKit renderer crashes
-        const isTouchDevice = typeof window !== "undefined" && window.navigator.maxTouchPoints > 0;
-        if (isTouchDevice) return;
+        // Lenis fights iOS WebKit native scroll and causes renderer crashes (Android is fine)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        if (isIOS) return;
 
         const lenis = new Lenis({
             duration: 1.2,
