@@ -82,9 +82,12 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     const isHomePage = pathname === "/";
     const [isLoading, setIsLoading] = useState(false);
     const [hasCheckedConsent, setHasCheckedConsent] = useState(false);
-
     useEffect(() => {
         if (!isHomePage) return;
+        if (window.navigator.maxTouchPoints > 0) {
+            setHasCheckedConsent(true);
+            return;
+        }
 
         // Check if user has seen intro in this session or recently
         const hasSeenIntro = localStorage.getItem("hasSeenIntro");
