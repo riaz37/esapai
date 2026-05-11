@@ -85,11 +85,10 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     useEffect(() => {
-        setIsTouchDevice(window.navigator.maxTouchPoints > 0);
-    }, []);
-
-    useEffect(() => {
         if (!isHomePage) return;
+        const isTouch = window.navigator.maxTouchPoints > 0;
+        setIsTouchDevice(isTouch);
+        if (isTouch) return;
 
         // Check if user has seen intro in this session or recently
         const hasSeenIntro = localStorage.getItem("hasSeenIntro");
