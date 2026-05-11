@@ -22,6 +22,7 @@ export function useHeroParallax({
     useGSAP(
         () => {
             if (!sectionRef.current) return;
+            if (typeof window !== "undefined" && window.navigator.maxTouchPoints > 0) return;
 
             const mainTl = gsap.timeline({
                 scrollTrigger: {

@@ -118,10 +118,10 @@ export function Hero({
                     </div>
                 </div>
 
-                {/* Parallax Portal Proxy */}
+                {/* Parallax Portal Proxy — hidden on mobile, GPU-intensive blur layer */}
                 <div
                     ref={proxyCircleRef}
-                    className="absolute top-1/2 left-1/2 w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] rounded-full z-1 pointer-events-none opacity-0 blur-[64px] mix-blend-screen"
+                    className="absolute top-1/2 left-1/2 w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] rounded-full z-1 pointer-events-none opacity-0 blur-[64px] mix-blend-screen hidden lg:block"
                     style={{
                         background: 'radial-gradient(circle, rgba(200,255,220,1) 0%, rgba(19,245,132,0.6) 30%, rgba(19,245,132,0) 70%)',
                     }}
