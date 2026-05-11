@@ -82,6 +82,11 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     const isHomePage = pathname === "/";
     const [isLoading, setIsLoading] = useState(false);
     const [hasCheckedConsent, setHasCheckedConsent] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    useEffect(() => {
+        setIsTouchDevice(window.navigator.maxTouchPoints > 0);
+    }, []);
 
     useEffect(() => {
         if (!isHomePage) return;
@@ -172,7 +177,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                     }}
                                     className="relative z-10 w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"
                                 >
-                                    <RemotionPlayerWrapper />
+                                    {!isTouchDevice && <RemotionPlayerWrapper />}
                                 </m.div>
                             </div>
                         </div>
