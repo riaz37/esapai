@@ -18,6 +18,7 @@ export function RemotionPlayerWrapper() {
                 height: '100%',
             }}
             inputProps={{}}
+            acknowledgeRemotionLicense
         />
     );
 }
