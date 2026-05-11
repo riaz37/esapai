@@ -82,13 +82,12 @@ export function IntroLoader({ children }: IntroLoaderProps) {
     const isHomePage = pathname === "/";
     const [isLoading, setIsLoading] = useState(false);
     const [hasCheckedConsent, setHasCheckedConsent] = useState(false);
-    const [isTouchDevice, setIsTouchDevice] = useState(false);
-
     useEffect(() => {
         if (!isHomePage) return;
-        const isTouch = window.navigator.maxTouchPoints > 0;
-        setIsTouchDevice(isTouch);
-        if (isTouch) return;
+        if (window.navigator.maxTouchPoints > 0) {
+            setHasCheckedConsent(true);
+            return;
+        }
 
         // Check if user has seen intro in this session or recently
         const hasSeenIntro = localStorage.getItem("hasSeenIntro");
@@ -176,7 +175,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                     }}
                                     className="relative z-10 w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"
                                 >
-                                    {!isTouchDevice && <RemotionPlayerWrapper />}
+                                    <RemotionPlayerWrapper />
                                 </m.div>
                             </div>
                         </div>
