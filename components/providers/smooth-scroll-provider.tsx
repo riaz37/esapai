@@ -21,6 +21,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
     useEffect(() => {
+        // Lenis smooth scroll fights iOS native scroll and causes WebKit renderer crashes
+        const isTouchDevice = typeof window !== "undefined" && window.navigator.maxTouchPoints > 0;
+        if (isTouchDevice) return;
+
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
