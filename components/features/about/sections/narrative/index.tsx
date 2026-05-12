@@ -67,7 +67,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
                 name: member.name ?? v2Item.name,
                 price: member.role ?? v2Item.price,
                 description: member.bio ?? v2Item.description,
-                image: member.image ?? v2Item.image,
+                image: v2Item.image,
             };
         });
 
