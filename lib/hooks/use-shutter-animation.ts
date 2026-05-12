@@ -42,7 +42,7 @@ export function useShutterAnimation({
             const mm = gsap.matchMedia();
 
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-                (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 0);
+                (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
             mm.add("(min-width: 1024px)", () => {
                 if (isIOS) return;

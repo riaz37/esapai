@@ -27,7 +27,7 @@ export function TextRevealSection({
             if (!containerRef.current || !textRef.current) return;
 
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-                (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 0);
+                (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
             const words = textRef.current.querySelectorAll(".word");
 
