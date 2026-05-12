@@ -31,21 +31,20 @@ const METRICS_BY_SLUG: Record<
 > = {
   "integration-and-automation": {
     menuDescription:
-      "End-to-end integration and automation that drives ROI.",
+      "End-to-end integration and automation services",
     metrics: [
-      { value: "60%", label: "Faster Deployment" },
-      { value: "40%", label: "Cost Reduction" },
-      { value: "99.9%", label: "Uptime" },
+      { value: "3x", label: "Faster Time-to-Value" },
+      { value: "40%", label: "Ops Cost Reduction" },
+      { value: "99.9%", label: "Uptime SLA" },
     ],
   },
   "faas": {
-    name: "AI Agents FaaS",
     menuDescription:
       "Scalable AI agent infrastructure. Deploy in days, not months.",
     metrics: [
       { value: "10x", label: "Faster Agent Setup" },
+      { value: "<300ms", label: "Avg. Latency" },
       { value: "85%", label: "Task Automation" },
-      { value: "300ms", label: "Avg. Response" },
     ],
   },
   "innovation-lab": {
@@ -53,8 +52,8 @@ const METRICS_BY_SLUG: Record<
       "Applied AI R&D and rapid prototyping for your industry.",
     metrics: [
       { value: "3x", label: "Innovation Speed" },
-      { value: "50+", label: "Prototypes Built" },
-      { value: "90%", label: "Client Success" },
+      { value: "50+", label: "Prototypes Shipped" },
+      { value: "90%", label: "Client Success Rate" },
     ],
   },
 };
