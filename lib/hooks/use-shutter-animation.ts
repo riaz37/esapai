@@ -41,7 +41,11 @@ export function useShutterAnimation({
 
             const mm = gsap.matchMedia();
 
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
             mm.add("(min-width: 1024px)", () => {
+                if (isIOS) return;
                 const syncCanvasFrame = (progress: number) => {
                     if (leftCanvasRef.current) leftCanvasRef.current.setFrame(progress);
                     if (rightCanvasRef.current) rightCanvasRef.current.setFrame(progress);

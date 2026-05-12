@@ -26,6 +26,9 @@ export function TextRevealSection({
         () => {
             if (!containerRef.current || !textRef.current) return;
 
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
             const words = textRef.current.querySelectorAll(".word");
 
             // --- Stage 1: Entry / Presence (No Pin) ---
@@ -57,6 +60,8 @@ export function TextRevealSection({
                     },
                 }
             );
+
+            if (isIOS) return;
 
             // --- Stage 2: Focus / Highlight (Pinned) ---
             // Once focused, pin and light up the text.
