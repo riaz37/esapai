@@ -22,6 +22,26 @@ export function useHeroParallax({
     useGSAP(
         () => {
             if (!sectionRef.current) return;
+
+            // Centering runs on ALL devices — these elements use left-1/2 CSS which
+            // only sets the left edge to 50%; xPercent/yPercent provide the translate(-50%)
+            // needed to actually center them. Without this, the circle is half off-screen on iOS.
+            if (circleContainerRef.current) {
+                gsap.set(circleContainerRef.current, { xPercent: -50, yPercent: -50, scale: 1, autoAlpha: 1 });
+            }
+            if (proxyCircleRef.current) {
+                gsap.set(proxyCircleRef.current, {
+                    xPercent: -50,
+                    yPercent: -50,
+                    scale: 0.8,
+                    autoAlpha: 0,
+                });
+            }
+            if (iconsScrollRef.current) {
+                gsap.set(iconsScrollRef.current, { xPercent: -50, yPercent: -50, scale: 1, autoAlpha: 1 });
+            }
+
+            // iOS WebKit: skip scroll-triggered pin — causes renderer crash and pin-spacer void
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                 (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
             if (isIOS) return;
@@ -40,24 +60,7 @@ export function useHeroParallax({
                 },
             });
 
-            // Set a total duration for the timeline to 1.0 for easier mapping
             mainTl.addLabel("start", 0);
-
-            // Initial Setup
-            if (circleContainerRef.current) {
-                gsap.set(circleContainerRef.current, { xPercent: -50, yPercent: -50, scale: 1, autoAlpha: 1 });
-            }
-            if (proxyCircleRef.current) {
-                gsap.set(proxyCircleRef.current, {
-                    xPercent: -50,
-                    yPercent: -50,
-                    scale: 0.8,
-                    autoAlpha: 0,
-                });
-            }
-            if (iconsScrollRef.current) {
-                gsap.set(iconsScrollRef.current, { xPercent: -50, yPercent: -50, scale: 1, autoAlpha: 1 });
-            }
 
             // SCROLL-LINKED PARALLAX ANIMATION ("The Eye of AI")
             if (circleContainerRef.current && proxyCircleRef.current) {
