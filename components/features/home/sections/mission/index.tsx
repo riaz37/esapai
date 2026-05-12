@@ -62,7 +62,7 @@ export function Mission({
       if (!sectionRef.current || !trackRef.current) return;
 
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 0);
       if (isIOS) return;
 
       const mm = gsap.matchMedia();

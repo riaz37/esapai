@@ -135,7 +135,7 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         isLoadingRef.current = true;
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-            (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+            (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 0);
         if (isIOS) return () => { isMounted = false; };
 
         const loadImages = async () => {
