@@ -130,10 +130,10 @@ export function Hero({
                 {/* Floating Hexagons */}
                 <div
                     ref={iconsScrollRef}
-                    className="absolute top-1/2 left-1/2 z-[5] pointer-events-none hidden xl:block"
+                    className="absolute top-[72%] xl:top-1/2 left-1/2 z-[5] pointer-events-none block"
                 >
                     <div ref={iconsRef} className="gsap-fade-in-optimized animate-optimized">
-                        <Box className="max-w-[1400px] xl:max-w-[1800px] w-auto h-auto opacity-100 brightness-[1.2]" />
+                        <Box className="w-screen sm:w-[150vw] md:w-[120vw] max-w-[1400px] xl:max-w-[1800px] h-auto opacity-100 brightness-[1.2]" />
                     </div>
                 </div>
 
