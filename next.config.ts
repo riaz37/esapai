@@ -75,12 +75,12 @@ const nextConfig: NextConfig = {
     // CSP directives
     const cspDirectives = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.clarity.ms",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: https://cdn.sanity.io https://images.unsplash.com https://assets.aceternity.com https://i.ytimg.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       "media-src 'self' data: https://blob-storage.googleapis.com https://esapai.s3.amazonaws.com",
-      "connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.sanity.io https://*.arcjet.com https://raw.githack.com https://raw.githubusercontent.com",
+      "connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.sanity.io https://*.arcjet.com https://raw.githack.com https://raw.githubusercontent.com https://*.clarity.ms",
       "frame-src 'self' https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com",
       "object-src 'none'",
       "base-uri 'self'",
