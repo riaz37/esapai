@@ -8,7 +8,7 @@ import { TypewriterTitle } from "@/components/ui/typewriter-title";
 import type { ProductHeroProps } from "@/types/props";
 import { Section } from "@/components/ui/section";
 
-export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc }: ProductHeroProps) {
+export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc, liveUrl }: ProductHeroProps) {
   const exploreLabel = exploreButton ?? "";
   const locale = useLocale();
   const isRTL = locale === "ar";
@@ -64,10 +64,17 @@ export function ProductHero({ title, subtitle, tagline, exploreButton, videoSrc 
               asChild
               className="pe-1.5"
             >
-              <Link href="/contact" className="inline-flex items-center gap-2 group">
-                <span>{exploreLabel}</span>
-                <ButtonArrow />
-              </Link>
+              {liveUrl ? (
+                <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 group">
+                  <span>{exploreLabel}</span>
+                  <ButtonArrow />
+                </a>
+              ) : (
+                <Link href="/contact" className="inline-flex items-center gap-2 group">
+                  <span>{exploreLabel}</span>
+                  <ButtonArrow />
+                </Link>
+              )}
             </Button>
           </div>
         </div>
