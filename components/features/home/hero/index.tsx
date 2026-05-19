@@ -104,14 +104,14 @@ export function Hero({
             <SectionMask
                 fadeTop={false}
                 fadeBottom={false}
-                className="w-full h-full min-h-screen flex items-center justify-center pt-20 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20"
+                className="w-full h-full min-h-screen flex items-start sm:items-center justify-center pt-48 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20"
             >
                 <div ref={bgRef} className="absolute inset-0 hero-mesh-gradient z-0 pointer-events-none" />
 
                 {/* Eye of AI - Background Circle */}
                 <div
                     ref={circleContainerRef}
-                    className="absolute top-[75%] sm:top-[78%] md:top-[82%] left-1/2 z-0 pointer-events-none animate-optimized"
+                    className="absolute top-[60%] sm:top-[78%] md:top-[82%] left-1/2 z-0 pointer-events-none animate-optimized"
                 >
                     <div ref={circleGlowRef} className="relative">
                         <Circle className="w-[270px] sm:w-[360px] md:w-[450px] lg:w-[540px] xl:w-[630px] max-w-[720px] h-auto brightness-[0.9]" />
@@ -130,7 +130,7 @@ export function Hero({
                 {/* Floating Hexagons */}
                 <div
                     ref={iconsScrollRef}
-                    className="absolute top-[72%] xl:top-1/2 left-1/2 z-[5] pointer-events-none block"
+                    className="absolute top-[58%] sm:top-[72%] xl:top-1/2 left-1/2 z-[5] pointer-events-none block"
                 >
                     <div ref={iconsRef} className="gsap-fade-in-optimized animate-optimized">
                         <Box className="w-screen sm:w-[150vw] md:w-[120vw] max-w-[1400px] xl:max-w-[1800px] h-auto opacity-100 brightness-[1.2]" />
