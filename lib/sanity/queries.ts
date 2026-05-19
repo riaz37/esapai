@@ -382,6 +382,7 @@ const PRODUCT_FIELDS = `
   heroDemoVideo,
   heroVideo,
   heroTagline,
+  heroLiveUrl,
   missionTitle,
   missionSubtitle,
   missionCards,
@@ -450,6 +451,7 @@ const SERVICE_FIELDS = `
   heroTitle,
   heroSubtitle,
   heroTagline,
+  heroLiveUrl,
   heroCenterIcon,
   heroDemoVideo,
   heroVideo,
@@ -513,6 +515,7 @@ export function mapSanityProduct(doc: SanityDoc): Product {
                 demoVideo: ensureVideoPath(doc.heroDemoVideo),
                 heroVideo: ensureVideoPath(doc.heroVideo),
                 tagline: doc.heroTagline,
+                liveUrl: doc.heroLiveUrl,
             },
             mission: {
                 title: doc.missionTitle,

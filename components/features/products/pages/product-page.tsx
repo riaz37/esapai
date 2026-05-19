@@ -64,6 +64,7 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
           tagline={content.hero?.tagline}
           exploreButton={content.exploreButton}
           videoSrc={content.hero?.heroVideo}
+          liveUrl={content.hero?.liveUrl}
         />
       </div>
 

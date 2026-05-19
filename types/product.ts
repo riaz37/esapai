@@ -45,6 +45,8 @@ export interface ProductContent {
     heroVideo?: string;
     /** Complementary tagline for the hero title (e.g. Knowledge Synthesis) */
     tagline?: string;
+    /** External live product URL (e.g. https://zakra.esap.ai) */
+    liveUrl?: string;
   };
   mission?: {
     title?: string;
