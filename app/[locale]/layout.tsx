@@ -11,6 +11,7 @@ import { WebVitalsProvider } from "@/components/providers/web-vitals-provider";
 import { CookieConsentProvider } from "@/components/providers/cookie-consent-context";
 import { CookieConsentBanner } from "@/components/ui/cookie-consent-banner";
 import { GoogleAnalyticsProvider } from "@/components/providers/google-analytics-provider";
+import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { ToastProvider } from "@/components/ui/toast";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { generateHomeMetadata } from "@/lib/seo/metadata";
@@ -79,6 +80,7 @@ export default async function RootLayout(props: Readonly<{
   // Enable static rendering
   setRequestLocale(locale);
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
   // Fetch services and products for the navbar
   const [services, products] = await Promise.all([
@@ -123,6 +125,7 @@ export default async function RootLayout(props: Readonly<{
                   </SmoothScrollProvider>
                 </WebVitalsProvider>
                 <GoogleAnalyticsProvider gaId={gaId} />
+                <ClarityProvider projectId={clarityProjectId} />
               </CookieConsentProvider>
             </ToastProvider>
           </MotionProvider>

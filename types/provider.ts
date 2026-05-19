@@ -15,6 +15,10 @@ export interface GoogleAnalyticsProviderProps {
   gaId?: string;
 }
 
+export interface ClarityProviderProps {
+  projectId?: string;
+}
+
 export interface ProductMenuContextType {
   isProductOpen: boolean;
   setIsProductOpen: (open: boolean) => void;
