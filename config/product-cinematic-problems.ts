@@ -39,13 +39,13 @@ const ZAKRA_ITEMS: CinematicProblemConfig[] = [
   { id: 3, icon: XCircle, spreadPos: SPREAD_POSITIONS[2], solIcon: CheckCircle2 },
 ];
 
-const JAWIB_ITEMS: CinematicProblemConfig[] = [
+const PAGESENSE_ITEMS: CinematicProblemConfig[] = [
   { id: 1, icon: AlertCircle, spreadPos: SPREAD_POSITIONS[0], solIcon: Zap },
   { id: 2, icon: FileWarning, spreadPos: SPREAD_POSITIONS[1], solIcon: Sparkles },
   { id: 3, icon: XCircle, spreadPos: SPREAD_POSITIONS[2], solIcon: CheckCircle2 },
 ];
 
-const FASIH_ITEMS: CinematicProblemConfig[] = [
+const OMNILISTEN_ITEMS: CinematicProblemConfig[] = [
   { id: 1, icon: AlertCircle, spreadPos: SPREAD_POSITIONS[0], solIcon: Zap },
   { id: 2, icon: FileWarning, spreadPos: SPREAD_POSITIONS[1], solIcon: Sparkles },
   { id: 3, icon: XCircle, spreadPos: SPREAD_POSITIONS[2], solIcon: CheckCircle2 },
@@ -55,8 +55,8 @@ const ITEMS_BY_SLUG: Record<string, CinematicProblemConfig[]> = {
   erp: ERP_ITEMS,
   "ai-framework": AI_FRAMEWORK_ITEMS,
   zakra: ZAKRA_ITEMS,
-  jawib: JAWIB_ITEMS,
-  fasih: FASIH_ITEMS,
+  pagesense: PAGESENSE_ITEMS,
+  omnilisten: OMNILISTEN_ITEMS,
 };
 
 const DEFAULT_ITEMS = ERP_ITEMS;

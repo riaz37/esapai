@@ -14,7 +14,6 @@ import type { Product } from "@/types/product";
 
 // AV1 variants exist only where encoding produced a smaller file than H.264.
 const AV1_VIDEO_MAP: Record<string, string> = {
-    "/product-videos/fasih.mp4": "/product-videos/fasih.av1.webm",
     "/product-videos/ai-framework.mp4": "/product-videos/ai-framework.av1.webm",
     "/videos/fasih-demo.mp4": "/videos/fasih-demo.av1.webm",
 };

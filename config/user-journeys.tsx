@@ -232,85 +232,95 @@ const zakraJourney: ProductJourneyData = {
     ]
 };
 
-// --- Jawib (Tree/Bifurcated Layout) ---
-const jawibJourney: ProductJourneyData = {
-    journeyTitle: 'Jawib Support',
-    journeySubtitle: 'Automated triage and resolution tree.',
+// --- PageSense (Pipeline Layout) ---
+const pagesenseJourney: ProductJourneyData = {
+    journeyTitle: 'PageSense Ecosystem',
+    journeySubtitle: 'A self-contained intelligence layer for your document archive.',
     layers: [
         {
-            id: 'jaw-in',
-            title: 'Omnichannel Entry',
+            id: 'ps-in',
+            title: 'Document Input Layer',
             nodes: [
-                createNode('jaw-msg', 700, 325, 'Unified Inbox', <Inbox size={32} />),
-            ],
-            edges: []
-        },
-        {
-            id: 'jaw-route',
-            title: 'Triage & Pathing',
-            nodes: [
-                createNode('jaw-rte', 475, 325, 'Smart Router', <Workflow size={32} />),
-                createNode('jaw-res', 925, 175, 'AI Resolution', <CheckCircle size={32} />),
-                createNode('jaw-esc', 925, 475, 'Human Escalation', <ArrowRight size={32} />),
+                createNode('ps-pdf', 350, 325, 'PDF Upload', <FileText size={32} />),
+                createNode('ps-scan', 700, 325, 'Scans & Images', <ScanSearch size={32} />),
+                createNode('ps-hand', 1050, 325, 'Handwritten Notes', <MessageSquare size={32} />),
             ],
             edges: [
-                createEdge('jaw-rte', 'jaw-res', 'tr-out', 'bl-in'),
-                createEdge('jaw-rte', 'jaw-esc', 'br-out', 'tl-in'),
+                createEdge('ps-pdf', 'ps-scan', 'r-out', 'l-in'),
+                createEdge('ps-scan', 'ps-hand', 'r-out', 'l-in'),
             ]
         },
         {
-            id: 'jaw-lrn',
-            title: 'Feedback Loop',
+            id: 'ps-core',
+            title: 'Intelligence Core',
             nodes: [
-                createNode('jaw-int', 300, 325, 'Intent Scan', <ScanSearch size={32} />),
-                createNode('jaw-upd', 700, 325, 'Model Update', <RefreshCw size={32} />),
-                createNode('jaw-kb', 1100, 325, 'Knowledge Sync', <BookOpen size={32} />),
+                createNode('ps-vis', 350, 325, 'Visual Reading', <Brain size={32} />),
+                createNode('ps-srch', 700, 325, 'Hybrid Search', <Globe size={32} />),
+                createNode('ps-struct', 1050, 325, 'Auto Structure', <Workflow size={32} />),
             ],
             edges: [
-                createEdge('jaw-int', 'jaw-upd', 'r-out', 'l-in'),
-                createEdge('jaw-upd', 'jaw-kb', 'r-out', 'l-in')
+                createEdge('ps-vis', 'ps-srch', 'r-out', 'l-in'),
+                createEdge('ps-srch', 'ps-struct', 'r-out', 'l-in'),
+            ]
+        },
+        {
+            id: 'ps-out',
+            title: 'Output & Access Layer',
+            nodes: [
+                createNode('ps-ans', 350, 325, 'Cited Answers', <CheckCircle size={32} />),
+                createNode('ps-view', 700, 325, 'Document Viewer', <BookOpen size={32} />),
+                createNode('ps-data', 1050, 325, 'Structured Output', <Code size={32} />),
+            ],
+            edges: [
+                createEdge('ps-ans', 'ps-view', 'r-out', 'l-in'),
+                createEdge('ps-view', 'ps-data', 'r-out', 'l-in'),
             ]
         }
     ]
 };
 
-// --- Fasih (Pipeline Layout) ---
-const fasihJourney: ProductJourneyData = {
-    journeyTitle: 'Fasih Arabic LLM',
-    journeySubtitle: 'Sequential processing pipeline.',
+// --- OmniListen (Pipeline Layout) ---
+const omnilistenJourney: ProductJourneyData = {
+    journeyTitle: 'OmniListen Ecosystem',
+    journeySubtitle: 'A self-contained intelligence layer for your entire conversation archive.',
     layers: [
         {
-            id: 'fas-in',
-            title: 'Input Pre-processing',
+            id: 'ol-in',
+            title: 'Audio Capture Layer',
             nodes: [
-                createNode('fas-txt', 400, 325, 'Text Input', <MessageSquare size={32} />),
-                createNode('fas-tok', 650, 325, 'Tokenizer', <Code size={32} />),
-                createNode('fas-det', 1000, 325, 'Dialect ID', <Globe size={32} />),
+                createNode('ol-web', 350, 325, 'Web Dashboard', <Globe size={32} />),
+                createNode('ol-app', 700, 325, 'Android App', <Inbox size={32} />),
+                createNode('ol-ext', 1050, 325, 'Browser Extension', <Code size={32} />),
             ],
             edges: [
-                createEdge('fas-txt', 'fas-tok', 'r-out', 'l-in'),
-                createEdge('fas-tok', 'fas-det', 'r-out', 'l-in'),
+                createEdge('ol-web', 'ol-app', 'r-out', 'l-in'),
+                createEdge('ol-app', 'ol-ext', 'r-out', 'l-in'),
             ]
         },
         {
-            id: 'fas-proc',
-            title: 'Neural Core',
+            id: 'ol-core',
+            title: 'Intelligence Core',
             nodes: [
-                createNode('fas-llm', 700, 325, 'Arabic LLM', <Brain size={32} />),
-            ],
-            edges: []
-        },
-        {
-            id: 'fas-out',
-            title: 'Generation Pipeline',
-            nodes: [
-                createNode('fas-gen', 350, 325, 'Generation', <Sparkles size={32} />),
-                createNode('fas-aud', 700, 325, 'Compliance Audit', <CheckCircle size={32} />),
-                createNode('fas-fin', 1050, 325, 'Final Output', <FileText size={32} />),
+                createNode('ol-tx', 350, 325, 'Transcription', <MessageSquare size={32} />),
+                createNode('ol-ai', 700, 325, 'AI Extraction', <Brain size={32} />),
+                createNode('ol-sync', 1050, 325, 'Task & Date Sync', <RefreshCw size={32} />),
             ],
             edges: [
-                createEdge('fas-gen', 'fas-aud', 'r-out', 'l-in'),
-                createEdge('fas-aud', 'fas-fin', 'r-out', 'l-in'),
+                createEdge('ol-tx', 'ol-ai', 'r-out', 'l-in'),
+                createEdge('ol-ai', 'ol-sync', 'r-out', 'l-in'),
+            ]
+        },
+        {
+            id: 'ol-out',
+            title: 'Output & Action Layer',
+            nodes: [
+                createNode('ol-sum', 350, 325, 'Smart Summary', <Sparkles size={32} />),
+                createNode('ol-dash', 700, 325, 'Task Dashboard', <CheckCircle size={32} />),
+                createNode('ol-cal', 1050, 325, 'Calendar Events', <ArrowRight size={32} />),
+            ],
+            edges: [
+                createEdge('ol-sum', 'ol-dash', 'r-out', 'l-in'),
+                createEdge('ol-dash', 'ol-cal', 'r-out', 'l-in'),
             ]
         }
     ]
@@ -321,6 +331,6 @@ export const PRODUCT_JOURNEYS: Record<string, ProductJourneyData> = {
     'ai-framework': aiFrameworkJourney,
     'erp': erpJourney,
     'zakra': zakraJourney,
-    'jawib': jawibJourney,
-    'fasih': fasihJourney,
+    'pagesense': pagesenseJourney,
+    'omnilisten': omnilistenJourney,
 };
