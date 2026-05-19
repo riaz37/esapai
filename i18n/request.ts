@@ -9,6 +9,7 @@ function mergeMessages(
     const merged = { ...base };
 
     for (const [key, value] of Object.entries(override)) {
+        if (value === undefined || value === null) continue;
         const baseValue = merged[key];
 
         if (

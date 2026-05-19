@@ -123,8 +123,8 @@ function mapSanityTranslationsToMessages(doc: SanityDoc): Record<string, unknown
                     erp: home.showcase?.products?.erp,
                     "ai-framework": home.showcase?.products?.aiFramework,
                     zakra: home.showcase?.products?.zakra,
-                    jawib: home.showcase?.products?.jawib,
-                    fasih: home.showcase?.products?.fasih,
+                    pagesense: home.showcase?.products?.pagesense,
+                    omnilisten: home.showcase?.products?.omnilisten,
                 },
             },
         },
@@ -198,8 +198,8 @@ function mapSanityTranslationsToMessages(doc: SanityDoc): Record<string, unknown
             erp: products.erp,
             "ai-framework": products.aiFramework,
             zakra: products.zakra,
-            jawib: products.jawib,
-            fasih: products.fasih,
+            pagesense: products.pagesense,
+            omnilisten: products.omnilisten,
         },
         CTA: {
             title: cta.title,
@@ -492,8 +492,8 @@ const PRODUCT_MENU_ICONS: Record<string, string> = {
     'erp':          '/products-menu-icons/ERP.png',
     'ai-framework': '/products-menu-icons/ai-framework.png',
     'zakra':        '/products-menu-icons/zakra.png',
-    'jawib':        '/products-menu-icons/jawib.png',
-    'fasih':        '/products-menu-icons/Fasih.png',
+    'pagesense':    '/products-menu-icons/jawib.png',
+    'omnilisten':   '/products-menu-icons/Fasih.png',
 };
 
 export function mapSanityProduct(doc: SanityDoc): Product {

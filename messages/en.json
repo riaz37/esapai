@@ -37,13 +37,13 @@
           "name": "Zakra",
           "description": "Smart Knowledge Agent that delivers instant, context-aware answers from your entire knowledge base."
         },
-        "jawib": {
-          "name": "Jawib",
-          "description": "Intelligent Customer Service Agent providing 24/7 personalized support. Transform your customer experience."
+        "pagesense": {
+          "name": "PageSense",
+          "description": "Upload Arabic and English documents once. Ask questions. Get cited answers instantly."
         },
-        "fasih": {
-          "name": "Fasih",
-          "description": "The native Arabic LLM bridging the gap with deep understanding of dialects and cultural nuances."
+        "omnilisten": {
+          "name": "OmniListen",
+          "description": "Every Arabic and English conversation transcribed, summarized, and actioned before you leave the room."
         }
       }
     }
@@ -85,8 +85,8 @@
       "erp": "ERP",
       "ai-framework": "AI Framework",
       "zakra": "Zakra",
-      "jawib": "Jawib",
-      "fasih": "Fasih"
+      "pagesense": "PageSense",
+      "omnilisten": "OmniListen"
     },
     "toasts": {
       "acceptTerms": "Please accept the terms to continue.",
@@ -203,13 +203,13 @@
       "name": "Zakra",
       "menuDescription": "Smart knowledge agent for instant answers."
     },
-    "jawib": {
-      "name": "Jawib",
-      "menuDescription": "24/7 AI customer service agent."
+    "pagesense": {
+      "name": "PageSense",
+      "menuDescription": "Document intelligence for Arabic and English archives."
     },
-    "fasih": {
-      "name": "Fasih",
-      "menuDescription": "Native Arabic LLM with dialect support."
+    "omnilisten": {
+      "name": "OmniListen",
+      "menuDescription": "Conversational autopilot for Arabic and English teams."
     }
   },
   "CTA": {

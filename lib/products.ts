@@ -339,111 +339,111 @@ export const products: Product[] = [
     },
   },
   {
-    id: "jawib",
-    name: "Jawib",
-    description: "Intelligent Customer Service Agent providing 24/7 personalized support. Transform your customer experience with seamless, human-like interactions.",
-    menuDescription: "24/7 AI customer service agent.",
-    slug: "jawib",
+    id: "pagesense",
+    name: "PageSense",
+    description: "Upload Arabic and English documents once. Ask questions. Get cited answers instantly.",
+    menuDescription: "Document intelligence for Arabic and English archives.",
+    slug: "pagesense",
     content: {
       hero: {
         subtitle: [
-          "24/7 AI Support. Exceptional customer experiences.",
+          "Upload Arabic and English documents once. Ask questions. Get cited answers instantly.",
         ],
         centerIcon: "/products/jawib.svg",
-        centerIconAlt: "Jawib Customer Service Agent Icon",
+        centerIconAlt: "PageSense Document Intelligence Icon",
         heroVideo: "/videos/KB.mp4",
         demoVideo: "/product-videos/jawib.mp4",
-        tagline: "Service Automation",
+        tagline: "Document Intelligence",
       },
       mission: {
-        title: "Automated Support Resolution",
+        title: "Ask Your Documents",
         subtitle:
-          "Intelligent Customer Service Agent providing 24/7 personalized support. Improve satisfaction and scale operations.",
+          "Upload Arabic and English documents once. Ask questions. Get cited answers instantly.",
         cards: [
           {
-            title: "24/7 Availability",
+            title: "Ask Your Documents",
             description:
-              "Provide instant support to customers anytime, anywhere, with intelligent responses that never sleep.",
+              "Type any question in Arabic or English and get a direct answer with the exact page it came from in seconds.",
           },
           {
-            title: "Multi-Channel Support",
+            title: "No Document Left Behind",
             description:
-              "Engage customers across chat, email, phone, and social media with consistent, personalized experiences.",
+              "Handles handwriting, stamps, tables, and characters that look nearly identical — every word captured correctly, every time.",
           },
           {
-            title: "Human Handoff",
+            title: "Clean Data From Every File",
             description:
-              "Seamlessly escalate complex issues to human agents when needed, with full context and conversation history.",
+              "Every document becomes organized, readable data and the right file always surfaces no matter how you phrase the search.",
           },
         ],
       },
       automationHub: {
-        title: "Service Features",
+        title: "Document Intelligence",
         subtitle:
-          "Transform customer interactions.",
+          "Extraction and retrieval built for Arabic enterprise archives.",
         features: [
           {
-            title: "Natural Language Understanding",
+            title: "Instant Cited Answers",
             description:
-              "Understand customer intent, sentiment, and context to provide accurate, helpful responses in natural conversation.",
+              "Ask in Arabic or English and receive answers pinpointing the exact page and document — no manual searching required.",
           },
           {
-            title: "Ticket Management",
+            title: "Visual Document Reading",
             description:
-              "Automatically create, prioritize, and track support tickets while maintaining detailed conversation logs.",
+              "Extracts text from handwriting, stamps, tables, and near-identical characters with enterprise-grade accuracy.",
           },
           {
-            title: "Knowledge Base Integration",
+            title: "Hybrid Search",
             description:
-              "Access your product documentation, FAQs, and knowledge base to provide accurate, up-to-date information.",
+              "Semantic and keyword search combined so the right document surfaces regardless of how the query is phrased.",
           },
           {
-            title: "Analytics & Insights",
+            title: "Structured Output",
             description:
-              "Track customer satisfaction, identify common issues, and gain insights to continuously improve your service.",
+              "Every processed document becomes clean, organized, queryable data — ready for downstream workflows.",
           },
         ],
       },
       youtubeVideo: {
         videoId: "oAuaVWvw0lM",
-        title: "Jawib Customer Service Agent Demo",
+        title: "PageSense Document Intelligence Demo",
       },
       performance: {
         metrics: [
-          { value: "90%", label: "First Contact Resolution" },
-          { value: "2s", label: "Average Response Time" },
-          { value: "4.8/5", label: "Customer Satisfaction" },
+          { value: "5 min", label: "From Upload to Answer" },
+          { value: "100%", label: "On-Premise Data Control" },
+          { value: "2×", label: "Arabic + English Native" },
         ],
       },
       aceternityFeatures: {
-        title: "Jawib Features",
+        title: "PageSense Features",
         subtitle:
-          "Solutions for exceptional service.",
+          "Intelligence layer for your document archive.",
         features: [
           {
-            title: "24/7 Customer Support",
+            title: "Instant Document Search",
             description:
-              "Provide instant, intelligent customer support around the clock with natural language understanding.",
+              "Ask any question in Arabic or English and get a cited answer with page reference in seconds.",
             className:
               "col-span-1 lg:col-span-4 border-b lg:border-r border-white-opacity-20",
           },
           {
-            title: "Multi-Channel Engagement",
+            title: "Full-Spectrum OCR",
             description:
-              "Engage customers across chat, email, phone, and social media with consistent experiences.",
+              "Handles handwriting, stamps, tables, and near-identical Arabic characters with enterprise accuracy.",
             className: "border-b col-span-1 lg:col-span-2 border-white-opacity-20",
           },
           {
-            title: "Watch Jawib Demo",
+            title: "See PageSense in Action",
             description:
-              "See how Jawib transforms customer service with AI-powered automation and intelligent responses.",
+              "Watch enterprise-scale Arabic document search deliver cited answers in seconds.",
             className:
               "col-span-1 lg:col-span-3 lg:border-r border-white-opacity-20",
           },
           {
-            title: "Global Support Network",
+            title: "On-Premise Deployment",
             description:
-              "Scale your customer service operations globally with multi-language support and regional deployment.",
+              "Full data sovereignty — PageSense runs on your own infrastructure with no external data transfer.",
             className: "col-span-1 lg:col-span-3 border-b lg:border-none",
           },
         ],
@@ -451,111 +451,111 @@ export const products: Product[] = [
     },
   },
   {
-    id: "fasih",
-    name: "Fasih",
-    description: "The native Arabic LLM bridging the gap with deep understanding of dialects and cultural nuances for accurate, regionally-aware processing.",
-    menuDescription: "Native Arabic LLM with dialect support.",
-    slug: "fasih",
+    id: "omnilisten",
+    name: "OmniListen",
+    description: "Every Arabic and English conversation transcribed, summarized, and actioned before you leave the room.",
+    menuDescription: "Conversational autopilot for Arabic and English teams.",
+    slug: "omnilisten",
     content: {
       hero: {
         subtitle: [
-          "Native Arabic AI. Built for Arabic understanding.",
+          "Every Arabic and English conversation transcribed, summarized, and actioned before you leave the room.",
         ],
-        centerIcon: "/products/fasih.webp",
-        centerIconAlt: "Fasih Arabic LLM Icon",
+        centerIcon: "/products/fasih.svg",
+        centerIconAlt: "OmniListen Conversational Intelligence Icon",
         heroVideo: "/videos/KB.mp4",
         demoVideo: "/product-videos/fasih.mp4",
-        tagline: "Cultural Nuance",
+        tagline: "Conversational Autopilot",
       },
       mission: {
-        title: "Nuanced Arabic Understanding",
+        title: "Role-Based Intelligence",
         subtitle:
-          "Bridging the gap with deep understanding of dialects and cultural nuances for accurate, regionally-aware processing.",
+          "Every Arabic and English conversation transcribed, summarized, and actioned before you leave the room.",
         cards: [
           {
-            title: "Native Arabic Understanding",
+            title: "Role-Based Intelligence",
             description:
-              "Deep understanding of Modern Standard Arabic, regional dialects, and cultural nuances for accurate communication.",
+              "Configurable AI presets for HR, Sales, Project Management, and Executive roles automatically surface what matters most — no manual filtering, no post-meeting cleanup.",
           },
           {
-            title: "Cultural Context",
+            title: "Real-World Audio Capture",
             description:
-              "Trained on Arabic content with cultural awareness, ensuring appropriate and contextually relevant responses.",
+              "Seamlessly record boardroom discussions, client site visits, and phone calls — not just Zoom calls. Dynamic Range Compression sharpens distant microphone audio before transcription begins.",
           },
           {
-            title: "Multi-Dialect Support",
+            title: "Bilingual by Default",
             description:
-              "Recognize and process various Arabic dialects while maintaining high accuracy across different regions.",
+              "Built to handle Arabic-English code-switching the way Saudi teams actually speak. One conversation record generates two complete summaries — one in Arabic, one in English simultaneously.",
           },
         ],
       },
       automationHub: {
-        title: "Arabic Capabilities",
+        title: "Conversation Intelligence",
         subtitle:
-          "Processing and generation for Arabic.",
+          "Capture, extract, and deliver decisions from every conversation.",
         features: [
           {
-            title: "Text Generation",
+            title: "Transcription Engine",
             description:
-              "Generate high-quality Arabic text for content creation, translations, and automated responses with natural fluency.",
+              "95–98% accuracy across Arabic, English, and code-switched conversations with Dynamic Range Compression for real-world audio.",
           },
           {
-            title: "Language Understanding",
+            title: "AI Extraction",
             description:
-              "Deep semantic understanding of Arabic text, including complex grammar, idioms, and regional expressions.",
+              "Automatically surfaces decisions, action items, dates, and owners — role-configured for HR, Sales, PM, and Executive contexts.",
           },
           {
-            title: "Translation Services",
+            title: "Task & Calendar Sync",
             description:
-              "Accurate bidirectional translation between Arabic and other languages with context preservation.",
+              "Detected tasks and deadlines flow directly into dashboards and calendar events without manual copy-paste.",
           },
           {
-            title: "Voice & Speech",
+            title: "Smart Summary",
             description:
-              "Support for Arabic speech recognition and text-to-speech with natural pronunciation and intonation.",
+              "Every meeting produces a bilingual summary in Arabic and English simultaneously — done before the room clears.",
           },
         ],
       },
       youtubeVideo: {
         videoId: "oAuaVWvw0lM",
-        title: "Fasih Arabic LLM Overview",
+        title: "OmniListen Conversational Intelligence Demo",
       },
       performance: {
         metrics: [
-          { value: "98%", label: "Arabic Text Accuracy" },
-          { value: "15", label: "Dialects Supported" },
-          { value: "50B+", label: "Arabic Tokens Trained" },
+          { value: "Zero", label: "Active Minutes Spent on Notes" },
+          { value: "95–98%", label: "Transcription Accuracy" },
+          { value: "2×", label: "Arabic + English Simultaneously" },
         ],
       },
       aceternityFeatures: {
-        title: "Fasih Features",
+        title: "OmniListen Features",
         subtitle:
-          "Leading native Arabic language model.",
+          "Conversational intelligence for bilingual teams.",
         features: [
           {
-            title: "Native Arabic Processing",
+            title: "Zero Note-Taking",
             description:
-              "Deep understanding of Modern Standard Arabic, regional dialects, and cultural nuances for accurate communication.",
+              "Every conversation auto-transcribed, summarized, and actioned — HR, Sales, PM, and Executive presets out of the box.",
             className:
               "col-span-1 lg:col-span-4 border-b lg:border-r border-white-opacity-20",
           },
           {
-            title: "Multi-Dialect Support",
+            title: "99.9% Uptime Capture",
             description:
-              "Recognize and process various Arabic dialects with high accuracy across different regions.",
+              "Records boardroom, site visits, and phone calls — not just Zoom. Dynamic Range Compression handles real-world audio.",
             className: "border-b col-span-1 lg:col-span-2 border-white-opacity-20",
           },
           {
-            title: "Watch Fasih Overview",
+            title: "See OmniListen in Action",
             description:
-              "See how Fasih delivers accurate, culturally-aware Arabic language processing for your applications.",
+              "Watch real-time Arabic conversation intelligence deliver tasks and summaries at enterprise scale.",
             className:
               "col-span-1 lg:col-span-3 lg:border-r border-white-opacity-20",
           },
           {
-            title: "Global Arabic Support",
+            title: "Bilingual Output",
             description:
-              "Deploy Arabic language capabilities across global applications with regional dialect support.",
+              "One conversation. Two complete summaries — Arabic and English — generated simultaneously with full task lists.",
             className: "col-span-1 lg:col-span-3 border-b lg:border-none",
           },
         ],
