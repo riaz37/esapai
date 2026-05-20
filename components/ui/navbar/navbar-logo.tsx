@@ -21,7 +21,7 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
                     className="h-8 w-auto shrink-0"
                 />
                 <Image
-                    src="/logo/esaplogo.svg"
+                    src="/logo/esapalogo.png"
                     alt="ESAP Logo"
                     width={130}
                     height={42}
