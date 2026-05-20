@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSanityServiceBySlug, getSanityServices, getUITranslations } from "@/lib/sanity/queries";
+import { services, getServiceBySlug } from "@/lib/services";
 import { ServicePage } from "@/components/features/services/pages/service-page";
 import { generateServiceMetadata } from "@/lib/seo/metadata";
 import { generateServiceSchema } from "@/lib/seo/structured-data";
@@ -15,10 +15,9 @@ interface Props extends ServiceSlugPageProps {
   }>;
 }
 
-export async function generateStaticParams({ params }: { params: { locale: string } }) {
-  const { locale } = params;
-  const services = await getSanityServices(locale || "en");
+export const dynamic = "force-static";
 
+export async function generateStaticParams() {
   return services.map((service) => ({
     slug: service.slug,
   }));
@@ -27,15 +26,13 @@ export async function generateStaticParams({ params }: { params: { locale: strin
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
-  const { slug, locale } = await params;
-  const service = await getSanityServiceBySlug(slug, locale);
+  const { slug } = await params;
+  const service = getServiceBySlug(slug);
 
   if (!service) {
-    const messages = await getUITranslations(locale).catch(() => null);
-    const meta = (messages?.Service as any)?.metadata;
     return {
-      title: meta?.notFoundTitle ?? "Service Not Found",
-      description: meta?.notFoundDescription ?? "The requested service could not be found.",
+      title: "Service Not Found",
+      description: "The requested service could not be found.",
     };
   }
 
@@ -43,8 +40,8 @@ export async function generateMetadata({
 }
 
 export default async function ServiceSlugPage({ params }: Props) {
-  const { slug, locale } = await params;
-  const service = await getSanityServiceBySlug(slug, locale);
+  const { slug } = await params;
+  const service = getServiceBySlug(slug);
 
   if (!service) {
     notFound();

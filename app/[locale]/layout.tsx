@@ -19,7 +19,9 @@ import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/str
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 import { IntroLoader } from "@/components/ui/intro-loader";
 import { MotionProvider } from "@/components/providers/motion-provider";
-import { getSanityServices, getSanityProducts } from "@/lib/sanity/queries";
+import { products } from "@/lib/products";
+import { services } from "@/lib/services";
+import { routing } from "@/i18n/routing";
 import { SkipToContent } from "@/components/ui/skip-to-content";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
@@ -54,6 +56,10 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
   fallback: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
 });
 
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
 export const metadata: Metadata = {
   ...generateHomeMetadata(),
   icons: {
@@ -82,11 +88,7 @@ export default async function RootLayout(props: Readonly<{
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
-  // Fetch services and products for the navbar
-  const [services, products] = await Promise.all([
-    getSanityServices(locale).catch(() => []),
-    getSanityProducts(locale).catch(() => []),
-  ]);
+  // Services and products are loaded from static data
 
   // Generate structured data for Organization and Website
   const structuredData = [

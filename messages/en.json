@@ -16,6 +16,81 @@
     "introTagline": "The Vanguard of Intelligence"
   },
   "Home": {
+    "hero": {
+      "title": "AI-Powered Solutions / For Modern Enterprises",
+      "subtitle": "Intelligent automation and AI agents that drive enterprise productivity.",
+      "badgePill": "Exclusive",
+      "badgeDescription": "Tomorrow's Edge, Built Today",
+      "ctaButtonText": "Start Building Now"
+    },
+    "technology": {
+      "title": "Our Technology Excellence",
+      "subtitle": "Experience the dual power of autonomous execution and deep analytical insight, engineered for the future of enterprise.",
+      "badge": "Core Tech"
+    },
+    "mission": {
+      "title": "Empowering Enterprise Intelligence",
+      "subtitle": "Experience the dual power of autonomous execution and deep analytical insight, engineered for the future of enterprise.",
+      "badge": "Our Mission",
+      "items": [
+        {
+          "title": "Autonomous Execution",
+          "description": "Deploy intelligent workers that handle complex workflows 24/7 without supervision.",
+          "image": "/landing/m1.webp"
+        },
+        {
+          "title": "Analytical Insight",
+          "description": "Transform raw data into actionable foresight with our advanced neural models.",
+          "image": "/landing/m2.webp"
+        },
+        {
+          "title": "Unified Ecosystems",
+          "description": "Connecting legacy systems with future AI for seamless organizational evolution.",
+          "image": "/landing/m3.webp"
+        }
+      ]
+    },
+    "services": {
+      "title": "Focus on Growth",
+      "subtitle": "Explore our comprehensive suite of AI solutions designed to transform your enterprise.",
+      "badge": "Our Solutions",
+      "items": [
+        {
+          "id": "agentic-2",
+          "title": "Agentic AI Integration",
+          "description": "Seamlessly integrate autonomous agents into your workflow to automate complex decision-making processes.",
+          "image": "/bento-grid/ailab.svg"
+        },
+        {
+          "id": "faas",
+          "title": "FaaS Infrastructure",
+          "description": "Managed infrastructure for AI Agent Framework-as-a-Service, ensuring scalability and peak performance.",
+          "image": "/bento-grid/faas.svg"
+        },
+        {
+          "id": "tailored",
+          "title": "Tailored Solutions",
+          "description": "Bespoke AI systems built from the ground up to solve your unique operational challenges and industry needs.",
+          "image": "/bento-grid/ailab.svg"
+        },
+        {
+          "id": "strategy",
+          "title": "Enterprise Strategy",
+          "description": "Custom AI roadmaps designed to align with your business goals and drive long-term digital transformation.",
+          "image": "/bento-grid/enterprise.svg"
+        }
+      ]
+    },
+    "achievements": {
+      "title": "Our Impact",
+      "subtitle": "Key metrics that define our success.",
+      "badge": "Our Achievement",
+      "items": [
+        { "number": "99.9%", "label": "System Reliability" },
+        { "number": "50K+", "label": "Active AI Agents" },
+        { "number": "75%", "label": "Efficiency Gain" }
+      ]
+    },
     "reveal": {
       "text": "Forging the intelligence layer of tomorrow. Unlocking limitless potential."
     },
@@ -49,7 +124,64 @@
     }
   },
   "About": {
-    "team": {},
+    "hero": {
+      "badge": "Legacy & Vision",
+      "titlePart1": "Our ",
+      "titlePart2": "Legacy",
+      "subtitle": "Building the foundation for enterprise intelligence. From humble beginnings to global infrastructure - this is our story."
+    },
+    "narrativeDesignation": "Designation",
+    "teamCategoryLabel": "CORE TEAM MEMBER",
+    "teamLeadershipLabel": "LEADERSHIP",
+    "teamInnovationLabel": "INNOVATION",
+    "history": {
+      "title": "The Journey of ESAP AI",
+      "badge": "Our Legacy",
+      "subtitle": "From complex manual workflows to enterprise-grade AI autonomy.",
+      "hook": "Digitalizing what can't be digitalized - a real case study.",
+      "phases": [
+        {
+          "year": "2020",
+          "phaseLabel": "Phase 1",
+          "title": "The build",
+          "description": "Around late 2020, a well-known consulting company in construction - mostly government projects - was running everything on Excel and physical papers: project management, HR, finance, supplier management. They had tried Dynamics 365, Odoo; none fit their complicated business logic. So they went hybrid until 2020, when money loss, poor tracking, and manual effort made it clear: something had to be done. I entered the scene. One month to show one workflow. I almost quit. Then a senior employee said: here you can build something from scratch, something big. I stayed. I became an employee inside a struggling module, learning paper flow and approvals by observation - no requirements, no docs. One month, 24/7, and I built a prototype. We shook hands. I spent the next 8 months going deep: data in Excel everywhere, 60k+ records, owner-defined formats, workflow that had to match exactly. I decided they would love it and use it without complaining - no training, obvious UI, simple pending tasks. We built 6–7 key modules. Within two weeks the owner migrated everything to production.",
+          "highlight": "80% paperwork gone. No manual tracking. Finally, relief."
+        },
+        {
+          "year": "2021",
+          "phaseLabel": "Phase 2",
+          "title": "Migration & automation",
+          "description": "Migration was brutal. Excel data was messy: missing references, wrong grouping, broken structure. We built a pipeline - what can be synced, what can't; restructure what's possible; store the rest as extra sources. We learned why companies fear digitalizing: millions of messy records are not easy. Automation became a huge advantage. We built automations that were unheard of back then: attendance (letters, tickets, objections, payroll deductions), expense (employees always knew where and how much they spent). Many more automations helped scale without extra manpower. After migration and automation, the owner decided to open a software solution company. Almost every company suffers with outdated ERPs or fears digitalizing due to complexity, time, cost, and disaster outcomes. Our real advantage: understanding core issues and the end-user.",
+          "highlight": ""
+        },
+        {
+          "year": "2022",
+          "phaseLabel": "Phase 3",
+          "title": "AI & redefining",
+          "description": "AI started emerging strongly around 2022. Agents started being discussed. We saw the potential beyond automation and started building next-gen AI products for enterprises. Goal: enterprise AI solutions based on deep end-user understanding, constant feedback from departments, and strict end-user satisfaction rules. Big companies do agentic automation and process intelligence, but most don't care about end-users. That's where ESAP AI comes in. ESAP's main goal: intelligent agents - AGI-like workplace agents. Not LLMs alone; architecture and orchestration are the key. Aligned with Vision 2030: from Saudi Arabia to the world.",
+          "highlight": ""
+        }
+      ],
+      "vision": {
+        "title": "Our Vision",
+        "body": "To become the operating system for enterprise intelligence - a world where every business process is augmented, automated, and optimised by AI that understands context, acts autonomously, and learns continuously."
+      }
+    },
+    "team": {
+      "members": [
+        { "name": "Baker Abukhater", "role": "Founder", "bio": "The visionary and dynamic Founder of ESAP AI, driving the mission to build futuristic AI-powered technologies that redefine how institutions, governments, and individuals work.", "image": "/team/baker-abukhater.jpg" },
+        { "name": "Ayed Alanazi", "role": "People Relations Manager", "bio": "People Relations Manager at ESAP AI, fostering a culture of collaboration, inclusion, and excellence across the multinational and multi-lingual team.", "image": "/team/ayed-alanazi.jpg" },
+        { "name": "Syed Imam", "role": "Co-Founder & Team Lead", "bio": "Enterprise AI Development Pioneer and Co-Founder of ESAP AI, leading engineering teams to deliver scalable agentic AI solutions for enterprises worldwide.", "image": "/team/syed-imam.jpg" },
+        { "name": "M. Usman Nazir", "role": "Co-Founder & Director of Artificial Intelligence", "bio": "Director of Artificial Intelligence & Data Solutions at ESAP AI, architecting the intelligence layer that powers ESAP's suite of AI products and frameworks.", "image": "/team/m-usman-nazir.jpg" },
+        { "name": "Abdullah Abukhater", "role": "Creative Innovation Director", "bio": "Creative Innovation Director at ESAP AI, blending design thinking with emerging technology to shape experiences that are as beautiful as they are intelligent.", "image": "/team/abdullah-abukhater.jpg" },
+        { "name": "Omar Abukhater", "role": "Strategy Director", "bio": "Strategy Director at ESAP AI, charting the go-to-market and growth roadmap that positions ESAP as the leading force in enterprise AI transformation.", "image": "/team/omar-abukhater.jpg" },
+        { "name": "Salem Almtaery", "role": "Human Resources Manager", "bio": "Human Resources Manager at ESAP AI, dedicated to building and supporting the talented team that drives ESAP's innovation and growth.", "image": "/team/salem-almtaery.jpg" },
+        { "name": "Alaa Said", "role": "Chief Finance Officer", "bio": "Chief Finance Officer at ESAP AI, overseeing financial strategy and operations to ensure sustainable growth and investment in cutting-edge AI research.", "image": "/team/alaa-said.jpg" },
+        { "name": "Hamed Hasan", "role": "Senior Software Engineer Lead", "bio": "Senior Software Engineer Team Lead at ESAP AI, guiding development of robust, high-performance systems that underpin ESAP's AI product portfolio.", "image": "/team/hamed-hasan.jpg" },
+        { "name": "Mohamed Mostafa", "role": "Lead Software Engineer & Delivery Manager", "bio": "Lead Software Engineer & Delivery Manager at ESAP AI, ensuring projects ship on time, at quality, by bridging technical execution with stakeholder alignment.", "image": "/team/mohamed-mostafa.jpg" },
+        { "name": "Osama Hassanein", "role": "Head of Backend & System Architecture", "bio": "Head of Backend Engineering & System Architecture at ESAP AI, designing the scalable infrastructure and distributed systems that power ESAP's agentic AI platform.", "image": "/team/osama-hassanein.jpg" }
+      ]
+    },
     "teamSection": {
       "heading": "Minds Behind the Machine",
       "subheading": "A tight-knit group of builders, researchers, and operators obsessed with making AI work in the real world."

@@ -5,7 +5,9 @@ export const services: Service[] = [
     id: "integration-and-automation",
     name: "Integration & Automation",
     description:
-      "Complete AI integration and strategic automation—from assessment and roadmap to deployment and ongoing support.",
+      "Complete AI integration and strategic automation - from assessment and roadmap to deployment and ongoing support.",
+    menuDescription: "End-to-end integration and automation services",
+    icon: "/service-menu-icons/Automation.png",
     slug: "integration-and-automation",
     content: {
       hero: {
@@ -72,6 +74,13 @@ export const services: Service[] = [
           },
         ],
       },
+      performance: {
+        metrics: [
+          { value: "70%", label: "Faster Deployment" },
+          { value: "3x", label: "ROI Increase" },
+          { value: "99.9%", label: "Uptime SLA" },
+        ],
+      },
       youtubeVideo: {
         videoId: "hPkB_DBwnfU",
         title: "Integration & Enterprise Automation Overview",
@@ -82,6 +91,8 @@ export const services: Service[] = [
     id: "faas",
     name: "AI Agents Framework-as-a-Service (FaaS)",
     description: "Managed AI framework platform",
+    menuDescription: "Scalable infrastructure for AI agents",
+    icon: "/service-menu-icons/Agent.png",
     slug: "faas",
     content: {
       hero: {
@@ -123,6 +134,13 @@ export const services: Service[] = [
           },
         ],
       },
+      performance: {
+        metrics: [
+          { value: "10x", label: "Scale Capacity" },
+          { value: "5min", label: "Deployment Time" },
+          { value: "100%", label: "Managed Infra" },
+        ],
+      },
       youtubeVideo: {
         videoId: "hPkB_DBwnfU",
         title: "FaaS Platform Demo",
@@ -133,6 +151,8 @@ export const services: Service[] = [
     id: "innovation-lab",
     name: "Innovation & Research Lab",
     description: "Cutting-edge AI research and development",
+    menuDescription: "Applied AI R&D and rapid prototyping",
+    icon: "/service-menu-icons/Inovetion Lab.png",
     slug: "innovation-lab",
     content: {
       hero: {
@@ -172,6 +192,13 @@ export const services: Service[] = [
             description:
               "Commissioned research projects tailored to your specific challenges, exploring novel AI approaches.",
           },
+        ],
+      },
+      performance: {
+        metrics: [
+          { value: "50+", label: "Research Projects" },
+          { value: "2x", label: "Innovation Speed" },
+          { value: "First", label: "Early Access" },
         ],
       },
       youtubeVideo: {
