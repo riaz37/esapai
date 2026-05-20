@@ -13,14 +13,6 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
         >
             <div className="flex shrink-0 items-center gap-2">
                 <Image
-                    src="/logo/mainlogo.webp"
-                    alt="Main Logo"
-                    width={40}
-                    height={40}
-                    priority
-                    className="h-8 w-auto shrink-0"
-                />
-                <Image
                     src="/logo/esapalogo.png"
                     alt="ESAP Logo"
                     width={130}
