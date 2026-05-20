@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { LazySection } from "@/components/ui/lazy-section";
 import { Hero } from "@/components/features/home/hero";
 import { generateHomeMetadata } from "@/lib/seo/metadata";
-import { getHomePage } from "@/lib/sanity/queries";
 import dynamic from "next/dynamic";
 import { SectionErrorBoundary } from "@/components/ui/section-error-boundary";
 
 export const metadata: Metadata = generateHomeMetadata();
 
+export const revalidate = false;
 
 // Below-the-fold sections - lazy loaded with direct imports for proper code splitting
 const MissionSection = dynamic(
@@ -40,55 +41,63 @@ const TechnologyExcellenceSection = dynamic(
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Home" });
 
-  // Fetch CMS data — falls back to component defaults if null
-  const data = await getHomePage(locale).catch(() => null);
+  const hero = {
+    title: t("hero.title"),
+    subtitle: t("hero.subtitle"),
+    badgePill: t("hero.badgePill"),
+    badgeDescription: t("hero.badgeDescription"),
+    ctaButtonText: t("hero.ctaButtonText"),
+  };
+
+  const technology = {
+    title: t("technology.title"),
+    subtitle: t("technology.subtitle"),
+    badge: t("technology.badge"),
+  };
+
+  const mission = {
+    title: t("mission.title"),
+    subtitle: t("mission.subtitle"),
+    badge: t("mission.badge"),
+    cards: t.raw("mission.items") as Array<{ title: string; description: string; image?: string }>,
+  };
+
+  const services = {
+    title: t("services.title"),
+    subtitle: t("services.subtitle"),
+    badge: t("services.badge"),
+    services: t.raw("services.items") as Array<{ id?: string; title: string; description: string; image?: string }>,
+  };
+
+  const achievements = {
+    title: t("achievements.title"),
+    subtitle: t("achievements.subtitle"),
+    badge: t("achievements.badge"),
+    achievements: t.raw("achievements.items") as Array<{ number: string; label: string; isHighlighted?: boolean }>,
+  };
 
   return (
     <div className="relative">
 
-      <Hero
-        title={data?.heroTitle}
-        subtitle={data?.heroSubtitle}
-        badgePill={data?.heroBadgePill}
-        badgeDescription={data?.heroBadgeDescription}
-        ctaButtonText={data?.ctaButtonText}
-        ctaButtonHref={data?.ctaButtonHref}
-      />
-
-
+      <Hero {...hero} />
 
       {/* Portal Reveal Target: Technology Excellence */}
       <LazySection minHeight="400px" className="pointer-events-none">
-        <TechnologyExcellenceSection
-          title={data?.technologyTitle}
-          subtitle={data?.technologySubtitle}
-          badge={data?.technologyBadge}
-          cards={data?.technologyCards}
-          partners={data?.partners}
-        />
+        <TechnologyExcellenceSection {...technology} />
       </LazySection>
 
       {/* Mission Section - Now with proper scroll room */}
       <LazySection minHeight="400px">
         <SectionErrorBoundary>
-          <MissionSection
-            title={data?.missionTitle}
-            subtitle={data?.missionSubtitle}
-            badge={data?.missionBadge}
-            cards={data?.missionCards}
-          />
+          <MissionSection {...mission} />
         </SectionErrorBoundary>
       </LazySection>
 
       <LazySection minHeight="600px">
         <SectionErrorBoundary>
-          <ServiceSection
-            title={data?.servicesTitle}
-            subtitle={data?.servicesSubtitle}
-            badge={data?.servicesBadge}
-            services={data?.services}
-          />
+          <ServiceSection {...services} />
         </SectionErrorBoundary>
       </LazySection>
 
@@ -100,29 +109,19 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
       <LazySection minHeight="120vh">
         <SectionErrorBoundary>
-          <TextRevealSection text={data?.textRevealContent} />
+          <TextRevealSection />
         </SectionErrorBoundary>
       </LazySection>
 
-
-
       <LazySection minHeight="400px">
         <SectionErrorBoundary>
-          <AchievementSection
-            title={data?.achievementsTitle}
-            subtitle={data?.achievementsSubtitle}
-            badge={data?.achievementsBadge}
-            achievements={data?.achievements}
-          />
+          <AchievementSection {...achievements} />
         </SectionErrorBoundary>
       </LazySection>
 
       <LazySection minHeight="600px">
         <SectionErrorBoundary>
-          <CTASection
-            title={data?.ctaTitle}
-            subtitle={data?.ctaSubtitle}
-          />
+          <CTASection />
         </SectionErrorBoundary>
       </LazySection>
     </div>
