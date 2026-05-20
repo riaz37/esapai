@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { NavbarLogoProps } from "./types";
@@ -13,20 +12,12 @@ export const NavbarLogo = ({ visible: _visible }: NavbarLogoProps) => {
         >
             <div className="flex shrink-0 items-center gap-2">
                 <Image
-                    src="/logo/mainlogo.webp"
-                    alt="Main Logo"
-                    width={40}
-                    height={40}
-                    priority
-                    className="h-8 w-auto shrink-0"
-                />
-                <Image
-                    src="/logo/esaplogo.svg"
+                    src="/logo/esapalogo.png"
                     alt="ESAP Logo"
-                    width={130}
-                    height={42}
+                    width={180}
+                    height={58}
                     priority
-                    className="h-7 w-auto shrink-0"
+                    className="h-10 w-auto shrink-0"
                 />
             </div>
         </Link>

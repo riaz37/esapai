@@ -494,8 +494,8 @@ const PRODUCT_MENU_ICONS: Record<string, string> = {
     'erp':          '/products-menu-icons/ERP.png',
     'ai-framework': '/products-menu-icons/ai-framework.png',
     'zakra':        '/products-menu-icons/zakra.png',
-    'pagesense':    '/products-menu-icons/jawib.png',
-    'omnilisten':   '/products-menu-icons/Fasih.png',
+    'pagesense':    '/products-menu-icons/Pagesense.png',
+    'omnilisten':   '/products-menu-icons/Omnilisten.png',
 };
 
 export function mapSanityProduct(doc: SanityDoc): Product {
