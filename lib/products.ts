@@ -849,6 +849,77 @@ export const products: Product[] = [
       },
     },
   },
+  {
+    id: "causal-os",
+    name: "Causal OS",
+    description: "Decision Governance for High-Stakes Operations. Every high-stakes decision captured, reviewed, and ready for audit from setup to live use.",
+    menuDescription: "Decision governance for high-stakes operations.",
+    slug: "causal-os",
+    icon: "/products-menu-icons/casualos.png",
+    content: {
+      hero: {
+        subtitle: [
+          "Every high-stakes decision your organization makes captured, reviewed, and ready for audit from setup to live use.",
+        ],
+        centerIcon: "/products/causal-os.svg",
+        centerIconAlt: "Causal OS Decision Governance Icon",
+        heroVideo: "/videos/KB.mp4",
+        demoVideo: "/product-videos/causal-os.mp4",
+        tagline: "Decision Governance",
+        liveUrl: "https://causal-reasoning-os.vercel.app/",
+      },
+      exploreButton: "Explore Solution",
+      performance: {
+        metrics: [
+          { value: "18,500+", label: "Decisions Governed Per Deployment" },
+          { value: "20 min", label: "Average Time to Complete an Audit Review" },
+          { value: "Zero", label: "Decisions Changed Outside Governance" },
+        ],
+      },
+      cinematic: {
+        problems: [
+          { title: "No Record of What Was Decided", description: "High-stakes decisions are made verbally or in scattered docs — no searchable, permanent audit trail.", solTitle: "Decision Ledger", solDesc: "A permanent, searchable record of every high-stakes decision across every domain filtered by outcome, date, team, or version.", solImpact: "Complete Record" },
+          { title: "Decisions Reach Customers Unchecked", description: "No independent review layer means errors affecting patients, operators, or workflows go undetected.", solTitle: "Verifier on Every Decision", solDesc: "An independent review layer checks every decision before it affects a customer, patient, operator, or workflow.", solImpact: "Independent Check" },
+          { title: "New Domains Go Live Without Governance", description: "Turning new data into live decisions has no structured approval trail — gaps appear at audit time.", solTitle: "Domain Launch Workflow", solDesc: "Turn new data into a governed live domain through structured setup, testing, review, and promotion with full approval trails.", solImpact: "Draft to Live" },
+        ],
+      },
+      architecture: {
+        title: "Architecture Deck",
+        badge: "Visual Index",
+        subtitle: "Causal OS - Decision Governance. A full visualization of domain setup, live decisioning, verification, review, and audit memory.",
+        reelImages: [
+          "/product-images/Slide-22.webp",
+          "/product-images/Slide-23.webp",
+          "/product-images/Slide-24.webp",
+        ],
+      },
+      outcomes: {
+        title: "Outcomes",
+        badge: "Proof",
+      },
+      demo: {
+        title: "Causal OS in Action",
+        subtitle: "See decisions reviewed, recorded, and made audit-ready in one live walkthrough.",
+        badge: "Demo",
+      },
+      cta: {
+        title: "Ready to Try Causal OS?",
+        subtitle: "When every decision is already captured, reviewed, and on record — audits stop being a scramble and start being routine.",
+        buttonText: "Get Started",
+      },
+      journey: {
+        title: "Causal OS Ecosystem",
+        subtitle: "A governed operating layer for every high-stakes decision your organization makes.",
+        badge: "Architecture",
+        stages: ["Stage One", "Stage Two", "Stage Three"],
+        layers: [
+          { title: "Domain Setup", nodes: ["DATA PREP", "DOMAIN SETUP", "LIVE DOMAIN"] },
+          { title: "Governance Core", nodes: ["DECISION ENGINE", "INDEPENDENT CHECKS", "DECISION RESULT"] },
+          { title: "Audit & Action", nodes: ["DECISION LEDGER", "REVIEW QUEUE", "AUDIT EXPORT"] },
+        ],
+      },
+    },
+  },
 
 ];
 
