@@ -51,12 +51,19 @@ const OMNILISTEN_ITEMS: CinematicProblemConfig[] = [
   { id: 3, icon: XCircle, spreadPos: SPREAD_POSITIONS[2], solIcon: CheckCircle2 },
 ];
 
+const CAUSAL_OS_ITEMS: CinematicProblemConfig[] = [
+  { id: 1, icon: AlertCircle, spreadPos: SPREAD_POSITIONS[0], solIcon: Zap },
+  { id: 2, icon: FileWarning, spreadPos: SPREAD_POSITIONS[1], solIcon: Sparkles },
+  { id: 3, icon: XCircle, spreadPos: SPREAD_POSITIONS[2], solIcon: CheckCircle2 },
+];
+
 const ITEMS_BY_SLUG: Record<string, CinematicProblemConfig[]> = {
   erp: ERP_ITEMS,
   "ai-framework": AI_FRAMEWORK_ITEMS,
   zakra: ZAKRA_ITEMS,
   pagesense: PAGESENSE_ITEMS,
   omnilisten: OMNILISTEN_ITEMS,
+  "causal-os": CAUSAL_OS_ITEMS,
 };
 
 const DEFAULT_ITEMS = ERP_ITEMS;

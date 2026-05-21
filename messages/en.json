@@ -119,6 +119,10 @@
         "omnilisten": {
           "name": "OmniListen",
           "description": "Every Arabic and English conversation transcribed, summarized, and actioned before you leave the room."
+        },
+        "causal-os": {
+          "name": "Causal OS",
+          "description": "Every high-stakes decision your organization makes captured, reviewed, and ready for audit from setup to live use."
         }
       }
     }
@@ -218,7 +222,8 @@
       "ai-framework": "AI Framework",
       "zakra": "Zakra",
       "pagesense": "PageSense",
-      "omnilisten": "OmniListen"
+      "omnilisten": "OmniListen",
+      "causal-os": "Causal OS"
     },
     "toasts": {
       "acceptTerms": "Please accept the terms to continue.",
@@ -342,6 +347,10 @@
     "omnilisten": {
       "name": "OmniListen",
       "menuDescription": "Conversational autopilot for Arabic and English teams."
+    },
+    "causal-os": {
+      "name": "Causal OS",
+      "menuDescription": "Decision governance for high-stakes operations."
     }
   },
   "CTA": {

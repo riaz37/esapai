@@ -119,6 +119,10 @@
         "omnilisten": {
           "name": "OmniListen",
           "description": "كل محادثة بالعربية والإنجليزية مُفرَّغة وملخَّصة ومُحوَّلة إلى مهام قبل أن تغادر الغرفة."
+        },
+        "causal-os": {
+          "name": "Causal OS",
+          "description": "كل قرار بالغ الأهمية في مؤسستك محفوظ ومراجع وجاهز للتدقيق من الإعداد حتى البث المباشر."
         }
       }
     }
@@ -218,7 +222,8 @@
       "ai-framework": "إطار عمل الذكاء الاصطناعي",
       "zakra": "ذاكرة",
       "pagesense": "PageSense",
-      "omnilisten": "OmniListen"
+      "omnilisten": "OmniListen",
+      "causal-os": "Causal OS"
     },
     "toasts": {
       "acceptTerms": "يرجى قبول الشروط للاستمرار.",
@@ -342,6 +347,10 @@
     "omnilisten": {
       "name": "OmniListen",
       "menuDescription": "الطيار الآلي للمحادثات للفرق العربية والإنجليزية."
+    },
+    "causal-os": {
+      "name": "Causal OS",
+      "menuDescription": "حوكمة القرارات للعمليات عالية المخاطر."
     }
   },
   "CTA": {

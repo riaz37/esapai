@@ -27,6 +27,7 @@ import {
     BookOpen,
     Sparkles,
     LayoutDashboard,
+    Settings,
 } from 'lucide-react';
 
 // Local lightweight types replacing reactflow's Node/Edge (eliminates reactflow from bundle)
@@ -327,10 +328,59 @@ const omnilistenJourney: ProductJourneyData = {
 };
 
 
+// --- Causal OS (Pipeline Layout) ---
+const causalOsJourney: ProductJourneyData = {
+    journeyTitle: 'Causal OS Ecosystem',
+    journeySubtitle: 'A governed operating layer for every high-stakes decision your organization makes.',
+    layers: [
+        {
+            id: 'cos-domain',
+            title: 'Domain Setup',
+            nodes: [
+                createNode('cos-prep', 350, 325, 'Data Prep', <FileText size={32} />),
+                createNode('cos-setup', 700, 325, 'Domain Setup', <Settings size={32} />),
+                createNode('cos-live', 1050, 325, 'Live Domain', <Globe size={32} />),
+            ],
+            edges: [
+                createEdge('cos-prep', 'cos-setup', 'r-out', 'l-in'),
+                createEdge('cos-setup', 'cos-live', 'r-out', 'l-in'),
+            ]
+        },
+        {
+            id: 'cos-core',
+            title: 'Governance Core',
+            nodes: [
+                createNode('cos-engine', 350, 325, 'Decision Engine', <Brain size={32} />),
+                createNode('cos-checks', 700, 325, 'Independent Checks', <CheckCircle size={32} />),
+                createNode('cos-result', 1050, 325, 'Decision Result', <Zap size={32} />),
+            ],
+            edges: [
+                createEdge('cos-engine', 'cos-checks', 'r-out', 'l-in'),
+                createEdge('cos-checks', 'cos-result', 'r-out', 'l-in'),
+            ]
+        },
+        {
+            id: 'cos-audit',
+            title: 'Audit & Action',
+            nodes: [
+                createNode('cos-ledger', 350, 325, 'Decision Ledger', <BookOpen size={32} />),
+                createNode('cos-queue', 700, 325, 'Review Queue', <Inbox size={32} />),
+                createNode('cos-export', 1050, 325, 'Audit Export', <FileText size={32} />),
+            ],
+            edges: [
+                createEdge('cos-ledger', 'cos-queue', 'r-out', 'l-in'),
+                createEdge('cos-queue', 'cos-export', 'r-out', 'l-in'),
+            ]
+        }
+    ]
+};
+
+
 export const PRODUCT_JOURNEYS: Record<string, ProductJourneyData> = {
     'ai-framework': aiFrameworkJourney,
     'erp': erpJourney,
     'zakra': zakraJourney,
     'pagesense': pagesenseJourney,
     'omnilisten': omnilistenJourney,
+    'causal-os': causalOsJourney,
 };
