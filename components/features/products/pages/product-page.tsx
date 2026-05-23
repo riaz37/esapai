@@ -1,6 +1,9 @@
 "use client";
 
+import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useProductContent } from "@/lib/hooks/use-product-content";
+import { localizeProduct } from "@/lib/products";
 import type { ProductPageClientProps } from "@/types/page";
 import dynamic from "next/dynamic";
 import { LazySection } from "@/components/ui/lazy-section";
@@ -43,7 +46,39 @@ export function ProductPage({ slug, initialProduct }: ProductPageClientProps) {
     initialProduct,
   });
 
-  const hydratedProduct = product ?? initialProduct;
+  const tContent = useTranslations("ProductContent");
+  const tProducts = useTranslations("Products");
+
+  const baseProduct = product ?? initialProduct;
+
+  const hydratedProduct = useMemo(() => {
+    let translated: Record<string, unknown> | undefined;
+    try {
+      translated = tContent.raw(slug) as Record<string, unknown> | undefined;
+    } catch {
+      translated = undefined;
+    }
+
+    let translatedName: string | undefined;
+    let translatedDescription: string | undefined;
+    try {
+      const productMeta = tProducts.raw(slug) as
+        | { name?: string; description?: string }
+        | undefined;
+      translatedName = productMeta?.name;
+      translatedDescription = productMeta?.description;
+    } catch {
+      // No translation entry for this slug — fall back to product fields.
+    }
+
+    return localizeProduct(
+      baseProduct,
+      translated,
+      translatedName,
+      translatedDescription,
+    );
+  }, [baseProduct, slug, tContent, tProducts]);
+
   const content = hydratedProduct?.content ?? {};
   const heroSubtitle = content.hero?.subtitle ?? [
     "Where Innovation Meets Productivity",

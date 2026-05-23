@@ -927,3 +927,150 @@ export function getProductBySlug(slug: string): Product | undefined {
   return products.find((product) => product.slug === slug);
 }
 
+/**
+ * Merge a static product (asset paths, IDs, video/image fields) with a
+ * translated content payload sourced from next-intl messages. Translated
+ * strings take precedence over the hardcoded English values, while static
+ * asset fields (videos, images, icons, liveUrl) are preserved.
+ *
+ * The translatedContent argument should match the `ProductContent.<slug>`
+ * subtree in the message files (returned by `t.raw(slug)`).
+ */
+export function localizeProduct(
+  product: Product,
+  translatedContent: Record<string, unknown> | undefined,
+  translatedName?: string,
+  translatedDescription?: string,
+): Product {
+  if (!translatedContent) return product;
+
+  const tc = translatedContent as {
+    hero?: {
+      subtitle?: string[];
+      centerIconAlt?: string;
+      tagline?: string;
+    };
+    exploreButton?: string;
+    youtubeVideo?: { title?: string };
+    performance?: { metrics?: { value: string; label: string }[] };
+    mission?: { title?: string; subtitle?: string };
+    cinematic?: {
+      challenges?: {
+        badge?: string;
+        titlePart1?: string;
+        titlePart2?: string;
+        subtitle?: string;
+      };
+      narrative?: {
+        introLine?: string;
+        problemsIntroLine?: string;
+        epiphanyPreLine?: string;
+        solutionIntroLine?: string;
+        recapLine?: string;
+      };
+      problems?: {
+        title: string;
+        description: string;
+        solTitle: string;
+        solDesc: string;
+        solImpact: string;
+      }[];
+    };
+    architecture?: { title?: string; badge?: string; subtitle?: string };
+    outcomes?: { title?: string; badge?: string };
+    demo?: { title?: string; subtitle?: string; badge?: string };
+    cta?: { title?: string; subtitle?: string; buttonText?: string };
+    journey?: {
+      title?: string;
+      subtitle?: string;
+      badge?: string;
+      stages?: string[];
+      layers?: { title: string; nodes: string[] }[];
+    };
+  };
+
+  const original = product.content ?? {};
+
+  return {
+    ...product,
+    name: translatedName ?? product.name,
+    description: translatedDescription ?? product.description,
+    content: {
+      ...original,
+      hero: {
+        ...original.hero,
+        subtitle: tc.hero?.subtitle ?? original.hero?.subtitle,
+        centerIconAlt: tc.hero?.centerIconAlt ?? original.hero?.centerIconAlt,
+        tagline: tc.hero?.tagline ?? original.hero?.tagline,
+      },
+      exploreButton: tc.exploreButton ?? original.exploreButton,
+      youtubeVideo: original.youtubeVideo
+        ? {
+            ...original.youtubeVideo,
+            title: tc.youtubeVideo?.title ?? original.youtubeVideo.title,
+          }
+        : tc.youtubeVideo
+          ? { title: tc.youtubeVideo.title }
+          : undefined,
+      performance: tc.performance?.metrics
+        ? { metrics: tc.performance.metrics }
+        : original.performance,
+      mission: tc.mission
+        ? {
+            ...original.mission,
+            title: tc.mission.title ?? original.mission?.title,
+            subtitle: tc.mission.subtitle ?? original.mission?.subtitle,
+          }
+        : original.mission,
+      cinematic: {
+        ...original.cinematic,
+        challenges: tc.cinematic?.challenges
+          ? {
+              ...original.cinematic?.challenges,
+              ...tc.cinematic.challenges,
+            }
+          : original.cinematic?.challenges,
+        narrative: tc.cinematic?.narrative
+          ? {
+              ...original.cinematic?.narrative,
+              ...tc.cinematic.narrative,
+            }
+          : original.cinematic?.narrative,
+        problems: tc.cinematic?.problems ?? original.cinematic?.problems,
+      },
+      architecture: {
+        ...original.architecture,
+        title: tc.architecture?.title ?? original.architecture?.title,
+        badge: tc.architecture?.badge ?? original.architecture?.badge,
+        subtitle: tc.architecture?.subtitle ?? original.architecture?.subtitle,
+        reelImages: original.architecture?.reelImages,
+      },
+      outcomes: {
+        ...original.outcomes,
+        title: tc.outcomes?.title ?? original.outcomes?.title,
+        badge: tc.outcomes?.badge ?? original.outcomes?.badge,
+      },
+      demo: {
+        ...original.demo,
+        title: tc.demo?.title ?? original.demo?.title,
+        subtitle: tc.demo?.subtitle ?? original.demo?.subtitle,
+        badge: tc.demo?.badge ?? original.demo?.badge,
+      },
+      cta: {
+        ...original.cta,
+        title: tc.cta?.title ?? original.cta?.title,
+        subtitle: tc.cta?.subtitle ?? original.cta?.subtitle,
+        buttonText: tc.cta?.buttonText ?? original.cta?.buttonText,
+      },
+      journey: {
+        ...original.journey,
+        title: tc.journey?.title ?? original.journey?.title,
+        subtitle: tc.journey?.subtitle ?? original.journey?.subtitle,
+        badge: tc.journey?.badge ?? original.journey?.badge,
+        stages: tc.journey?.stages ?? original.journey?.stages,
+        layers: tc.journey?.layers ?? original.journey?.layers,
+      },
+    },
+  };
+}
+
