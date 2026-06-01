@@ -33,7 +33,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [countries, setCountries] = useState<CountriesGeoJSON | null>(null);
 
-  const defaultProps = {
+  const defaultProps = useMemo(() => ({
     pointSize: 1,
     atmosphereColor: "#ffffff",
     showAtmosphere: true,
@@ -48,7 +48,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     rings: 1,
     maxRings: 3,
     ...globeConfig,
-  };
+  }), [globeConfig]);
 
   // Initialize globe only once
   useEffect(() => {
@@ -57,6 +57,14 @@ export function Globe({ globeConfig, data }: WorldProps) {
       (groupRef.current as any).add(globeRef.current);
       setIsInitialized(true);
     }
+    return () => {
+      if (globeRef.current && groupRef.current) {
+        (groupRef.current as any).remove(globeRef.current);
+        (globeRef.current as unknown as { dispose?: () => void }).dispose?.();
+        globeRef.current = null;
+        setIsInitialized(false);
+      }
+    };
   }, []);
 
   // Load countries GeoJSON on the client (keeps large JSON out of the JS bundle)
@@ -189,19 +197,19 @@ export function Globe({ globeConfig, data }: WorldProps) {
     defaultProps.maxRings,
   ]);
 
-  // Handle rings animation with cleanup
+  // Handle rings animation with cleanup — paused when tab is hidden
   useEffect(() => {
     if (!globeRef.current || !isInitialized || !data) return;
 
-    const interval = setInterval(() => {
-      if (!globeRef.current) return;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
+    const tick = () => {
+      if (!globeRef.current) return;
       const newNumbersOfRings = genRandomNumbers(
         0,
         data.length,
         Math.floor((data.length * 4) / 5),
       );
-
       const ringsData = data
         .filter((d, i) => newNumbersOfRings.includes(i))
         .map((d) => ({
@@ -209,12 +217,19 @@ export function Globe({ globeConfig, data }: WorldProps) {
           lng: d.startLng,
           color: d.color,
         }));
-
       globeRef.current.ringsData(ringsData);
-    }, 2000);
+    };
+
+    const start = () => { interval = setInterval(tick, 2000); };
+    const stop = () => { if (interval) { clearInterval(interval); interval = null; } };
+    const handleVisibility = () => { document.hidden ? stop() : start(); };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    start();
 
     return () => {
-      clearInterval(interval);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      stop();
     };
   }, [isInitialized, data]);
 
@@ -280,7 +295,7 @@ export function World(props: WorldProps) {
         minDistance={cameraZ}
         maxDistance={cameraZ}
         autoRotateSpeed={1}
-        autoRotate={true}
+        autoRotate={typeof window !== "undefined" ? !window.matchMedia("(prefers-reduced-motion: reduce)").matches : true}
         minPolarAngle={Math.PI / 3.5}
         maxPolarAngle={Math.PI - Math.PI / 3}
       />

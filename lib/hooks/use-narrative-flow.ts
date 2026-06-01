@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useScroll } from "motion/react";
 
 interface UseNarrativeFlowProps {
@@ -11,6 +11,7 @@ interface UseNarrativeFlowProps {
 export function useNarrativeFlow({ containerRef, itemCount }: UseNarrativeFlowProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const activeIndexRef = useRef(0);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -23,14 +24,15 @@ export function useNarrativeFlow({ containerRef, itemCount }: UseNarrativeFlowPr
                 Math.floor(latest * itemCount),
                 itemCount - 1
             );
-            if (index !== activeIndex) {
-                setDirection(index > activeIndex ? 1 : -1);
+            if (index !== activeIndexRef.current) {
+                setDirection(index > activeIndexRef.current ? 1 : -1);
+                activeIndexRef.current = index;
                 setActiveIndex(index);
             }
         });
 
         return () => unsubscribe();
-    }, [scrollYProgress, activeIndex, itemCount]);
+    }, [scrollYProgress, itemCount]);
 
     const scrollToSection = (index: number) => {
         if (!containerRef.current) return;

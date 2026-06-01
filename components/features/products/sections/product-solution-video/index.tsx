@@ -112,13 +112,15 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
       });
 
       // Subtle continuous float
-      gsap.to(videoWrapperRef.current, {
-        y: "+=12",
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.to(videoWrapperRef.current, {
+          y: "+=12",
+          duration: 4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     });
 
     mm.add("(max-width: 767px)", () => {

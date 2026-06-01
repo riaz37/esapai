@@ -1019,7 +1019,10 @@
     }
 
     .animate-pulse-slow,
-    .animate-cell-ripple {
+    .animate-cell-ripple,
+    .animate-shine,
+    .animate-shimmer-slow,
+    .animate-flow-pulse {
       animation: none !important;
     }
   }

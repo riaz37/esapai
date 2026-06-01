@@ -53,10 +53,11 @@ export function TextRevealSection({
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: containerRef.current,
-                        start: "top 85%", // Start fading in as soon as it enters view
+                        start: "top 85%",
                         end: "top 40%",
                         scrub: 1,
                         toggleActions: "play none none reverse",
+                        invalidateOnRefresh: true,
                     },
                 }
             );

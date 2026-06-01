@@ -56,6 +56,8 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
   fallback: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
 });
 
+export const revalidate = false;
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }

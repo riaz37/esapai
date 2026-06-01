@@ -137,9 +137,6 @@ export function useShutterAnimation({
                 ScrollTrigger.refresh();
             });
 
-            // Final refresh call for globally ensuring layout is synced
-            ScrollTrigger.refresh();
-
             return () => mm.revert();
         },
         { scope: containerRef, dependencies: [isRTL] }

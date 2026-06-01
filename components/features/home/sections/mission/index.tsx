@@ -116,7 +116,7 @@ export function Mission({
       });
 
     },
-    { scope: sectionRef, dependencies: [cards] }
+    { scope: sectionRef }
   );
 
   return (

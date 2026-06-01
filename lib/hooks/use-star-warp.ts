@@ -37,8 +37,14 @@ export function useStarWarp() {
             initStars();
         };
 
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
         window.addEventListener("resize", resize);
         resize();
+
+        if (prefersReduced) {
+            return () => window.removeEventListener("resize", resize);
+        }
 
         const draw = () => {
             ctx.clearRect(0, 0, width, height);
@@ -87,9 +93,22 @@ export function useStarWarp() {
             animationFrameId = requestAnimationFrame(draw);
         };
 
-        draw();
+        // Only animate while the canvas is visible in the viewport
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    if (!animationFrameId) draw();
+                } else {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = 0;
+                }
+            },
+            { threshold: 0 }
+        );
+        observer.observe(canvas);
 
         return () => {
+            observer.disconnect();
             window.removeEventListener("resize", resize);
             cancelAnimationFrame(animationFrameId);
         };

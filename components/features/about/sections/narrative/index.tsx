@@ -119,7 +119,7 @@ export const AboutNarrative: React.FC<AboutNarrativeProps> = ({
 
 
                 {/* Sidebar Navigator - Right Side */}
-                <div className="absolute right-12 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
+                <div className="absolute end-12 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
                     <SidebarNavigator
                         items={items}
                         activeIndex={activeIndex}

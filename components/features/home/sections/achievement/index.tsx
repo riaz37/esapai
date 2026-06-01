@@ -48,7 +48,6 @@ export function Achievement({
         selector: ".stat-item",
         y: 20,
         stagger: 0.2,
-        dependencies: [displayAchievements],
     });
 
     return (

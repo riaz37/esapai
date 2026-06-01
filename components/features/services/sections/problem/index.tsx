@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { m } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { AlertTriangle, Clock, Database, FileX, ZapOff } from "lucide-react";
@@ -134,6 +134,7 @@ type PainPoint = {
 
 function DesktopPainCard({ point }: { point: PainPoint }) {
   const { duration, y, rotate, delay } = point.drift;
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <m.div
@@ -165,14 +166,14 @@ function DesktopPainCard({ point }: { point: PainPoint }) {
       }}
       className="absolute w-72 cursor-pointer group"
       style={{
-        left: `calc(50% + ${point.x * 3}px)`,
+        insetInlineStart: `calc(50% + ${point.x * 3}px)`,
         top: `calc(50% + ${point.y * 3}px)`,
-        marginLeft: "-144px",
+        marginInlineStart: "-144px",
         marginTop: "-100px",
       }}
     >
       <m.div
-        animate={{
+        animate={shouldReduceMotion ? undefined : {
           y: [0, -y, y / 2, 0],
           rotate: [0, rotate, -rotate, 0],
         }}
