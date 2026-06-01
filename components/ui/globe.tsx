@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Component, useEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Color, Scene, Fog, PerspectiveCamera, Vector3, Group as THREE_Group } from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend } from "@react-three/fiber";
@@ -254,15 +255,22 @@ export function WebGLRendererConfig() {
   return null;
 }
 
-function isWebGLSupported(): boolean {
-  try {
-    const canvas = document.createElement("canvas");
-    return !!(
-      canvas.getContext("webgl") ||
-      canvas.getContext("experimental-webgl")
-    );
-  } catch {
-    return false;
+class GlobeErrorBoundary extends Component<
+  { children: ReactNode },
+  { failed: boolean }
+> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { failed: false };
+  }
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (this.state.failed) {
+      return <div className="w-full h-full" aria-hidden="true" />;
+    }
+    return this.props.children;
   }
 }
 
@@ -279,11 +287,8 @@ export function World(props: WorldProps) {
     []
   );
 
-  if (!isWebGLSupported()) {
-    return <div className="w-full h-full" aria-hidden="true" />;
-  }
-
   return (
+    <GlobeErrorBoundary>
     <Canvas scene={scene} camera={camera}>
       <WebGLRendererConfig />
       <ambientLight color={globeConfig.ambientLight} intensity={globeConfig.ambientIntensity || 0.6} />
@@ -316,6 +321,7 @@ export function World(props: WorldProps) {
         maxPolarAngle={Math.PI - Math.PI / 3}
       />
     </Canvas>
+    </GlobeErrorBoundary>
   );
 }
 
