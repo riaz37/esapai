@@ -254,6 +254,18 @@ export function WebGLRendererConfig() {
   return null;
 }
 
+function isWebGLSupported(): boolean {
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      canvas.getContext("webgl") ||
+      canvas.getContext("experimental-webgl")
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function World(props: WorldProps) {
   const { globeConfig } = props;
   const scene = useMemo(() => {
@@ -266,6 +278,10 @@ export function World(props: WorldProps) {
     () => new PerspectiveCamera(50, 1, 180, 1800),
     []
   );
+
+  if (!isWebGLSupported()) {
+    return <div className="w-full h-full" aria-hidden="true" />;
+  }
 
   return (
     <Canvas scene={scene} camera={camera}>
