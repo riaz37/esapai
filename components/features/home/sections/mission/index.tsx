@@ -80,7 +80,7 @@ export function Mission({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: isMobile ? "+=150%" : "+=120%",
+            end: isMobile ? "+=100%" : "+=80%",
             scrub: 1,
             pin: true,
             anticipatePin: 1,

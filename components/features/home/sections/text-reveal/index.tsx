@@ -70,7 +70,7 @@ export function TextRevealSection({
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "center center",
-                    end: "+=150%", // Reading time
+                    end: "+=100%", // Reading time
                     scrub: 1,
                     pin: true,
                     invalidateOnRefresh: true,

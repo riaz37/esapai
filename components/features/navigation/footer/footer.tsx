@@ -235,6 +235,7 @@ export function Footer() {
                   </label>
                   <input
                     id="newsletter-email"
+                    name="newsletter-email"
                     type="email"
                     placeholder={t("newsletter.placeholder")}
                     required
