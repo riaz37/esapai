@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import ReactDOM from "react-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -35,8 +34,6 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
 
     const demoVideo = product?.content?.hero?.demoVideo ?? "/videos/fasih-demo.mp4";
     const demoVideoAv1 = AV1_VIDEO_MAP[demoVideo];
-
-    ReactDOM.preload(demoVideo, { as: "video", fetchPriority: "high" });
 
     useGSAP(() => {
         if (!containerRef.current || !videoWrapperRef.current) return;
@@ -112,13 +109,15 @@ export function ProductSolutionVideo({ product }: ProductSolutionVideoProps) {
       });
 
       // Subtle continuous float
-      gsap.to(videoWrapperRef.current, {
-        y: "+=12",
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.to(videoWrapperRef.current, {
+          y: "+=12",
+          duration: 4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     });
 
     mm.add("(max-width: 767px)", () => {

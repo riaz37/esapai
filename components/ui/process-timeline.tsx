@@ -86,7 +86,7 @@ function TimelineEntry({ item, index: _index, entryRef }: { item: ProcessTimelin
             if (containerRef.current) observer.observe(containerRef.current);
 
             return () => {
-                if (containerRef.current) observer.unobserve(containerRef.current);
+                observer.disconnect();
             };
         },
         { scope: containerRef, dependencies: [item] }

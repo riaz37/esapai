@@ -22,14 +22,10 @@ export function CinematicAssistant({ state, className, reducedMotion }: Cinemati
 
     useGSAP(() => {
         if (reducedMotion) return;
-        gsap.to(containerRef.current, {
-            y: "-=15",
-            rotation: 1,
-            duration: 2.5,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1
-        });
+        gsap.fromTo(containerRef.current,
+            { y: 0, rotation: 0 },
+            { y: -15, rotation: 1, duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: -1 }
+        );
     }, { scope: containerRef, dependencies: [reducedMotion] });
 
     return (
@@ -60,7 +56,6 @@ export function CinematicAssistant({ state, className, reducedMotion }: Cinemati
                     sizes="256px"
                     unoptimized
                     className="object-contain"
-                    key={`${state}-${currentFrame}`}
                 />
             </div>
 

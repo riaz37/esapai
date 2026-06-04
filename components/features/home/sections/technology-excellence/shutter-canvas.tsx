@@ -199,7 +199,11 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         };
 
         loadImages();
-        return () => { isMounted = false; };
+        return () => {
+            isMounted = false;
+            bitmapsRef.current.forEach(bm => bm?.close());
+            bitmapsRef.current = [];
+        };
     }, [drawFrame, frameCount, framePaths, priorityFrameIndices]);
 
     // Auto-redraw on resize

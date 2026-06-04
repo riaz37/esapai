@@ -3,6 +3,7 @@
 import * as React from "react";
 import { createContext, useContext, useState, useCallback } from "react";
 import { X, CheckCircle2, AlertCircle, Info } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 type ToastType = "success" | "error" | "info";
@@ -20,6 +21,7 @@ interface ToastContextType {
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
+  const t = useTranslations("UI");
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((message: string, type: ToastType = "info") => {
@@ -101,7 +103,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                   "text-red-300 hover:text-red-200": toast.type === "error",
                 }
               )}
-              aria-label="Close toast"
+              aria-label={t("closeToast")}
             >
               <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>

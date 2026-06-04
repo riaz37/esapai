@@ -38,7 +38,8 @@ export function useProductCinematicReel({
       });
 
       // 1. Initial State: Stack the "Blades"
-      gsap.set(".deck-stage", { perspective: "2500px" });
+      const deckStage = containerRef.current?.querySelector(".deck-stage");
+      if (deckStage) gsap.set(deckStage, { perspective: "2500px" });
 
       reelImages.forEach((_, index) => {
         const el = imagesRef.current[index];
@@ -123,7 +124,8 @@ export function useProductCinematicReel({
         const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
         const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
 
-        gsap.to(".deck-stage", {
+        const stage = containerRef.current?.querySelector(".deck-stage");
+        if (stage) gsap.to(stage, {
           rotationY: x * 5,
           rotationX: -y * 5,
           duration: 1.5,
@@ -162,13 +164,14 @@ export function useProductCinematicReel({
       });
     });
 
-    // Proactive Mobile Header Animation
+    // Mobile Header Animation — kept outside mm to always run regardless of breakpoint
     const header = containerRef.current?.querySelector(
       '.mobile-section-header [data-testid="section-header"]'
     );
+    let headerTween: gsap.core.Tween | undefined;
     if (header) {
       const children = Array.from(header.children);
-      gsap.fromTo(
+      headerTween = gsap.fromTo(
         children,
         { y: 30, opacity: 0, filter: "blur(10px)" },
         {
@@ -186,7 +189,11 @@ export function useProductCinematicReel({
         }
       );
     }
-    
-    return () => mm.revert();
+
+    return () => {
+      mm.revert();
+      headerTween?.scrollTrigger?.kill();
+      headerTween?.kill();
+    };
   }, { scope: containerRef });
 }

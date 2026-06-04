@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface SkeletonProps {
@@ -20,9 +21,10 @@ function SkeletonPulse({ className }: { className?: string }) {
 }
 
 export function Skeleton({ variant = "text", className, lines = 3 }: SkeletonProps) {
+  const t = useTranslations("UI");
   if (variant === "text") {
     return (
-      <div className={cn("space-y-3", className)} role="status" aria-label="Loading">
+      <div className={cn("space-y-3", className)} role="status" aria-label={t("loadingLabel")}>
         {Array.from({ length: lines }).map((_, i) => (
           <SkeletonPulse
             key={i}
@@ -44,7 +46,7 @@ export function Skeleton({ variant = "text", className, lines = 3 }: SkeletonPro
           className
         )}
         role="status"
-        aria-label="Loading"
+        aria-label={t("loadingLabel")}
       >
         <SkeletonPulse className="h-40 w-full rounded-xl" />
         <SkeletonPulse className="h-5 w-2/3" />
@@ -56,7 +58,7 @@ export function Skeleton({ variant = "text", className, lines = 3 }: SkeletonPro
 
   if (variant === "image") {
     return (
-      <div role="status" aria-label="Loading" className={className}>
+      <div role="status" aria-label={t("loadingLabel")} className={className}>
         <SkeletonPulse className={cn("h-48 w-full rounded-xl", className)} />
       </div>
     );
@@ -67,7 +69,7 @@ export function Skeleton({ variant = "text", className, lines = 3 }: SkeletonPro
       <div
         className={cn("flex flex-col items-center gap-3 py-8", className)}
         role="status"
-        aria-label="Loading"
+        aria-label={t("loadingLabel")}
       >
         <SkeletonPulse className="h-10 w-24 rounded-lg" />
         <SkeletonPulse className="h-4 w-32 rounded" />
@@ -89,8 +91,9 @@ export function SkeletonGrid({
   columns?: string;
   className?: string;
 }) {
+  const t = useTranslations("UI");
   return (
-    <div className={cn("grid gap-6", columns, className)} role="status" aria-label="Loading content">
+    <div className={cn("grid gap-6", columns, className)} role="status" aria-label={t("loadingContent")}>
       {Array.from({ length: count }).map((_, i) => (
         <Skeleton key={i} variant={variant} />
       ))}

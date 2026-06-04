@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "next-intl";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -49,6 +50,7 @@ export interface TrustedPartnersProps {
 }
 
 export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartnersProps) {
+    const locale = useLocale();
     const MARQUEE_PARTNERS = [
         ...partners.map((p) => ({ ...p, id: `a-${p.logo}`, alt: p.alt || "" })),
         ...partners.map((p) => ({ ...p, id: `b-${p.logo}`, alt: p.alt || "" })),
@@ -101,7 +103,7 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
         // Infinite seamless marquee animation
         if (marqueeRef.current) {
             const marquee = marqueeRef.current;
-            const isRTL = document.documentElement.dir === "rtl";
+            const isRTL = locale === "ar";
 
             gsap.set(marquee, { xPercent: 0 });
 
@@ -112,7 +114,7 @@ export function TrustedPartners({ partners = DEFAULT_PARTNERS }: TrustedPartners
                 repeat: -1,
             });
         }
-    }, { scope: sectionRef });
+    }, { scope: sectionRef, dependencies: [locale] });
 
     return (
         <section ref={sectionRef} className="w-full pt-12 pb-8 sm:pt-14 sm:pb-10 md:pt-16 md:pb-12">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useLenis } from "@/components/providers/smooth-scroll-provider";
 
 // Geometry of the progress ring. The visible button is 44px; the SVG is
@@ -15,6 +16,7 @@ const REVEAL_THRESHOLD = 0.01;
 
 export function ScrollToTop() {
     const lenis = useLenis();
+    const t = useTranslations("UI");
     const [progress, setProgress] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
@@ -61,11 +63,11 @@ export function ScrollToTop() {
             onMouseLeave={() => setIsHovered(false)}
             onFocus={() => setIsHovered(true)}
             onBlur={() => setIsHovered(false)}
-            aria-label="Scroll to top"
+            aria-label={t("scrollToTop")}
             aria-hidden={!isVisible}
             tabIndex={isVisible ? 0 : -1}
             className={[
-                "group fixed right-6 bottom-8 z-[9998]",
+                "group fixed end-6 bottom-8 z-[9998]",
                 "grid place-items-center",
                 "rounded-full",
                 "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",

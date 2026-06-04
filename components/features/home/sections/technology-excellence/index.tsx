@@ -171,7 +171,7 @@ export function TechnologyExcellence({
             </div>
 
             {/* Cinematic Floor Gradient */}
-            <div className="hidden lg:block absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none z-0" />
+            <div className="hidden lg:block absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none z-0" />
         </Section>
     );
 }

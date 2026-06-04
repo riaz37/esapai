@@ -63,3 +63,6 @@ public/services/originals/
 /.studio
 
 .gstack/
+
+# graphify knowledge graph outputs
+/graphify-out/

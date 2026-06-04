@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { useLenis } from "@/components/providers/smooth-scroll-provider";
 
@@ -12,12 +12,6 @@ export function ScrollProgress() {
     const isDraggingRef = useRef(false);
     const pathname = usePathname();
     const lenis = useLenis();
-    const [isRTL, setIsRTL] = useState(false);
-
-    useEffect(() => {
-        setIsRTL(document.documentElement.dir === "rtl");
-    }, [pathname]);
-
     const getMetrics = useCallback(() => {
         const trackH = trackRef.current?.getBoundingClientRect().height ?? window.innerHeight;
         const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
@@ -106,7 +100,7 @@ export function ScrollProgress() {
         <div
             ref={trackRef}
             onClick={handleTrackClick}
-            className={`fixed ${isRTL ? "left-0" : "right-0"} top-0 z-[9999] h-full w-[6px] cursor-pointer bg-[var(--color-dark)]`}
+            className="fixed end-0 top-0 z-[9999] h-full w-[6px] cursor-pointer bg-[var(--color-dark)]"
             aria-hidden="true"
         >
             <div

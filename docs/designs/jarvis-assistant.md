@@ -91,12 +91,12 @@ No behavioral signal.        Offers contact handoff at        team'. Assign AE."
 │  └────────┬─────────┘    └────────┬────────────┘                   │
 │           │                       │                                  │
 │  ┌────────▼───────────────────────▼────────────────────────────┐   │
-│  │                    JarvisContext (React Context)              │   │
-│  │  - currentSection: string                                    │   │
-│  │  - messages: Message[]  (sessionStorage backed)              │   │
-│  │  - isOpen: boolean                                           │   │
-│  │  - demoMode: boolean  (?demo=true)                           │   │
-│  │  - voiceEnabled: boolean                                     │   │
+│  │                    JarvisContext (React Context)            │   │
+│  │  - currentSection: string                                   │   │
+│  │  - messages: Message[]  (sessionStorage backed)             │   │
+│  │  - isOpen: boolean                                          │   │
+│  │  - demoMode: boolean  (?demo=true)                          │   │
+│  │  - voiceEnabled: boolean                                    │   │
 │  └────────┬───────────────────────┬────────────────────────────┘   │
 │           │                       │                                  │
 │  ┌────────▼────────┐   ┌──────────▼──────────────────────────┐    │
