@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESAP AI — Employee ID Cards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:      #13f584;
+      --green-40:   rgba(19,245,132,0.40);
+      --green-20:   rgba(19,245,132,0.20);
+      --green-10:   rgba(19,245,132,0.10);
+      --green-05:   rgba(19,245,132,0.05);
+      --bg:         #030d08;
+      --card-dark:  #040f09;
+      --surface:    rgba(255,255,255,0.03);
+      --border:     rgba(255,255,255,0.08);
+      --border-g:   rgba(19,245,132,0.30);
+      --text:       #f5f5f5;
+      --text-muted: rgba(255,255,255,0.45);
+      --w: 340px;
+      --h: 210px;
+    }
+
+    body {
+      background: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 80px;
+      overflow-x: hidden;
+    }
+
+    /* ambient glow behind all cards */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 40% at 30% 20%, rgba(19,245,132,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, rgba(19,245,132,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    header .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #13f584;
+      margin-bottom: 12px;
+    }
+    header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    /* ── Grid ───────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, max-content));
+      gap: 56px 48px;
+      justify-content: center;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .card-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+
+    /* ── 3-D flip container ─────────────────────────── */
+    .scene {
+      width: var(--w);
+      height: var(--h);
+      perspective: 900px;
+    }
+    .flipper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* flip handled by JS on click */
+
+    .face {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+    .face.back { transform: rotateY(180deg); }
+
+    /* ── Shared card chrome ─────────────────────────── */
+    .card-base {
+      /* Surface lit from top-left — dark at bottom-right */
+      background: linear-gradient(130deg,
+        #1e3d26 0%,
+        #152e1c 18%,
+        #0c1e12 45%,
+        #070f09 75%,
+        #040c07 100%
+      );
+      border: none;
+      box-shadow:
+        /* ── Top-left rim light (light source) ── */
+        inset 0  1px 0 rgba(255,255,255,0.25),
+        inset 1px 0  0 rgba(255,255,255,0.12),
+        inset 0  2px 6px rgba(19,245,132,0.12),
+        /* ── Simulated card thickness — 8px stack ──
+           Each offset is one "slice" of the card body,
+           going darker as it wraps around the edge */
+        1px  1px  0 #112618,
+        2px  2px  0 #0e2114,
+        3px  3px  0 #0b1c10,
+        4px  4px  0 #08160c,
+        5px  5px  0 #061108,
+        6px  6px  0 #040d05,
+        7px  7px  0 #030a03,
+        8px  8px  0 #020702,
+        /* ── Drop shadow — card resting on surface ── */
+        10px 11px 16px rgba(0,0,0,0.60),
+        10px 16px 40px rgba(0,0,0,0.40),
+        0    28px 60px rgba(0,0,0,0.28);
+    }
+
+    /* Diagonal specular sweep — glossy card surface catching light */
+    .card-base::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        112deg,
+        rgba(255,255,255,0.13) 0%,
+        rgba(255,255,255,0.06) 22%,
+        rgba(255,255,255,0.00) 38%,
+        rgba(255,255,255,0.00) 62%,
+        rgba(0,0,0,0.06)       85%,
+        rgba(0,0,0,0.12)       100%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Fine holographic lines — subtle iridescent security stripe */
+    .card-base::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        repeating-linear-gradient(
+          108deg,
+          transparent            0px,
+          transparent            16px,
+          rgba(19,245,132,0.07)  17px,
+          rgba(120,220,255,0.05) 18px,
+          rgba(19,245,132,0.04)  19px,
+          transparent            20px,
+          transparent            36px
+        ),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    /* ── Embossed raised elements ─────────────────────── */
+    .c1-dept-pill {
+      box-shadow:
+        inset 0  1px 0 rgba(255,255,255,0.18),
+        inset 0 -1px 0 rgba(0,0,0,0.35),
+        0 2px 6px rgba(0,0,0,0.55),
+        0 1px 0   rgba(0,0,0,0.3);
+    }
+    .c1-name {
+      text-shadow:
+        0  2px 5px rgba(0,0,0,0.95),
+        0  1px 0   rgba(0,0,0,0.7),
+        0 -1px 0   rgba(255,255,255,0.07);
+    }
+    .c2-name-v {
+      text-shadow:
+        0  2px 5px rgba(0,0,0,0.95),
+        0  1px 0   rgba(0,0,0,0.7),
+        0 -1px 0   rgba(255,255,255,0.07);
+    }
+    /* Photo frames — recessed inset like a physical cutout */
+    .c1-photo-col {
+      box-shadow: inset -4px 0 12px rgba(0,0,0,0.55);
+    }
+    .c2-photo-area {
+      box-shadow:
+        inset 0  3px 8px rgba(0,0,0,0.5),
+        inset 0 -3px 8px rgba(0,0,0,0.3);
+    }
+    /* Magnetic stripe — physically recessed */
+    .stripe {
+      box-shadow:
+        inset 0  3px 6px rgba(0,0,0,0.7),
+        inset 0 -2px 4px rgba(0,0,0,0.5),
+        inset 0  1px 0   rgba(255,255,255,0.04),
+        0 1px 0 rgba(255,255,255,0.06);
+    }
+    /* Access dots — raised bumps */
+    .c1-dot {
+      box-shadow:
+        0  2px 4px rgba(0,0,0,0.6),
+        0  1px 0   rgba(0,0,0,0.4),
+        0  0  8px  var(--green),
+        inset 0 -1px 0 rgba(0,0,0,0.3),
+        inset 0  1px 0 rgba(255,255,255,0.2);
+    }
+
+    /* ══════════════════════════════════════════════════
+       CARD 1 — "Obsidian"  (horizontal classic badge)
+    ══════════════════════════════════════════════════ */
+    .c1-front {
+      display: flex;
+      flex-direction: row;
+    }
+    .c1-photo-col {
+      width: 110px;
+      flex-shrink: 0;
+      background: #1a1a1a url('Riazul.jpeg') center top/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+      gap: 10px;
+      border-right: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    /* dim overlay so text stays readable */
+    .c1-photo-col::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(3,13,8,0.85) 0%, rgba(3,13,8,0.1) 60%);
+      z-index: 0;
+    }
+    /* photo fills column — no grid overlay needed */
+    .c1-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: #222 url('Riazul.jpeg') center top/cover no-repeat;
+      border: 2px solid var(--green-40);
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(19,245,132,0.25);
+      overflow: hidden;
+    }
+    .c1-id-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--green-40);
+      letter-spacing: 0.1em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .c1-info-col {
+      flex: 1;
+      padding: 18px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+    .c1-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .c1-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+    .c1-logo span { color: rgba(255,255,255,0.9); }
+    .c1-dept-pill {
+      font-size: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-10);
+      border: 1px solid var(--green-20);
+      border-radius: 4px;
+      padding: 3px 7px;
+    }
+    .c1-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-top: 10px;
+    }
+    .c1-role {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      letter-spacing: 0.01em;
+    }
+    .c1-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .c1-bar {
+      height: 1px;
+      background: linear-gradient(90deg, var(--green-40), transparent);
+    }
+    .c1-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .c1-access {
+      display: flex;
+      gap: 4px;
+    }
+    .c1-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+    .c1-dot.off { background: rgba(255,255,255,0.12); box-shadow: none; }
+    .c1-valid {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--text-muted);
+    }
+
+    /* back of card 1 */
+    .c1-back {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .c1-back .back-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .stripe {
+      width: 100%;
+      height: 36px;
+      background: linear-gradient(90deg, #111, #1a1a1a, #111);
+      border-radius: 4px;
+      margin: 4px 0;
+    }
+    .sig-line { display: flex; flex-direction: column; gap: 4px; }
+    .sig-bar { height: 1px; background: var(--border); }
+    .sig-label { font-size: 8px; color: var(--text-muted); }
+    .barcode { display: flex; gap: 1.5px; align-items: flex-end; height: 36px; }
+    .barcode-bar {
+      background: var(--green-40);
+      border-radius: 1px;
+    }
+    .back-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .back-note {
+      font-size: 8px;
+      color: var(--text-muted);
+      max-width: 180px;
+      line-height: 1.5;
+    }
+    .qr {
+      width: 40px; height: 40px;
+      background:
+        linear-gradient(var(--green-20) 1px, transparent 1px),
+        linear-gradient(90deg, var(--green-20) 1px, transparent 1px);
+      background-size: 5px 5px;
+      border: 1px solid var(--green-20);
+      border-radius: 4px;
+    }
+
+    /* ══════════════════════════════════════════════════
+       CARD 2 — "Holograph"  (vertical portrait badge)
+    ══════════════════════════════════════════════════ */
+    .scene-v {
+      width: 210px;
+      height: 340px;
+      perspective: 900px;
+    }
+    .scene-v .flipper {
+      width: 100%;
+      height: 100%;
+    }
+    .c2-front {
+      display: flex;
+      flex-direction: column;
+    }
+    .c2-header {
+      padding: 14px 16px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+    .c2-logo-v {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .c2-logo-v .e { color: var(--green); }
+    .c2-logo-v .rest { color: rgba(255,255,255,0.85); }
+    .c2-chip {
+      width: 28px; height: 20px;
+      border: 1px solid rgba(255,200,50,0.3);
+      border-radius: 3px;
+      background: linear-gradient(135deg, rgba(255,200,50,0.12), rgba(255,160,20,0.06));
+      display: grid;
+      place-items: center;
+      font-size: 6px;
+      color: rgba(255,200,50,0.5);
+    }
+
+    .c2-photo-area {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a url('Riazul.jpeg') center top/cover no-repeat;
+      overflow: hidden;
+    }
+    .c2-photo-area::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(3,13,8,0.15) 0%, rgba(3,13,8,0.6) 100%);
+      z-index: 0;
+    }
+    .c2-avatar-v {
+      width: 86px; height: 86px;
+      border-radius: 50%;
+      border: 2px solid var(--green-40);
+      background: #222 url('Riazul.jpeg') center top/cover no-repeat;
+      box-shadow: 0 0 28px rgba(19,245,132,0.3), 0 0 0 6px rgba(19,245,132,0.07);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .c2-info {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 1;
+    }
+    .c2-name-v {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .c2-role-v {
+      font-size: 10px;
+      color: var(--green);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+    .c2-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 0;
+    }
+    .c2-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .c2-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--text-muted);
+    }
+    .c2-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 8px;
+      color: var(--green);
+    }
+    .pulse-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--green); }
+      50% { opacity: 0.4; box-shadow: 0 0 8px var(--green); }
+    }
+
+    /* back card 2 */
+    .c2-back {
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .c2-back .stripe { width: 100%; height: 38px; }
+    .c2-contact { display: flex; flex-direction: column; gap: 6px; }
+    .c2-contact-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .c2-contact-icon {
+      width: 14px; height: 14px;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+    .c2-contact-text {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .c2-back-qr { align-self: center; width: 60px; height: 60px; border-radius: 6px; }
+    .c2-back-note {
+      font-size: 7.5px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════════════════
+       CARD 3 — "Edge" (horizontal neon-edge variant)
+    ══════════════════════════════════════════════════ */
+    .c3-front {
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+    }
+    .c3-accent {
+      width: 4px;
+      background: linear-gradient(180deg, var(--green) 0%, rgba(19,245,132,0.3) 100%);
+      box-shadow: 0 0 16px rgba(19,245,132,0.6), 0 0 32px rgba(19,245,132,0.2);
+      flex-shrink: 0;
+    }
+    .c3-body {
+      flex: 1;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+    }
+    .c3-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .c3-avatar {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      background: #222 url('Riazul.jpeg') center top/cover no-repeat;
+      border: 1.5px solid var(--green-40);
+      box-shadow: 0 0 16px rgba(19,245,132,0.2);
+      overflow: hidden;
+    }
+    .c3-level {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .c3-right { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .c3-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .c3-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .c3-role { font-size: 10px; color: var(--green); margin-top: 2px; }
+    .c3-logo-sm {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--green);
+      opacity: 0.7;
+    }
+    .c3-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+    .c3-tag {
+      font-size: 7px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2px 5px;
+    }
+    .c3-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .c3-id-block { display: flex; flex-direction: column; gap: 2px; }
+    .c3-id-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      color: var(--text-muted);
+    }
+    .c3-id-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.08em;
+    }
+    .c3-avail {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 7px;
+      color: var(--text-muted);
+    }
+
+    /* back card 3 */
+    .c3-back { display: flex; flex-direction: row; overflow: hidden; }
+    .c3-back .c3-accent { background: linear-gradient(180deg, rgba(19,245,132,0.3) 0%, var(--green) 100%); }
+    .c3-back-body { flex: 1; padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; }
+    .c3-back-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .c3-back-logo .e { color: var(--green); }
+    .c3-back-logo .rest { color: rgba(255,255,255,0.8); }
+    .c3-permissions { display: flex; flex-direction: column; gap: 5px; }
+    .c3-perm-row { display: flex; align-items: center; gap: 6px; }
+    .c3-perm-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+    .c3-perm-label { font-size: 9px; color: var(--text-muted); }
+
+    /* ══════════════════════════════════════════════════
+       CARD 4 — "Cipher" (horizontal dark glass)
+    ══════════════════════════════════════════════════ */
+    .c4-front { position: relative; overflow: hidden; }
+    .c4-front::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 120px; height: 100%;
+      background: linear-gradient(135deg, rgba(19,245,132,0.08) 0%, transparent 100%);
+      clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+    }
+    .c4-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 22px;
+      justify-content: space-between;
+    }
+    .c4-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .c4-left-block { display: flex; align-items: center; gap: 14px; }
+    .c4-avatar-sq {
+      width: 54px; height: 54px;
+      border-radius: 12px;
+      background: #222 url('Riazul.jpeg') center top/cover no-repeat;
+      border: 1.5px solid var(--green-40);
+      overflow: hidden;
+    }
+    .c4-name-block { display: flex; flex-direction: column; gap: 3px; }
+    .c4-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .c4-role { font-size: 10px; color: var(--text-muted); }
+    .c4-badge {
+      background: var(--green-10);
+      border: 1px solid var(--green-20);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .c4-mid {
+      display: flex;
+      gap: 8px;
+    }
+    .c4-stat {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .c4-stat-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .c4-stat-label { font-size: 8px; color: var(--text-muted); }
+    .c4-bottom { display: flex; justify-content: space-between; align-items: center; }
+    .c4-logo-row {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .c4-logo-row .e { color: var(--green); }
+    .c4-logo-row .rest { color: rgba(255,255,255,0.75); }
+    .c4-barcode-mini { display: flex; gap: 1px; align-items: flex-end; height: 22px; }
+    .c4-bar { background: rgba(255,255,255,0.15); border-radius: 1px; }
+
+    /* back card 4 */
+    .c4-back { display: flex; flex-direction: column; padding: 18px 22px; justify-content: space-between; }
+    .c4-back-header { display: flex; justify-content: space-between; align-items: center; }
+    .c4-back-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .c4-back-logo .e { color: var(--green); }
+    .c4-back-logo .rest { color: rgba(255,255,255,0.8); }
+    .c4-back .stripe { margin: 0; }
+    .c4-sig-area { display: flex; gap: 14px; align-items: flex-end; }
+    .c4-sig-box {
+      flex: 1;
+      height: 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 4px;
+    }
+    .c4-sig-label { font-size: 7.5px; color: var(--text-muted); }
+    .c4-back .qr { width: 44px; height: 44px; }
+    .c4-back-note { font-size: 7.5px; color: var(--text-muted); text-align: center; line-height: 1.6; }
+
+    /* ── Hint ──────────────────────────────────── */
+    .hover-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: #bbb;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* ensure smooth tilt transitions on leave */
+    .flipper { transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="label">// identity system v2.1</div>
+    <h1>ESAP AI — Employee ID</h1>
+    <p>Hover any card to reveal the back · Four badge variants</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- ─────────── CARD 1: Obsidian Horizontal ─────────── -->
+    <div class="card-wrap">
+      <div class="scene">
+        <div class="flipper">
+          <div class="face c1-front card-base">
+            <div class="c1-photo-col">
+              <div class="c1-id-num" style="position:relative;z-index:1;padding:0 8px 12px;">EMP-0041</div>
+            </div>
+            <div class="c1-info-col">
+              <div class="c1-top">
+                <img src="logo/esapalogo.png" alt="ESAP AI" class="c1-logo" style="width:auto;height:16px;object-fit:contain;" />
+                <div class="c1-dept-pill">AI Research</div>
+              </div>
+              <div>
+                <div class="c1-name">Aria Chen</div>
+                <div class="c1-role">Senior AI Engineer · Riyadh HQ</div>
+              </div>
+              <div class="c1-bottom">
+                <div class="c1-bar"></div>
+                <div class="c1-footer">
+                  <div class="c1-access" title="Access levels">
+                    <div class="c1-dot"></div>
+                    <div class="c1-dot"></div>
+                    <div class="c1-dot"></div>
+                    <div class="c1-dot off"></div>
+                  </div>
+                  <div class="c1-valid">Valid · 2025–2027</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="face back c1-back card-base">
+            <div class="stripe"></div>
+            <div class="sig-line">
+              <div class="sig-bar"></div>
+              <div class="sig-label">Authorised Signature</div>
+            </div>
+            <div class="back-footer">
+              <div class="back-note">
+                If found, return to ESAP AI HQ,<br/>
+                King Fahd Road, Riyadh, KSA.
+              </div>
+              <div class="barcode">
+                <div class="barcode-bar" style="width:3px;height:28px"></div>
+                <div class="barcode-bar" style="width:1px;height:20px"></div>
+                <div class="barcode-bar" style="width:2px;height:32px"></div>
+                <div class="barcode-bar" style="width:1px;height:24px"></div>
+                <div class="barcode-bar" style="width:3px;height:28px"></div>
+                <div class="barcode-bar" style="width:1px;height:36px"></div>
+                <div class="barcode-bar" style="width:1px;height:22px"></div>
+                <div class="barcode-bar" style="width:2px;height:30px"></div>
+                <div class="barcode-bar" style="width:1px;height:28px"></div>
+                <div class="barcode-bar" style="width:3px;height:34px"></div>
+                <div class="barcode-bar" style="width:2px;height:26px"></div>
+                <div class="barcode-bar" style="width:1px;height:32px"></div>
+                <div class="barcode-bar" style="width:1px;height:20px"></div>
+                <div class="barcode-bar" style="width:3px;height:28px"></div>
+                <div class="barcode-bar" style="width:2px;height:36px"></div>
+                <div class="barcode-bar" style="width:1px;height:24px"></div>
+                <div class="barcode-bar" style="width:2px;height:30px"></div>
+                <div class="barcode-bar" style="width:3px;height:28px"></div>
+                <div class="barcode-bar" style="width:1px;height:22px"></div>
+                <div class="barcode-bar" style="width:2px;height:32px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hover-hint">Drag to tilt · Click to flip</div>
+      <div class="card-label">Variant 01 — <span style="color:var(--green)">Obsidian</span></div>
+    </div>
+
+    <!-- ─────────── CARD 2: Holograph Vertical ─────────── -->
+    <div class="card-wrap">
+      <div class="scene-v">
+        <div class="flipper">
+          <div class="face c2-front card-base">
+            <div class="c2-header">
+              <img src="logo/esapalogo.png" alt="ESAP AI" class="c2-logo-v" style="width:auto;height:14px;object-fit:contain;" />
+
+            </div>
+            <div class="c2-photo-area"></div>
+            <div class="c2-info">
+              <div class="c2-name-v">Marcus Webb</div>
+              <div class="c2-role-v">Product Lead · Growth</div>
+              <div class="c2-divider"></div>
+              <div class="c2-meta">
+                <div class="c2-id">EMP-0019 · L3</div>
+                <div class="c2-status">
+                  <div class="pulse-dot"></div>
+                  Active
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="face back c2-back card-base">
+            <div class="stripe"></div>
+            <div class="c2-contact">
+              <div class="c2-contact-row">
+                <svg class="c2-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <div class="c2-contact-text">m.webb@esapai.com</div>
+              </div>
+              <div class="c2-contact-row">
+                <svg class="c2-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                <div class="c2-contact-text">+966 50 000 0019</div>
+              </div>
+            </div>
+            <div class="qr c2-back-qr"></div>
+            <div class="c2-back-note">
+              This card is the property of ESAP AI.<br/>
+              Unauthorised use is prohibited.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hover-hint">Drag to tilt · Click to flip</div>
+      <div class="card-label">Variant 02 — <span style="color:var(--green)">Holograph</span></div>
+    </div>
+
+
+
+  </div>
+
+  <script>
+    document.querySelectorAll('.scene, .scene-v').forEach(scene => {
+      const flipper = scene.querySelector('.flipper');
+      let flipped = false;
+      let tilting = false;
+
+      scene.style.cursor = 'pointer';
+
+      scene.addEventListener('mouseenter', () => {
+        // fast tilt response
+        flipper.style.transition = 'transform 0.15s ease-out';
+      });
+
+      scene.addEventListener('mousemove', e => {
+        if (flipped) return;
+        const r = scene.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 to 0.5
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        flipper.style.transform = `rotateY(${x * 18}deg) rotateX(${-y * 12}deg)`;
+      });
+
+      scene.addEventListener('mouseleave', () => {
+        flipper.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+        if (!flipped) {
+          flipper.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        }
+      });
+
+      scene.addEventListener('click', () => {
+        flipper.style.transition = 'transform 0.7s cubic-bezier(0.4,0,0.2,1)';
+        flipped = !flipped;
+        flipper.style.transform = flipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      });
+    });
+  </script>
+</body>
+</html>
