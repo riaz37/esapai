@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useMemo, useCallback } from "react";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
 
 interface ShutterCanvasProps {
     side: "left" | "right";
@@ -11,6 +12,9 @@ interface ShutterCanvasProps {
 export interface ShutterCanvasHandle {
     setFrame: (progress: number) => void;
 }
+
+const LARGE_DISPLAY_MAX_CANVAS_WIDTH = 2048;
+const LARGE_DISPLAY_MAX_CANVAS_HEIGHT = 1152;
 
 export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvasProps>(({
     side,
@@ -91,12 +95,21 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
         const resolvedFrameIndex = resolveFrameIndex(targetFrameIndex);
         if (resolvedFrameIndex < 0) return;
 
-        // Handle DPI scaling (optimized: cap at 1.5 for performance)
-        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        const profile = getViewportPerformanceProfile();
+        const dpr = profile.isLargeDisplay ? 1 : Math.min(profile.dpr, 1.5);
         const rect = canvas.getBoundingClientRect();
 
-        const newWidth = Math.round(rect.width * dpr);
-        const newHeight = Math.round(rect.height * dpr);
+        const rawWidth = Math.round(rect.width * dpr);
+        const rawHeight = Math.round(rect.height * dpr);
+        const scale = profile.isLargeDisplay
+            ? Math.min(
+                1,
+                LARGE_DISPLAY_MAX_CANVAS_WIDTH / Math.max(rawWidth, 1),
+                LARGE_DISPLAY_MAX_CANVAS_HEIGHT / Math.max(rawHeight, 1),
+            )
+            : 1;
+        const newWidth = Math.round(rawWidth * scale);
+        const newHeight = Math.round(rawHeight * scale);
 
         if (canvas.width !== newWidth || canvas.height !== newHeight) {
             canvas.width = newWidth;
@@ -133,6 +146,11 @@ export const ShutterCanvas = React.forwardRef<ShutterCanvasHandle, ShutterCanvas
     useEffect(() => {
         let isMounted = true;
         isLoadingRef.current = true;
+        const profile = getViewportPerformanceProfile();
+        if (profile.shouldReduceMotion) {
+            isLoadingRef.current = false;
+            return () => { isMounted = false; };
+        }
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
             (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);

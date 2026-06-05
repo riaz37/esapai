@@ -12,6 +12,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mic2, Rocket, Layers, Target } from "lucide-react";
 import { MissionCard } from "@/components/ui/mission-card";
 import { useLocale } from "next-intl";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,6 +65,12 @@ export function Mission({
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
       if (isIOS) return;
+      const profile = getViewportPerformanceProfile();
+      if (profile.shouldReduceMotion) {
+        const cardsElements = Array.from(trackRef.current.children);
+        gsap.set(cardsElements, { x: 0, scale: 1, autoAlpha: 1, filter: "none" });
+        return;
+      }
 
       const mm = gsap.matchMedia();
 

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getViewportPerformanceProfile, syncDocumentPerformanceMode } from "@/lib/utils/performance-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +25,19 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
         // Lenis fights iOS WebKit native scroll and causes renderer crashes (Android is fine)
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
             (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
-        if (isIOS) return;
+        const profile = getViewportPerformanceProfile();
+        syncDocumentPerformanceMode(profile);
+
+        const updatePerformanceMode = () => {
+            syncDocumentPerformanceMode();
+        };
+        window.addEventListener("resize", updatePerformanceMode, { passive: true });
+
+        if (isIOS || profile.shouldReduceMotion) {
+            return () => {
+                window.removeEventListener("resize", updatePerformanceMode);
+            };
+        }
 
         const lenis = new Lenis({
             duration: 1.2,
@@ -38,7 +51,9 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
         });
 
         lenisRef.current = lenis;
-        setLenisInstance(lenis);
+        const publishFrame = window.requestAnimationFrame(() => {
+            setLenisInstance(lenis);
+        });
 
         // Sync Lenis with GSAP ScrollTrigger
         lenis.on('scroll', ScrollTrigger.update);
@@ -51,8 +66,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
         gsap.ticker.lagSmoothing(0);
 
         return () => {
+            window.cancelAnimationFrame(publishFrame);
             lenis.destroy();
             gsap.ticker.remove(update);
+            window.removeEventListener("resize", updatePerformanceMode);
             lenisRef.current = null;
             setLenisInstance(null);
         };

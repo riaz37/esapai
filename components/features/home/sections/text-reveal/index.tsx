@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/section";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,6 +31,20 @@ export function TextRevealSection({
                 (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
             const words = textRef.current.querySelectorAll(".word");
+            const profile = getViewportPerformanceProfile();
+
+            if (profile.shouldReduceMotion) {
+                gsap.set(words, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "none",
+                    color: (i, target: HTMLElement) => {
+                        return target.classList.contains("highlight") ? "var(--color-primary)" : "#ffffff";
+                    },
+                });
+                return;
+            }
 
             // --- Stage 1: Entry / Presence (No Pin) ---
             // As the section enters the viewport, fade text to a dim state so it's not empty.

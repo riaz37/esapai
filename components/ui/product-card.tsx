@@ -112,7 +112,9 @@ export function ProductCard({ product, index: _index, videoRef: _videoRef, class
                                                 loop
                                                 muted
                                                 playsInline
-                                                priority
+                                                priority={_index === 0}
+                                                threshold={0.35}
+                                                playThreshold={0.4}
                                                 className="w-full h-full object-cover"
                                             />
                                         );

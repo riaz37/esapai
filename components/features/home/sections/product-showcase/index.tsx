@@ -12,6 +12,7 @@ import { ProductCard } from "@/components/ui/product-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Rocket } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -34,6 +35,11 @@ export function ProductShowcase() {
   useGSAP(
     () => {
       const cards = cardRefs.current.filter(Boolean);
+      const profile = getViewportPerformanceProfile();
+      if (profile.shouldReduceMotion) {
+        gsap.set(cards, { clearProps: "filter,transform" });
+        return;
+      }
 
       cards.forEach((card, i) => {
         const nextCard = cards[i + 1];
@@ -48,7 +54,7 @@ export function ProductShowcase() {
             scale: 1,
             rotateX: 0,
             z: 0,
-            filter: "blur(0px)",
+            filter: "none",
           },
           {
             scrollTrigger: {
@@ -59,11 +65,11 @@ export function ProductShowcase() {
               invalidateOnRefresh: true,
             },
             scale: 0.85,
-            rotateX: -10,      // Tilt back as it recedes
-            z: -100,           // Sink into depth
-            filter: "blur(10px)",
+            rotateX: profile.isLargeDisplay ? 0 : -10,      // Tilt back as it recedes
+            z: profile.isLargeDisplay ? 0 : -100,           // Sink into depth
+            filter: "none",
             ease: "power2.inOut",
-            force3D: true,     // GPU acceleration
+            force3D: !profile.isLargeDisplay,     // Avoid extra layers on very large screens
           });
 
         // Inner content parallax

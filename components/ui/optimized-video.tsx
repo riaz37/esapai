@@ -13,6 +13,7 @@ interface OptimizedVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement
     className?: string;
     priority?: boolean;
     threshold?: number;
+    playThreshold?: number;
     rootMargin?: string;
 }
 
@@ -24,6 +25,7 @@ export function OptimizedVideo({
     className,
     priority = false,
     threshold = 0.1,
+    playThreshold = 0.25,
     rootMargin = "200px 0px",
     autoPlay,
     preload,
@@ -35,11 +37,12 @@ export function OptimizedVideo({
     const isInView = useInView(containerRef, {
         once: true,
         amount: threshold,
+        margin: rootMargin as `${number}px ${number}px`,
     });
 
     const isVisible = useInView(containerRef, {
         once: false,
-        amount: 0,
+        amount: playThreshold,
     });
 
     const shouldLoad = priority || isInView;

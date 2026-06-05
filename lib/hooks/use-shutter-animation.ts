@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { RefObject } from "react";
 import { ShutterCanvasHandle } from "@/components/features/home/sections/technology-excellence/shutter-canvas";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
 
 interface ShutterAnimationOptions {
     containerRef: RefObject<HTMLElement | null>;
@@ -46,7 +47,22 @@ export function useShutterAnimation({
 
             mm.add("(min-width: 1024px)", () => {
                 if (isIOS) return;
+                const profile = getViewportPerformanceProfile();
+                if (profile.shouldReduceMotion) {
+                    gsap.set([leftShutter, rightShutter], { display: "none" });
+                    gsap.set(content, { opacity: 1, scale: 1, y: 0 });
+                    return;
+                }
+
+                let lastSyncedProgress = -1;
                 const syncCanvasFrame = (progress: number) => {
+                    if (profile.isLargeDisplay) {
+                        const steppedProgress = Math.round(progress * 24) / 24;
+                        if (steppedProgress === lastSyncedProgress) return;
+                        lastSyncedProgress = steppedProgress;
+                        progress = steppedProgress;
+                    }
+
                     if (leftCanvasRef.current) leftCanvasRef.current.setFrame(progress);
                     if (rightCanvasRef.current) rightCanvasRef.current.setFrame(progress);
                 };

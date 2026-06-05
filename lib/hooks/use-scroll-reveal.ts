@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { RefObject } from "react";
-import { prefersReducedMotion } from "@/lib/utils/performance-utils";
+import { getViewportPerformanceProfile, prefersReducedMotion } from "@/lib/utils/performance-utils";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -55,6 +55,7 @@ export function useScrollReveal(
             const targets = ref.current.querySelectorAll(selector);
             if (targets.length === 0) return;
 
+            const profile = getViewportPerformanceProfile();
             if (prefersReducedMotion()) {
                 gsap.set(targets, { opacity: 1, y: 0, scale: 1, filter: "none" });
                 return;
@@ -66,7 +67,7 @@ export function useScrollReveal(
                     opacity,
                     y,
                     scale,
-                    filter: filter === "none" ? "none" : filter,
+                    filter: profile.isLargeDisplay || filter === "none" ? "none" : filter,
                     immediateRender: false,
                 },
                 {

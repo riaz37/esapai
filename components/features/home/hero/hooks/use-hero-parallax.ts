@@ -3,6 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import type { MutableRefObject } from "react";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
 
 interface useHeroParallaxProps {
     sectionRef: MutableRefObject<HTMLElement | null>;
@@ -44,7 +45,8 @@ export function useHeroParallax({
             // iOS WebKit: skip scroll-triggered pin — causes renderer crash and pin-spacer void
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                 (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
-            if (isIOS) return;
+            const profile = getViewportPerformanceProfile();
+            if (isIOS || profile.shouldReduceMotion) return;
 
             const mainTl = gsap.timeline({
                 scrollTrigger: {

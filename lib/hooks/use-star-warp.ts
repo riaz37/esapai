@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { getViewportPerformanceProfile } from "@/lib/utils/performance-utils";
+
+const STANDARD_STAR_COUNT = 800;
+const LARGE_DISPLAY_STAR_COUNT = 300;
+const LARGE_DISPLAY_MAX_WIDTH = 1920;
+const LARGE_DISPLAY_MAX_HEIGHT = 1080;
 
 export function useStarWarp() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,10 +22,11 @@ export function useStarWarp() {
         let stars: { x: number; y: number; z: number; o: number }[] = [];
         let width = 0;
         let height = 0;
+        let starCount = STANDARD_STAR_COUNT;
 
         const initStars = () => {
             stars = [];
-            for (let i = 0; i < 800; i++) {
+            for (let i = 0; i < starCount; i++) {
                 stars.push({
                     x: Math.random() * width - width / 2,
                     y: Math.random() * height - height / 2,
@@ -30,8 +37,18 @@ export function useStarWarp() {
         };
 
         const resize = () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
+            const profile = getViewportPerformanceProfile();
+            const scale = profile.isLargeDisplay
+                ? Math.min(
+                    1,
+                    LARGE_DISPLAY_MAX_WIDTH / Math.max(window.innerWidth, 1),
+                    LARGE_DISPLAY_MAX_HEIGHT / Math.max(window.innerHeight, 1),
+                )
+                : 1;
+
+            width = Math.round(window.innerWidth * scale);
+            height = Math.round(window.innerHeight * scale);
+            starCount = profile.isLargeDisplay ? LARGE_DISPLAY_STAR_COUNT : STANDARD_STAR_COUNT;
             canvas.width = width;
             canvas.height = height;
             initStars();

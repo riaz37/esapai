@@ -2,6 +2,13 @@ import { defineConfig, devices } from "@playwright/test";
 
 const port = Number(process.env.PW_PORT ?? 3100);
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${port}`;
+const chromiumExecutablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+const chromiumLaunchOptions = chromiumExecutablePath
+  ? {
+      executablePath: chromiumExecutablePath,
+      args: ["--disable-gpu", "--disable-dev-shm-usage", "--no-sandbox"],
+    }
+  : undefined;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -23,7 +30,10 @@ export default defineConfig({
   projects: [
     {
       name: "chromium-desktop",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        ...(chromiumLaunchOptions ? { launchOptions: chromiumLaunchOptions } : {}),
+      },
     },
     {
       name: "chromium-mobile",
