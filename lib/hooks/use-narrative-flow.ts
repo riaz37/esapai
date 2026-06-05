@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useScroll } from "motion/react";
+import { useLenis } from "@/components/providers/smooth-scroll-provider";
 
 interface UseNarrativeFlowProps {
     containerRef: React.RefObject<HTMLDivElement | null>;
@@ -12,6 +13,10 @@ export function useNarrativeFlow({ containerRef, itemCount }: UseNarrativeFlowPr
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(0);
     const activeIndexRef = useRef(0);
+    const isProgrammaticScrollRef = useRef(false);
+    const programmaticScrollIdRef = useRef(0);
+    const unlockScrollSyncTimeoutRef = useRef<number | null>(null);
+    const lenis = useLenis();
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -20,10 +25,12 @@ export function useNarrativeFlow({ containerRef, itemCount }: UseNarrativeFlowPr
 
     useEffect(() => {
         const unsubscribe = scrollYProgress.on("change", (latest: number) => {
-            const index = Math.min(
+            if (isProgrammaticScrollRef.current || itemCount <= 0) return;
+
+            const index = Math.max(0, Math.min(
                 Math.floor(latest * itemCount),
                 itemCount - 1
-            );
+            ));
             if (index !== activeIndexRef.current) {
                 setDirection(index > activeIndexRef.current ? 1 : -1);
                 activeIndexRef.current = index;
@@ -34,17 +41,62 @@ export function useNarrativeFlow({ containerRef, itemCount }: UseNarrativeFlowPr
         return () => unsubscribe();
     }, [scrollYProgress, itemCount]);
 
-    const scrollToSection = (index: number) => {
-        if (!containerRef.current) return;
-        const totalHeight = containerRef.current.offsetHeight;
-        const targetScroll = (index / itemCount) * totalHeight;
-        const absoluteTarget = containerRef.current.offsetTop + targetScroll;
+    useEffect(() => {
+        return () => {
+            if (unlockScrollSyncTimeoutRef.current !== null) {
+                window.clearTimeout(unlockScrollSyncTimeoutRef.current);
+            }
+        };
+    }, []);
 
-        window.scrollTo({
-            top: absoluteTarget,
-            behavior: "smooth",
-        });
-    };
+    const scrollToSection = useCallback((index: number) => {
+        if (!containerRef.current) return;
+        if (itemCount <= 0) return;
+
+        const nextIndex = Math.min(Math.max(index, 0), itemCount - 1);
+        const scrollableHeight = Math.max(containerRef.current.offsetHeight - window.innerHeight, 0);
+        const progress = (nextIndex + 0.5) / itemCount;
+        const targetScroll = progress * scrollableHeight;
+        const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+        const absoluteTarget = containerTop + targetScroll;
+
+        const scrollId = programmaticScrollIdRef.current + 1;
+        programmaticScrollIdRef.current = scrollId;
+        isProgrammaticScrollRef.current = true;
+
+        if (nextIndex !== activeIndexRef.current) {
+            setDirection(nextIndex > activeIndexRef.current ? 1 : -1);
+            activeIndexRef.current = nextIndex;
+            setActiveIndex(nextIndex);
+        }
+
+        if (unlockScrollSyncTimeoutRef.current !== null) {
+            window.clearTimeout(unlockScrollSyncTimeoutRef.current);
+        }
+
+        const unlockScrollSync = () => {
+            if (programmaticScrollIdRef.current !== scrollId) return;
+            isProgrammaticScrollRef.current = false;
+            if (unlockScrollSyncTimeoutRef.current !== null) {
+                window.clearTimeout(unlockScrollSyncTimeoutRef.current);
+                unlockScrollSyncTimeoutRef.current = null;
+            }
+        };
+
+        if (lenis) {
+            lenis.scrollTo(absoluteTarget, {
+                duration: 0.8,
+                onComplete: unlockScrollSync,
+            });
+            unlockScrollSyncTimeoutRef.current = window.setTimeout(unlockScrollSync, 1200);
+        } else {
+            window.scrollTo({
+                top: absoluteTarget,
+                behavior: "smooth",
+            });
+            unlockScrollSyncTimeoutRef.current = window.setTimeout(unlockScrollSync, 1200);
+        }
+    }, [containerRef, itemCount, lenis]);
 
     const variants = {
         enter: (direction: number) => ({
