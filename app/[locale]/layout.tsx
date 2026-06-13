@@ -25,6 +25,7 @@ import { routing } from "@/i18n/routing";
 import { SkipToContent } from "@/components/ui/skip-to-content";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { BuilderEasterEgg } from "@/components/ui/builder-easter-egg";
 
 // Inter — body font for all locales
 const inter = Inter({
@@ -123,6 +124,7 @@ export default async function RootLayout(props: Readonly<{
                           <CookieConsentBanner />
                           <ScrollProgress />
                           <ScrollToTop />
+                          <BuilderEasterEgg />
                         </IntroLoader>
                       </ServiceMenuProvider>
                     </ProductMenuProvider>

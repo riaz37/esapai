@@ -29,6 +29,11 @@ export function DropdownMenu({
     [hoveredId, items]
   );
 
+  const getProductLabel = useCallback((id: string) => {
+    const meta = tProducts.raw(id) as { menuName?: string; name?: string } | undefined;
+    return meta?.menuName ?? meta?.name ?? id;
+  }, [tProducts]);
+
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     switch (e.key) {
       case "Escape": {
@@ -150,7 +155,7 @@ export function DropdownMenu({
                         "text-sm font-medium transition-colors duration-300",
                         hoveredId === item.id ? "text-white" : "text-zinc-500 group-hover:text-zinc-300"
                       )}>
-                        {basePath === "/product" ? tProducts(`${item.id}.name`) : item.name}
+                        {basePath === "/product" ? getProductLabel(item.id) : item.name}
                       </h3>
                     </div>
                   </div>
@@ -193,7 +198,7 @@ export function DropdownMenu({
                   <div className="flex items-start justify-between mb-10">
                     <div className="max-w-lg">
                       <h4 className="text-4xl font-bold text-white mb-4 tracking-tight">
-                        {basePath === "/product" ? tProducts(`${activeItem.id}.name`) : activeItem.name}
+                        {basePath === "/product" ? getProductLabel(activeItem.id) : activeItem.name}
                       </h4>
                       <p className="text-base text-white/60 leading-relaxed font-normal">
                         {basePath === "/product"

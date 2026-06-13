@@ -32,6 +32,7 @@ import { NavDropdownTrigger } from "./components/nav-dropdown-trigger";
 
 export function Navbar({ visible, services, products }: { visible?: boolean; services: Service[]; products: Product[] }) {
   const t = useTranslations("Navigation");
+  const tProducts = useTranslations("Products");
   const pathname = usePathname();
   const { isProductOpen, setIsProductOpen } = useProductMenu();
   const { isServiceOpen, setIsServiceOpen } = useServiceMenu();
@@ -93,10 +94,15 @@ export function Navbar({ visible, services, products }: { visible?: boolean; ser
 
   const productActive = isProductOpen || isActive("/product");
   const serviceActive = isServiceOpen || isActive("/service");
+  const getProductLabel = (id: string) => {
+    const meta = tProducts.raw(id) as { menuName?: string; name?: string } | undefined;
+    return meta?.menuName ?? meta?.name ?? id;
+  };
+
   const mobileProducts = products.map((p) => ({
     id: p.id,
-    name: p.name,
-    description: p.menuDescription || p.description,
+    name: getProductLabel(p.id),
+    description: tProducts(`${p.id}.menuDescription`),
     slug: p.slug,
   })) satisfies MobileMenuItem[];
   const mobileServices = services.map((s) => ({

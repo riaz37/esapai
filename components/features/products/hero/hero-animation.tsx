@@ -78,7 +78,8 @@ export function HeroAnimation({
   }, [frameCount, framePrefix, frameExtension]);
 
   // Draw a frame with cover scaling — focal point shifts right on mobile
-  // to keep the lightbulb (at ~75% from left) visible on portrait viewports
+  // to keep the lightbulb (at ~75% from left) visible on portrait viewports.
+  // In RTL, only the animation frames are mirrored; the background stays upright.
   const drawFrameCover = (ctx: CanvasRenderingContext2D, img: HTMLImageElement) => {
     const cw = ctx.canvas.width;
     const ch = ctx.canvas.height;
@@ -90,7 +91,18 @@ export function HeroAnimation({
     const xFocal = isMobile ? 0.72 : 0.5; // 72% from left on mobile to center lightbulb
     const x = (cw - drawW) * xFocal;
     const y = (ch - drawH) / 2;
+
+    if (isRTL) {
+      ctx.save();
+      ctx.translate(cw, 0);
+      ctx.scale(-1, 1);
+    }
+
     ctx.drawImage(img, x, y, drawW, drawH);
+
+    if (isRTL) {
+      ctx.restore();
+    }
   };
 
   // Draw background helper — cover full canvas
@@ -207,7 +219,7 @@ export function HeroAnimation({
         drawEdgeVignette(ctx);
       }
     }
-  }, [images]);
+  }, [images, isRTL]);
 
   // Observer
   useEffect(() => {
@@ -288,7 +300,7 @@ export function HeroAnimation({
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [isPlaying, loaded, images, frameCount, onProgress]);
+  }, [isPlaying, loaded, images, frameCount, onProgress, isRTL]);
 
   // Resize canvas to match container so CSS doesn't scale/zoom it
   useEffect(() => {
@@ -310,7 +322,6 @@ export function HeroAnimation({
     <canvas
       ref={canvasRef}
       className={cn("w-full h-full", className)}
-      style={isRTL ? { transform: "scaleX(-1)" } : undefined}
       aria-label="Product Animation sequence"
     />
   );
