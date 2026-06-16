@@ -1,14 +1,14 @@
 "use client";
 
-import { m, AnimatePresence, useAnimation, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { m, AnimatePresence, useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useState } from "react";
 import { useKeyboardSequence } from "@/lib/hooks/use-keyboard-sequence";
 import { cn } from "@/lib/utils";
 
-const SEQUENCES = ["riaz"];
+const SEQUENCES = ["riaz", "esap"];
 const SCRAMBLE_CHARS = "01$#%&@*?><{}[]";
 const DISPLAY_MS = 4200;
-const SMOOTH_EASE = [0.22, 1, 0.36, 1] as const;
+const COOLDOWN_MS = 8000;
 
 const GRAIN_STYLE = {
   backgroundImage:
@@ -23,14 +23,17 @@ function ScanBeam() {
         initial={{ y: "-20%" }}
         animate={{ y: "120%" }}
         transition={{
-          duration: 3.4,
-          ease: [0.45, 0, 0.55, 1],
+          duration: 2.8,
+          ease: [0.33, 0, 0.2, 1],
           repeat: Infinity,
-          repeatDelay: 2.6,
+          repeatDelay: 3.2,
         }}
       >
+        {/* Soft trailing glow */}
         <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-primary/[0.07] to-transparent" />
+        {/* Mid trail */}
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-transparent via-primary/[0.14] to-transparent blur-sm" />
+        {/* Leading edge */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-90 shadow-[0_0_16px_1px_rgba(19,245,132,0.45)]" />
         <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary/25 to-transparent blur-[2px]" />
       </m.div>
@@ -38,127 +41,80 @@ function ScanBeam() {
   );
 }
 
-function ScrambleText({
-  text,
-  delay = 0,
-  replayToken = 0,
-}: {
-  text: string;
-  delay?: number;
-  replayToken?: number;
-}) {
+function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
   const [displayText, setDisplayText] = useState("");
   const prefersReducedMotion = useReducedMotion();
-  const isFirstRunRef = useRef(true);
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      const timeout = setTimeout(() => setDisplayText(text), isFirstRunRef.current ? delay * 1000 : 0);
-      isFirstRunRef.current = false;
+      const timeout = setTimeout(() => setDisplayText(text), delay * 1000);
       return () => clearTimeout(timeout);
     }
 
-    const isReplay = replayToken > 0 && !isFirstRunRef.current;
-    isFirstRunRef.current = false;
-
-    const totalFrames = isReplay ? 14 : 28;
-    const frameInterval = isReplay ? 28 : 32;
     let frame = 0;
+    const totalFrames = 24;
     let animationFrameId = 0;
     let lastTimestamp = 0;
-    let cancelled = false;
-
-    const easeOut = (t: number) => 1 - (1 - t) ** 2.2;
-    const resolvedCount = (progress: number) =>
-      Math.min(text.length, Math.floor(easeOut(progress) * text.length));
 
     const animate = (timestamp: number) => {
-      if (cancelled) return;
-
       if (!lastTimestamp) lastTimestamp = timestamp;
-      const elapsed = timestamp - lastTimestamp;
+      const progress = timestamp - lastTimestamp;
 
-      if (elapsed >= frameInterval) {
+      if (progress >= 40) {
         lastTimestamp = timestamp;
-        const progress = Math.min(1, frame / totalFrames);
-        const locked = resolvedCount(progress);
+        if (frame >= totalFrames) {
+          setDisplayText(text);
+          return;
+        }
 
         const scrambled = text
           .split("")
           .map((char, i) => {
             if (char === " ") return " ";
-            if (i < locked) return text[i];
+            if (i < (frame / totalFrames) * text.length) return text[i];
             return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
           })
           .join("");
 
         setDisplayText(scrambled);
         frame += 1;
-
-        if (frame > totalFrames) {
-          setDisplayText(text);
-          return;
-        }
       }
 
-      animationFrameId = requestAnimationFrame(animate);
+      if (frame < totalFrames) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
 
-    const startDelay = isReplay ? 0 : delay * 1000;
     const timeout = setTimeout(() => {
       animationFrameId = requestAnimationFrame(animate);
-    }, startDelay);
+    }, delay * 1000);
 
     return () => {
-      cancelled = true;
       clearTimeout(timeout);
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [text, delay, prefersReducedMotion, replayToken]);
+  }, [text, delay, prefersReducedMotion]);
 
   return <span>{displayText}</span>;
 }
 
 export function BuilderEasterEgg() {
   const [isVisible, setIsVisible] = useState(false);
-  const [replayToken, setReplayToken] = useState(0);
-  const [pulseId, setPulseId] = useState(0);
-  const isVisibleRef = useRef(false);
-  const contentControls = useAnimation();
+  const [cooldown, setCooldown] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   const dismiss = useCallback(() => {
-    isVisibleRef.current = false;
     setIsVisible(false);
+    setCooldown(true);
+    window.setTimeout(() => setCooldown(false), COOLDOWN_MS);
   }, []);
 
   const trigger = useCallback(() => {
-    const wasVisible = isVisibleRef.current;
-    isVisibleRef.current = true;
+    if (isVisible || cooldown) return;
     setIsVisible(true);
-    setReplayToken((token) => token + 1);
+  }, [isVisible, cooldown]);
 
-    if (wasVisible) {
-      setPulseId((id) => id + 1);
-      if (prefersReducedMotion) return;
-
-      void contentControls.start({
-        scale: [1, 1.035, 1.008, 1],
-        y: [0, -4, 0],
-        transition: { duration: 0.7, ease: SMOOTH_EASE },
-      });
-      return;
-    }
-
-    void contentControls.start({
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.65, ease: SMOOTH_EASE, delay: 0.1 },
-    });
-  }, [contentControls, prefersReducedMotion]);
-
-  useKeyboardSequence(SEQUENCES, trigger);
+  useKeyboardSequence(SEQUENCES, trigger, { enabled: !isVisible && !cooldown });
 
   useEffect(() => {
     if (!isVisible) return;
@@ -174,7 +130,7 @@ export function BuilderEasterEgg() {
       window.removeEventListener("keydown", onKeyDown);
       window.clearTimeout(timer);
     };
-  }, [isVisible, dismiss, replayToken]);
+  }, [isVisible, dismiss]);
 
   return (
     <AnimatePresence>
@@ -186,8 +142,8 @@ export function BuilderEasterEgg() {
           aria-label="Built by Riaz"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: prefersReducedMotion ? 0.15 : 0.55, ease: SMOOTH_EASE } }}
-          transition={{ duration: prefersReducedMotion ? 0.15 : 0.45, ease: SMOOTH_EASE }}
+          exit={{ opacity: 0, transition: { duration: prefersReducedMotion ? 0.15 : 0.6 } }}
+          transition={{ duration: prefersReducedMotion ? 0.15 : 0.35 }}
           className="fixed inset-0 z-[99990] flex items-center justify-center overflow-hidden bg-black/85 backdrop-blur-sm"
           dir="ltr"
           onClick={dismiss}
@@ -200,38 +156,25 @@ export function BuilderEasterEgg() {
           {!prefersReducedMotion && <ScanBeam />}
 
           <m.div
-            initial={
-              prefersReducedMotion
-                ? { opacity: 1, y: 0, scale: 1 }
-                : { opacity: 0, y: 18, scale: 0.97 }
-            }
-            animate={contentControls}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -8, scale: 0.98 }}
+            transition={{ duration: prefersReducedMotion ? 0.15 : 0.5, delay: prefersReducedMotion ? 0 : 0.15 }}
             className="relative z-10 flex flex-col items-center gap-5 px-6 text-center pointer-events-none"
             onClick={(event) => event.stopPropagation()}
           >
             <m.div
               animate={
                 prefersReducedMotion
-                  ? { opacity: 0.35 }
+                  ? undefined
                   : { opacity: [0.2, 0.45, 0.2], scale: [1, 1.05, 1] }
               }
-              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -inset-16 rounded-full bg-primary/15 blur-[80px]"
             />
 
-            {pulseId > 0 && !prefersReducedMotion && (
-              <m.div
-                key={pulseId}
-                initial={{ opacity: 0, scale: 1 }}
-                animate={{ opacity: [0, 0.55, 0], scale: [1, 1.1, 1] }}
-                transition={{ duration: 0.75, ease: SMOOTH_EASE }}
-                className="absolute -inset-16 rounded-full bg-primary/20 blur-[90px] pointer-events-none"
-                aria-hidden
-              />
-            )}
-
             <p className="text-[10px] uppercase tracking-[0.45em] text-primary/70 font-medium">
-              <ScrambleText text="> keystrokes detected" delay={0.08} replayToken={replayToken} />
+              <ScrambleText text="> keystrokes detected" delay={0.1} />
             </p>
 
             <h2
@@ -240,7 +183,7 @@ export function BuilderEasterEgg() {
                 "drop-shadow-[0_0_30px_rgba(19,245,132,0.35)]"
               )}
             >
-              <ScrambleText text="Built by Riaz" delay={0.28} replayToken={replayToken} />
+              <ScrambleText text="Built by Riaz" delay={0.35} />
             </h2>
 
             <m.a
@@ -248,8 +191,8 @@ export function BuilderEasterEgg() {
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.45 }}
-              transition={{ delay: prefersReducedMotion ? 0.15 : 1.2, duration: 0.8, ease: SMOOTH_EASE }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: prefersReducedMotion ? 0.2 : 1.4, duration: 0.6 }}
               className="pointer-events-auto text-xs sm:text-sm text-white/45 tracking-wide hover:text-primary transition-colors duration-300"
               onClick={(event) => event.stopPropagation()}
             >
@@ -259,18 +202,18 @@ export function BuilderEasterEgg() {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: prefersReducedMotion ? 0.2 : 1.5, duration: 0.8, ease: SMOOTH_EASE }}
+              transition={{ delay: prefersReducedMotion ? 0.3 : 1.8 }}
               className="flex gap-2 mt-2"
             >
-              {[0, 0.35, 0.7].map((dotDelay) => (
+              {[0, 0.35, 0.7].map((delay) => (
                 <m.span
-                  key={dotDelay}
+                  key={delay}
                   animate={
                     prefersReducedMotion
                       ? undefined
                       : { scale: [1, 1.4, 1], opacity: [0.25, 0.7, 0.25] }
                   }
-                  transition={{ duration: 1.8, repeat: Infinity, delay: dotDelay, ease: "easeInOut" }}
+                  transition={{ duration: 1.6, repeat: Infinity, delay, ease: "easeInOut" }}
                   className="h-1 w-1 rounded-full bg-primary"
                 />
               ))}
