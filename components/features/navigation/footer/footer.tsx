@@ -1,40 +1,27 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import { SocialLinks } from "@/components/shared/social-link";
+import { socialMediaLinks } from "@/components/features/contact/sections/contact.constants";
 
 import FooterBg1 from "./components/footer-bg-1";
 import FooterBg2 from "./components/footer-bg-2";
 import FooterBg3 from "./components/footer-bg-3";
 
-const socialIcons = [
-  {
-    name: "Facebook",
-    iconPath: "/contact/cfacebook.svg",
-    href: "https://www.facebook.com/esapai.official/",
-  },
-  { name: "X", iconPath: "/contact/xc.svg", href: "https://x.com/esap_ai" },
-  {
-    name: "LinkedIn",
-    iconPath: "/contact/clinkedin.svg",
-    href: "https://www.linkedin.com/company/esapai/",
-  },
-  {
-    name: "Instagram",
-    iconPath: "/contact/cinstagram.svg",
-    href: "https://www.instagram.com/esapai.official/",
-  },
-  {
-    name: "YouTube",
-    iconPath: "/contact/xyoutube.svg",
-    href: "https://www.youtube.com/channel/UC7LyRbfXwb7at1gCQpUMzGg",
-  },
-];
+function safePlay(video: HTMLVideoElement | null) {
+  if (!video) return;
+  // Rapid hover in/out can trigger play() then pause() before play resolves,
+  // which logs a benign warning in Chromium/Safari. Swallow it.
+  const p = video.play();
+  if (p && typeof (p as Promise<void>).catch === "function") {
+    (p as Promise<void>).catch(() => {});
+  }
+}
 
 export function Footer() {
   const t = useTranslations("Footer");
@@ -75,7 +62,7 @@ export function Footer() {
             className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}
             onMouseEnter={() => {
               setCtaCardHovered(true);
-              ctaVideoRef.current?.play();
+              safePlay(ctaVideoRef.current);
             }}
             onMouseLeave={() => {
               setCtaCardHovered(false);
@@ -120,7 +107,7 @@ export function Footer() {
             className={cn(cardClasses, "flex-1 justify-center min-h-[300px] border-white/10 bg-white/5 backdrop-blur-sm")}
             onMouseEnter={() => {
               setSocialCardHovered(true);
-              socialVideoRef.current?.play();
+              safePlay(socialVideoRef.current);
             }}
             onMouseLeave={() => {
               setSocialCardHovered(false);
@@ -150,24 +137,7 @@ export function Footer() {
               </p>
               <div className="space-y-4">
                 <p className="text-gray-500 text-xs tracking-widest">{t("social.connect")}</p>
-                <div className="flex items-center gap-4">
-                  {socialIcons.map((icon) => (
-                    <Link
-                      key={icon.name}
-                      href={icon.href}
-                      target="_blank"
-                      className="group w-11 h-11 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/15 hover:border-primary/50 transition-all duration-300 text-white border border-white/10"
-                    >
-                      <Image
-                        src={icon.iconPath}
-                        alt={icon.name}
-                        width={18}
-                        height={18}
-                        className="opacity-70 transition-opacity duration-300 group-hover:opacity-100"
-                      />
-                    </Link>
-                  ))}
-                </div>
+                <SocialLinks links={socialMediaLinks} />
               </div>
             </div>
           </Card>
@@ -179,7 +149,7 @@ export function Footer() {
           className={cn(cardClasses, "h-auto min-h-[624px] relative border-white/10 bg-white/5 backdrop-blur-sm")}
           onMouseEnter={() => {
             setMenuCardHovered(true);
-            menuVideoRef.current?.play();
+            safePlay(menuVideoRef.current);
           }}
           onMouseLeave={() => {
             setMenuCardHovered(false);
