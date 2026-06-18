@@ -41,59 +41,63 @@ function ScanBeam() {
   );
 }
 
-function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [displayText, setDisplayText] = useState("");
+function ScrambleText({
+  text,
+  delay = 0,
+  sessionKey,
+}: {
+  text: string;
+  delay?: number;
+  sessionKey: number;
+}) {
   const prefersReducedMotion = useReducedMotion();
+  const [displayText, setDisplayText] = useState(() => (prefersReducedMotion ? text : ""));
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      const timeout = setTimeout(() => setDisplayText(text), delay * 1000);
-      return () => clearTimeout(timeout);
+      setDisplayText(text);
+      return;
     }
 
+    setDisplayText("");
     let frame = 0;
     const totalFrames = 24;
-    let animationFrameId = 0;
-    let lastTimestamp = 0;
+    let intervalId = 0;
+    let cancelled = false;
 
-    const animate = (timestamp: number) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
-      const progress = timestamp - lastTimestamp;
+    const tick = () => {
+      if (cancelled) return;
 
-      if (progress >= 40) {
-        lastTimestamp = timestamp;
-        if (frame >= totalFrames) {
-          setDisplayText(text);
-          return;
-        }
+      frame += 1;
+      const progress = Math.min(1, frame / totalFrames);
 
-        const scrambled = text
-          .split("")
-          .map((char, i) => {
-            if (char === " ") return " ";
-            if (i < (frame / totalFrames) * text.length) return text[i];
-            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-          })
-          .join("");
-
-        setDisplayText(scrambled);
-        frame += 1;
+      if (progress >= 1) {
+        setDisplayText(text);
+        return;
       }
 
-      if (frame < totalFrames) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
+      const locked = Math.floor(progress * text.length);
+      const scrambled = text
+        .split("")
+        .map((char, i) => {
+          if (char === " ") return " ";
+          if (i < locked) return char;
+          return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        })
+        .join("");
+
+      setDisplayText(scrambled);
+      intervalId = window.setTimeout(tick, 40);
     };
 
-    const timeout = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(animate);
-    }, delay * 1000);
+    const timeout = window.setTimeout(tick, delay * 1000);
 
     return () => {
-      clearTimeout(timeout);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      cancelled = true;
+      window.clearTimeout(timeout);
+      window.clearTimeout(intervalId);
     };
-  }, [text, delay, prefersReducedMotion]);
+  }, [text, delay, prefersReducedMotion, sessionKey]);
 
   return <span>{displayText}</span>;
 }
@@ -101,6 +105,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 export function BuilderEasterEgg() {
   const [isVisible, setIsVisible] = useState(false);
   const [cooldown, setCooldown] = useState(false);
+  const [sessionKey, setSessionKey] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
   const dismiss = useCallback(() => {
@@ -111,6 +116,7 @@ export function BuilderEasterEgg() {
 
   const trigger = useCallback(() => {
     if (isVisible || cooldown) return;
+    setSessionKey((key) => key + 1);
     setIsVisible(true);
   }, [isVisible, cooldown]);
 
@@ -156,7 +162,11 @@ export function BuilderEasterEgg() {
           {!prefersReducedMotion && <ScanBeam />}
 
           <m.div
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16, scale: 0.96 }}
+            initial={
+              prefersReducedMotion
+                ? { opacity: 1, y: 0, scale: 1 }
+                : { opacity: 0, y: 16, scale: 0.96 }
+            }
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -8, scale: 0.98 }}
             transition={{ duration: prefersReducedMotion ? 0.15 : 0.5, delay: prefersReducedMotion ? 0 : 0.15 }}
@@ -174,7 +184,7 @@ export function BuilderEasterEgg() {
             />
 
             <p className="text-[10px] uppercase tracking-[0.45em] text-primary/70 font-medium">
-              <ScrambleText text="> keystrokes detected" delay={0.1} />
+              <ScrambleText key={`tagline-${sessionKey}`} text="> keystrokes detected" delay={0.1} sessionKey={sessionKey} />
             </p>
 
             <h2
@@ -183,7 +193,7 @@ export function BuilderEasterEgg() {
                 "drop-shadow-[0_0_30px_rgba(19,245,132,0.35)]"
               )}
             >
-              <ScrambleText text="Built by Riaz" delay={0.35} />
+              <ScrambleText key={`title-${sessionKey}`} text="Built by Riaz" delay={0.35} sessionKey={sessionKey} />
             </h2>
 
             <m.a
