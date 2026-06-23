@@ -205,6 +205,7 @@
       "fullNamePlaceholder": "جون دو",
       "email": "البريد الإلكتروني",
       "emailPlaceholder": "name@company.com",
+      "emailContactPrefix": "لأي استفسارات، يرجى التواصل معنا عبر",
       "message": "الرسالة",
       "messagePlaceholder": "كيف يمكننا مساعدتك؟",
       "submit": "إرسال",

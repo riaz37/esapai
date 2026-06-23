@@ -7,7 +7,7 @@ import type {
   LegalListProps,
 } from "@/types/page";
 
-export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
+export function LegalPage({ title, lastUpdated, lastUpdatedLabel = "Last updated:", children }: LegalPageProps) {
   return (
     <>
       {/* Hero Section */}
@@ -18,7 +18,7 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
               {title}
             </h1>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 text-light-gray-90 text-xs sm:text-sm md:text-base">
-              <span>Last updated:</span>
+              <span>{lastUpdatedLabel}</span>
               <span className="text-primary font-medium">{lastUpdated}</span>
             </div>
           </div>

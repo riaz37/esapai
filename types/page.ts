@@ -43,6 +43,7 @@ export interface CaseStudyPageClientProps {
 export interface LegalPageProps {
   title: string;
   lastUpdated: string;
+  lastUpdatedLabel?: string;
   children: ReactNode;
 }
 

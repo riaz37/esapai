@@ -205,6 +205,7 @@
       "fullNamePlaceholder": "John Doe",
       "email": "Email",
       "emailPlaceholder": "name@company.com",
+      "emailContactPrefix": "For any inquiries, please contact us at",
       "message": "Message",
       "messagePlaceholder": "How can we help you?",
       "submit": "Submit",

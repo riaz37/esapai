@@ -243,6 +243,14 @@ export const ContactFormCard = forwardRef<
                 </Link>
               </label>
             </div>
+
+            <p data-gsap="contact-form-item" className="border-t border-white/10 pt-4 text-white/70 text-sm sm:text-base leading-relaxed">
+              {t("form.emailContactPrefix")}{" "}
+              <a href="mailto:info@esap.ai" className="text-primary font-medium hover:underline">
+                info@esap.ai
+              </a>
+              .
+            </p>
           </form>
         )}
       </Card>
