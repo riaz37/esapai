@@ -39,7 +39,8 @@ export async function generateMetadata({
     slug,
     caseStudy.publishedAt,
     undefined, // modifiedTime
-    thumbnailUrl
+    thumbnailUrl,
+    locale
   );
 }
 

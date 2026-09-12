@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { services, getServiceBySlug } from "@/lib/services";
 import { ServicePage } from "@/components/features/services/pages/service-page";
 import { generateServiceMetadata } from "@/lib/seo/metadata";
@@ -26,7 +27,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const service = getServiceBySlug(slug);
 
   if (!service) {
@@ -36,7 +37,23 @@ export async function generateMetadata({
     };
   }
 
-  return generateServiceMetadata(service.name, service.description, slug);
+  const tServices = await getTranslations({ locale, namespace: "Services" });
+  let localizedName: string | undefined;
+  let localizedDescription: string | undefined;
+  try {
+    const serviceMeta = tServices.raw(slug) as { name?: string; menuDescription?: string } | undefined;
+    localizedName = serviceMeta?.name;
+    localizedDescription = serviceMeta?.menuDescription;
+  } catch {
+    // No translation entry for this slug — fall back to the base service copy.
+  }
+
+  return generateServiceMetadata(
+    localizedName ?? service.name,
+    localizedDescription ?? service.description,
+    slug,
+    locale
+  );
 }
 
 export default async function ServiceSlugPage({ params }: Props) {

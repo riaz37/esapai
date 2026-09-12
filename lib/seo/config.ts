@@ -3,12 +3,30 @@
  * Central configuration for SEO-related constants and settings
  */
 
+/**
+ * Force the canonical www host regardless of how NEXT_PUBLIC_SITE_URL is set.
+ * esap.ai (apex) redirects to www.esap.ai at the domain level — canonicals,
+ * the sitemap, and structured data must all point at the same host that
+ * serves the final 200 response.
+ */
+function normalizeBaseUrl(rawUrl: string): string {
+  try {
+    const url = new URL(rawUrl);
+    if (url.hostname === "esap.ai") {
+      url.hostname = "www.esap.ai";
+    }
+    return url.origin;
+  } catch {
+    return rawUrl.replace(/\/$/, "");
+  }
+}
+
 export const SEO_CONFIG = {
   /**
    * Base URL of the website
    * Can be overridden with NEXT_PUBLIC_SITE_URL environment variable
    */
-  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.esap.ai/",
+  baseUrl: normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL || "https://www.esap.ai"),
 
   /**
    * Site name

@@ -108,7 +108,9 @@ export function IntroLoader({ children }: IntroLoaderProps) {
         return () => clearTimeout(timer);
     }, [isHomePage]);
 
-    if (!hasCheckedConsent && isHomePage) return null;
+    // Hide (not unmount) the app shell while we decide whether to show the intro,
+    // so Navbar/Footer/page content stay in the server-rendered HTML for crawlers.
+    const isDeciding = !hasCheckedConsent && isHomePage;
 
     return (
         <>
@@ -232,7 +234,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                     </m.div>
                 )}
             </AnimatePresence >
-            {children}
+            <div className={isDeciding ? "invisible" : undefined}>{children}</div>
         </>
     );
 }

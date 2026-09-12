@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getProductBySlug, products } from "@/lib/products";
 import { ProductPage } from "@/components/features/products/pages/product-page";
 import { generateProductMetadata } from "@/lib/seo/metadata";
@@ -17,7 +18,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ProductSlugPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const product = getProductBySlug(slug);
 
   if (!product) {
@@ -27,7 +28,23 @@ export async function generateMetadata({
     };
   }
 
-  return generateProductMetadata(product.name, product.description, slug);
+  const tProducts = await getTranslations({ locale, namespace: "Products" });
+  let localizedName: string | undefined;
+  let localizedDescription: string | undefined;
+  try {
+    const productMeta = tProducts.raw(slug) as { name?: string; menuDescription?: string } | undefined;
+    localizedName = productMeta?.name;
+    localizedDescription = productMeta?.menuDescription;
+  } catch {
+    // No translation entry for this slug — fall back to the base product copy.
+  }
+
+  return generateProductMetadata(
+    localizedName ?? product.name,
+    localizedDescription ?? product.description,
+    slug,
+    locale
+  );
 }
 
 export const dynamic = "force-static";

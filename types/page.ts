@@ -7,12 +7,14 @@ import type { ReactNode } from "react";
 export interface ProductSlugPageProps {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 }
 
 export interface ServiceSlugPageProps {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 }
 

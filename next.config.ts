@@ -50,7 +50,10 @@ const nextConfig: NextConfig = {
   // Compression
   compress: true,
 
-  // Redirects for merged service pages
+  // Redirects for merged service pages and legacy (pre-rename) URLs.
+  // Locale-less paths (e.g. "/contact", "/product/erp") are otherwise handled
+  // by middleware.ts, which adds the locale prefix automatically. These entries
+  // are for slugs that no longer exist under any locale and need an explicit target.
   async redirects() {
     return [
       {
@@ -61,6 +64,16 @@ const nextConfig: NextConfig = {
       {
         source: "/service/enterprise-automation",
         destination: "/service/integration-and-automation",
+        permanent: true,
+      },
+      {
+        source: "/esapaiagent",
+        destination: "/en/product/ai-framework",
+        permanent: true,
+      },
+      {
+        source: "/voice-activated-ai",
+        destination: "/en/product/erp",
         permanent: true,
       },
     ];

@@ -1,12 +1,25 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AboutPageClient } from "@/components/features/about/pages/about-page";
+import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 
 export const dynamic = "force-static";
 
-export const metadata = {
-    title: "About Us | ESAP AI ",
-    description: "Learn about the legacy and vision of ESAP AI.",
-};
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "About.metadata" });
+
+    return generatePageMetadata({
+        title: t("title"),
+        description: t("description"),
+        path: "/about",
+        locale,
+    });
+}
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

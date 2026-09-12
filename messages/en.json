@@ -189,6 +189,10 @@
     "teamSection": {
       "heading": "Minds Behind the Machine",
       "subheading": "A tight-knit group of builders, researchers, and operators obsessed with making AI work in the real world."
+    },
+    "metadata": {
+      "title": "About Us",
+      "description": "Learn about ESAP AI's legacy and vision — building enterprise-grade AI infrastructure and intelligent automation for businesses worldwide."
     }
   },
   "Contact": {
@@ -230,6 +234,10 @@
       "acceptTerms": "Please accept the terms to continue.",
       "success": "Your message has been sent successfully!",
       "error": "An unexpected error occurred. Please try again."
+    },
+    "metadata": {
+      "title": "Contact Us",
+      "description": "Get in touch with ESAP AI. Contact us to learn how our AI solutions can transform your business operations and drive innovation."
     }
   },
   "Service": {
@@ -327,6 +335,20 @@
     "serviceDescription": "Stay ahead with AI-powered tools that track environmental data in real-time.",
     "productDescription": "Stay ahead with AI-powered tools that track environmental data in real-time.",
     "telemetryPending": "Telemetry data is being collected..."
+  },
+  "Services": {
+    "integration-and-automation": {
+      "name": "Integration & Automation",
+      "menuDescription": "End-to-end integration and automation services"
+    },
+    "faas": {
+      "name": "AI Agents Framework-as-a-Service (FaaS)",
+      "menuDescription": "Scalable infrastructure for AI agents"
+    },
+    "innovation-lab": {
+      "name": "Innovation & Research Lab",
+      "menuDescription": "Applied AI R&D and rapid prototyping"
+    }
   },
   "Products": {
     "erp": {

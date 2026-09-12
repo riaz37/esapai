@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ContactSection } from "@/components/features/contact/sections";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
 import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
-export const metadata: Metadata = generatePageMetadata({
-  title: "Contact Us",
-  description:
-    "Get in touch with ESAP AI. Contact us to learn how our AI solutions can transform your business operations and drive innovation.",
-  path: "/contact",
-});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Contact.metadata" });
+
+  return generatePageMetadata({
+    title: t("title"),
+    description: t("description"),
+    path: "/contact",
+    locale,
+  });
+}
 
 export default async function ContactPage(props: {
   params: Promise<{ locale: string }>;

@@ -1,6 +1,18 @@
 import type { Metadata } from "next";
 import { SEO_CONFIG, getCanonicalUrl } from "./config";
+import { routing } from "@/i18n/routing";
 import type { PageMetadataOptions } from "@/types/seo";
+
+/** Maps app locales to Open Graph locale codes (og:locale). */
+const OG_LOCALE_MAP: Record<string, string> = {
+  en: "en_US",
+  ar: "ar_AR",
+};
+
+function localizedPath(locale: string, path: string): string {
+  const normalizedPath = path === "/" ? "" : path;
+  return `/${locale}${normalizedPath}`;
+}
 
 /**
  * Generate comprehensive metadata for a page
@@ -17,18 +29,27 @@ export function generateMetadata({
   modifiedTime,
   authors,
   tags,
+  locale = routing.defaultLocale,
 }: PageMetadataOptions): Metadata {
-  const canonicalUrl = getCanonicalUrl(path);
+  const canonicalUrl = getCanonicalUrl(localizedPath(locale, path));
   const ogImage = image || SEO_CONFIG.defaultOgImage;
   const fullOgImageUrl = ogImage.startsWith("http")
     ? ogImage
     : getCanonicalUrl(ogImage);
+
+  const languageAlternates = Object.fromEntries(
+    routing.locales.map((loc) => [loc, getCanonicalUrl(localizedPath(loc, path))])
+  );
 
   const metadata: Metadata = {
     title: title === SEO_CONFIG.defaultTitle ? title : `${title} | ESAP AI`,
     description: description || SEO_CONFIG.defaultDescription,
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        ...languageAlternates,
+        "x-default": getCanonicalUrl(localizedPath(routing.defaultLocale, path)),
+      },
     },
     openGraph: {
       type: type === "article" ? "article" : "website",
@@ -44,7 +65,11 @@ export function generateMetadata({
           alt: title,
         },
       ],
-      locale: SEO_CONFIG.defaultLocale,
+      locale: OG_LOCALE_MAP[locale] || SEO_CONFIG.defaultLocale,
+      alternateLocale: routing.locales
+        .filter((loc) => loc !== locale)
+        .map((loc) => OG_LOCALE_MAP[loc])
+        .filter(Boolean),
       ...(type === "article" && {
         publishedTime,
         modifiedTime,
@@ -79,12 +104,13 @@ export function generateMetadata({
 /**
  * Generate metadata for the homepage
  */
-export function generateHomeMetadata(): Metadata {
+export function generateHomeMetadata(locale: string = routing.defaultLocale): Metadata {
   return generateMetadata({
     title: SEO_CONFIG.defaultTitle,
     description: SEO_CONFIG.defaultDescription,
     path: "/",
     type: "website",
+    locale,
   });
 }
 
@@ -94,13 +120,15 @@ export function generateHomeMetadata(): Metadata {
 export function generateProductMetadata(
   productName: string,
   productDescription: string,
-  slug: string
+  slug: string,
+  locale: string = routing.defaultLocale
 ): Metadata {
   return generateMetadata({
     title: productName,
     description: productDescription,
     path: `/product/${slug}`,
     type: "product",
+    locale,
   });
 }
 
@@ -110,13 +138,15 @@ export function generateProductMetadata(
 export function generateServiceMetadata(
   serviceName: string,
   serviceDescription: string,
-  slug: string
+  slug: string,
+  locale: string = routing.defaultLocale
 ): Metadata {
   return generateMetadata({
     title: serviceName,
     description: serviceDescription,
     path: `/service/${slug}`,
     type: "service",
+    locale,
   });
 }
 
@@ -129,7 +159,8 @@ export function generateCaseStudyMetadata(
   slug: string,
   publishedTime?: string,
   modifiedTime?: string,
-  image?: string
+  image?: string,
+  locale: string = routing.defaultLocale
 ): Metadata {
   return generateMetadata({
     title,
@@ -137,6 +168,7 @@ export function generateCaseStudyMetadata(
     path: `/case-study/${slug}`,
     type: "article",
     publishedTime,
+    locale,
     modifiedTime,
     image,
   });

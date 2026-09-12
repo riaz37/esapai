@@ -6,7 +6,14 @@ import { generateHomeMetadata } from "@/lib/seo/metadata";
 import dynamic from "next/dynamic";
 import { SectionErrorBoundary } from "@/components/ui/section-error-boundary";
 
-export const metadata: Metadata = generateHomeMetadata();
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return generateHomeMetadata(locale);
+}
 
 export const revalidate = false;
 

@@ -45,6 +45,7 @@ export async function generateMetadata({
       ? "/case-study"
       : buildCaseStudyListingPath({ page: normalized.page }),
     noIndex: Boolean(normalized.tag),
+    locale,
   });
 }
 

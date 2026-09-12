@@ -14,6 +14,8 @@ export interface PageMetadataOptions {
   modifiedTime?: string;
   authors?: string[];
   tags?: string[];
+  /** Locale this page is rendered for. Drives the self-referencing canonical and hreflang alternates. */
+  locale?: string;
 }
 
 /**

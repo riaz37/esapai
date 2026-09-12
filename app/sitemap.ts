@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SEO_CONFIG.baseUrl.replace(/\/$/, "");
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    ...localizedUrls("", baseUrl, { lastModified: new Date(), changeFrequency: "daily", priority: 1.0 }),
+    ...localizedUrls("", baseUrl, { lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 }),
     ...localizedUrls("about", baseUrl, { lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 }),
     ...localizedUrls("contact", baseUrl, { lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 }),
     ...localizedUrls("case-study", baseUrl, { lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 }),
