@@ -13,6 +13,7 @@ import type { SanityImage } from "@/types/sanity";
 
 const CASE_STUDY_FIELDS = `{
   _id,
+  _updatedAt,
   title,
   slug,
   subtitle,

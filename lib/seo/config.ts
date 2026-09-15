@@ -57,7 +57,24 @@ export const SEO_CONFIG = {
     url: "https://www.esap.ai/",
     logo: "https://www.esap.ai/logo/esaplogo.svg",
     description:
-      "ESAP AI leads the way in embedding AI into daily workflows, creating intelligent infrastructure for tomorrow.",
+      "ESAP AI builds on-premise, Arabic-native AI agents for enterprises in Saudi Arabia and the GCC, deploying inside customer infrastructure for PDPL-aligned data residency.",
+    address: {
+      streetAddress: "7404 King Abdulaziz Rd, Al Muruj",
+      addressLocality: "Riyadh",
+      addressCountry: "SA",
+    },
+    contactPoint: {
+      telephone: "+966-11-225-5370",
+      email: "info@esap.ai",
+      contactType: "customer service",
+    },
+    knowsAbout: [
+      "Enterprise AI agents",
+      "On-premise AI deployment",
+      "Voice-activated ERP",
+      "Arabic-native enterprise software",
+      "PDPL data residency compliance",
+    ],
     sameAs: [
       "https://www.facebook.com/esapai.official/",
       "https://x.com/esap_ai",
@@ -92,9 +109,14 @@ export const SEO_CONFIG = {
 } as const;
 
 /**
- * Get the full URL for a given path
+ * Get the full URL for a given path.
+ * Already-absolute URLs (e.g. Sanity CDN asset URLs) are returned unchanged —
+ * concatenating the base URL onto them produces an invalid nested URL.
  */
 export function getFullUrl(path: string): string {
+  if (/^https?:\/\//.test(path)) {
+    return path;
+  }
   const baseUrl = SEO_CONFIG.baseUrl.replace(/\/$/, "");
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
   return `${baseUrl}${cleanPath}`;
@@ -105,4 +127,15 @@ export function getFullUrl(path: string): string {
  */
 export function getCanonicalUrl(path: string): string {
   return getFullUrl(path);
+}
+
+/**
+ * Get the full, locale-prefixed URL for an internal page path.
+ * Use this for structured-data URLs (breadcrumbs, mainEntityOfPage, canonical
+ * page references) so they point at the final `/​{locale}/​...` destination
+ * instead of relying on a redirect.
+ */
+export function getLocalizedUrl(locale: string, path: string): string {
+  const normalizedPath = path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
+  return getFullUrl(`/${locale}${normalizedPath}`);
 }

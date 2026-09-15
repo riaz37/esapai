@@ -87,10 +87,13 @@ export default async function CaseStudiesPage({
   });
 
   const structuredData = [
-    generateBreadcrumbSchema([
-      { name: "Home", url: "/" },
-      { name: "Case Study", url: "/case-study" },
-    ]),
+    generateBreadcrumbSchema(
+      [
+        { name: "Home", url: "/" },
+        { name: "Case Study", url: "/case-study" },
+      ],
+      locale
+    ),
     generateCollectionPageSchema({
       name: "Case Studies",
       description:
@@ -101,6 +104,7 @@ export default async function CaseStudiesPage({
         url: `/case-study/${cs.slug}`,
         image: cs.thumbnail?.url || cs.heroImages?.[0]?.url,
       })),
+      locale,
     }),
   ];
 

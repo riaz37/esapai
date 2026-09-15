@@ -5,8 +5,32 @@ import { routing } from "./i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
 
+// The apex domain must NOT carry its own Vercel-level redirect to the www
+// domain (that's a separate hop before this code ever runs). It's kept as a
+// plain domain on the project so requests reach this middleware, which
+// collapses the apex->www swap and the locale-prefix redirect into one 308.
+const APEX_HOST = "esap.ai";
+const CANONICAL_HOST = "www.esap.ai";
+
 export default function proxy(request: NextRequest) {
+    const host = request.headers.get("host");
     const response = handleI18nRouting(request);
+
+    if (host === APEX_HOST) {
+        const target = request.nextUrl.clone();
+        target.host = CANONICAL_HOST;
+
+        if (response.status === 307 || response.status === 308) {
+            const location = response.headers.get("location");
+            if (location) {
+                const localized = new URL(location);
+                target.pathname = localized.pathname;
+                target.search = localized.search;
+            }
+        }
+
+        return NextResponse.redirect(target, 308);
+    }
 
     // next-intl issues a 307 when it adds/normalizes the locale prefix (e.g. "/"
     // -> "/en", "/contact" -> "/en/contact"). These destinations are permanent,

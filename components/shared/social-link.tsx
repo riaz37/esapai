@@ -235,7 +235,7 @@ function SocialLink({
       aria-label={`${name} — ${handle}`}
       data-gsap={dataGsap}
       className={cn(
-        "relative w-11 h-11 rounded-full bg-white/5 flex items-center justify-center text-white border border-white/10",
+        "relative w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white border border-white/10",
         "hover:bg-primary/15 hover:border-primary/50 transition-colors duration-300",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
         className

@@ -1,9 +1,11 @@
-import Script from "next/script";
 import type { StructuredDataProps } from "@/types/props";
 
 /**
- * Component to inject JSON-LD structured data into the page
- * Supports single schema or array of schemas
+ * Renders JSON-LD structured data directly into the server response.
+ * Must stay a plain <script> tag (no 'use client', no next/script) —
+ * next/script's default "afterInteractive" strategy injects the tag via a
+ * client-side effect after hydration, so it never reaches non-JS crawlers
+ * (GPTBot, ClaudeBot, PerplexityBot) reading the raw HTML.
  */
 export function StructuredDataComponent({ data }: StructuredDataProps) {
   const schemas = Array.isArray(data) ? data : [data];
@@ -11,10 +13,9 @@ export function StructuredDataComponent({ data }: StructuredDataProps) {
   return (
     <>
       {schemas.map((schema) => (
-        <Script
+        <script
           key={schema["@type"]}
           type="application/ld+json"
-          id={`structured-data-${schema["@type"]}`}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}

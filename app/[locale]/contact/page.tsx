@@ -25,13 +25,17 @@ export default async function ContactPage(props: {
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const { locale } = await props.params;
   const searchParams = await props.searchParams;
   const productSlug = typeof searchParams.product === "string" ? searchParams.product : undefined;
   const structuredData = [
-    generateBreadcrumbSchema([
-      { name: "Home", url: "/" },
-      { name: "Contact", url: "/contact" },
-    ]),
+    generateBreadcrumbSchema(
+      [
+        { name: "Home", url: "/" },
+        { name: "Contact", url: "/contact" },
+      ],
+      locale
+    ),
   ];
 
   return (

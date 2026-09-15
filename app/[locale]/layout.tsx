@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { setRequestLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { Inter, Space_Grotesk, IBM_Plex_Sans_Arabic } from "next/font/google";
@@ -92,6 +93,14 @@ export default async function RootLayout(props: Readonly<{
   const params = await props.params;
   const { locale } = params;
   const { children } = props;
+
+  // The route matcher only excludes dotted/extension paths from redirect handling
+  // (see proxy.ts), so an unmatched top-level path like "/ai.txt" or
+  // "/.well-known/foo" still reaches this catch-all [locale] segment and would
+  // otherwise render the homepage with a 200 instead of a real 404.
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
+    notFound();
+  }
 
   // Enable static rendering
   setRequestLocale(locale);

@@ -57,7 +57,7 @@ export async function generateMetadata({
 }
 
 export default async function ServiceSlugPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const service = getServiceBySlug(slug);
 
   if (!service) {
@@ -79,12 +79,16 @@ export default async function ServiceSlugPage({ params }: Props) {
         url: "https://www.esap.ai/",
       },
       serviceType: "AI Consulting and Integration",
+      locale,
     }),
-    generateBreadcrumbSchema([
-      { name: "Home", url: "/" },
-      { name: "Services", url: "/service" },
-      { name: service.name, url: `/service/${slug}` },
-    ]),
+    generateBreadcrumbSchema(
+      [
+        { name: "Home", url: "/" },
+        { name: "Services", url: "/service" },
+        { name: service.name, url: `/service/${slug}` },
+      ],
+      locale
+    ),
   ];
 
   return (

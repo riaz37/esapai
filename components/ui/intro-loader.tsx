@@ -29,7 +29,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 
     useEffect(() => {
         let frame = 0;
-        const totalFrames = 30;
+        const totalFrames = 15;
         let animationFrameId: number;
         let lastTimestamp = 0;
 
@@ -37,8 +37,8 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
             if (!lastTimestamp) lastTimestamp = timestamp;
             const progress = timestamp - lastTimestamp;
 
-            // Update every ~40ms (similar to the interval before)
-            if (progress >= 40) {
+            // Update every ~25ms (similar to the interval before)
+            if (progress >= 25) {
                 lastTimestamp = timestamp;
                 if (frame >= totalFrames) {
                     setDisplayText(text);
@@ -103,7 +103,7 @@ export function IntroLoader({ children }: IntroLoaderProps) {
         const timer = setTimeout(() => {
             setIsLoading(false);
             localStorage.setItem("hasSeenIntro", "true");
-        }, 3500);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, [isHomePage]);
@@ -123,9 +123,8 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                         exit={{
                             opacity: 0,
                             transition: {
-                                duration: 1.5,
-                                ease: [0.7, 0, 0.3, 1],
-                                when: "afterChildren"
+                                duration: 0.5,
+                                ease: [0.7, 0, 0.3, 1]
                             }
                         }}
                         className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-black"
@@ -167,12 +166,12 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                                         opacity: 0,
                                         filter: "brightness(2) blur(5px)",
                                         transition: {
-                                            duration: 1.2,
+                                            duration: 0.5,
                                             ease: [0.7, 0, 0.3, 1]
                                         }
                                     }}
                                     transition={{
-                                        duration: 2,
+                                        duration: 0.45,
                                         ease: [0.22, 1, 0.36, 1],
                                     }}
                                     className="relative z-10 w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"
@@ -187,27 +186,27 @@ export function IntroLoader({ children }: IntroLoaderProps) {
                             exit={{
                                 opacity: 0,
                                 y: 10,
-                                transition: { duration: 0.5 }
+                                transition: { duration: 0.35 }
                             }}
                             className="flex flex-col items-center gap-6"
                         >
                             <m.h1
                                 initial={{ opacity: 0, y: 20, letterSpacing: "0.2em" }}
                                 animate={{ opacity: 1, y: 0, letterSpacing: "1em" }}
-                                transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
                                 className="text-xl md:text-2xl font-semibold uppercase text-white/90 text-center ms-[1em]"
                             >
-                                <ScrambleText text={t("introTitle")} delay={1} />
+                                <ScrambleText text={t("introTitle")} delay={0.15} />
                             </m.h1>
 
                             <m.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ duration: 1.2, delay: 1.8 }}
+                                transition={{ duration: 0.35, delay: 0.35 }}
                                 className="flex flex-col items-center gap-3"
                             >
                                 <div className="text-xs uppercase tracking-widest text-white/60 ms-2">
-                                    <ScrambleText text={t("introTagline")} delay={2} />
+                                    <ScrambleText text={t("introTagline")} delay={0.4} />
                                 </div>
 
                                 {/* Performance-neutral breathing indicator */}

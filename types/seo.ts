@@ -44,6 +44,10 @@ export interface ArticleSchemaOptions {
     logo?: string;
   };
   url: string;
+  /** Locale this schema is rendered for — used to build the locale-prefixed mainEntityOfPage URL. */
+  locale: string;
+  /** CSS selectors identifying the DOM regions (e.g. headline, summary) that answer voice/AI-assistant queries. */
+  speakable?: string[];
 }
 
 export interface ProductSchemaOptions {
@@ -58,6 +62,8 @@ export interface ProductSchemaOptions {
     priceCurrency?: string;
     availability?: string;
   };
+  /** Locale this schema is rendered for — used to build the locale-prefixed url. */
+  locale: string;
 }
 
 export interface ServiceSchemaOptions {
@@ -71,4 +77,6 @@ export interface ServiceSchemaOptions {
   };
   areaServed?: string;
   serviceType?: string;
+  /** Locale this schema is rendered for — used to build the locale-prefixed url. */
+  locale: string;
 }

@@ -1,4 +1,4 @@
-import { SEO_CONFIG, getFullUrl } from "./config";
+import { SEO_CONFIG, getFullUrl, getLocalizedUrl } from "./config";
 import type {
   StructuredData,
   BreadcrumbItem,
@@ -16,21 +16,34 @@ type CollectionPageSchemaOptions = {
     url: string;
     image?: string;
   }>;
+  /** Locale this schema is rendered for — used to build locale-prefixed URLs. */
+  locale: string;
 };
 
 /**
  * Generate Organization structured data (JSON-LD)
  */
 export function generateOrganizationSchema(): StructuredData {
+  const { organization } = SEO_CONFIG;
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: SEO_CONFIG.organization.name,
-    url: SEO_CONFIG.organization.url,
-    logo: SEO_CONFIG.organization.logo,
-    description: SEO_CONFIG.organization.description,
-    ...(SEO_CONFIG.organization.sameAs.length > 0 && {
-      sameAs: SEO_CONFIG.organization.sameAs,
+    "@id": `${SEO_CONFIG.baseUrl}/#organization`,
+    name: organization.name,
+    url: organization.url,
+    logo: { "@type": "ImageObject", url: organization.logo },
+    description: organization.description,
+    address: {
+      "@type": "PostalAddress",
+      ...organization.address,
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      ...organization.contactPoint,
+    },
+    knowsAbout: organization.knowsAbout,
+    ...(organization.sameAs.length > 0 && {
+      sameAs: organization.sameAs,
     }),
   };
 }
@@ -49,7 +62,7 @@ export function generateWebsiteSchema(): StructuredData {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${SEO_CONFIG.baseUrl}search?q={search_term_string}`,
+        urlTemplate: `${SEO_CONFIG.baseUrl}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -61,7 +74,8 @@ export function generateWebsiteSchema(): StructuredData {
  */
 
 export function generateBreadcrumbSchema(
-  items: BreadcrumbItem[]
+  items: BreadcrumbItem[],
+  locale: string
 ): StructuredData {
   return {
     "@context": "https://schema.org",
@@ -70,7 +84,7 @@ export function generateBreadcrumbSchema(
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: getFullUrl(item.url),
+      item: getLocalizedUrl(locale, item.url),
     })),
   };
 }
@@ -91,6 +105,8 @@ export function generateArticleSchema(
     author,
     publisher,
     url,
+    locale,
+    speakable,
   } = options;
 
   const schema: StructuredData = {
@@ -100,6 +116,13 @@ export function generateArticleSchema(
     description,
     datePublished,
     ...(dateModified && { dateModified }),
+    ...(speakable &&
+      speakable.length > 0 && {
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: speakable,
+        },
+      }),
     ...(author && {
       author: Array.isArray(author)
         ? author.map((name) => ({
@@ -118,7 +141,7 @@ export function generateArticleSchema(
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": getFullUrl(url),
+      "@id": getLocalizedUrl(locale, url),
     },
   };
 
@@ -138,14 +161,14 @@ export function generateArticleSchema(
 export function generateProductSchema(
   options: ProductSchemaOptions
 ): StructuredData {
-  const { name, description, image, url, brand, category, offers } = options;
+  const { name, description, image, url, brand, category, offers, locale } = options;
 
   const schema: StructuredData = {
     "@context": "https://schema.org",
     "@type": "Product",
     name,
     description,
-    url: getFullUrl(url),
+    url: getLocalizedUrl(locale, url),
     ...(brand && { brand: { "@type": "Brand", name: brand } }),
     ...(category && { category }),
     ...(offers && {
@@ -174,7 +197,7 @@ export function generateProductSchema(
 export function generateServiceSchema(
   options: ServiceSchemaOptions
 ): StructuredData {
-  const { name, description, image, url, provider, areaServed, serviceType } =
+  const { name, description, image, url, provider, areaServed, serviceType, locale } =
     options;
 
   const schema: StructuredData = {
@@ -182,7 +205,7 @@ export function generateServiceSchema(
     "@type": "Service",
     name,
     description,
-    url: getFullUrl(url),
+    url: getLocalizedUrl(locale, url),
     ...(provider && {
       provider: {
         "@type": "Organization",
@@ -209,14 +232,14 @@ export function generateServiceSchema(
 export function generateCollectionPageSchema(
   options: CollectionPageSchemaOptions
 ): StructuredData {
-  const { name, description, url, items } = options;
+  const { name, description, url, items, locale } = options;
 
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name,
     description,
-    url: getFullUrl(url),
+    url: getLocalizedUrl(locale, url),
     mainEntity: {
       "@type": "ItemList",
       itemListElement: items.map((item, index) => ({
@@ -225,7 +248,7 @@ export function generateCollectionPageSchema(
         item: {
           "@type": "Article",
           headline: item.headline,
-          url: getFullUrl(item.url),
+          url: getLocalizedUrl(locale, item.url),
           ...(item.image && { image: getFullUrl(item.image) }),
         },
       })),

@@ -26,7 +26,7 @@ export function LanguageSelector({ className }: { className?: string, visible?: 
                     "flex items-center justify-center rounded-full transition-all duration-300",
                     "bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20",
                     "text-white group overflow-hidden",
-                    "h-11 w-11"
+                    "h-12 w-12"
                 )}
                 aria-label={targetLocale.code === "en" ? "Switch to English" : "Switch to Arabic"}
             >

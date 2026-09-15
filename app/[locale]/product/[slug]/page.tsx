@@ -50,7 +50,7 @@ export async function generateMetadata({
 export const dynamic = "force-static";
 
 export default async function ProductSlugPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
 
   const productData = getProductBySlug(slug);
 
@@ -72,12 +72,16 @@ export default async function ProductSlugPage({ params }: { params: Promise<{ sl
       url: `/product/${slug}`,
       brand: "ESAP AI",
       category: "AI Software",
+      locale,
     }),
-    generateBreadcrumbSchema([
-      { name: "Home", url: "/" },
-      { name: "Products", url: "/product" },
-      { name: productData.name, url: `/product/${slug}` },
-    ]),
+    generateBreadcrumbSchema(
+      [
+        { name: "Home", url: "/" },
+        { name: "Products", url: "/product" },
+        { name: productData.name, url: `/product/${slug}` },
+      ],
+      locale
+    ),
   ];
 
   return (

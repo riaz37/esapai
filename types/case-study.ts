@@ -13,6 +13,7 @@ export interface TimelineEntry {
 
 export interface CaseStudy {
   _id: string;
+  _updatedAt: string;
   title: string;
   slug: {
     current: string;

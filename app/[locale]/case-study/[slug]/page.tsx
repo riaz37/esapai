@@ -70,17 +70,24 @@ export default async function CaseStudySlugPage({ params }: CaseStudySlugPagePro
       description: caseStudy.subtitle,
       image: thumbnailUrl ? [thumbnailUrl, ...images] : images,
       datePublished: caseStudy.publishedAt,
+      dateModified: caseStudy._updatedAt,
+      author: "ESAP AI",
       url: `/case-study/${slug}`,
       publisher: {
         name: "ESAP AI",
         logo: "https://www.esap.ai/logo/esaplogo.svg",
       },
+      locale,
+      speakable: ['[data-speakable="headline"]', '[data-speakable="summary"]'],
     }),
-    generateBreadcrumbSchema([
-      { name: "Home", url: "/" },
-      { name: "Case Study", url: "/case-study" },
-      { name: caseStudy.title, url: `/case-study/${slug}` },
-    ]),
+    generateBreadcrumbSchema(
+      [
+        { name: "Home", url: "/" },
+        { name: "Case Study", url: "/case-study" },
+        { name: caseStudy.title, url: `/case-study/${slug}` },
+      ],
+      locale
+    ),
   ];
 
   return (

@@ -75,7 +75,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               </div>
             )}
 
-            <div className="relative z-10 flex items-start gap-3 sm:gap-4 pe-8 sm:pe-10">
+            <div className="relative z-10 flex items-start gap-3 sm:gap-4 pe-10 sm:pe-12">
               {/* Icon */}
               <div className="mt-0.5">{getIcon(toast.type)}</div>
 
@@ -96,7 +96,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <button
               onClick={() => removeToast(toast.id)}
               className={cn(
-                "absolute top-3 end-3 sm:top-4 sm:end-4 rounded-md p-1.5 opacity-70 hover:opacity-100 transition-all hover:bg-white-opacity-10 z-20",
+                "absolute top-0 end-0 min-h-12 min-w-12 flex items-center justify-center rounded-md opacity-70 hover:opacity-100 transition-all hover:bg-white-opacity-10 z-20",
                 {
                   "text-light-gray-90 hover:text-light-gray":
                     toast.type === "success" || toast.type === "info",

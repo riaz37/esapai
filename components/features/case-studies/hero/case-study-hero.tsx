@@ -54,18 +54,21 @@ export function CaseStudyHero({ caseStudy }: CaseStudyHeroProps) {
         >
             {/* Hero Header Content */}
             <div className="max-w-4xl w-full mb-12 sm:mb-16 pt-24 sm:pt-32 lg:pt-36">
-                <TypewriterTitle
-                    title={caseStudy.title}
-                    splitMode="lastWord"
-                    highlightPart="last"
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 ps-2"
-                    align="left"
-                    staggerDelay={0.02}
-                    letterDuration={0.4}
-                />
+                <div data-speakable="headline">
+                    <TypewriterTitle
+                        title={caseStudy.title}
+                        splitMode="lastWord"
+                        highlightPart="last"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 md:mb-8 ps-2"
+                        align="left"
+                        staggerDelay={0.02}
+                        letterDuration={0.4}
+                    />
+                </div>
 
                 <m.p
                     ref={subtitleRef}
+                    data-speakable="summary"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.5 }}
