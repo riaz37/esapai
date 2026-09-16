@@ -154,18 +154,31 @@ export function TypewriterTitle({
     const part2Words = part2.split(' ');
     const part2Offset = part1.length;
 
+    // Full accessible headline text. The visible markup below splits this into
+    // per-character <span> nodes for the kinetic-typography animation, which
+    // would otherwise be unreadable to crawlers and screen readers (each
+    // letter is its own text node). Screen readers/crawlers get this single
+    // sr-only string instead; the animated letters are hidden from them via
+    // aria-hidden on their wrapping container.
+    const accessibleTitle = [part1, part2].filter(Boolean).join(" ");
+
     return (
         <h1 className={cn(
             "font-bold leading-none tracking-tight",
             alignmentClass,
             className
         )}>
-            {/* Part 1 */}
-            <span className={cn(
-                "block relative",
-                isPart1Highlighted ? "text-primary" : "text-white",
-                isPart1Highlighted ? highlightTextClassName : mainTextClassName
-            )}>
+            {/* Full headline as a single accessible string for crawlers/screen readers */}
+            <span className="sr-only">{accessibleTitle}</span>
+
+            {/* Part 1 — decorative, animated per-character markup, hidden from assistive tech */}
+            <span
+                aria-hidden="true"
+                className={cn(
+                    "block relative",
+                    isPart1Highlighted ? "text-primary" : "text-white",
+                    isPart1Highlighted ? highlightTextClassName : mainTextClassName
+                )}>
                 {isPart1Highlighted && showGlow && (
                     <span
                         className="absolute inset-0 blur-2xl bg-primary/20 animate-pulse-slow"
@@ -209,12 +222,14 @@ export function TypewriterTitle({
                 </span>
             </span>
 
-            {/* Part 2 */}
-            <span className={cn(
-                "block relative",
-                isPart2Highlighted ? "text-primary" : "text-white",
-                isPart2Highlighted ? highlightTextClassName : mainTextClassName
-            )}>
+            {/* Part 2 — decorative, animated per-character markup, hidden from assistive tech */}
+            <span
+                aria-hidden="true"
+                className={cn(
+                    "block relative",
+                    isPart2Highlighted ? "text-primary" : "text-white",
+                    isPart2Highlighted ? highlightTextClassName : mainTextClassName
+                )}>
                 {isPart2Highlighted && showGlow && (
                     <span
                         className="absolute inset-0 blur-2xl bg-primary/20 animate-pulse-slow"

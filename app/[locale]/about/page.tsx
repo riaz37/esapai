@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AboutPageClient } from "@/components/features/about/pages/about-page";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
+import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
+import { StructuredDataComponent } from "@/components/seo/structured-data";
 
 export const dynamic = "force-static";
 
@@ -36,8 +38,19 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
     const teamMembers = (t.raw("team.members") as Array<Record<string, unknown>>);
 
+    const structuredData = [
+        generateBreadcrumbSchema(
+            [
+                { name: "Home", url: "/" },
+                { name: "About", url: "/about" },
+            ],
+            locale
+        ),
+    ];
+
     return (
         <div className="min-h-screen">
+            <StructuredDataComponent data={structuredData} />
             <AboutPageClient
                 heroBadge={t("hero.badge")}
                 heroTitlePart1={t("hero.titlePart1")}

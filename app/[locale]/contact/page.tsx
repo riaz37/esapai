@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ContactSection } from "@/components/features/contact/sections";
 import { generateMetadata as generatePageMetadata } from "@/lib/seo/metadata";
-import { generateBreadcrumbSchema } from "@/lib/seo/structured-data";
+import { generateBreadcrumbSchema, generateContactPageSchema } from "@/lib/seo/structured-data";
 import { StructuredDataComponent } from "@/components/seo/structured-data";
 
 export async function generateMetadata({
@@ -29,6 +29,7 @@ export default async function ContactPage(props: {
   const searchParams = await props.searchParams;
   const productSlug = typeof searchParams.product === "string" ? searchParams.product : undefined;
   const structuredData = [
+    generateContactPageSchema("/contact", locale),
     generateBreadcrumbSchema(
       [
         { name: "Home", url: "/" },

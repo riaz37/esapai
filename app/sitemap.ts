@@ -42,6 +42,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.8,
     }),
+    ...localizedUrls("product", baseUrl, {
+      lastModified: getGitLastModified("app/[locale]/product/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }),
+    ...localizedUrls("service", baseUrl, {
+      lastModified: getGitLastModified("app/[locale]/service/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }),
     ...localizedUrls("privacy", baseUrl, {
       lastModified: getGitLastModified("app/[locale]/privacy/page.tsx"),
       changeFrequency: "yearly",

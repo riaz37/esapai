@@ -7,6 +7,19 @@ import type {
   ServiceSchemaOptions,
 } from "@/types/seo";
 
+/**
+ * Canonical @id for the single Organization node emitted once in the root
+ * layout. Other schema (Article publisher, Service provider, ContactPage
+ * mainEntity, etc.) reference this by @id instead of duplicating the
+ * Organization object inline on every page.
+ */
+const ORGANIZATION_ID = `${SEO_CONFIG.baseUrl}/#organization`;
+
+/**
+ * Canonical @id for the single WebSite node emitted once in the root layout.
+ */
+const WEBSITE_ID = `${SEO_CONFIG.baseUrl}/#website`;
+
 type CollectionPageSchemaOptions = {
   name: string;
   description: string;
@@ -55,9 +68,11 @@ export function generateWebsiteSchema(): StructuredData {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": WEBSITE_ID,
     name: SEO_CONFIG.siteName,
     url: SEO_CONFIG.baseUrl,
     description: SEO_CONFIG.defaultDescription,
+    publisher: { "@id": ORGANIZATION_ID },
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -103,7 +118,6 @@ export function generateArticleSchema(
     datePublished,
     dateModified,
     author,
-    publisher,
     url,
     locale,
     speakable,
@@ -134,11 +148,11 @@ export function generateArticleSchema(
             name: author,
           },
     }),
-    publisher: {
-      "@type": "Organization",
-      name: publisher?.name || SEO_CONFIG.organization.name,
-      ...(publisher?.logo && { logo: publisher.logo }),
-    },
+    // Publisher is always ESAP AI itself in this codebase — reference the
+    // single canonical Organization node by @id instead of duplicating its
+    // name/logo inline on every article.
+    publisher: { "@id": ORGANIZATION_ID },
+    isPartOf: { "@id": WEBSITE_ID },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": getLocalizedUrl(locale, url),
@@ -155,30 +169,30 @@ export function generateArticleSchema(
 }
 
 /**
- * Generate Product structured data (JSON-LD)
+ * Generate SoftwareApplication structured data (JSON-LD) for product pages.
+ *
+ * Uses `SoftwareApplication` rather than `Product` because these are software
+ * products, not physical/e-commerce goods, and `applicationCategory` gives
+ * search engines an accurate classification. `offers` (and any rating/review
+ * fields) are intentionally never emitted here — there is no public pricing
+ * to report, and fabricating price/rating data would violate schema.org's
+ * structured-data guidelines.
  */
 
 export function generateProductSchema(
   options: ProductSchemaOptions
 ): StructuredData {
-  const { name, description, image, url, brand, category, offers, locale } = options;
+  const { name, description, image, url, brand, category, locale } = options;
 
   const schema: StructuredData = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "SoftwareApplication",
     name,
     description,
     url: getLocalizedUrl(locale, url),
+    applicationCategory: "BusinessApplication",
     ...(brand && { brand: { "@type": "Brand", name: brand } }),
     ...(category && { category }),
-    ...(offers && {
-      offers: {
-        "@type": "Offer",
-        ...(offers.price && { price: offers.price }),
-        ...(offers.priceCurrency && { priceCurrency: offers.priceCurrency }),
-        ...(offers.availability && { availability: offers.availability }),
-      },
-    }),
   };
 
   if (image) {
@@ -206,13 +220,10 @@ export function generateServiceSchema(
     name,
     description,
     url: getLocalizedUrl(locale, url),
-    ...(provider && {
-      provider: {
-        "@type": "Organization",
-        name: provider.name,
-        ...(provider.url && { url: provider.url }),
-      },
-    }),
+    // The provider is always ESAP AI itself in this codebase — reference the
+    // single canonical Organization node by @id instead of duplicating its
+    // name/url inline on every service.
+    ...(provider && { provider: { "@id": ORGANIZATION_ID } }),
     ...(areaServed && { areaServed }),
     ...(serviceType && { serviceType }),
   };
@@ -253,5 +264,26 @@ export function generateCollectionPageSchema(
         },
       })),
     },
+  };
+}
+
+/**
+ * Generate ContactPage structured data (JSON-LD) for the contact page.
+ * Points `about`/`mainEntity` at the single canonical Organization node
+ * (by @id) rather than re-declaring its address/phone/email inline —
+ * those facts already live once on the Organization schema.
+ */
+export function generateContactPageSchema(
+  url: string,
+  locale: string
+): StructuredData {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    url: getLocalizedUrl(locale, url),
+    name: `Contact ${SEO_CONFIG.siteName}`,
+    about: { "@id": ORGANIZATION_ID },
+    mainEntity: { "@id": ORGANIZATION_ID },
+    isPartOf: { "@id": WEBSITE_ID },
   };
 }

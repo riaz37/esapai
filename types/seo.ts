@@ -39,10 +39,6 @@ export interface ArticleSchemaOptions {
   datePublished: string;
   dateModified?: string;
   author?: string | string[];
-  publisher?: {
-    name: string;
-    logo?: string;
-  };
   url: string;
   /** Locale this schema is rendered for — used to build the locale-prefixed mainEntityOfPage URL. */
   locale: string;
@@ -57,11 +53,11 @@ export interface ProductSchemaOptions {
   url: string;
   brand?: string;
   category?: string;
-  offers?: {
-    price?: string;
-    priceCurrency?: string;
-    availability?: string;
-  };
+  /**
+   * Intentionally no `offers`/pricing/rating fields — there is no public
+   * pricing to report, and fabricating price or review data would violate
+   * schema.org guidelines. Omit rather than guess.
+   */
   /** Locale this schema is rendered for — used to build the locale-prefixed url. */
   locale: string;
 }

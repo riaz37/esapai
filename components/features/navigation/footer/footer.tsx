@@ -9,10 +9,6 @@ import { useTranslations } from "next-intl";
 import { SocialLinks } from "@/components/shared/social-link";
 import { socialMediaLinks } from "@/components/features/contact/sections/contact.constants";
 
-import FooterBg1 from "./components/footer-bg-1";
-import FooterBg2 from "./components/footer-bg-2";
-import FooterBg3 from "./components/footer-bg-3";
-
 function safePlay(video: HTMLVideoElement | null) {
   if (!video) return;
   // Rapid hover in/out can trigger play() then pause() before play resolves,
@@ -70,9 +66,14 @@ export function Footer() {
             }}
           >
             <div className="absolute inset-0 z-0">
-              <FooterBg2
-                preserveAspectRatio="xMinYMin slice"
-                className={cn("w-full h-full transition-opacity duration-500", ctaCardHovered ? "opacity-0" : "opacity-30")}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/footer-bg-2.png"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                className={cn("w-full h-full object-cover object-left-top transition-opacity duration-500", ctaCardHovered ? "opacity-0" : "opacity-30")}
               />
               <video
                 ref={ctaVideoRef}
@@ -115,8 +116,13 @@ export function Footer() {
             }}
           >
             <div className="absolute inset-0 z-0">
-              <FooterBg3
-                preserveAspectRatio="xMaxYMid slice"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/footer-bg-3.svg"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
                 className={cn("w-full h-full transition-opacity duration-500", socialCardHovered ? "opacity-0" : "opacity-30")}
               />
               <video
@@ -158,8 +164,13 @@ export function Footer() {
         >
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
-            <FooterBg1
-              preserveAspectRatio="xMaxYMid slice"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/footer-bg-1.svg"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
               className={cn("w-full h-full transition-opacity duration-500", menuCardHovered ? "opacity-0" : "opacity-20")}
             />
             <video

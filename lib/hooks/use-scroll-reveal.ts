@@ -41,7 +41,10 @@ export function useScrollReveal(
         opacity = 0,
         scale = 1,
         filter = "none",
-        start = "top 85%",
+        // Generous start position (fires earlier) so reveals aren't missed when
+        // ScrollTrigger's initial measurement is thrown off by late-mounting
+        // (lazy-loaded) content above/below this element.
+        start = "top 92%",
         delay = 0,
         ease = "power3.out",
         toggleActions = "play none none reverse",
@@ -60,7 +63,7 @@ export function useScrollReveal(
                 return;
             }
 
-            gsap.fromTo(
+            const tween = gsap.fromTo(
                 targets,
                 {
                     opacity,
@@ -88,6 +91,27 @@ export function useScrollReveal(
                     },
                 }
             );
+
+            // Hard-timeout fallback: if ScrollTrigger never fires (e.g. missed
+            // refresh after late-mounted content, prerender/crawler snapshots
+            // that don't dispatch scroll events, or any other edge case), force
+            // the final visible state so content is never permanently hidden.
+            const fallbackTimer = window.setTimeout(() => {
+                if (tween.progress() === 0) {
+                    tween.scrollTrigger?.kill();
+                    gsap.set(targets, {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        filter: "none",
+                        willChange: "auto",
+                    });
+                }
+            }, 4000);
+
+            return () => {
+                window.clearTimeout(fallbackTimer);
+            };
         },
         { scope: ref, dependencies }
     );

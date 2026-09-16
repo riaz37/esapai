@@ -1,25 +1,22 @@
-import * as React from "react";
-const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg
-        width={619}
-        height={639}
-        viewBox="0 0 619 639"
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+        width="619"
+        height="639"
+        viewBox="0 0 619 639" preserveAspectRatio="xMaxYMid slice"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        {...props}
+        
     >
-        <g clipPath="url(#clip0_1116_293098)">
-            <g clipPath="url(#clip1_1116_293098)">
+        <g clip-path="url(#clip0_1116_293098)">
+            <g clip-path="url(#clip1_1116_293098)">
                 <mask
                     id="mask0_1116_293098"
-                    style={{
-                        maskType: "luminance",
-                    }}
+                    style="mask-type:luminance"
                     maskUnits="userSpaceOnUse"
-                    x={-191}
-                    y={-126}
-                    width={1001}
-                    height={1001}
+                    x="-191"
+                    y="-126"
+                    width="1001"
+                    height="1001"
                 >
                     <path
                         d="M809.5 -125.332H-190.5V874.668H809.5V-125.332Z"
@@ -284,17 +281,15 @@ const SVGComponent = (props: React.SVGProps<SVGSVGElement>) => (
         </g>
         <defs>
             <clipPath id="clip0_1116_293098">
-                <rect width={619} height={639} fill="white" />
+                <rect width="619" height="639" fill="white" />
             </clipPath>
             <clipPath id="clip1_1116_293098">
                 <rect
-                    width={1000}
-                    height={1000}
+                    width="1000"
+                    height="1000"
                     fill="white"
                     transform="translate(-190.5 -125.332)"
                 />
             </clipPath>
         </defs>
     </svg>
-);
-export default SVGComponent;

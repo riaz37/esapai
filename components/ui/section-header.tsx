@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import type { SectionHeaderProps } from "@/types/props";
 import { BadgeChip } from "./badge-chip";
+import { prefersReducedMotion } from "@/lib/utils/performance-utils";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -32,10 +33,25 @@ export function SectionHeader({
   useGSAP(
     () => {
       if (!animate) return;
+
+      const targets = [badgeRef.current, titleRef.current, subtitleRef.current].filter(
+        (el): el is HTMLDivElement | HTMLHeadingElement | HTMLParagraphElement => Boolean(el)
+      );
+
+      // Respect reduced-motion preference: render content visible immediately
+      // instead of animating it in.
+      if (prefersReducedMotion()) {
+        gsap.set(targets, { opacity: 1, y: 0 });
+        return;
+      }
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 85%",
+          // Generous start so the reveal fires earlier and is less likely to
+          // be missed when layout shifts (e.g. lazy-loaded sections above)
+          // move this trigger's calculated position.
+          start: "top 92%",
           toggleActions: "play none none reverse",
         },
       });
@@ -77,6 +93,22 @@ export function SectionHeader({
           "-=0.5"
         );
       }
+
+      // Hard-timeout fallback: if the ScrollTrigger never fires (missed
+      // refresh after late-mounted/lazy content, prerender snapshots that
+      // never dispatch scroll events, etc.), force the final visible state
+      // so this content is never permanently stuck at opacity 0.
+      const fallbackTimer = window.setTimeout(() => {
+        if (tl.progress() === 0) {
+          tl.scrollTrigger?.kill();
+          tl.progress(1).kill();
+          gsap.set(targets, { opacity: 1, y: 0 });
+        }
+      }, 4000);
+
+      return () => {
+        window.clearTimeout(fallbackTimer);
+      };
     },
     { scope: containerRef, dependencies: [badge, subtitle] }
   );

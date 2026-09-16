@@ -1018,6 +1018,21 @@
       will-change: auto;
     }
 
+    /*
+     * These base states are opacity:0 (and translated/scaled) by default,
+     * waiting for GSAP to animate them in. If GSAP's own reduced-motion
+     * handling is ever skipped or delayed, this is a defense-in-depth
+     * fallback so reduced-motion users never see permanently blank content.
+     * GSAP's inline `style` attribute still wins when JS runs normally
+     * (element[style] > class rule specificity).
+     */
+    .gsap-fade-in-optimized,
+    .gsap-slide-up-optimized,
+    .gsap-scale-in-optimized {
+      opacity: 1;
+      transform: none;
+    }
+
     .animate-pulse-slow,
     .animate-cell-ripple,
     .animate-shine,

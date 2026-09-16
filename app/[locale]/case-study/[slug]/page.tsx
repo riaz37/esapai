@@ -73,10 +73,6 @@ export default async function CaseStudySlugPage({ params }: CaseStudySlugPagePro
       dateModified: caseStudy._updatedAt,
       author: "ESAP AI",
       url: `/case-study/${slug}`,
-      publisher: {
-        name: "ESAP AI",
-        logo: "https://www.esap.ai/logo/esaplogo.svg",
-      },
       locale,
       speakable: ['[data-speakable="headline"]', '[data-speakable="summary"]'],
     }),
